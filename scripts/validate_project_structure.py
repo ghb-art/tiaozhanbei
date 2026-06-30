@@ -45,6 +45,7 @@ REQUIRED_FILES = [
     "configs/final_config_dev.yaml",
     "scripts/generate_manifest_template.py",
     "scripts/validate_manifest_files.py",
+    "scripts/inspect_datasets.py",
 ]
 
 GITIGNORE_PATTERNS = [

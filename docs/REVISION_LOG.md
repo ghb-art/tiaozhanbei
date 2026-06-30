@@ -22,6 +22,7 @@
 | 2026-06-30 | P0-A0 | 初始化工程管理文档、基础配置和结构校验脚本 | 将方案文档推进到可检查的工程骨架 | No Final hash yet | `docs/`, `configs/`, `scripts/validate_project_structure.py` |
 | 2026-06-30 | P0-A0 | 新增 manifest 模板生成脚本和三类 template JSON | 按实施方案固化 G-DATA/Final Gate 产物字段标准 | No Final hash yet | `scripts/generate_manifest_template.py`, `*.template.json` |
 | 2026-06-30 | P0-A0 | 新增正式 manifest 验收脚本 | 在数据接入前自动化 G-DATA/Final Gate manifest 基础验收规则 | No Final hash yet | `scripts/validate_manifest_files.py`, `scripts/validate_project_structure.py` |
+| 2026-06-30 | P0-A0 | 新增数据集目录盘点脚本并生成 preflight inventory | 在正式 G-DATA 前确认本地数据目录现状 | No Final hash yet | `scripts/inspect_datasets.py`, `reports/preflight/data_inventory.json` |
 
 ## Fallback Event Template
 

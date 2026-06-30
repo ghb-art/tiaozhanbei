@@ -2,7 +2,7 @@
 
 更新时间：2026-06-30
 
-当前阶段：P0-A0 工程骨架准备，已完成 G-DATA 前置 manifest 模板规范、数据目录盘点和数据接入规范。
+当前阶段：P0-A0 工程骨架准备，已完成 G-DATA 前置 manifest 模板规范、数据目录盘点、数据接入规范和数据来源核验。
 
 ## 当前结论
 
@@ -22,12 +22,14 @@
 - 已新增 `scripts/inspect_datasets.py`，用于扫描 `data/datasets/` 并输出数据资产盘点报告。
 - 已生成 `reports/preflight/data_inventory.json`。当前 8 个预期数据集目录均存在，但都只有 `.gitkeep`，尚无真实 payload 数据。
 - 已新增 `docs/DATASET_SOURCES.md`，记录 8 个目标数据集的用途、放置目录、接入注意事项和待核验来源状态。
+- 已核验并补充 `docs/DATASET_SOURCES.md` 中 8 个目标数据集的官方/主来源、访问方式、license/terms 注意事项和下载前人工确认要求。
 - 已新增 `scripts/validate_dataset_presence.py`，用于检查数据集目录是否存在 `.gitkeep` 之外的真实 payload 文件。
 
 ## 未开始
 
 - 数据集下载与 split 冻结。
 - 数据集真实文件接入。
+- MVTec AD、NEU-DET、CityFlow、UA-DETRAC 下载前 license、数据协议和账号/表单要求的人工复核记录。
 - 正式 `dataset_manifest.json`、`manifest.json`、`conflict_gt_manifest.json` 生成。
 - KWDB/KaiwuDB Docker 部署与 schema 创建。
 - 14B 云端教师模型服务验证。

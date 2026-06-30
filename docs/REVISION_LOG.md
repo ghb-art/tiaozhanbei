@@ -24,6 +24,7 @@
 | 2026-06-30 | P0-A0 | 新增正式 manifest 验收脚本 | 在数据接入前自动化 G-DATA/Final Gate manifest 基础验收规则 | No Final hash yet | `scripts/validate_manifest_files.py`, `scripts/validate_project_structure.py` |
 | 2026-06-30 | P0-A0 | 新增数据集目录盘点脚本并生成 preflight inventory | 在正式 G-DATA 前确认本地数据目录现状 | No Final hash yet | `scripts/inspect_datasets.py`, `reports/preflight/data_inventory.json` |
 | 2026-06-30 | P0-A0 | 新增数据来源说明和数据集 payload 存在性校验脚本 | 在下载/挂载数据前固定数据接入规则并避免 `.gitkeep` 被误判为真实数据 | No Final hash yet | `docs/DATASET_SOURCES.md`, `scripts/validate_dataset_presence.py` |
+| 2026-06-30 | G-DATA | 核验并补充 8 个目标数据集的官方/主来源、访问方式和 license/terms 注意事项 | 在正式下载数据前固定来源口径，降低使用未授权镜像或混入 final 数据的风险 | No Final hash yet | `docs/DATASET_SOURCES.md`, `docs/TODO.md`, `docs/PROJECT_STATUS.md` |
 
 ## Fallback Event Template
 

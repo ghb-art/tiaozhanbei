@@ -1,0 +1,36 @@
+config_version: "0.1-dev"
+frozen_for_final_gate: false
+
+models:
+  cloud_teacher:
+    role: cloud_teacher
+    model_id: "Qwen/Qwen2.5-14B-Instruct-AWQ"
+    serving_backend: vllm
+    endpoint: "http://localhost:8000"
+    purpose: "G1 denominator, teacher trace generation, cloud correction."
+
+  high_edge:
+    role: high_edge
+    model_id: "Qwen/Qwen2.5-7B-Instruct-AWQ"
+    serving_backend: vllm
+    endpoint: "http://localhost:8001"
+    purpose: "Optional heterogeneous edge node for multi-node experiments."
+
+  edge_student:
+    role: low_edge_student
+    model_id: "Qwen/Qwen2.5-1.5B-Instruct"
+    target_name: "DB4AI-Edge-1.5B-KD-INT4"
+    quant_format: "Q4_K_M"
+    serving_backend: llama_cpp
+    purpose: "Primary edge-side model for G1, G3, G4, G5, G6 and G7."
+
+training:
+  seed: 42
+  adapter_method: lora
+  output_root: "models"
+
+artifacts:
+  plain_kd_adapter_dir: "models/adapters/plain_kd"
+  cedd_structured_adapter_dir: "models/adapters/cedd_structured"
+  cedd_repair_adapter_dir: "models/adapters/cedd_repair"
+  quantized_model_dir: "models/quantized"

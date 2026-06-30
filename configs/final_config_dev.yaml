@@ -1,0 +1,37 @@
+config_version: "0.1-dev"
+stage: "dev"
+frozen_for_final_gate: false
+
+paths:
+  dataset_manifest: "dataset_manifest.json"
+  conflict_gt_manifest: "conflict_gt_manifest.json"
+  manifest: "manifest.json"
+  network_profiles: "configs/network_profiles.yaml"
+  workload_profiles: "configs/workload_profiles.yaml"
+  models_config: "configs/models.yaml"
+
+runtime:
+  business_deadline_ms: 200
+  correction_deadline_ms: 1000
+  sync_deadline_ms: 2000
+  max_observation_timeout_ms: 1000
+  feature_mode: "replay"
+
+decision_header:
+  required_fields:
+    - task_id
+    - event_type
+    - risk_attr
+    - action
+    - confidence
+    - is_provisional
+    - selected_path
+
+dev_gates:
+  g1_min_ratio: 0.82
+  g2_min_ttft_reduction: 0.78
+  g3_max_rss_mb_decimal: 1450
+  g4_min_business_retention: 0.92
+  g5_max_p95_e2e_s: 0.18
+  g6_max_conflict_ratio: 0.04
+  g7_min_resolution_success_rate: 0.92

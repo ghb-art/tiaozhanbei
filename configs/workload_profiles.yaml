@@ -1,0 +1,26 @@
+profile_version: "0.1-dev"
+frozen_for_final_gate: false
+description: "Workload profiles for DB4AI-EdgeServe development and replay tests."
+
+profiles:
+  stable:
+    arrival: fixed_rate
+    rates: [1, 2, 5, 10]
+    duration_s: 300
+
+  burst:
+    arrival: burst
+    base_rate: 2
+    burst_factor: 3
+    burst_duration_s: 30
+    total_duration_s: 300
+
+  replay:
+    arrival: dataset_timestamp
+    preserve_order: true
+    duration_s: 300
+
+  scale:
+    edge_nodes: [2, 4, 8]
+    relation_ratio: [0.10, 0.25, 0.40]
+    duration_s: 300

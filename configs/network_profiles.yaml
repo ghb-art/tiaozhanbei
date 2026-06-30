@@ -1,0 +1,41 @@
+profile_version: "0.1-dev"
+frozen_for_final_gate: false
+description: "Network profiles for DB4AI-EdgeServe development and replay tests."
+
+profiles:
+  normal:
+    delay_ms: 0
+    jitter_ms: 0
+    loss_pct: 0
+    bandwidth_mbps: null
+    disconnect: false
+
+  high_delay:
+    delay_ms: 100
+    jitter_ms: 20
+    loss_pct: 0
+    bandwidth_mbps: null
+    disconnect: false
+
+  low_bandwidth:
+    delay_ms: 0
+    jitter_ms: 0
+    loss_pct: 0
+    bandwidth_mbps: 1
+    disconnect: false
+
+  high_loss:
+    delay_ms: 0
+    jitter_ms: 0
+    loss_pct: 5
+    bandwidth_mbps: null
+    disconnect: false
+
+  short_disconnect:
+    delay_ms: 0
+    jitter_ms: 0
+    loss_pct: 0
+    bandwidth_mbps: null
+    disconnect: true
+    down_s: 5
+    period_s: 60

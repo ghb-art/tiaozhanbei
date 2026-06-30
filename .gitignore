@@ -1,0 +1,33 @@
+﻿# Python
+__pycache__/
+*.pyc
+.venv/
+.env
+
+# Logs and runtime
+logs/
+runtime/
+
+# Data and large outputs
+data/raw/
+data/processed/
+data/kwdb/
+data/distill/
+results/
+reports/final/
+
+# Models and checkpoints
+models/pretrained/
+models/checkpoints/
+models/quantized/
+*.pt
+*.pth
+*.bin
+*.safetensors
+*.gguf
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

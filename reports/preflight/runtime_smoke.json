@@ -1,0 +1,366 @@
+{
+  "report_version": "0.1",
+  "created_by": "scripts/preflight_runtime_smoke.py",
+  "created_ts": "2026-06-30T07:53:43.346634+00:00",
+  "project_root": "D:\\Desktop\\STUDY\\code\\tiaozhanbei",
+  "python_executable": "E:\\Study\\anaconda3\\python.exe",
+  "summary": {
+    "passed": true,
+    "check_count": 33,
+    "failed_check_count": 0,
+    "errors": []
+  },
+  "checks": [
+    {
+      "name": "python_version",
+      "passed": true,
+      "details": {
+        "required_minimum": "3.10",
+        "current": "3.12.7",
+        "executable": "E:\\Study\\anaconda3\\python.exe"
+      }
+    },
+    {
+      "name": "directory:configs",
+      "passed": true,
+      "details": {
+        "path": "configs"
+      }
+    },
+    {
+      "name": "directory:scripts",
+      "passed": true,
+      "details": {
+        "path": "scripts"
+      }
+    },
+    {
+      "name": "directory:docs",
+      "passed": true,
+      "details": {
+        "path": "docs"
+      }
+    },
+    {
+      "name": "directory:reports/preflight",
+      "passed": true,
+      "details": {
+        "path": "reports/preflight"
+      }
+    },
+    {
+      "name": "directory:runtime",
+      "passed": true,
+      "details": {
+        "path": "runtime"
+      }
+    },
+    {
+      "name": "directory:runtime/state_cache",
+      "passed": true,
+      "details": {
+        "path": "runtime/state_cache"
+      }
+    },
+    {
+      "name": "directory:runtime/outbox",
+      "passed": true,
+      "details": {
+        "path": "runtime/outbox"
+      }
+    },
+    {
+      "name": "directory:data/datasets",
+      "passed": true,
+      "details": {
+        "path": "data/datasets"
+      }
+    },
+    {
+      "name": "readable_file:README.md",
+      "passed": true,
+      "details": {
+        "path": "README.md",
+        "size_chars": 5424
+      }
+    },
+    {
+      "name": "readable_file:IMPLEMENTATION_PLAN.md",
+      "passed": true,
+      "details": {
+        "path": "IMPLEMENTATION_PLAN.md",
+        "size_chars": 50002
+      }
+    },
+    {
+      "name": "readable_file:docs/TODO.md",
+      "passed": true,
+      "details": {
+        "path": "docs/TODO.md",
+        "size_chars": 1693
+      }
+    },
+    {
+      "name": "readable_file:docs/PROJECT_STATUS.md",
+      "passed": true,
+      "details": {
+        "path": "docs/PROJECT_STATUS.md",
+        "size_chars": 2322
+      }
+    },
+    {
+      "name": "readable_file:docs/REVISION_LOG.md",
+      "passed": true,
+      "details": {
+        "path": "docs/REVISION_LOG.md",
+        "size_chars": 2096
+      }
+    },
+    {
+      "name": "readable_file:docs/DATASET_SOURCES.md",
+      "passed": true,
+      "details": {
+        "path": "docs/DATASET_SOURCES.md",
+        "size_chars": 6891
+      }
+    },
+    {
+      "name": "readable_file:configs/network_profiles.yaml",
+      "passed": true,
+      "details": {
+        "path": "configs/network_profiles.yaml",
+        "size_chars": 737
+      }
+    },
+    {
+      "name": "readable_file:configs/workload_profiles.yaml",
+      "passed": true,
+      "details": {
+        "path": "configs/workload_profiles.yaml",
+        "size_chars": 528
+      }
+    },
+    {
+      "name": "readable_file:configs/models.yaml",
+      "passed": true,
+      "details": {
+        "path": "configs/models.yaml",
+        "size_chars": 1063
+      }
+    },
+    {
+      "name": "readable_file:configs/final_config_dev.yaml",
+      "passed": true,
+      "details": {
+        "path": "configs/final_config_dev.yaml",
+        "size_chars": 875
+      }
+    },
+    {
+      "name": "readable_file:dataset_manifest.template.json",
+      "passed": true,
+      "details": {
+        "path": "dataset_manifest.template.json",
+        "size_chars": 5111
+      }
+    },
+    {
+      "name": "readable_file:manifest.template.json",
+      "passed": true,
+      "details": {
+        "path": "manifest.template.json",
+        "size_chars": 2461
+      }
+    },
+    {
+      "name": "readable_file:conflict_gt_manifest.template.json",
+      "passed": true,
+      "details": {
+        "path": "conflict_gt_manifest.template.json",
+        "size_chars": 1438
+      }
+    },
+    {
+      "name": "readable_file:scripts/validate_project_structure.py",
+      "passed": true,
+      "details": {
+        "path": "scripts/validate_project_structure.py",
+        "size_chars": 6426
+      }
+    },
+    {
+      "name": "readable_file:scripts/validate_dataset_presence.py",
+      "passed": true,
+      "details": {
+        "path": "scripts/validate_dataset_presence.py",
+        "size_chars": 3407
+      }
+    },
+    {
+      "name": "readable_file:scripts/validate_manifest_files.py",
+      "passed": true,
+      "details": {
+        "path": "scripts/validate_manifest_files.py",
+        "size_chars": 19670
+      }
+    },
+    {
+      "name": "readable_file:scripts/inspect_datasets.py",
+      "passed": true,
+      "details": {
+        "path": "scripts/inspect_datasets.py",
+        "size_chars": 8464
+      }
+    },
+    {
+      "name": "readable_file:scripts/preflight_runtime_smoke.py",
+      "passed": true,
+      "details": {
+        "path": "scripts/preflight_runtime_smoke.py",
+        "size_chars": 10569
+      }
+    },
+    {
+      "name": "template_json:dataset_manifest.template.json",
+      "passed": true,
+      "details": {
+        "path": "dataset_manifest.template.json",
+        "top_level_keys": [
+          "created_by",
+          "created_ts",
+          "datasets",
+          "global_leakage_check",
+          "manifest_version",
+          "sampling_seed",
+          "scu_support",
+          "template_notice",
+          "template_only"
+        ]
+      }
+    },
+    {
+      "name": "template_json:manifest.template.json",
+      "passed": true,
+      "details": {
+        "path": "manifest.template.json",
+        "top_level_keys": [
+          "baseline_fairness_hash",
+          "calibration_snapshot_hash",
+          "capability_metric_script_hash",
+          "communication_metric_script_hash",
+          "conflict_gt_audit_hash",
+          "conflict_gt_sample_audit_hash",
+          "conflict_metric_script_hash",
+          "counterfactual_repair_trace_hash",
+          "data_split_hash",
+          "decision_parser_hash",
+          "distill_dataset_hash",
+          "e2e_metric_script_hash",
+          "edge_model_name",
+          "edge_model_sha256",
+          "fallback_events",
+          "fallback_policy_hash",
+          "final_config_hash",
+          "frozen_scu_hash",
+          "git_commit",
+          "graph_model_hash",
+          "latency_breakdown_hash",
+          "lora_adapter_sha256",
+          "network_profile_hash",
+          "online_perception_smoke_hash",
+          "perception_metric_script_hash",
+          "planner_model_hash",
+          "policy_config_hash",
+          "policy_snapshot_hash",
+          "preflight_report_hash",
+          "prompt_template_hash",
+          "quant_behavior_trace_hash",
+          "quant_config_hash",
+          "resolution_metric_script_hash",
+          "resource_metric_script_hash",
+          "risk_matrix_hash",
+          "runtime_state_model_hash",
+          "sft_config_hash",
+          "student_init_model_id",
+          "student_probe_trace_hash",
+          "synthetic_chinese_nlp_hash",
+          "teacher_model_id",
+          "teacher_trace_hash",
+          "template_notice",
+          "template_only",
+          "timestamp",
+          "trust_posterior_snapshot_hash",
+          "ttft_metric_script_hash"
+        ]
+      }
+    },
+    {
+      "name": "template_json:conflict_gt_manifest.template.json",
+      "passed": true,
+      "details": {
+        "path": "conflict_gt_manifest.template.json",
+        "top_level_keys": [
+          "conflict_group_count",
+          "conflict_groups",
+          "conflict_type_distribution",
+          "created_by",
+          "created_ts",
+          "datasets",
+          "manifest_hash",
+          "manifest_version",
+          "split",
+          "template_notice",
+          "template_only"
+        ]
+      }
+    },
+    {
+      "name": "command:project_structure",
+      "passed": true,
+      "details": {
+        "command": [
+          "E:\\Study\\anaconda3\\python.exe",
+          "scripts/validate_project_structure.py"
+        ],
+        "returncode": 0,
+        "started_ts": "2026-06-30T07:53:43.094201+00:00",
+        "finished_ts": "2026-06-30T07:53:43.179356+00:00",
+        "stdout_tail": "[OK] Network profile declared: high_loss\n[OK] Network profile declared: short_disconnect\n[OK] Workload profile declared: stable\n[OK] Workload profile declared: burst\n[OK] Workload profile declared: replay\n[OK] Workload profile declared: scale\n[OK] Model role declared: cloud_teacher\n[OK] Model role declared: high_edge\n[OK] Model role declared: edge_student\n[OK] Manifest template is valid JSON: dataset_manifest.template.json\n[OK] Manifest template marked template_only: dataset_manifest.template.json\n[OK] Manifest template key present: dataset_manifest.template.json::manifest_version\n[OK] Manifest template key present: dataset_manifest.template.json::created_by\n[OK] Manifest template key present: dataset_manifest.template.json::created_ts\n[OK] Manifest template key present: dataset_manifest.template.json::sampling_seed\n[OK] Manifest template key present: dataset_manifest.template.json::datasets\n[OK] Manifest template key present: dataset_manifest.template.json::scu_support\n[OK] Manifest template key present: dataset_manifest.template.json::global_leakage_check\n[OK] Manifest template is valid JSON: manifest.template.json\n[OK] Manifest template marked template_only: manifest.template.json\n[OK] Manifest template key present: manifest.template.json::git_commit\n[OK] Manifest template key present: manifest.template.json::final_config_hash\n[OK] Manifest template key present: manifest.template.json::teacher_model_id\n[OK] Manifest template key present: manifest.template.json::student_init_model_id\n[OK] Manifest template key present: manifest.template.json::edge_model_name\n[OK] Manifest template key present: manifest.template.json::fallback_events\n[OK] Manifest template key present: manifest.template.json::timestamp\n[OK] Manifest template is valid JSON: conflict_gt_manifest.template.json\n[OK] Manifest template marked template_only: conflict_gt_manifest.template.json\n[OK] Manifest template key present: conflict_gt_manifest.template.json::manifest_version\n[OK] Manifest template key present: conflict_gt_manifest.template.json::created_by\n[OK] Manifest template key present: conflict_gt_manifest.template.json::created_ts\n[OK] Manifest template key present: conflict_gt_manifest.template.json::datasets\n[OK] Manifest template key present: conflict_gt_manifest.template.json::split\n[OK] Manifest template key present: conflict_gt_manifest.template.json::conflict_groups\n[OK] Manifest template key present: conflict_gt_manifest.template.json::conflict_group_count\n[OK] Manifest template key present: conflict_gt_manifest.template.json::conflict_type_distribution\n[OK] Manifest template key present: conflict_gt_manifest.template.json::manifest_hash\n\nProject structure validation passed.",
+        "stderr_tail": ""
+      }
+    },
+    {
+      "name": "command:dataset_presence_allow_empty",
+      "passed": true,
+      "details": {
+        "command": [
+          "E:\\Study\\anaconda3\\python.exe",
+          "scripts/validate_dataset_presence.py",
+          "--allow-empty"
+        ],
+        "returncode": 0,
+        "started_ts": "2026-06-30T07:53:43.179356+00:00",
+        "finished_ts": "2026-06-30T07:53:43.262052+00:00",
+        "stdout_tail": "[EMPTY-ALLOWED] GSM8K -> data/datasets/gsm8k has no payload files\n[EMPTY-ALLOWED] HumanEval -> data/datasets/humaneval has no payload files\n[EMPTY-ALLOWED] MMLU -> data/datasets/mmlu has no payload files\n[EMPTY-ALLOWED] CMMLU -> data/datasets/cmmlu has no payload files\n[EMPTY-ALLOWED] MVTec AD -> data/datasets/mvtec_ad has no payload files\n[EMPTY-ALLOWED] NEU-DET -> data/datasets/neu_det has no payload files\n[EMPTY-ALLOWED] CityFlow -> data/datasets/cityflow has no payload files\n[EMPTY-ALLOWED] UA-DETRAC -> data/datasets/ua_detrac has no payload files\n\nDataset presence check completed with empty directories allowed.",
+        "stderr_tail": ""
+      }
+    },
+    {
+      "name": "command:formal_manifest_allow_missing",
+      "passed": true,
+      "details": {
+        "command": [
+          "E:\\Study\\anaconda3\\python.exe",
+          "scripts/validate_manifest_files.py",
+          "--allow-missing"
+        ],
+        "returncode": 0,
+        "started_ts": "2026-06-30T07:53:43.262052+00:00",
+        "finished_ts": "2026-06-30T07:53:43.346634+00:00",
+        "stdout_tail": "Formal manifest files are not generated yet:\n[SKIP] Missing dataset_manifest.json\n[SKIP] Missing manifest.json\n[SKIP] Missing conflict_gt_manifest.json",
+        "stderr_tail": ""
+      }
+    }
+  ],
+  "report_hash": "5d5eeffe86e75f4cf3b3fd9a4f1e39a972cd2bef05cc8a81ac5b7931643c8dd4"
+}

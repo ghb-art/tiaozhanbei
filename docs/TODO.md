@@ -20,7 +20,7 @@
 - [x] 生成 `reports/preflight/data_inventory.json`。
 - [x] 创建 `docs/DATASET_SOURCES.md`。
 - [x] 创建数据集 payload 存在性校验脚本 `scripts/validate_dataset_presence.py`。
-- [ ] 创建 preflight runtime smoke 脚本。
+- [x] 创建 preflight runtime smoke 脚本。
 
 ## G-DATA
 

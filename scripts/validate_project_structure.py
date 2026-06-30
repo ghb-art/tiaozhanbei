@@ -48,6 +48,7 @@ REQUIRED_FILES = [
     "scripts/validate_manifest_files.py",
     "scripts/inspect_datasets.py",
     "scripts/validate_dataset_presence.py",
+    "scripts/preflight_runtime_smoke.py",
 ]
 
 GITIGNORE_PATTERNS = [

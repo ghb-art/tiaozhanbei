@@ -2,7 +2,7 @@
 
 更新时间：2026-06-30
 
-当前阶段：P0-A0 工程骨架准备，已完成 G-DATA 前置 manifest 模板规范、数据目录盘点、数据接入规范和数据来源核验。
+当前阶段：P0-A0 工程骨架准备，已完成 G-DATA 前置 manifest 模板规范、数据目录盘点、数据接入规范、数据来源核验和 runtime smoke 预检。
 
 ## 当前结论
 
@@ -24,6 +24,8 @@
 - 已新增 `docs/DATASET_SOURCES.md`，记录 8 个目标数据集的用途、放置目录、接入注意事项和待核验来源状态。
 - 已核验并补充 `docs/DATASET_SOURCES.md` 中 8 个目标数据集的官方/主来源、访问方式、license/terms 注意事项和下载前人工确认要求。
 - 已新增 `scripts/validate_dataset_presence.py`，用于检查数据集目录是否存在 `.gitkeep` 之外的真实 payload 文件。
+- 已新增 `scripts/preflight_runtime_smoke.py`，用于检查 Python 版本、关键目录、配置/模板可读性，并调用现有轻量校验脚本完成 runtime smoke。
+- 已生成 `reports/preflight/runtime_smoke.json`，作为当前工程骨架可运行性的预检报告。
 
 ## 未开始
 
@@ -44,6 +46,7 @@ python scripts/validate_dataset_presence.py --allow-empty
 python scripts/inspect_datasets.py
 python scripts/generate_manifest_template.py --overwrite
 python scripts/validate_manifest_files.py --allow-missing
+python scripts/preflight_runtime_smoke.py
 ```
 
-第一条命令用于检查当前项目骨架、关键目录、基础配置、文档和 manifest 模板是否齐全。第二条命令用于在数据尚未下载时确认目标目录存在；进入 G-DATA 后应去掉 `--allow-empty`。第三条命令用于扫描本地数据集目录并生成 `reports/preflight/data_inventory.json`。第四条命令用于按当前脚本重新生成三个 manifest 模板。第五条命令用于在正式 manifest 尚未生成时验证验收脚本可执行；进入 G-DATA 后应改用 `python scripts/validate_manifest_files.py --strict-gdata`。
+第一条命令用于检查当前项目骨架、关键目录、基础配置、文档和 manifest 模板是否齐全。第二条命令用于在数据尚未下载时确认目标目录存在；进入 G-DATA 后应去掉 `--allow-empty`。第三条命令用于扫描本地数据集目录并生成 `reports/preflight/data_inventory.json`。第四条命令用于按当前脚本重新生成三个 manifest 模板。第五条命令用于在正式 manifest 尚未生成时验证验收脚本可执行；进入 G-DATA 后应改用 `python scripts/validate_manifest_files.py --strict-gdata`。第六条命令用于执行当前工程骨架的 runtime smoke，并生成 `reports/preflight/runtime_smoke.json`。

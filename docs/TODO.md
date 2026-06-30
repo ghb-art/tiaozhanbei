@@ -15,11 +15,13 @@
 - [x] 创建 manifest 模板生成脚本。
 - [x] 生成 `dataset_manifest.template.json`、`manifest.template.json`、`conflict_gt_manifest.template.json`。
 - [x] 更新结构校验脚本，检查 manifest 模板是否存在且 JSON 可解析。
+- [x] 创建正式 manifest 验收脚本 `scripts/validate_manifest_files.py`。
 - [ ] 创建 preflight runtime smoke 脚本。
 
 ## G-DATA
 
 - [ ] 基于模板生成正式 `dataset_manifest.json`、`manifest.json`、`conflict_gt_manifest.json`。
+- [ ] 使用 `scripts/validate_manifest_files.py --strict-gdata` 验收正式 manifest。
 - [ ] 实现 `scripts/setup_datasets.sh`。
 - [ ] 实现 `scripts/validate_splits.py`。
 - [ ] 实现 `scripts/build_conflict_gt.py`。

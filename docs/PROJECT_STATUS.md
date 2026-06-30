@@ -18,6 +18,7 @@
 - 已按 `IMPLEMENTATION_PLAN.md` 生成三类 manifest 模板：`dataset_manifest.template.json`、`manifest.template.json`、`conflict_gt_manifest.template.json`。
 - 已新增 `scripts/generate_manifest_template.py`，用于重新生成 manifest 模板。
 - `scripts/validate_project_structure.py` 已检查 manifest 模板存在、可解析且标记为 `template_only=true`。
+- 已新增 `scripts/validate_manifest_files.py`，用于验收正式 `dataset_manifest.json`、`manifest.json`、`conflict_gt_manifest.json`。
 
 ## 未开始
 
@@ -33,6 +34,7 @@
 ```powershell
 python scripts/validate_project_structure.py
 python scripts/generate_manifest_template.py --overwrite
+python scripts/validate_manifest_files.py --allow-missing
 ```
 
-第一条命令用于检查当前项目骨架、关键目录、基础配置、文档和 manifest 模板是否齐全。第二条命令用于按当前脚本重新生成三个 manifest 模板。
+第一条命令用于检查当前项目骨架、关键目录、基础配置、文档和 manifest 模板是否齐全。第二条命令用于按当前脚本重新生成三个 manifest 模板。第三条命令用于在正式 manifest 尚未生成时验证验收脚本可执行；进入 G-DATA 后应改用 `python scripts/validate_manifest_files.py --strict-gdata`。

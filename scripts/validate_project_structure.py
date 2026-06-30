@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 import sys
 from pathlib import Path
 
@@ -35,10 +36,14 @@ REQUIRED_FILES = [
     "docs/REVISION_LOG.md",
     "docs/PROJECT_STATUS.md",
     "docs/TODO.md",
+    "dataset_manifest.template.json",
+    "manifest.template.json",
+    "conflict_gt_manifest.template.json",
     "configs/network_profiles.yaml",
     "configs/workload_profiles.yaml",
     "configs/models.yaml",
     "configs/final_config_dev.yaml",
+    "scripts/generate_manifest_template.py",
 ]
 
 GITIGNORE_PATTERNS = [
@@ -75,6 +80,44 @@ MODEL_KEYS = [
     "high_edge",
     "edge_student",
 ]
+
+TEMPLATE_FILES = [
+    "dataset_manifest.template.json",
+    "manifest.template.json",
+    "conflict_gt_manifest.template.json",
+]
+
+TEMPLATE_REQUIRED_KEYS = {
+    "dataset_manifest.template.json": [
+        "manifest_version",
+        "created_by",
+        "created_ts",
+        "sampling_seed",
+        "datasets",
+        "scu_support",
+        "global_leakage_check",
+    ],
+    "manifest.template.json": [
+        "git_commit",
+        "final_config_hash",
+        "teacher_model_id",
+        "student_init_model_id",
+        "edge_model_name",
+        "fallback_events",
+        "timestamp",
+    ],
+    "conflict_gt_manifest.template.json": [
+        "manifest_version",
+        "created_by",
+        "created_ts",
+        "datasets",
+        "split",
+        "conflict_groups",
+        "conflict_group_count",
+        "conflict_type_distribution",
+        "manifest_hash",
+    ],
+}
 
 
 def read_text(relative_path: str) -> str:
@@ -159,12 +202,44 @@ def check_config_keywords() -> list[str]:
     return errors
 
 
+def check_manifest_templates() -> list[str]:
+    errors: list[str] = []
+
+    for relative_path in TEMPLATE_FILES:
+        path = ROOT / relative_path
+        if not path.is_file():
+            errors.append(f"Missing manifest template: {relative_path}")
+            continue
+
+        try:
+            data = json.loads(path.read_text(encoding="utf-8"))
+        except json.JSONDecodeError as exc:
+            errors.append(f"Invalid JSON in {relative_path}: {exc}")
+            continue
+
+        ok(f"Manifest template is valid JSON: {relative_path}")
+
+        if data.get("template_only") is True:
+            ok(f"Manifest template marked template_only: {relative_path}")
+        else:
+            errors.append(f"Manifest template missing template_only=true: {relative_path}")
+
+        for key in TEMPLATE_REQUIRED_KEYS[relative_path]:
+            if key in data:
+                ok(f"Manifest template key present: {relative_path}::{key}")
+            else:
+                errors.append(f"Manifest template missing key: {relative_path}::{key}")
+
+    return errors
+
+
 def main() -> int:
     print(f"Project root: {ROOT}")
     errors: list[str] = []
     errors.extend(check_paths())
     errors.extend(check_gitignore())
     errors.extend(check_config_keywords())
+    errors.extend(check_manifest_templates())
 
     if errors:
         print()

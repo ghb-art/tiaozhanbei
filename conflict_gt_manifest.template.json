@@ -1,0 +1,40 @@
+{
+  "template_only": true,
+  "template_notice": "Template only. Final G-DATA/Final Gate artifacts must replace all REPLACE_WITH_* values with measured values and hashes.",
+  "manifest_version": "1.0",
+  "created_by": "scripts/build_conflict_gt.py",
+  "created_ts": "REPLACE_WITH_UNIX_TIMESTAMP_FLOAT",
+  "datasets": [
+    "CityFlow",
+    "MVTec AD",
+    "NEU-DET"
+  ],
+  "split": "REPLACE_WITH_train_validation_test_OR_all",
+  "conflict_groups": [
+    {
+      "conflict_group_id": "REPLACE_WITH_CONFLICT_GROUP_ID",
+      "event_id": "REPLACE_WITH_EVENT_ID",
+      "node_ids": [
+        "REPLACE_WITH_NODE_ID"
+      ],
+      "conflict_type_gt": "class_conflict|risk_conflict|action_conflict|duplicate_alert|none",
+      "global_decision_gt": {
+        "event_type": "REPLACE_WITH_EVENT_TYPE",
+        "risk_attr": "low|medium|high",
+        "action": "pass|reject|inspect|alert|ignore|upload"
+      },
+      "label_source": "cityflow_annotation|derived_rule|manual_review|industrial_label",
+      "source_dataset": "REPLACE_WITH_SOURCE_DATASET",
+      "time_window_id": "REPLACE_WITH_TIME_WINDOW_ID"
+    }
+  ],
+  "conflict_group_count": "REPLACE_WITH_INT",
+  "conflict_type_distribution": {
+    "class_conflict": "REPLACE_WITH_INT",
+    "risk_conflict": "REPLACE_WITH_INT",
+    "action_conflict": "REPLACE_WITH_INT",
+    "duplicate_alert": "REPLACE_WITH_INT",
+    "none": "REPLACE_WITH_INT"
+  },
+  "manifest_hash": "REPLACE_WITH_SHA256"
+}

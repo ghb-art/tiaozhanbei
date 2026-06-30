@@ -1,0 +1,130 @@
+{
+  "template_only": true,
+  "template_notice": "Template only. Final G-DATA/Final Gate artifacts must replace all REPLACE_WITH_* values with measured values and hashes.",
+  "manifest_version": "1.0",
+  "created_by": "scripts/setup_datasets.sh",
+  "created_ts": "REPLACE_WITH_UNIX_TIMESTAMP_FLOAT",
+  "sampling_seed": 42,
+  "datasets": [
+    {
+      "dataset_name": "GSM8K",
+      "dataset_version": "REPLACE_WITH_DATASET_VERSION",
+      "official_scale": "train 7473 / test 1319",
+      "used_train_count": "REPLACE_WITH_INT",
+      "used_validation_count": "REPLACE_WITH_INT",
+      "used_test_count": 500,
+      "final_gate_sample_ids_hash": "REPLACE_WITH_SHA256",
+      "split_hash": "REPLACE_WITH_SHA256",
+      "teacher_generated_train_count": "REPLACE_WITH_INT",
+      "leakage_check_pass": "REPLACE_WITH_BOOLEAN"
+    },
+    {
+      "dataset_name": "HumanEval",
+      "dataset_version": "REPLACE_WITH_DATASET_VERSION",
+      "official_scale": "164 full",
+      "used_train_count": 0,
+      "used_validation_count": 0,
+      "used_test_count": 164,
+      "final_gate_sample_ids_hash": "REPLACE_WITH_SHA256",
+      "split_hash": "REPLACE_WITH_SHA256",
+      "teacher_generated_train_count": 0,
+      "leakage_check_pass": "REPLACE_WITH_BOOLEAN"
+    },
+    {
+      "dataset_name": "MMLU",
+      "dataset_version": "REPLACE_WITH_DATASET_VERSION",
+      "official_scale": "57 subjects",
+      "used_train_count": "REPLACE_WITH_INT",
+      "used_validation_count": "REPLACE_WITH_INT",
+      "used_test_count": 1000,
+      "final_gate_sample_ids_hash": "REPLACE_WITH_SHA256",
+      "split_hash": "REPLACE_WITH_SHA256",
+      "teacher_generated_train_count": "REPLACE_WITH_INT",
+      "leakage_check_pass": "REPLACE_WITH_BOOLEAN"
+    },
+    {
+      "dataset_name": "CMMLU",
+      "dataset_version": "REPLACE_WITH_DATASET_VERSION",
+      "official_scale": "67 subjects",
+      "used_train_count": "REPLACE_WITH_INT",
+      "used_validation_count": "REPLACE_WITH_INT",
+      "used_test_count": 1000,
+      "final_gate_sample_ids_hash": "REPLACE_WITH_SHA256",
+      "split_hash": "REPLACE_WITH_SHA256",
+      "teacher_generated_train_count": "REPLACE_WITH_INT",
+      "synthetic_chinese_nlp_hash": "REPLACE_WITH_SHA256_OR_NOT_USED",
+      "leakage_check_pass": "REPLACE_WITH_BOOLEAN"
+    },
+    {
+      "dataset_name": "MVTec AD",
+      "dataset_version": "REPLACE_WITH_DATASET_VERSION",
+      "official_scale": "train 3629 normal / test 1725",
+      "used_train_count": "REPLACE_WITH_INT",
+      "used_validation_count": "REPLACE_WITH_INT",
+      "used_test_count": 1725,
+      "official_test_full_final_gate": "REPLACE_WITH_BOOLEAN",
+      "final_gate_sample_ids_hash": "REPLACE_WITH_SHA256",
+      "split_hash": "REPLACE_WITH_SHA256",
+      "teacher_generated_train_count": "REPLACE_WITH_INT",
+      "leakage_check_pass": "REPLACE_WITH_BOOLEAN"
+    },
+    {
+      "dataset_name": "NEU-DET",
+      "dataset_version": "REPLACE_WITH_DATASET_VERSION",
+      "official_scale": "6 classes x 300 = 1800",
+      "used_train_count": "REPLACE_WITH_INT",
+      "used_validation_count": "REPLACE_WITH_INT",
+      "used_test_count": 360,
+      "class_split_counts": "REPLACE_WITH_CLASS_SPLIT_COUNTS",
+      "final_gate_sample_ids_hash": "REPLACE_WITH_SHA256",
+      "split_hash": "REPLACE_WITH_SHA256",
+      "teacher_generated_train_count": "REPLACE_WITH_INT",
+      "leakage_check_pass": "REPLACE_WITH_BOOLEAN"
+    },
+    {
+      "dataset_name": "CityFlow",
+      "dataset_version": "REPLACE_WITH_DATASET_VERSION",
+      "official_scale": "REPLACE_WITH_DETECTED_SCALE",
+      "used_train_count": "REPLACE_WITH_INT",
+      "used_validation_count": "REPLACE_WITH_INT",
+      "used_test_count": "REPLACE_WITH_INT",
+      "relation_node_count": "REPLACE_WITH_INT",
+      "relation_edge_count": "REPLACE_WITH_INT",
+      "relation_group_count": "REPLACE_WITH_INT",
+      "conflict_group_count": "REPLACE_WITH_INT",
+      "vehicle_id_count": "REPLACE_WITH_INT",
+      "final_gate_sample_ids_hash": "REPLACE_WITH_SHA256",
+      "split_hash": "REPLACE_WITH_SHA256",
+      "teacher_generated_train_count": "REPLACE_WITH_INT",
+      "leakage_check_pass": "REPLACE_WITH_BOOLEAN"
+    },
+    {
+      "dataset_name": "UA-DETRAC",
+      "dataset_version": "REPLACE_WITH_DATASET_VERSION",
+      "official_scale": "100 videos, >140k frames",
+      "used_train_count": 0,
+      "used_validation_count": 0,
+      "used_test_count": "REPLACE_WITH_INT",
+      "final_gate_sample_ids_hash": "REPLACE_WITH_SHA256",
+      "split_hash": "REPLACE_WITH_SHA256",
+      "teacher_generated_train_count": 0,
+      "leakage_check_pass": "REPLACE_WITH_BOOLEAN"
+    }
+  ],
+  "scu_support": {
+    "scu_sample_count": 300,
+    "scu_sample_hash": "REPLACE_WITH_SHA256",
+    "scu_source": "independent_support_sources",
+    "used_for_training": false,
+    "used_for_validation": false,
+    "used_for_final_support": true
+  },
+  "global_leakage_check": {
+    "test_in_distill": false,
+    "test_in_planner_train": false,
+    "test_in_policy_train": false,
+    "test_in_graph_train": false,
+    "test_in_calibration": false,
+    "test_in_validation": false
+  }
+}

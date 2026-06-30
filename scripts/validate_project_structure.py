@@ -36,6 +36,7 @@ REQUIRED_FILES = [
     "docs/REVISION_LOG.md",
     "docs/PROJECT_STATUS.md",
     "docs/TODO.md",
+    "docs/DATASET_SOURCES.md",
     "dataset_manifest.template.json",
     "manifest.template.json",
     "conflict_gt_manifest.template.json",
@@ -46,6 +47,7 @@ REQUIRED_FILES = [
     "scripts/generate_manifest_template.py",
     "scripts/validate_manifest_files.py",
     "scripts/inspect_datasets.py",
+    "scripts/validate_dataset_presence.py",
 ]
 
 GITIGNORE_PATTERNS = [

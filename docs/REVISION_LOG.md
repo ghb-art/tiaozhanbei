@@ -23,6 +23,7 @@
 | 2026-06-30 | P0-A0 | 新增 manifest 模板生成脚本和三类 template JSON | 按实施方案固化 G-DATA/Final Gate 产物字段标准 | No Final hash yet | `scripts/generate_manifest_template.py`, `*.template.json` |
 | 2026-06-30 | P0-A0 | 新增正式 manifest 验收脚本 | 在数据接入前自动化 G-DATA/Final Gate manifest 基础验收规则 | No Final hash yet | `scripts/validate_manifest_files.py`, `scripts/validate_project_structure.py` |
 | 2026-06-30 | P0-A0 | 新增数据集目录盘点脚本并生成 preflight inventory | 在正式 G-DATA 前确认本地数据目录现状 | No Final hash yet | `scripts/inspect_datasets.py`, `reports/preflight/data_inventory.json` |
+| 2026-06-30 | P0-A0 | 新增数据来源说明和数据集 payload 存在性校验脚本 | 在下载/挂载数据前固定数据接入规则并避免 `.gitkeep` 被误判为真实数据 | No Final hash yet | `docs/DATASET_SOURCES.md`, `scripts/validate_dataset_presence.py` |
 
 ## Fallback Event Template
 

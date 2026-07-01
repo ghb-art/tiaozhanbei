@@ -43,6 +43,8 @@ REQUIRED_FILES = [
     "dataset_manifest.json",
     "manifest.json",
     "conflict_gt_manifest.json",
+    "reports/audit/conflict_gt_audit.csv",
+    "reports/audit/conflict_gt_sample_audit.json",
     "configs/network_profiles.yaml",
     "configs/workload_profiles.yaml",
     "configs/models.yaml",
@@ -56,6 +58,9 @@ REQUIRED_FILES = [
     "scripts/setup_datasets.sh",
     "scripts/build_conflict_gt.py",
     "scripts/generate_formal_manifests.py",
+    "scripts/verify_gate_db.py",
+    "sql/cloud_schema.sql",
+    "docker/docker-compose.kwdb.yml",
     "docs/DATASET_SPLIT_STRATEGY.md",
     "data/splits/frozen_splits.json",
 ]

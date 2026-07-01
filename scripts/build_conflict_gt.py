@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import csv
 import hashlib
 import json
 import sys
@@ -13,6 +14,9 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_SPLITS_PATH = ROOT / "data" / "splits" / "frozen_splits.json"
 DEFAULT_OUTPUT_PATH = ROOT / "conflict_gt_manifest.json"
+DEFAULT_AUDIT_CSV_PATH = ROOT / "reports" / "audit" / "conflict_gt_audit.csv"
+DEFAULT_SAMPLE_AUDIT_PATH = ROOT / "reports" / "audit" / "conflict_gt_sample_audit.json"
+DEFAULT_SAMPLE_COUNT = 10
 
 CONFLICT_TYPES = ["class_conflict", "risk_conflict", "action_conflict", "duplicate_alert"]
 RISK_ATTRS = ["low", "medium", "high"]
@@ -49,6 +53,7 @@ def load_json(path: Path) -> dict[str, Any]:
 
 
 def write_json(path: Path, data: dict[str, Any]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
 
 
@@ -61,6 +66,13 @@ def resolve_path(value: str) -> Path:
     if not path.is_absolute():
         path = ROOT / path
     return path
+
+
+def display_path(path: Path) -> str:
+    try:
+        return path.relative_to(ROOT).as_posix()
+    except ValueError:
+        return str(path)
 
 
 def dataset_index(frozen: dict[str, Any]) -> dict[str, dict[str, Any]]:
@@ -178,11 +190,90 @@ def build_conflict_manifest(
     return manifest
 
 
+def audit_row(group: dict[str, Any], manifest: dict[str, Any]) -> dict[str, str]:
+    decision = group["global_decision_gt"]
+    return {
+        "conflict_group_id": group["conflict_group_id"],
+        "event_id": group["event_id"],
+        "source_dataset": group["source_dataset"],
+        "split": manifest["split"],
+        "time_window_id": group["time_window_id"],
+        "node_ids": json.dumps(group["node_ids"], ensure_ascii=False),
+        "sample_ids": json.dumps(group.get("sample_ids", []), ensure_ascii=False),
+        "conflict_type_gt": group["conflict_type_gt"],
+        "event_type": decision["event_type"],
+        "risk_attr": decision["risk_attr"],
+        "action": decision["action"],
+        "label_source": group["label_source"],
+        "data_split_hash": manifest["data_split_hash"],
+        "conflict_manifest_hash": manifest["manifest_hash"],
+    }
+
+
+def build_sample_audit(manifest: dict[str, Any], sample_count: int) -> dict[str, Any]:
+    groups = manifest["conflict_groups"][:sample_count]
+    return {
+        "audit_version": "1.0",
+        "created_by": "scripts/build_conflict_gt.py",
+        "created_ts": manifest["created_ts"],
+        "source_manifest_hash": manifest["manifest_hash"],
+        "data_split_hash": manifest["data_split_hash"],
+        "sample_selection": "first_n_deterministic",
+        "requested_sample_count": sample_count,
+        "sample_count": len(groups),
+        "conflict_groups": groups,
+        "sample_hash": sha256_text(json.dumps(groups, sort_keys=True, ensure_ascii=False)),
+    }
+
+
+def write_conflict_audits(
+    manifest: dict[str, Any],
+    audit_csv_path: Path = DEFAULT_AUDIT_CSV_PATH,
+    sample_audit_path: Path = DEFAULT_SAMPLE_AUDIT_PATH,
+    sample_count: int = DEFAULT_SAMPLE_COUNT,
+) -> dict[str, Path]:
+    if sample_count < 1:
+        raise ValueError("sample_count must be at least 1")
+
+    audit_csv_path.parent.mkdir(parents=True, exist_ok=True)
+    fieldnames = [
+        "conflict_group_id",
+        "event_id",
+        "source_dataset",
+        "split",
+        "time_window_id",
+        "node_ids",
+        "sample_ids",
+        "conflict_type_gt",
+        "event_type",
+        "risk_attr",
+        "action",
+        "label_source",
+        "data_split_hash",
+        "conflict_manifest_hash",
+    ]
+    with audit_csv_path.open("w", encoding="utf-8", newline="") as handle:
+        writer = csv.DictWriter(handle, fieldnames=fieldnames)
+        writer.writeheader()
+        for group in manifest["conflict_groups"]:
+            writer.writerow(audit_row(group, manifest))
+
+    write_json(sample_audit_path, build_sample_audit(manifest, sample_count))
+    return {
+        "audit_csv": audit_csv_path,
+        "sample_audit": sample_audit_path,
+    }
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Build conflict ground-truth manifest from frozen G-DATA splits.")
     parser.add_argument("--splits", default=str(DEFAULT_SPLITS_PATH), help="Path to frozen_splits.json.")
     parser.add_argument("--output", default=str(DEFAULT_OUTPUT_PATH), help="Output conflict_gt_manifest.json path.")
+    parser.add_argument("--audit-csv", default=str(DEFAULT_AUDIT_CSV_PATH), help="Output full conflict GT audit CSV path.")
+    parser.add_argument("--sample-audit", default=str(DEFAULT_SAMPLE_AUDIT_PATH), help="Output sampled conflict GT audit JSON path.")
     parser.add_argument("--count", type=int, default=60, help="Number of conflict groups to generate.")
+    parser.add_argument("--sample-count", type=int, default=DEFAULT_SAMPLE_COUNT, help="Number of groups in sampled audit JSON.")
+    parser.add_argument("--no-audit", action="store_true", help="Only write conflict_gt_manifest.json.")
     return parser.parse_args()
 
 
@@ -190,6 +281,8 @@ def main() -> int:
     args = parse_args()
     splits_path = resolve_path(args.splits)
     output_path = resolve_path(args.output)
+    audit_csv_path = resolve_path(args.audit_csv)
+    sample_audit_path = resolve_path(args.sample_audit)
 
     if not splits_path.is_file():
         print(f"Missing frozen split file: {splits_path}", file=sys.stderr)
@@ -198,12 +291,17 @@ def main() -> int:
     try:
         frozen = load_json(splits_path)
         manifest = build_conflict_manifest(frozen, datetime.now(timezone.utc).isoformat(), args.count)
+        audit_paths = {}
+        if not args.no_audit:
+            audit_paths = write_conflict_audits(manifest, audit_csv_path, sample_audit_path, args.sample_count)
     except Exception as exc:
         print(f"Failed to build conflict GT manifest: {exc}", file=sys.stderr)
         return 1
 
     write_json(output_path, manifest)
-    print(f"Wrote {output_path.relative_to(ROOT).as_posix() if output_path.is_relative_to(ROOT) else output_path}")
+    print(f"Wrote {display_path(output_path)}")
+    for audit_path in audit_paths.values():
+        print(f"Wrote {display_path(audit_path)}")
     print(f"Conflict groups: {manifest['conflict_group_count']}")
     print(f"Manifest hash: {manifest['manifest_hash']}")
     return 0

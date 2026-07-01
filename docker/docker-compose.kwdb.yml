@@ -1,0 +1,27 @@
+services:
+  kwdb-cloud:
+    image: kwdb/kwdb:2.2.0
+    container_name: kwdb-cloud
+    privileged: true
+    working_dir: /kaiwudb/bin
+    command:
+      - ./kwbase
+      - start-single-node
+      - --insecure
+      - --listen-addr=0.0.0.0:26257
+      - --http-addr=0.0.0.0:8080
+      - --store=/kaiwudb/deploy/kaiwudb-container
+    ports:
+      - "26257:26257"
+      - "8080:8080"
+    volumes:
+      - ../data/kwdb:/kaiwudb/deploy/kaiwudb-container
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    healthcheck:
+      test: ["CMD-SHELL", "./kwbase sql --insecure --host=127.0.0.1 -e 'SELECT 1' >/dev/null 2>&1"]
+      interval: 10s
+      timeout: 5s
+      retries: 12

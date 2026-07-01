@@ -45,6 +45,7 @@ REQUIRED_READABLE_FILES = [
     "scripts/validate_manifest_files.py",
     "scripts/inspect_datasets.py",
     "scripts/preflight_runtime_smoke.py",
+    "scripts/verify_gate_cloud.py",
 ]
 
 TEMPLATE_FILES = [

@@ -1,0 +1,101 @@
+{
+  "gate": "G-CLOUD",
+  "check_version": "1.0",
+  "created_by": "scripts/verify_gate_cloud.py",
+  "created_ts": "2026-07-01T15:12:40.445295+00:00",
+  "base_url": "http://127.0.0.1:8000",
+  "repo_id": "Qwen/Qwen2.5-14B-Instruct-AWQ",
+  "model_dir": "models/pretrained/Qwen--Qwen2.5-14B-Instruct-AWQ",
+  "model_hash": "aec0cdb3bc0dcb0a71ba231e2747345325d9f8671ca4c530dac244b8fbc2a795",
+  "prompt_hash": "51bf091a96a1a6be3cd64b476a0a75290b48bb1b874b3bdf6689101fd1b830bc",
+  "prompt": "Return exactly one compact JSON object with keys event_type, risk_attr, action. Use event_type=cloud_smoke, risk_attr=low, action=pass.",
+  "ttft_threshold_sec": 2.0,
+  "offline_model_check": false,
+  "model_check": {
+    "passed": true,
+    "model_dir": "models/pretrained/Qwen--Qwen2.5-14B-Instruct-AWQ",
+    "local_stats": {
+      "file_count": 13,
+      "bytes": 9991785925
+    },
+    "audit_stats": {
+      "repo_id": "Qwen/Qwen2.5-14B-Instruct-AWQ",
+      "role": "cloud_teacher",
+      "file_count": 13,
+      "bytes": 9991785925
+    },
+    "checked_files": [
+      {
+        "path": "config.json",
+        "bytes": 841,
+        "passed": true
+      },
+      {
+        "path": "generation_config.json",
+        "bytes": 243,
+        "passed": true
+      },
+      {
+        "path": "model.safetensors.index.json",
+        "bytes": 107402,
+        "passed": true
+      },
+      {
+        "path": "tokenizer_config.json",
+        "bytes": 7305,
+        "passed": true
+      },
+      {
+        "path": "model-00001-of-00003.safetensors",
+        "bytes": 3988804408,
+        "passed": true
+      },
+      {
+        "path": "model-00002-of-00003.safetensors",
+        "bytes": 3968309440,
+        "passed": true
+      },
+      {
+        "path": "model-00003-of-00003.safetensors",
+        "bytes": 2023056736,
+        "passed": true
+      }
+    ],
+    "hashed_files": [],
+    "errors": [],
+    "model_hash": "aec0cdb3bc0dcb0a71ba231e2747345325d9f8671ca4c530dac244b8fbc2a795",
+    "audit_errors": []
+  },
+  "service_start_command": "vllm serve models/pretrained/Qwen--Qwen2.5-14B-Instruct-AWQ --quantization awq --max-model-len 4096 --gpu-memory-utilization 0.85 --tensor-parallel-size 1 --port 8000",
+  "live_gate_pass": true,
+  "status": "passed",
+  "errors": [],
+  "health": {
+    "passed": true,
+    "url": "http://127.0.0.1:8000/health",
+    "status_code": 200,
+    "elapsed_sec": 0.02783453301526606,
+    "body_preview": ""
+  },
+  "served_models": {
+    "model_ids": [
+      "/workspace/project_tiaozhanbei/tiaozhanbei/models/pretrained/Qwen--Qwen2.5-14B-Instruct-AWQ"
+    ],
+    "url": "http://127.0.0.1:8000/v1/models",
+    "status_code": 200,
+    "elapsed_sec": 0.0020122891291975975,
+    "body_preview": "{\"object\":\"list\",\"data\":[{\"id\":\"/workspace/project_tiaozhanbei/tiaozhanbei/models/pretrained/Qwen--Qwen2.5-14B-Instruct-AWQ\",\"object\":\"model\",\"created\":1782918760,\"owned_by\":\"vllm\",\"root\":\"/workspace/project_tiaozhanbei/tiaozhanbei/models/pretrained/Qwen--Qwen2.5-14B-Instruct-AWQ\",\"parent\":null,\"max_model_len\":4096,\"permission\":[{\"id\":\"modelperm-939a0ad87d6446bca85d10d45b3e0636\",\"object\":\"model_permission\",\"created\":1782918760,\"allow_create_engine\":false,\"allow_sampling\":true,\"allow_logprobs\":tr"
+  },
+  "api_model": "/workspace/project_tiaozhanbei/tiaozhanbei/models/pretrained/Qwen--Qwen2.5-14B-Instruct-AWQ",
+  "smoke": {
+    "passed": true,
+    "api_model": "/workspace/project_tiaozhanbei/tiaozhanbei/models/pretrained/Qwen--Qwen2.5-14B-Instruct-AWQ",
+    "event_count": 29,
+    "first_event_latency_sec": 0.5805125059559941,
+    "first_token_latency_sec": 0.5806540688499808,
+    "completed_sec": 3.9486458930186927,
+    "response_preview": "{\n  \"event_type\": \"cloud_smoke\",\n  \"risk_attr\": \"low\",\n  \"action\": \"pass\"\n}",
+    "response_chars": 75
+  },
+  "report_hash": "67e10cda408d9c89c98cbce6f5b62498fb1ae9866b45bcbb0b87dcc4c6a7285f"
+}

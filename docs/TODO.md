@@ -50,6 +50,14 @@
 ## G-CLOUD
 
 - [x] 下载 `Qwen/Qwen2.5-14B-Instruct-AWQ`、`Qwen/Qwen2.5-7B-Instruct-AWQ`、`Qwen/Qwen2.5-1.5B-Instruct` 到本地 `models/pretrained/`。
-- [ ] 确认 14B-AWQ 服务启动方式。
-- [ ] 实现 `scripts/verify_gate_cloud.py`。
-- [ ] 记录 model hash 和 prompt hash。
+- [x] 确认 14B-AWQ 服务启动方式。
+- [x] 实现 `scripts/verify_gate_cloud.py`。
+- [x] 记录 model hash 和 prompt hash。
+- [x] 通过 14B-AWQ vLLM live gate：`/health` 200，首 token 0.581s。
+
+## G-KD-TRACE
+
+- [ ] 实现教师结构化决策 trace 生成脚本。
+- [ ] 基于 train split 生成 `data/distill/teacher_decision_trace.jsonl`。
+- [ ] 生成 `data/distill/distill_dataset.jsonl` 并记录 hash。
+- [ ] 设计 Student-Base probe、CEDD-Structured、CEDD-Repair 与 INT4 量化 trace 产物。

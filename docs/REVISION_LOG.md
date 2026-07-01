@@ -32,6 +32,7 @@
 | 2026-07-01 | G-DATA/G-DB | 生成 conflict GT 审计文件，并新增 KWDB schema、compose 与 G-DB 验证脚本 | 闭合 G-DATA audit 产物要求，同时推进下一阶段数据库 gate 的可执行骨架 | Yes, audit and manifest hashes regenerated | `reports/audit/conflict_gt_audit.csv`, `reports/audit/conflict_gt_sample_audit.json`, `reports/audit/gate_db_schema_check.json`, `sql/cloud_schema.sql`, `docker/docker-compose.kwdb.yml`, `scripts/verify_gate_db.py`, `manifest.json` |
 | 2026-07-01 | G-DB | 启动 KWDB Docker 容器并完成 G-DB live gate | 验证 schema 创建、写入、查询和 CSV 导出链路可运行 | Yes, DB smoke report generated | `docker/docker-compose.kwdb.yml`, `scripts/verify_gate_db.py`, `reports/audit/gate_db_smoke.csv` |
 | 2026-07-01 | G-CLOUD | 下载三份 Qwen 模型到本地预训练模型目录并生成下载审计 | 为后续上传服务器和启动 14B-AWQ 云端教师服务做准备 | Yes, local model audit generated | `scripts/download_models.py`, `models/pretrained/`, `reports/audit/model_downloads.json` |
+| 2026-07-01 | G-CLOUD | 新增云端教师服务验证脚本并完成 14B-AWQ vLLM live gate | 闭合实施计划中 `/health` 200、smoke 首 token <2s、model_hash/prompt_hash 记录要求；服务器缺少 vLLM，已在项目 `.venv` 中隔离安装 `vllm==0.8.5` 并固定 `transformers==4.51.3` 规避 Qwen tokenizer API 不兼容 | Yes, cloud gate audit and manifest hashes updated | `scripts/verify_gate_cloud.py`, `reports/audit/gate_cloud_smoke.json`, `manifest.json`, `docs/TODO.md`, `docs/PROJECT_STATUS.md` |
 
 ## Fallback Event Template
 

@@ -2,11 +2,11 @@
 
 更新时间：2026-07-01
 
-当前阶段：G-CLOUD 前置，已完成 G-DATA 本地 payload、split、manifest、conflict audit 产物与 G-DB live gate。
+当前阶段：G-CLOUD 已完成 live gate，下一步进入 G-KD-TRACE。
 
 ## 当前结论
 
-项目已经有完整的研究方案、目录规划、本地数据 payload、冻结 split、正式 manifest、conflict audit 文件和可运行的 KWDB/KaiwuDB 单节点验证。下一步应进入 G-CLOUD，验证 14B-AWQ 云端教师模型服务。
+项目已经有完整的研究方案、目录规划、本地数据 payload、冻结 split、正式 manifest、conflict audit 文件、可运行的 KWDB/KaiwuDB 单节点验证，以及通过 live gate 的 14B-AWQ vLLM 云端教师服务验证。下一步应进入 G-KD-TRACE，先生成教师结构化决策 trace 和蒸馏数据集。
 
 ## 已完成
 
@@ -45,30 +45,38 @@
 - 已生成 `reports/audit/gate_db_smoke.csv`，记录 G-DB smoke 查询与 outbox 查询结果。
 - 已新增 `scripts/download_models.py`，并将 G-CLOUD/G-KD 所需的三份 Qwen 模型下载到本地 `models/pretrained/`。
 - 已生成 `reports/audit/model_downloads.json`，记录本地模型目录、文件数、体积和权重文件 SHA256，供上传服务器后核对。
+- 已在项目 `.venv` 中安装并验证 `vllm==0.8.5`、`torch==2.6.0+cu124`、`transformers==4.51.3`。
+- 已新增 `scripts/verify_gate_cloud.py`，支持本地模型审计、`/health` 检查、OpenAI-compatible streaming smoke 和首 token 延迟统计。
+- 已通过 14B-AWQ G-CLOUD live gate：`/health` 200，smoke 首 token 延迟 0.581s，小于 2s 阈值。
+- 已生成 `reports/audit/gate_cloud_smoke.json`，记录 `model_hash`、`prompt_hash`、健康检查、服务模型 id 和 smoke 响应。
+- 已将 G-CLOUD 审计 hash、模型 hash、prompt hash 和首 token 延迟写入 `manifest.json`。
 
 ## 未开始
 
-- 14B 云端教师模型服务验证。
 - 1.5B 学生模型蒸馏、repair 和 INT4 量化。
+- G-KD-TRACE 教师结构化决策 trace 与蒸馏数据集生成。
 - P0-B、P1、P2 实验运行。
 
 ## 当前可执行检查
 
-```powershell
-python scripts/validate_project_structure.py
-python scripts/validate_dataset_presence.py
-python scripts/inspect_datasets.py
-python scripts/validate_splits.py --check-leakage
+```bash
+python3 scripts/validate_project_structure.py
+python3 scripts/validate_dataset_presence.py
+python3 scripts/inspect_datasets.py
+python3 scripts/validate_splits.py --check-leakage
 bash scripts/setup_datasets.sh --check-only
-python scripts/build_conflict_gt.py
-python scripts/generate_formal_manifests.py
-python scripts/generate_manifest_template.py --overwrite
-python scripts/validate_manifest_files.py --strict-gdata
-python scripts/preflight_runtime_smoke.py
-python scripts/verify_gate_db.py --offline-schema-check
+python3 scripts/build_conflict_gt.py
+python3 scripts/generate_formal_manifests.py
+python3 scripts/generate_manifest_template.py --overwrite
+python3 scripts/validate_manifest_files.py --strict-gdata
+python3 scripts/preflight_runtime_smoke.py
+python3 scripts/verify_gate_db.py --offline-schema-check
 docker compose -f docker/docker-compose.kwdb.yml up -d
-python scripts/verify_gate_db.py
-python scripts/download_models.py
+python3 scripts/verify_gate_db.py
+python3 scripts/download_models.py
+python3 scripts/verify_gate_cloud.py --offline-model-check
+CUDA_VISIBLE_DEVICES=0 VLLM_WORKER_MULTIPROC_METHOD=spawn .venv/bin/vllm serve models/pretrained/Qwen--Qwen2.5-14B-Instruct-AWQ --quantization awq --max-model-len 4096 --gpu-memory-utilization 0.85 --tensor-parallel-size 1 --port 8000
+python3 scripts/verify_gate_cloud.py --base-url http://127.0.0.1:8000
 ```
 
-第一条命令用于检查当前项目骨架、关键目录、基础配置、文档和 manifest 模板是否齐全。第二条命令用于确认 8 个目标数据集目录都已有 payload。第三条命令用于扫描本地数据集目录并生成 `reports/preflight/data_inventory.json`。第四条命令用于验证 split 文件 hash 与 train/validation/test 泄漏检查。第五条命令用于在 Bash 环境检查本地数据集标准目录。第六条命令用于基于冻结 split 重新生成 conflict ground truth manifest 和 audit 文件。第七条命令用于基于冻结 split 重新生成正式 manifest。第八条命令用于按当前脚本重新生成三个 manifest 模板。第九条命令用于严格验收正式 manifest。第十条命令用于执行当前工程骨架的 runtime smoke，并生成 `reports/preflight/runtime_smoke.json`。第十一条命令用于在没有 KWDB 容器时先检查 G-DB schema 文件完整性。第十二条和第十三条命令用于启动 KWDB/KaiwuDB 并执行 G-DB live gate。
+第一条命令用于检查当前项目骨架、关键目录、基础配置、文档和 manifest 模板是否齐全。第二条命令用于确认 8 个目标数据集目录都已有 payload。第三条命令用于扫描本地数据集目录并生成 `reports/preflight/data_inventory.json`。第四条命令用于验证 split 文件 hash 与 train/validation/test 泄漏检查。第五条命令用于在 Bash 环境检查本地数据集标准目录。第六条命令用于基于冻结 split 重新生成 conflict ground truth manifest 和 audit 文件。第七条命令用于基于冻结 split 重新生成正式 manifest。第八条命令用于按当前脚本重新生成三个 manifest 模板。第九条命令用于严格验收正式 manifest。第十条命令用于执行当前工程骨架的 runtime smoke，并生成 `reports/preflight/runtime_smoke.json`。第十一条命令用于在没有 KWDB 容器时先检查 G-DB schema 文件完整性。第十二条和第十三条命令用于启动 KWDB/KaiwuDB 并执行 G-DB live gate。最后三条命令用于执行 G-CLOUD 离线模型审计、启动 14B-AWQ vLLM 服务并运行 live gate。

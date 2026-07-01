@@ -19,6 +19,7 @@ RUN_MANIFEST = ROOT / "manifest.json"
 CONFLICT_MANIFEST = ROOT / "conflict_gt_manifest.json"
 CONFLICT_AUDIT_CSV = ROOT / "reports" / "audit" / "conflict_gt_audit.csv"
 CONFLICT_SAMPLE_AUDIT = ROOT / "reports" / "audit" / "conflict_gt_sample_audit.json"
+CLOUD_GATE_AUDIT = ROOT / "reports" / "audit" / "gate_cloud_smoke.json"
 
 RUN_HASH_KEYS = [
     "final_config_hash",
@@ -48,6 +49,10 @@ RUN_HASH_KEYS = [
     "data_split_hash",
     "network_profile_hash",
     "prompt_template_hash",
+    "cloud_gate_audit_hash",
+    "cloud_gate_report_hash",
+    "cloud_teacher_model_hash",
+    "cloud_teacher_smoke_prompt_hash",
     "policy_config_hash",
     "decision_parser_hash",
     "capability_metric_script_hash",
@@ -202,6 +207,24 @@ def build_run_manifest(frozen: dict[str, Any], conflict_manifest: dict[str, Any]
         "conflict_metric_script_hash": sha256_file(ROOT / "scripts" / "build_conflict_gt.py"),
         "frozen_scu_hash": sha256_text("empty-scu-support-list"),
     }
+
+    if CLOUD_GATE_AUDIT.is_file():
+        cloud_gate = load_json(CLOUD_GATE_AUDIT)
+        explicit_hashes.update(
+            {
+                "cloud_gate_audit_hash": sha256_file(CLOUD_GATE_AUDIT),
+                "cloud_gate_report_hash": cloud_gate.get("report_hash", derived_hash("cloud_gate_report_hash")),
+                "cloud_teacher_model_hash": cloud_gate.get("model_hash", derived_hash("cloud_teacher_model_hash")),
+                "cloud_teacher_smoke_prompt_hash": cloud_gate.get(
+                    "prompt_hash",
+                    derived_hash("cloud_teacher_smoke_prompt_hash"),
+                ),
+            }
+        )
+        smoke = cloud_gate.get("smoke", {})
+        if isinstance(smoke, dict) and isinstance(smoke.get("first_token_latency_sec"), (int, float)):
+            manifest["cloud_teacher_first_token_latency_sec"] = smoke["first_token_latency_sec"]
+        manifest["cloud_gate_status"] = cloud_gate.get("status", "unknown")
 
     for key in RUN_HASH_KEYS:
         manifest[key] = explicit_hashes.get(key, derived_hash(key))

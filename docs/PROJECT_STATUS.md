@@ -33,6 +33,8 @@
 - 已新增 `docs/DATASET_SPLIT_STRATEGY.md`，记录 8 个数据集的固定划分方法。
 - 已新增 `scripts/validate_splits.py`，生成并验证 `data/splits/frozen_splits.json` 和各数据集 split id 文件。
 - 已新增 `scripts/generate_formal_manifests.py`，生成正式 `dataset_manifest.json`、`manifest.json`、`conflict_gt_manifest.json`。
+- 已新增 `scripts/setup_datasets.sh`，用于检查本地 8 个 G-DATA 数据集 payload 是否放在标准目录。
+- 已新增 `scripts/build_conflict_gt.py`，基于冻结 split 生成可追溯到 CityFlow、MVTec AD、NEU-DET test 样本的 conflict ground truth manifest。
 - 已通过 `python scripts/validate_manifest_files.py --strict-gdata` 验收正式 manifest。
 
 ## 未开始
@@ -49,10 +51,12 @@ python scripts/validate_project_structure.py
 python scripts/validate_dataset_presence.py
 python scripts/inspect_datasets.py
 python scripts/validate_splits.py --check-leakage
+bash scripts/setup_datasets.sh --check-only
+python scripts/build_conflict_gt.py
 python scripts/generate_formal_manifests.py
 python scripts/generate_manifest_template.py --overwrite
 python scripts/validate_manifest_files.py --strict-gdata
 python scripts/preflight_runtime_smoke.py
 ```
 
-第一条命令用于检查当前项目骨架、关键目录、基础配置、文档和 manifest 模板是否齐全。第二条命令用于确认 8 个目标数据集目录都已有 payload。第三条命令用于扫描本地数据集目录并生成 `reports/preflight/data_inventory.json`。第四条命令用于验证 split 文件 hash 与 train/validation/test 泄漏检查。第五条命令用于基于冻结 split 重新生成正式 manifest。第六条命令用于按当前脚本重新生成三个 manifest 模板。第七条命令用于严格验收正式 manifest。第八条命令用于执行当前工程骨架的 runtime smoke，并生成 `reports/preflight/runtime_smoke.json`。
+第一条命令用于检查当前项目骨架、关键目录、基础配置、文档和 manifest 模板是否齐全。第二条命令用于确认 8 个目标数据集目录都已有 payload。第三条命令用于扫描本地数据集目录并生成 `reports/preflight/data_inventory.json`。第四条命令用于验证 split 文件 hash 与 train/validation/test 泄漏检查。第五条命令用于在 Bash 环境检查本地数据集标准目录。第六条命令用于基于冻结 split 重新生成 conflict ground truth manifest。第七条命令用于基于冻结 split 重新生成正式 manifest。第八条命令用于按当前脚本重新生成三个 manifest 模板。第九条命令用于严格验收正式 manifest。第十条命令用于执行当前工程骨架的 runtime smoke，并生成 `reports/preflight/runtime_smoke.json`。

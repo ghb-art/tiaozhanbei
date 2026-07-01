@@ -53,6 +53,8 @@ REQUIRED_FILES = [
     "scripts/validate_dataset_presence.py",
     "scripts/preflight_runtime_smoke.py",
     "scripts/validate_splits.py",
+    "scripts/setup_datasets.sh",
+    "scripts/build_conflict_gt.py",
     "scripts/generate_formal_manifests.py",
     "docs/DATASET_SPLIT_STRATEGY.md",
     "data/splits/frozen_splits.json",

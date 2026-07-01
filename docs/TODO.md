@@ -33,9 +33,9 @@
 - [x] 实现 `scripts/validate_splits.py` 并冻结 8 个数据集 split。
 - [x] 基于模板生成正式 `dataset_manifest.json`、`manifest.json`、`conflict_gt_manifest.json`。
 - [x] 使用 `scripts/validate_manifest_files.py --strict-gdata` 验收正式 manifest。
-- [ ] 实现 `scripts/setup_datasets.sh`。
+- [x] 实现 `scripts/setup_datasets.sh`。
 - [x] 实现 `scripts/validate_splits.py`。
-- [ ] 实现 `scripts/build_conflict_gt.py`。
+- [x] 实现 `scripts/build_conflict_gt.py`。
 - [x] 生成 `dataset_manifest.json`。
 - [x] 生成 `conflict_gt_manifest.json`。
 - [x] 生成 conflict ground truth audit 文件。

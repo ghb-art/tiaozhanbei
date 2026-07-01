@@ -1,1033 +1,1279 @@
 {
   "manifest_version": "1.0",
-  "created_by": "scripts/generate_formal_manifests.py",
-  "created_ts": "2026-07-01T08:25:00.134296+00:00",
+  "created_by": "scripts/build_conflict_gt.py",
+  "created_ts": "2026-07-01T08:39:43.904525+00:00",
   "datasets": [
     "CityFlow",
     "MVTec AD",
     "NEU-DET"
   ],
   "split": "test",
+  "data_split_hash": "d7f3fac67fd3f235802ed405cdbac46302db513925cdab56d13198b0b871e7cf",
+  "source_split_files": {
+    "CityFlow": "data/splits/cityflow_test.txt",
+    "MVTec AD": "data/splits/mvtec_ad_test.txt",
+    "NEU-DET": "data/splits/neu_det_test.txt"
+  },
   "conflict_groups": [
     {
       "conflict_group_id": "cg_0000",
-      "event_id": "event_0000",
+      "event_id": "cityflow:test:0000",
       "node_ids": [
-        "cityflow_node_0000_a",
-        "cityflow_node_0000_b"
+        "cityflow:cityflow/test/S06/c041",
+        "cityflow:cityflow/test/S06/c042"
+      ],
+      "sample_ids": [
+        "cityflow/test/S06/c041",
+        "cityflow/test/S06/c042"
       ],
       "conflict_type_gt": "class_conflict",
       "global_decision_gt": {
-        "event_type": "preflight_conflict_gt",
+        "event_type": "multi_camera_tracking_conflict",
         "risk_attr": "low",
         "action": "pass"
       },
-      "label_source": "derived_rule",
+      "label_source": "cityflow_annotation",
       "source_dataset": "CityFlow",
-      "time_window_id": "tw_0000"
+      "time_window_id": "cityflow_tw_0000"
     },
     {
       "conflict_group_id": "cg_0001",
-      "event_id": "event_0001",
+      "event_id": "mvtec_ad:test:0001",
       "node_ids": [
-        "mvtec_ad_node_0001_a",
-        "mvtec_ad_node_0001_b"
+        "mvtec_ad:mvtec_ad/test/bottle/broken_large/000.png",
+        "mvtec_ad:mvtec_ad/test/bottle/broken_large/001.png"
+      ],
+      "sample_ids": [
+        "mvtec_ad/test/bottle/broken_large/000.png",
+        "mvtec_ad/test/bottle/broken_large/001.png"
       ],
       "conflict_type_gt": "risk_conflict",
       "global_decision_gt": {
-        "event_type": "preflight_conflict_gt",
+        "event_type": "industrial_anomaly_conflict",
         "risk_attr": "medium",
         "action": "inspect"
       },
       "label_source": "industrial_label",
       "source_dataset": "MVTec AD",
-      "time_window_id": "tw_0000"
+      "time_window_id": "mvtec_ad_tw_0000"
     },
     {
       "conflict_group_id": "cg_0002",
-      "event_id": "event_0002",
+      "event_id": "neu_det:test:0002",
       "node_ids": [
-        "neu_det_node_0002_a",
-        "neu_det_node_0002_b"
+        "neu_det:neu_det/test/crazing_103",
+        "neu_det:neu_det/test/crazing_108"
+      ],
+      "sample_ids": [
+        "neu_det/test/crazing_103",
+        "neu_det/test/crazing_108"
       ],
       "conflict_type_gt": "action_conflict",
       "global_decision_gt": {
-        "event_type": "preflight_conflict_gt",
+        "event_type": "surface_defect_conflict",
         "risk_attr": "high",
         "action": "alert"
       },
       "label_source": "industrial_label",
       "source_dataset": "NEU-DET",
-      "time_window_id": "tw_0000"
+      "time_window_id": "neu_det_tw_0000"
     },
     {
       "conflict_group_id": "cg_0003",
-      "event_id": "event_0003",
+      "event_id": "cityflow:test:0003",
       "node_ids": [
-        "cityflow_node_0003_a",
-        "cityflow_node_0003_b"
+        "cityflow:cityflow/test/S06/c043",
+        "cityflow:cityflow/test/S06/c044"
+      ],
+      "sample_ids": [
+        "cityflow/test/S06/c043",
+        "cityflow/test/S06/c044"
       ],
       "conflict_type_gt": "duplicate_alert",
       "global_decision_gt": {
-        "event_type": "preflight_conflict_gt",
+        "event_type": "multi_camera_tracking_conflict",
         "risk_attr": "low",
         "action": "upload"
       },
-      "label_source": "derived_rule",
+      "label_source": "cityflow_annotation",
       "source_dataset": "CityFlow",
-      "time_window_id": "tw_0001"
+      "time_window_id": "cityflow_tw_0001"
     },
     {
       "conflict_group_id": "cg_0004",
-      "event_id": "event_0004",
+      "event_id": "mvtec_ad:test:0004",
       "node_ids": [
-        "mvtec_ad_node_0004_a",
-        "mvtec_ad_node_0004_b"
+        "mvtec_ad:mvtec_ad/test/bottle/broken_large/002.png",
+        "mvtec_ad:mvtec_ad/test/bottle/broken_large/003.png"
+      ],
+      "sample_ids": [
+        "mvtec_ad/test/bottle/broken_large/002.png",
+        "mvtec_ad/test/bottle/broken_large/003.png"
       ],
       "conflict_type_gt": "class_conflict",
       "global_decision_gt": {
-        "event_type": "preflight_conflict_gt",
+        "event_type": "industrial_anomaly_conflict",
         "risk_attr": "medium",
         "action": "pass"
       },
       "label_source": "industrial_label",
       "source_dataset": "MVTec AD",
-      "time_window_id": "tw_0001"
+      "time_window_id": "mvtec_ad_tw_0001"
     },
     {
       "conflict_group_id": "cg_0005",
-      "event_id": "event_0005",
+      "event_id": "neu_det:test:0005",
       "node_ids": [
-        "neu_det_node_0005_a",
-        "neu_det_node_0005_b"
+        "neu_det:neu_det/test/crazing_110",
+        "neu_det:neu_det/test/crazing_115"
+      ],
+      "sample_ids": [
+        "neu_det/test/crazing_110",
+        "neu_det/test/crazing_115"
       ],
       "conflict_type_gt": "risk_conflict",
       "global_decision_gt": {
-        "event_type": "preflight_conflict_gt",
+        "event_type": "surface_defect_conflict",
         "risk_attr": "high",
         "action": "inspect"
       },
       "label_source": "industrial_label",
       "source_dataset": "NEU-DET",
-      "time_window_id": "tw_0001"
+      "time_window_id": "neu_det_tw_0001"
     },
     {
       "conflict_group_id": "cg_0006",
-      "event_id": "event_0006",
+      "event_id": "cityflow:test:0006",
       "node_ids": [
-        "cityflow_node_0006_a",
-        "cityflow_node_0006_b"
+        "cityflow:cityflow/test/S06/c045",
+        "cityflow:cityflow/test/S06/c046"
+      ],
+      "sample_ids": [
+        "cityflow/test/S06/c045",
+        "cityflow/test/S06/c046"
       ],
       "conflict_type_gt": "action_conflict",
       "global_decision_gt": {
-        "event_type": "preflight_conflict_gt",
+        "event_type": "multi_camera_tracking_conflict",
         "risk_attr": "low",
         "action": "alert"
       },
-      "label_source": "derived_rule",
+      "label_source": "cityflow_annotation",
       "source_dataset": "CityFlow",
-      "time_window_id": "tw_0002"
+      "time_window_id": "cityflow_tw_0002"
     },
     {
       "conflict_group_id": "cg_0007",
-      "event_id": "event_0007",
+      "event_id": "mvtec_ad:test:0007",
       "node_ids": [
-        "mvtec_ad_node_0007_a",
-        "mvtec_ad_node_0007_b"
+        "mvtec_ad:mvtec_ad/test/bottle/broken_large/004.png",
+        "mvtec_ad:mvtec_ad/test/bottle/broken_large/005.png"
+      ],
+      "sample_ids": [
+        "mvtec_ad/test/bottle/broken_large/004.png",
+        "mvtec_ad/test/bottle/broken_large/005.png"
       ],
       "conflict_type_gt": "duplicate_alert",
       "global_decision_gt": {
-        "event_type": "preflight_conflict_gt",
+        "event_type": "industrial_anomaly_conflict",
         "risk_attr": "medium",
         "action": "upload"
       },
       "label_source": "industrial_label",
       "source_dataset": "MVTec AD",
-      "time_window_id": "tw_0002"
+      "time_window_id": "mvtec_ad_tw_0002"
     },
     {
       "conflict_group_id": "cg_0008",
-      "event_id": "event_0008",
+      "event_id": "neu_det:test:0008",
       "node_ids": [
-        "neu_det_node_0008_a",
-        "neu_det_node_0008_b"
+        "neu_det:neu_det/test/crazing_129",
+        "neu_det:neu_det/test/crazing_13"
+      ],
+      "sample_ids": [
+        "neu_det/test/crazing_129",
+        "neu_det/test/crazing_13"
       ],
       "conflict_type_gt": "class_conflict",
       "global_decision_gt": {
-        "event_type": "preflight_conflict_gt",
+        "event_type": "surface_defect_conflict",
         "risk_attr": "high",
         "action": "pass"
       },
       "label_source": "industrial_label",
       "source_dataset": "NEU-DET",
-      "time_window_id": "tw_0002"
+      "time_window_id": "neu_det_tw_0002"
     },
     {
       "conflict_group_id": "cg_0009",
-      "event_id": "event_0009",
+      "event_id": "cityflow:test:0009",
       "node_ids": [
-        "cityflow_node_0009_a",
-        "cityflow_node_0009_b"
+        "cityflow:cityflow/test/S06/c041",
+        "cityflow:cityflow/test/S06/c042"
+      ],
+      "sample_ids": [
+        "cityflow/test/S06/c041",
+        "cityflow/test/S06/c042"
       ],
       "conflict_type_gt": "risk_conflict",
       "global_decision_gt": {
-        "event_type": "preflight_conflict_gt",
+        "event_type": "multi_camera_tracking_conflict",
         "risk_attr": "low",
         "action": "inspect"
       },
-      "label_source": "derived_rule",
+      "label_source": "cityflow_annotation",
       "source_dataset": "CityFlow",
-      "time_window_id": "tw_0003"
+      "time_window_id": "cityflow_tw_0003"
     },
     {
       "conflict_group_id": "cg_0010",
-      "event_id": "event_0010",
+      "event_id": "mvtec_ad:test:0010",
       "node_ids": [
-        "mvtec_ad_node_0010_a",
-        "mvtec_ad_node_0010_b"
+        "mvtec_ad:mvtec_ad/test/bottle/broken_large/006.png",
+        "mvtec_ad:mvtec_ad/test/bottle/broken_large/007.png"
+      ],
+      "sample_ids": [
+        "mvtec_ad/test/bottle/broken_large/006.png",
+        "mvtec_ad/test/bottle/broken_large/007.png"
       ],
       "conflict_type_gt": "action_conflict",
       "global_decision_gt": {
-        "event_type": "preflight_conflict_gt",
+        "event_type": "industrial_anomaly_conflict",
         "risk_attr": "medium",
         "action": "alert"
       },
       "label_source": "industrial_label",
       "source_dataset": "MVTec AD",
-      "time_window_id": "tw_0003"
+      "time_window_id": "mvtec_ad_tw_0003"
     },
     {
       "conflict_group_id": "cg_0011",
-      "event_id": "event_0011",
+      "event_id": "neu_det:test:0011",
       "node_ids": [
-        "neu_det_node_0011_a",
-        "neu_det_node_0011_b"
+        "neu_det:neu_det/test/crazing_132",
+        "neu_det:neu_det/test/crazing_133"
+      ],
+      "sample_ids": [
+        "neu_det/test/crazing_132",
+        "neu_det/test/crazing_133"
       ],
       "conflict_type_gt": "duplicate_alert",
       "global_decision_gt": {
-        "event_type": "preflight_conflict_gt",
+        "event_type": "surface_defect_conflict",
         "risk_attr": "high",
         "action": "upload"
       },
       "label_source": "industrial_label",
       "source_dataset": "NEU-DET",
-      "time_window_id": "tw_0003"
+      "time_window_id": "neu_det_tw_0003"
     },
     {
       "conflict_group_id": "cg_0012",
-      "event_id": "event_0012",
+      "event_id": "cityflow:test:0012",
       "node_ids": [
-        "cityflow_node_0012_a",
-        "cityflow_node_0012_b"
+        "cityflow:cityflow/test/S06/c043",
+        "cityflow:cityflow/test/S06/c044"
+      ],
+      "sample_ids": [
+        "cityflow/test/S06/c043",
+        "cityflow/test/S06/c044"
       ],
       "conflict_type_gt": "class_conflict",
       "global_decision_gt": {
-        "event_type": "preflight_conflict_gt",
+        "event_type": "multi_camera_tracking_conflict",
         "risk_attr": "low",
         "action": "pass"
       },
-      "label_source": "derived_rule",
+      "label_source": "cityflow_annotation",
       "source_dataset": "CityFlow",
-      "time_window_id": "tw_0004"
+      "time_window_id": "cityflow_tw_0004"
     },
     {
       "conflict_group_id": "cg_0013",
-      "event_id": "event_0013",
+      "event_id": "mvtec_ad:test:0013",
       "node_ids": [
-        "mvtec_ad_node_0013_a",
-        "mvtec_ad_node_0013_b"
+        "mvtec_ad:mvtec_ad/test/bottle/broken_large/008.png",
+        "mvtec_ad:mvtec_ad/test/bottle/broken_large/009.png"
+      ],
+      "sample_ids": [
+        "mvtec_ad/test/bottle/broken_large/008.png",
+        "mvtec_ad/test/bottle/broken_large/009.png"
       ],
       "conflict_type_gt": "risk_conflict",
       "global_decision_gt": {
-        "event_type": "preflight_conflict_gt",
+        "event_type": "industrial_anomaly_conflict",
         "risk_attr": "medium",
         "action": "inspect"
       },
       "label_source": "industrial_label",
       "source_dataset": "MVTec AD",
-      "time_window_id": "tw_0004"
+      "time_window_id": "mvtec_ad_tw_0004"
     },
     {
       "conflict_group_id": "cg_0014",
-      "event_id": "event_0014",
+      "event_id": "neu_det:test:0014",
       "node_ids": [
-        "neu_det_node_0014_a",
-        "neu_det_node_0014_b"
+        "neu_det:neu_det/test/crazing_137",
+        "neu_det:neu_det/test/crazing_145"
+      ],
+      "sample_ids": [
+        "neu_det/test/crazing_137",
+        "neu_det/test/crazing_145"
       ],
       "conflict_type_gt": "action_conflict",
       "global_decision_gt": {
-        "event_type": "preflight_conflict_gt",
+        "event_type": "surface_defect_conflict",
         "risk_attr": "high",
         "action": "alert"
       },
       "label_source": "industrial_label",
       "source_dataset": "NEU-DET",
-      "time_window_id": "tw_0004"
+      "time_window_id": "neu_det_tw_0004"
     },
     {
       "conflict_group_id": "cg_0015",
-      "event_id": "event_0015",
+      "event_id": "cityflow:test:0015",
       "node_ids": [
-        "cityflow_node_0015_a",
-        "cityflow_node_0015_b"
+        "cityflow:cityflow/test/S06/c045",
+        "cityflow:cityflow/test/S06/c046"
+      ],
+      "sample_ids": [
+        "cityflow/test/S06/c045",
+        "cityflow/test/S06/c046"
       ],
       "conflict_type_gt": "duplicate_alert",
       "global_decision_gt": {
-        "event_type": "preflight_conflict_gt",
+        "event_type": "multi_camera_tracking_conflict",
         "risk_attr": "low",
         "action": "upload"
       },
-      "label_source": "derived_rule",
+      "label_source": "cityflow_annotation",
       "source_dataset": "CityFlow",
-      "time_window_id": "tw_0005"
+      "time_window_id": "cityflow_tw_0005"
     },
     {
       "conflict_group_id": "cg_0016",
-      "event_id": "event_0016",
+      "event_id": "mvtec_ad:test:0016",
       "node_ids": [
-        "mvtec_ad_node_0016_a",
-        "mvtec_ad_node_0016_b"
+        "mvtec_ad:mvtec_ad/test/bottle/broken_large/010.png",
+        "mvtec_ad:mvtec_ad/test/bottle/broken_large/011.png"
+      ],
+      "sample_ids": [
+        "mvtec_ad/test/bottle/broken_large/010.png",
+        "mvtec_ad/test/bottle/broken_large/011.png"
       ],
       "conflict_type_gt": "class_conflict",
       "global_decision_gt": {
-        "event_type": "preflight_conflict_gt",
+        "event_type": "industrial_anomaly_conflict",
         "risk_attr": "medium",
         "action": "pass"
       },
       "label_source": "industrial_label",
       "source_dataset": "MVTec AD",
-      "time_window_id": "tw_0005"
+      "time_window_id": "mvtec_ad_tw_0005"
     },
     {
       "conflict_group_id": "cg_0017",
-      "event_id": "event_0017",
+      "event_id": "neu_det:test:0017",
       "node_ids": [
-        "neu_det_node_0017_a",
-        "neu_det_node_0017_b"
+        "neu_det:neu_det/test/crazing_148",
+        "neu_det:neu_det/test/crazing_152"
+      ],
+      "sample_ids": [
+        "neu_det/test/crazing_148",
+        "neu_det/test/crazing_152"
       ],
       "conflict_type_gt": "risk_conflict",
       "global_decision_gt": {
-        "event_type": "preflight_conflict_gt",
+        "event_type": "surface_defect_conflict",
         "risk_attr": "high",
         "action": "inspect"
       },
       "label_source": "industrial_label",
       "source_dataset": "NEU-DET",
-      "time_window_id": "tw_0005"
+      "time_window_id": "neu_det_tw_0005"
     },
     {
       "conflict_group_id": "cg_0018",
-      "event_id": "event_0018",
+      "event_id": "cityflow:test:0018",
       "node_ids": [
-        "cityflow_node_0018_a",
-        "cityflow_node_0018_b"
+        "cityflow:cityflow/test/S06/c041",
+        "cityflow:cityflow/test/S06/c042"
+      ],
+      "sample_ids": [
+        "cityflow/test/S06/c041",
+        "cityflow/test/S06/c042"
       ],
       "conflict_type_gt": "action_conflict",
       "global_decision_gt": {
-        "event_type": "preflight_conflict_gt",
+        "event_type": "multi_camera_tracking_conflict",
         "risk_attr": "low",
         "action": "alert"
       },
-      "label_source": "derived_rule",
+      "label_source": "cityflow_annotation",
       "source_dataset": "CityFlow",
-      "time_window_id": "tw_0006"
+      "time_window_id": "cityflow_tw_0006"
     },
     {
       "conflict_group_id": "cg_0019",
-      "event_id": "event_0019",
+      "event_id": "mvtec_ad:test:0019",
       "node_ids": [
-        "mvtec_ad_node_0019_a",
-        "mvtec_ad_node_0019_b"
+        "mvtec_ad:mvtec_ad/test/bottle/broken_large/012.png",
+        "mvtec_ad:mvtec_ad/test/bottle/broken_large/013.png"
+      ],
+      "sample_ids": [
+        "mvtec_ad/test/bottle/broken_large/012.png",
+        "mvtec_ad/test/bottle/broken_large/013.png"
       ],
       "conflict_type_gt": "duplicate_alert",
       "global_decision_gt": {
-        "event_type": "preflight_conflict_gt",
+        "event_type": "industrial_anomaly_conflict",
         "risk_attr": "medium",
         "action": "upload"
       },
       "label_source": "industrial_label",
       "source_dataset": "MVTec AD",
-      "time_window_id": "tw_0006"
+      "time_window_id": "mvtec_ad_tw_0006"
     },
     {
       "conflict_group_id": "cg_0020",
-      "event_id": "event_0020",
+      "event_id": "neu_det:test:0020",
       "node_ids": [
-        "neu_det_node_0020_a",
-        "neu_det_node_0020_b"
+        "neu_det:neu_det/test/crazing_158",
+        "neu_det:neu_det/test/crazing_161"
+      ],
+      "sample_ids": [
+        "neu_det/test/crazing_158",
+        "neu_det/test/crazing_161"
       ],
       "conflict_type_gt": "class_conflict",
       "global_decision_gt": {
-        "event_type": "preflight_conflict_gt",
+        "event_type": "surface_defect_conflict",
         "risk_attr": "high",
         "action": "pass"
       },
       "label_source": "industrial_label",
       "source_dataset": "NEU-DET",
-      "time_window_id": "tw_0006"
+      "time_window_id": "neu_det_tw_0006"
     },
     {
       "conflict_group_id": "cg_0021",
-      "event_id": "event_0021",
+      "event_id": "cityflow:test:0021",
       "node_ids": [
-        "cityflow_node_0021_a",
-        "cityflow_node_0021_b"
+        "cityflow:cityflow/test/S06/c043",
+        "cityflow:cityflow/test/S06/c044"
+      ],
+      "sample_ids": [
+        "cityflow/test/S06/c043",
+        "cityflow/test/S06/c044"
       ],
       "conflict_type_gt": "risk_conflict",
       "global_decision_gt": {
-        "event_type": "preflight_conflict_gt",
+        "event_type": "multi_camera_tracking_conflict",
         "risk_attr": "low",
         "action": "inspect"
       },
-      "label_source": "derived_rule",
+      "label_source": "cityflow_annotation",
       "source_dataset": "CityFlow",
-      "time_window_id": "tw_0007"
+      "time_window_id": "cityflow_tw_0007"
     },
     {
       "conflict_group_id": "cg_0022",
-      "event_id": "event_0022",
+      "event_id": "mvtec_ad:test:0022",
       "node_ids": [
-        "mvtec_ad_node_0022_a",
-        "mvtec_ad_node_0022_b"
+        "mvtec_ad:mvtec_ad/test/bottle/broken_large/014.png",
+        "mvtec_ad:mvtec_ad/test/bottle/broken_large/015.png"
+      ],
+      "sample_ids": [
+        "mvtec_ad/test/bottle/broken_large/014.png",
+        "mvtec_ad/test/bottle/broken_large/015.png"
       ],
       "conflict_type_gt": "action_conflict",
       "global_decision_gt": {
-        "event_type": "preflight_conflict_gt",
+        "event_type": "industrial_anomaly_conflict",
         "risk_attr": "medium",
         "action": "alert"
       },
       "label_source": "industrial_label",
       "source_dataset": "MVTec AD",
-      "time_window_id": "tw_0007"
+      "time_window_id": "mvtec_ad_tw_0007"
     },
     {
       "conflict_group_id": "cg_0023",
-      "event_id": "event_0023",
+      "event_id": "neu_det:test:0023",
       "node_ids": [
-        "neu_det_node_0023_a",
-        "neu_det_node_0023_b"
+        "neu_det:neu_det/test/crazing_166",
+        "neu_det:neu_det/test/crazing_169"
+      ],
+      "sample_ids": [
+        "neu_det/test/crazing_166",
+        "neu_det/test/crazing_169"
       ],
       "conflict_type_gt": "duplicate_alert",
       "global_decision_gt": {
-        "event_type": "preflight_conflict_gt",
+        "event_type": "surface_defect_conflict",
         "risk_attr": "high",
         "action": "upload"
       },
       "label_source": "industrial_label",
       "source_dataset": "NEU-DET",
-      "time_window_id": "tw_0007"
+      "time_window_id": "neu_det_tw_0007"
     },
     {
       "conflict_group_id": "cg_0024",
-      "event_id": "event_0024",
+      "event_id": "cityflow:test:0024",
       "node_ids": [
-        "cityflow_node_0024_a",
-        "cityflow_node_0024_b"
+        "cityflow:cityflow/test/S06/c045",
+        "cityflow:cityflow/test/S06/c046"
+      ],
+      "sample_ids": [
+        "cityflow/test/S06/c045",
+        "cityflow/test/S06/c046"
       ],
       "conflict_type_gt": "class_conflict",
       "global_decision_gt": {
-        "event_type": "preflight_conflict_gt",
+        "event_type": "multi_camera_tracking_conflict",
         "risk_attr": "low",
         "action": "pass"
       },
-      "label_source": "derived_rule",
+      "label_source": "cityflow_annotation",
       "source_dataset": "CityFlow",
-      "time_window_id": "tw_0008"
+      "time_window_id": "cityflow_tw_0008"
     },
     {
       "conflict_group_id": "cg_0025",
-      "event_id": "event_0025",
+      "event_id": "mvtec_ad:test:0025",
       "node_ids": [
-        "mvtec_ad_node_0025_a",
-        "mvtec_ad_node_0025_b"
+        "mvtec_ad:mvtec_ad/test/bottle/broken_large/016.png",
+        "mvtec_ad:mvtec_ad/test/bottle/broken_large/017.png"
+      ],
+      "sample_ids": [
+        "mvtec_ad/test/bottle/broken_large/016.png",
+        "mvtec_ad/test/bottle/broken_large/017.png"
       ],
       "conflict_type_gt": "risk_conflict",
       "global_decision_gt": {
-        "event_type": "preflight_conflict_gt",
+        "event_type": "industrial_anomaly_conflict",
         "risk_attr": "medium",
         "action": "inspect"
       },
       "label_source": "industrial_label",
       "source_dataset": "MVTec AD",
-      "time_window_id": "tw_0008"
+      "time_window_id": "mvtec_ad_tw_0008"
     },
     {
       "conflict_group_id": "cg_0026",
-      "event_id": "event_0026",
+      "event_id": "neu_det:test:0026",
       "node_ids": [
-        "neu_det_node_0026_a",
-        "neu_det_node_0026_b"
+        "neu_det:neu_det/test/crazing_172",
+        "neu_det:neu_det/test/crazing_183"
+      ],
+      "sample_ids": [
+        "neu_det/test/crazing_172",
+        "neu_det/test/crazing_183"
       ],
       "conflict_type_gt": "action_conflict",
       "global_decision_gt": {
-        "event_type": "preflight_conflict_gt",
+        "event_type": "surface_defect_conflict",
         "risk_attr": "high",
         "action": "alert"
       },
       "label_source": "industrial_label",
       "source_dataset": "NEU-DET",
-      "time_window_id": "tw_0008"
+      "time_window_id": "neu_det_tw_0008"
     },
     {
       "conflict_group_id": "cg_0027",
-      "event_id": "event_0027",
+      "event_id": "cityflow:test:0027",
       "node_ids": [
-        "cityflow_node_0027_a",
-        "cityflow_node_0027_b"
+        "cityflow:cityflow/test/S06/c041",
+        "cityflow:cityflow/test/S06/c042"
+      ],
+      "sample_ids": [
+        "cityflow/test/S06/c041",
+        "cityflow/test/S06/c042"
       ],
       "conflict_type_gt": "duplicate_alert",
       "global_decision_gt": {
-        "event_type": "preflight_conflict_gt",
+        "event_type": "multi_camera_tracking_conflict",
         "risk_attr": "low",
         "action": "upload"
       },
-      "label_source": "derived_rule",
+      "label_source": "cityflow_annotation",
       "source_dataset": "CityFlow",
-      "time_window_id": "tw_0009"
+      "time_window_id": "cityflow_tw_0009"
     },
     {
       "conflict_group_id": "cg_0028",
-      "event_id": "event_0028",
+      "event_id": "mvtec_ad:test:0028",
       "node_ids": [
-        "mvtec_ad_node_0028_a",
-        "mvtec_ad_node_0028_b"
+        "mvtec_ad:mvtec_ad/test/bottle/broken_large/018.png",
+        "mvtec_ad:mvtec_ad/test/bottle/broken_large/019.png"
+      ],
+      "sample_ids": [
+        "mvtec_ad/test/bottle/broken_large/018.png",
+        "mvtec_ad/test/bottle/broken_large/019.png"
       ],
       "conflict_type_gt": "class_conflict",
       "global_decision_gt": {
-        "event_type": "preflight_conflict_gt",
+        "event_type": "industrial_anomaly_conflict",
         "risk_attr": "medium",
         "action": "pass"
       },
       "label_source": "industrial_label",
       "source_dataset": "MVTec AD",
-      "time_window_id": "tw_0009"
+      "time_window_id": "mvtec_ad_tw_0009"
     },
     {
       "conflict_group_id": "cg_0029",
-      "event_id": "event_0029",
+      "event_id": "neu_det:test:0029",
       "node_ids": [
-        "neu_det_node_0029_a",
-        "neu_det_node_0029_b"
+        "neu_det:neu_det/test/crazing_184",
+        "neu_det:neu_det/test/crazing_19"
+      ],
+      "sample_ids": [
+        "neu_det/test/crazing_184",
+        "neu_det/test/crazing_19"
       ],
       "conflict_type_gt": "risk_conflict",
       "global_decision_gt": {
-        "event_type": "preflight_conflict_gt",
+        "event_type": "surface_defect_conflict",
         "risk_attr": "high",
         "action": "inspect"
       },
       "label_source": "industrial_label",
       "source_dataset": "NEU-DET",
-      "time_window_id": "tw_0009"
+      "time_window_id": "neu_det_tw_0009"
     },
     {
       "conflict_group_id": "cg_0030",
-      "event_id": "event_0030",
+      "event_id": "cityflow:test:0030",
       "node_ids": [
-        "cityflow_node_0030_a",
-        "cityflow_node_0030_b"
+        "cityflow:cityflow/test/S06/c043",
+        "cityflow:cityflow/test/S06/c044"
+      ],
+      "sample_ids": [
+        "cityflow/test/S06/c043",
+        "cityflow/test/S06/c044"
       ],
       "conflict_type_gt": "action_conflict",
       "global_decision_gt": {
-        "event_type": "preflight_conflict_gt",
+        "event_type": "multi_camera_tracking_conflict",
         "risk_attr": "low",
         "action": "alert"
       },
-      "label_source": "derived_rule",
+      "label_source": "cityflow_annotation",
       "source_dataset": "CityFlow",
-      "time_window_id": "tw_0010"
+      "time_window_id": "cityflow_tw_0010"
     },
     {
       "conflict_group_id": "cg_0031",
-      "event_id": "event_0031",
+      "event_id": "mvtec_ad:test:0031",
       "node_ids": [
-        "mvtec_ad_node_0031_a",
-        "mvtec_ad_node_0031_b"
+        "mvtec_ad:mvtec_ad/test/bottle/broken_small/000.png",
+        "mvtec_ad:mvtec_ad/test/bottle/broken_small/001.png"
+      ],
+      "sample_ids": [
+        "mvtec_ad/test/bottle/broken_small/000.png",
+        "mvtec_ad/test/bottle/broken_small/001.png"
       ],
       "conflict_type_gt": "duplicate_alert",
       "global_decision_gt": {
-        "event_type": "preflight_conflict_gt",
+        "event_type": "industrial_anomaly_conflict",
         "risk_attr": "medium",
         "action": "upload"
       },
       "label_source": "industrial_label",
       "source_dataset": "MVTec AD",
-      "time_window_id": "tw_0010"
+      "time_window_id": "mvtec_ad_tw_0010"
     },
     {
       "conflict_group_id": "cg_0032",
-      "event_id": "event_0032",
+      "event_id": "neu_det:test:0032",
       "node_ids": [
-        "neu_det_node_0032_a",
-        "neu_det_node_0032_b"
+        "neu_det:neu_det/test/crazing_191",
+        "neu_det:neu_det/test/crazing_197"
+      ],
+      "sample_ids": [
+        "neu_det/test/crazing_191",
+        "neu_det/test/crazing_197"
       ],
       "conflict_type_gt": "class_conflict",
       "global_decision_gt": {
-        "event_type": "preflight_conflict_gt",
+        "event_type": "surface_defect_conflict",
         "risk_attr": "high",
         "action": "pass"
       },
       "label_source": "industrial_label",
       "source_dataset": "NEU-DET",
-      "time_window_id": "tw_0010"
+      "time_window_id": "neu_det_tw_0010"
     },
     {
       "conflict_group_id": "cg_0033",
-      "event_id": "event_0033",
+      "event_id": "cityflow:test:0033",
       "node_ids": [
-        "cityflow_node_0033_a",
-        "cityflow_node_0033_b"
+        "cityflow:cityflow/test/S06/c045",
+        "cityflow:cityflow/test/S06/c046"
+      ],
+      "sample_ids": [
+        "cityflow/test/S06/c045",
+        "cityflow/test/S06/c046"
       ],
       "conflict_type_gt": "risk_conflict",
       "global_decision_gt": {
-        "event_type": "preflight_conflict_gt",
+        "event_type": "multi_camera_tracking_conflict",
         "risk_attr": "low",
         "action": "inspect"
       },
-      "label_source": "derived_rule",
+      "label_source": "cityflow_annotation",
       "source_dataset": "CityFlow",
-      "time_window_id": "tw_0011"
+      "time_window_id": "cityflow_tw_0011"
     },
     {
       "conflict_group_id": "cg_0034",
-      "event_id": "event_0034",
+      "event_id": "mvtec_ad:test:0034",
       "node_ids": [
-        "mvtec_ad_node_0034_a",
-        "mvtec_ad_node_0034_b"
+        "mvtec_ad:mvtec_ad/test/bottle/broken_small/002.png",
+        "mvtec_ad:mvtec_ad/test/bottle/broken_small/003.png"
+      ],
+      "sample_ids": [
+        "mvtec_ad/test/bottle/broken_small/002.png",
+        "mvtec_ad/test/bottle/broken_small/003.png"
       ],
       "conflict_type_gt": "action_conflict",
       "global_decision_gt": {
-        "event_type": "preflight_conflict_gt",
+        "event_type": "industrial_anomaly_conflict",
         "risk_attr": "medium",
         "action": "alert"
       },
       "label_source": "industrial_label",
       "source_dataset": "MVTec AD",
-      "time_window_id": "tw_0011"
+      "time_window_id": "mvtec_ad_tw_0011"
     },
     {
       "conflict_group_id": "cg_0035",
-      "event_id": "event_0035",
+      "event_id": "neu_det:test:0035",
       "node_ids": [
-        "neu_det_node_0035_a",
-        "neu_det_node_0035_b"
+        "neu_det:neu_det/test/crazing_202",
+        "neu_det:neu_det/test/crazing_211"
+      ],
+      "sample_ids": [
+        "neu_det/test/crazing_202",
+        "neu_det/test/crazing_211"
       ],
       "conflict_type_gt": "duplicate_alert",
       "global_decision_gt": {
-        "event_type": "preflight_conflict_gt",
+        "event_type": "surface_defect_conflict",
         "risk_attr": "high",
         "action": "upload"
       },
       "label_source": "industrial_label",
       "source_dataset": "NEU-DET",
-      "time_window_id": "tw_0011"
+      "time_window_id": "neu_det_tw_0011"
     },
     {
       "conflict_group_id": "cg_0036",
-      "event_id": "event_0036",
+      "event_id": "cityflow:test:0036",
       "node_ids": [
-        "cityflow_node_0036_a",
-        "cityflow_node_0036_b"
+        "cityflow:cityflow/test/S06/c041",
+        "cityflow:cityflow/test/S06/c042"
+      ],
+      "sample_ids": [
+        "cityflow/test/S06/c041",
+        "cityflow/test/S06/c042"
       ],
       "conflict_type_gt": "class_conflict",
       "global_decision_gt": {
-        "event_type": "preflight_conflict_gt",
+        "event_type": "multi_camera_tracking_conflict",
         "risk_attr": "low",
         "action": "pass"
       },
-      "label_source": "derived_rule",
+      "label_source": "cityflow_annotation",
       "source_dataset": "CityFlow",
-      "time_window_id": "tw_0012"
+      "time_window_id": "cityflow_tw_0012"
     },
     {
       "conflict_group_id": "cg_0037",
-      "event_id": "event_0037",
+      "event_id": "mvtec_ad:test:0037",
       "node_ids": [
-        "mvtec_ad_node_0037_a",
-        "mvtec_ad_node_0037_b"
+        "mvtec_ad:mvtec_ad/test/bottle/broken_small/004.png",
+        "mvtec_ad:mvtec_ad/test/bottle/broken_small/005.png"
+      ],
+      "sample_ids": [
+        "mvtec_ad/test/bottle/broken_small/004.png",
+        "mvtec_ad/test/bottle/broken_small/005.png"
       ],
       "conflict_type_gt": "risk_conflict",
       "global_decision_gt": {
-        "event_type": "preflight_conflict_gt",
+        "event_type": "industrial_anomaly_conflict",
         "risk_attr": "medium",
         "action": "inspect"
       },
       "label_source": "industrial_label",
       "source_dataset": "MVTec AD",
-      "time_window_id": "tw_0012"
+      "time_window_id": "mvtec_ad_tw_0012"
     },
     {
       "conflict_group_id": "cg_0038",
-      "event_id": "event_0038",
+      "event_id": "neu_det:test:0038",
       "node_ids": [
-        "neu_det_node_0038_a",
-        "neu_det_node_0038_b"
+        "neu_det:neu_det/test/crazing_216",
+        "neu_det:neu_det/test/crazing_230"
+      ],
+      "sample_ids": [
+        "neu_det/test/crazing_216",
+        "neu_det/test/crazing_230"
       ],
       "conflict_type_gt": "action_conflict",
       "global_decision_gt": {
-        "event_type": "preflight_conflict_gt",
+        "event_type": "surface_defect_conflict",
         "risk_attr": "high",
         "action": "alert"
       },
       "label_source": "industrial_label",
       "source_dataset": "NEU-DET",
-      "time_window_id": "tw_0012"
+      "time_window_id": "neu_det_tw_0012"
     },
     {
       "conflict_group_id": "cg_0039",
-      "event_id": "event_0039",
+      "event_id": "cityflow:test:0039",
       "node_ids": [
-        "cityflow_node_0039_a",
-        "cityflow_node_0039_b"
+        "cityflow:cityflow/test/S06/c043",
+        "cityflow:cityflow/test/S06/c044"
+      ],
+      "sample_ids": [
+        "cityflow/test/S06/c043",
+        "cityflow/test/S06/c044"
       ],
       "conflict_type_gt": "duplicate_alert",
       "global_decision_gt": {
-        "event_type": "preflight_conflict_gt",
+        "event_type": "multi_camera_tracking_conflict",
         "risk_attr": "low",
         "action": "upload"
       },
-      "label_source": "derived_rule",
+      "label_source": "cityflow_annotation",
       "source_dataset": "CityFlow",
-      "time_window_id": "tw_0013"
+      "time_window_id": "cityflow_tw_0013"
     },
     {
       "conflict_group_id": "cg_0040",
-      "event_id": "event_0040",
+      "event_id": "mvtec_ad:test:0040",
       "node_ids": [
-        "mvtec_ad_node_0040_a",
-        "mvtec_ad_node_0040_b"
+        "mvtec_ad:mvtec_ad/test/bottle/broken_small/006.png",
+        "mvtec_ad:mvtec_ad/test/bottle/broken_small/007.png"
+      ],
+      "sample_ids": [
+        "mvtec_ad/test/bottle/broken_small/006.png",
+        "mvtec_ad/test/bottle/broken_small/007.png"
       ],
       "conflict_type_gt": "class_conflict",
       "global_decision_gt": {
-        "event_type": "preflight_conflict_gt",
+        "event_type": "industrial_anomaly_conflict",
         "risk_attr": "medium",
         "action": "pass"
       },
       "label_source": "industrial_label",
       "source_dataset": "MVTec AD",
-      "time_window_id": "tw_0013"
+      "time_window_id": "mvtec_ad_tw_0013"
     },
     {
       "conflict_group_id": "cg_0041",
-      "event_id": "event_0041",
+      "event_id": "neu_det:test:0041",
       "node_ids": [
-        "neu_det_node_0041_a",
-        "neu_det_node_0041_b"
+        "neu_det:neu_det/test/crazing_234",
+        "neu_det:neu_det/test/crazing_241"
+      ],
+      "sample_ids": [
+        "neu_det/test/crazing_234",
+        "neu_det/test/crazing_241"
       ],
       "conflict_type_gt": "risk_conflict",
       "global_decision_gt": {
-        "event_type": "preflight_conflict_gt",
+        "event_type": "surface_defect_conflict",
         "risk_attr": "high",
         "action": "inspect"
       },
       "label_source": "industrial_label",
       "source_dataset": "NEU-DET",
-      "time_window_id": "tw_0013"
+      "time_window_id": "neu_det_tw_0013"
     },
     {
       "conflict_group_id": "cg_0042",
-      "event_id": "event_0042",
+      "event_id": "cityflow:test:0042",
       "node_ids": [
-        "cityflow_node_0042_a",
-        "cityflow_node_0042_b"
+        "cityflow:cityflow/test/S06/c045",
+        "cityflow:cityflow/test/S06/c046"
+      ],
+      "sample_ids": [
+        "cityflow/test/S06/c045",
+        "cityflow/test/S06/c046"
       ],
       "conflict_type_gt": "action_conflict",
       "global_decision_gt": {
-        "event_type": "preflight_conflict_gt",
+        "event_type": "multi_camera_tracking_conflict",
         "risk_attr": "low",
         "action": "alert"
       },
-      "label_source": "derived_rule",
+      "label_source": "cityflow_annotation",
       "source_dataset": "CityFlow",
-      "time_window_id": "tw_0014"
+      "time_window_id": "cityflow_tw_0014"
     },
     {
       "conflict_group_id": "cg_0043",
-      "event_id": "event_0043",
+      "event_id": "mvtec_ad:test:0043",
       "node_ids": [
-        "mvtec_ad_node_0043_a",
-        "mvtec_ad_node_0043_b"
+        "mvtec_ad:mvtec_ad/test/bottle/broken_small/008.png",
+        "mvtec_ad:mvtec_ad/test/bottle/broken_small/009.png"
+      ],
+      "sample_ids": [
+        "mvtec_ad/test/bottle/broken_small/008.png",
+        "mvtec_ad/test/bottle/broken_small/009.png"
       ],
       "conflict_type_gt": "duplicate_alert",
       "global_decision_gt": {
-        "event_type": "preflight_conflict_gt",
+        "event_type": "industrial_anomaly_conflict",
         "risk_attr": "medium",
         "action": "upload"
       },
       "label_source": "industrial_label",
       "source_dataset": "MVTec AD",
-      "time_window_id": "tw_0014"
+      "time_window_id": "mvtec_ad_tw_0014"
     },
     {
       "conflict_group_id": "cg_0044",
-      "event_id": "event_0044",
+      "event_id": "neu_det:test:0044",
       "node_ids": [
-        "neu_det_node_0044_a",
-        "neu_det_node_0044_b"
+        "neu_det:neu_det/test/crazing_243",
+        "neu_det:neu_det/test/crazing_245"
+      ],
+      "sample_ids": [
+        "neu_det/test/crazing_243",
+        "neu_det/test/crazing_245"
       ],
       "conflict_type_gt": "class_conflict",
       "global_decision_gt": {
-        "event_type": "preflight_conflict_gt",
+        "event_type": "surface_defect_conflict",
         "risk_attr": "high",
         "action": "pass"
       },
       "label_source": "industrial_label",
       "source_dataset": "NEU-DET",
-      "time_window_id": "tw_0014"
+      "time_window_id": "neu_det_tw_0014"
     },
     {
       "conflict_group_id": "cg_0045",
-      "event_id": "event_0045",
+      "event_id": "cityflow:test:0045",
       "node_ids": [
-        "cityflow_node_0045_a",
-        "cityflow_node_0045_b"
+        "cityflow:cityflow/test/S06/c041",
+        "cityflow:cityflow/test/S06/c042"
+      ],
+      "sample_ids": [
+        "cityflow/test/S06/c041",
+        "cityflow/test/S06/c042"
       ],
       "conflict_type_gt": "risk_conflict",
       "global_decision_gt": {
-        "event_type": "preflight_conflict_gt",
+        "event_type": "multi_camera_tracking_conflict",
         "risk_attr": "low",
         "action": "inspect"
       },
-      "label_source": "derived_rule",
+      "label_source": "cityflow_annotation",
       "source_dataset": "CityFlow",
-      "time_window_id": "tw_0015"
+      "time_window_id": "cityflow_tw_0015"
     },
     {
       "conflict_group_id": "cg_0046",
-      "event_id": "event_0046",
+      "event_id": "mvtec_ad:test:0046",
       "node_ids": [
-        "mvtec_ad_node_0046_a",
-        "mvtec_ad_node_0046_b"
+        "mvtec_ad:mvtec_ad/test/bottle/broken_small/010.png",
+        "mvtec_ad:mvtec_ad/test/bottle/broken_small/011.png"
+      ],
+      "sample_ids": [
+        "mvtec_ad/test/bottle/broken_small/010.png",
+        "mvtec_ad/test/bottle/broken_small/011.png"
       ],
       "conflict_type_gt": "action_conflict",
       "global_decision_gt": {
-        "event_type": "preflight_conflict_gt",
+        "event_type": "industrial_anomaly_conflict",
         "risk_attr": "medium",
         "action": "alert"
       },
       "label_source": "industrial_label",
       "source_dataset": "MVTec AD",
-      "time_window_id": "tw_0015"
+      "time_window_id": "mvtec_ad_tw_0015"
     },
     {
       "conflict_group_id": "cg_0047",
-      "event_id": "event_0047",
+      "event_id": "neu_det:test:0047",
       "node_ids": [
-        "neu_det_node_0047_a",
-        "neu_det_node_0047_b"
+        "neu_det:neu_det/test/crazing_246",
+        "neu_det:neu_det/test/crazing_252"
+      ],
+      "sample_ids": [
+        "neu_det/test/crazing_246",
+        "neu_det/test/crazing_252"
       ],
       "conflict_type_gt": "duplicate_alert",
       "global_decision_gt": {
-        "event_type": "preflight_conflict_gt",
+        "event_type": "surface_defect_conflict",
         "risk_attr": "high",
         "action": "upload"
       },
       "label_source": "industrial_label",
       "source_dataset": "NEU-DET",
-      "time_window_id": "tw_0015"
+      "time_window_id": "neu_det_tw_0015"
     },
     {
       "conflict_group_id": "cg_0048",
-      "event_id": "event_0048",
+      "event_id": "cityflow:test:0048",
       "node_ids": [
-        "cityflow_node_0048_a",
-        "cityflow_node_0048_b"
+        "cityflow:cityflow/test/S06/c043",
+        "cityflow:cityflow/test/S06/c044"
+      ],
+      "sample_ids": [
+        "cityflow/test/S06/c043",
+        "cityflow/test/S06/c044"
       ],
       "conflict_type_gt": "class_conflict",
       "global_decision_gt": {
-        "event_type": "preflight_conflict_gt",
+        "event_type": "multi_camera_tracking_conflict",
         "risk_attr": "low",
         "action": "pass"
       },
-      "label_source": "derived_rule",
+      "label_source": "cityflow_annotation",
       "source_dataset": "CityFlow",
-      "time_window_id": "tw_0016"
+      "time_window_id": "cityflow_tw_0016"
     },
     {
       "conflict_group_id": "cg_0049",
-      "event_id": "event_0049",
+      "event_id": "mvtec_ad:test:0049",
       "node_ids": [
-        "mvtec_ad_node_0049_a",
-        "mvtec_ad_node_0049_b"
+        "mvtec_ad:mvtec_ad/test/bottle/broken_small/012.png",
+        "mvtec_ad:mvtec_ad/test/bottle/broken_small/013.png"
+      ],
+      "sample_ids": [
+        "mvtec_ad/test/bottle/broken_small/012.png",
+        "mvtec_ad/test/bottle/broken_small/013.png"
       ],
       "conflict_type_gt": "risk_conflict",
       "global_decision_gt": {
-        "event_type": "preflight_conflict_gt",
+        "event_type": "industrial_anomaly_conflict",
         "risk_attr": "medium",
         "action": "inspect"
       },
       "label_source": "industrial_label",
       "source_dataset": "MVTec AD",
-      "time_window_id": "tw_0016"
+      "time_window_id": "mvtec_ad_tw_0016"
     },
     {
       "conflict_group_id": "cg_0050",
-      "event_id": "event_0050",
+      "event_id": "neu_det:test:0050",
       "node_ids": [
-        "neu_det_node_0050_a",
-        "neu_det_node_0050_b"
+        "neu_det:neu_det/test/crazing_254",
+        "neu_det:neu_det/test/crazing_26"
+      ],
+      "sample_ids": [
+        "neu_det/test/crazing_254",
+        "neu_det/test/crazing_26"
       ],
       "conflict_type_gt": "action_conflict",
       "global_decision_gt": {
-        "event_type": "preflight_conflict_gt",
+        "event_type": "surface_defect_conflict",
         "risk_attr": "high",
         "action": "alert"
       },
       "label_source": "industrial_label",
       "source_dataset": "NEU-DET",
-      "time_window_id": "tw_0016"
+      "time_window_id": "neu_det_tw_0016"
     },
     {
       "conflict_group_id": "cg_0051",
-      "event_id": "event_0051",
+      "event_id": "cityflow:test:0051",
       "node_ids": [
-        "cityflow_node_0051_a",
-        "cityflow_node_0051_b"
+        "cityflow:cityflow/test/S06/c045",
+        "cityflow:cityflow/test/S06/c046"
+      ],
+      "sample_ids": [
+        "cityflow/test/S06/c045",
+        "cityflow/test/S06/c046"
       ],
       "conflict_type_gt": "duplicate_alert",
       "global_decision_gt": {
-        "event_type": "preflight_conflict_gt",
+        "event_type": "multi_camera_tracking_conflict",
         "risk_attr": "low",
         "action": "upload"
       },
-      "label_source": "derived_rule",
+      "label_source": "cityflow_annotation",
       "source_dataset": "CityFlow",
-      "time_window_id": "tw_0017"
+      "time_window_id": "cityflow_tw_0017"
     },
     {
       "conflict_group_id": "cg_0052",
-      "event_id": "event_0052",
+      "event_id": "mvtec_ad:test:0052",
       "node_ids": [
-        "mvtec_ad_node_0052_a",
-        "mvtec_ad_node_0052_b"
+        "mvtec_ad:mvtec_ad/test/bottle/broken_small/014.png",
+        "mvtec_ad:mvtec_ad/test/bottle/broken_small/015.png"
+      ],
+      "sample_ids": [
+        "mvtec_ad/test/bottle/broken_small/014.png",
+        "mvtec_ad/test/bottle/broken_small/015.png"
       ],
       "conflict_type_gt": "class_conflict",
       "global_decision_gt": {
-        "event_type": "preflight_conflict_gt",
+        "event_type": "industrial_anomaly_conflict",
         "risk_attr": "medium",
         "action": "pass"
       },
       "label_source": "industrial_label",
       "source_dataset": "MVTec AD",
-      "time_window_id": "tw_0017"
+      "time_window_id": "mvtec_ad_tw_0017"
     },
     {
       "conflict_group_id": "cg_0053",
-      "event_id": "event_0053",
+      "event_id": "neu_det:test:0053",
       "node_ids": [
-        "neu_det_node_0053_a",
-        "neu_det_node_0053_b"
+        "neu_det:neu_det/test/crazing_267",
+        "neu_det:neu_det/test/crazing_281"
+      ],
+      "sample_ids": [
+        "neu_det/test/crazing_267",
+        "neu_det/test/crazing_281"
       ],
       "conflict_type_gt": "risk_conflict",
       "global_decision_gt": {
-        "event_type": "preflight_conflict_gt",
+        "event_type": "surface_defect_conflict",
         "risk_attr": "high",
         "action": "inspect"
       },
       "label_source": "industrial_label",
       "source_dataset": "NEU-DET",
-      "time_window_id": "tw_0017"
+      "time_window_id": "neu_det_tw_0017"
     },
     {
       "conflict_group_id": "cg_0054",
-      "event_id": "event_0054",
+      "event_id": "cityflow:test:0054",
       "node_ids": [
-        "cityflow_node_0054_a",
-        "cityflow_node_0054_b"
+        "cityflow:cityflow/test/S06/c041",
+        "cityflow:cityflow/test/S06/c042"
+      ],
+      "sample_ids": [
+        "cityflow/test/S06/c041",
+        "cityflow/test/S06/c042"
       ],
       "conflict_type_gt": "action_conflict",
       "global_decision_gt": {
-        "event_type": "preflight_conflict_gt",
+        "event_type": "multi_camera_tracking_conflict",
         "risk_attr": "low",
         "action": "alert"
       },
-      "label_source": "derived_rule",
+      "label_source": "cityflow_annotation",
       "source_dataset": "CityFlow",
-      "time_window_id": "tw_0018"
+      "time_window_id": "cityflow_tw_0018"
     },
     {
       "conflict_group_id": "cg_0055",
-      "event_id": "event_0055",
+      "event_id": "mvtec_ad:test:0055",
       "node_ids": [
-        "mvtec_ad_node_0055_a",
-        "mvtec_ad_node_0055_b"
+        "mvtec_ad:mvtec_ad/test/bottle/broken_small/016.png",
+        "mvtec_ad:mvtec_ad/test/bottle/broken_small/017.png"
+      ],
+      "sample_ids": [
+        "mvtec_ad/test/bottle/broken_small/016.png",
+        "mvtec_ad/test/bottle/broken_small/017.png"
       ],
       "conflict_type_gt": "duplicate_alert",
       "global_decision_gt": {
-        "event_type": "preflight_conflict_gt",
+        "event_type": "industrial_anomaly_conflict",
         "risk_attr": "medium",
         "action": "upload"
       },
       "label_source": "industrial_label",
       "source_dataset": "MVTec AD",
-      "time_window_id": "tw_0018"
+      "time_window_id": "mvtec_ad_tw_0018"
     },
     {
       "conflict_group_id": "cg_0056",
-      "event_id": "event_0056",
+      "event_id": "neu_det:test:0056",
       "node_ids": [
-        "neu_det_node_0056_a",
-        "neu_det_node_0056_b"
+        "neu_det:neu_det/test/crazing_282",
+        "neu_det:neu_det/test/crazing_285"
+      ],
+      "sample_ids": [
+        "neu_det/test/crazing_282",
+        "neu_det/test/crazing_285"
       ],
       "conflict_type_gt": "class_conflict",
       "global_decision_gt": {
-        "event_type": "preflight_conflict_gt",
+        "event_type": "surface_defect_conflict",
         "risk_attr": "high",
         "action": "pass"
       },
       "label_source": "industrial_label",
       "source_dataset": "NEU-DET",
-      "time_window_id": "tw_0018"
+      "time_window_id": "neu_det_tw_0018"
     },
     {
       "conflict_group_id": "cg_0057",
-      "event_id": "event_0057",
+      "event_id": "cityflow:test:0057",
       "node_ids": [
-        "cityflow_node_0057_a",
-        "cityflow_node_0057_b"
+        "cityflow:cityflow/test/S06/c043",
+        "cityflow:cityflow/test/S06/c044"
+      ],
+      "sample_ids": [
+        "cityflow/test/S06/c043",
+        "cityflow/test/S06/c044"
       ],
       "conflict_type_gt": "risk_conflict",
       "global_decision_gt": {
-        "event_type": "preflight_conflict_gt",
+        "event_type": "multi_camera_tracking_conflict",
         "risk_attr": "low",
         "action": "inspect"
       },
-      "label_source": "derived_rule",
+      "label_source": "cityflow_annotation",
       "source_dataset": "CityFlow",
-      "time_window_id": "tw_0019"
+      "time_window_id": "cityflow_tw_0019"
     },
     {
       "conflict_group_id": "cg_0058",
-      "event_id": "event_0058",
+      "event_id": "mvtec_ad:test:0058",
       "node_ids": [
-        "mvtec_ad_node_0058_a",
-        "mvtec_ad_node_0058_b"
+        "mvtec_ad:mvtec_ad/test/bottle/broken_small/018.png",
+        "mvtec_ad:mvtec_ad/test/bottle/broken_small/019.png"
+      ],
+      "sample_ids": [
+        "mvtec_ad/test/bottle/broken_small/018.png",
+        "mvtec_ad/test/bottle/broken_small/019.png"
       ],
       "conflict_type_gt": "action_conflict",
       "global_decision_gt": {
-        "event_type": "preflight_conflict_gt",
+        "event_type": "industrial_anomaly_conflict",
         "risk_attr": "medium",
         "action": "alert"
       },
       "label_source": "industrial_label",
       "source_dataset": "MVTec AD",
-      "time_window_id": "tw_0019"
+      "time_window_id": "mvtec_ad_tw_0019"
     },
     {
       "conflict_group_id": "cg_0059",
-      "event_id": "event_0059",
+      "event_id": "neu_det:test:0059",
       "node_ids": [
-        "neu_det_node_0059_a",
-        "neu_det_node_0059_b"
+        "neu_det:neu_det/test/crazing_29",
+        "neu_det:neu_det/test/crazing_298"
+      ],
+      "sample_ids": [
+        "neu_det/test/crazing_29",
+        "neu_det/test/crazing_298"
       ],
       "conflict_type_gt": "duplicate_alert",
       "global_decision_gt": {
-        "event_type": "preflight_conflict_gt",
+        "event_type": "surface_defect_conflict",
         "risk_attr": "high",
         "action": "upload"
       },
       "label_source": "industrial_label",
       "source_dataset": "NEU-DET",
-      "time_window_id": "tw_0019"
+      "time_window_id": "neu_det_tw_0019"
     }
   ],
   "conflict_group_count": 60,
@@ -1037,5 +1283,5 @@
     "action_conflict": 15,
     "duplicate_alert": 15
   },
-  "manifest_hash": "67713ba6b33ceb61388c878ea720a1aaee65bc5e3a6beb941fb09a99db019168"
+  "manifest_hash": "f76c8508fbb6f01db61021384e0df99fe168da390b66d84ee9c1dfab8def5ccb"
 }

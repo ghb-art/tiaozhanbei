@@ -8,6 +8,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
+from build_conflict_gt import build_conflict_manifest
+
 
 ROOT = Path(__file__).resolve().parents[1]
 SPLITS_PATH = ROOT / "data" / "splits" / "frozen_splits.json"
@@ -162,57 +164,6 @@ def build_dataset_manifest(frozen: dict[str, Any], created_ts: str) -> dict[str,
     }
 
 
-def build_conflict_manifest(created_ts: str) -> dict[str, Any]:
-    conflict_types = ["class_conflict", "risk_conflict", "action_conflict", "duplicate_alert"]
-    sources = ["CityFlow", "MVTec AD", "NEU-DET"]
-    groups = []
-    for index in range(60):
-        source = sources[index % len(sources)]
-        conflict_type = conflict_types[index % len(conflict_types)]
-        risk = ["low", "medium", "high"][index % 3]
-        action = ["pass", "inspect", "alert", "upload"][index % 4]
-        label_source = "derived_rule" if source == "CityFlow" else "industrial_label"
-        groups.append(
-            {
-                "conflict_group_id": f"cg_{index:04d}",
-                "event_id": f"event_{index:04d}",
-                "node_ids": [
-                    f"{source.lower().replace(' ', '_').replace('-', '_')}_node_{index:04d}_a",
-                    f"{source.lower().replace(' ', '_').replace('-', '_')}_node_{index:04d}_b",
-                ],
-                "conflict_type_gt": conflict_type,
-                "global_decision_gt": {
-                    "event_type": "preflight_conflict_gt",
-                    "risk_attr": risk,
-                    "action": action,
-                },
-                "label_source": label_source,
-                "source_dataset": source,
-                "time_window_id": f"tw_{index // 3:04d}",
-            }
-        )
-
-    distribution: dict[str, int] = {key: 0 for key in conflict_types}
-    for group in groups:
-        distribution[group["conflict_type_gt"]] += 1
-
-    manifest = {
-        "manifest_version": "1.0",
-        "created_by": "scripts/generate_formal_manifests.py",
-        "created_ts": created_ts,
-        "datasets": ["CityFlow", "MVTec AD", "NEU-DET"],
-        "split": "test",
-        "conflict_groups": groups,
-        "conflict_group_count": len(groups),
-        "conflict_type_distribution": distribution,
-        "manifest_hash": derived_hash("conflict_manifest_preimage"),
-    }
-    manifest["manifest_hash"] = sha256_text(
-        json.dumps({k: v for k, v in manifest.items() if k != "manifest_hash"}, sort_keys=True, ensure_ascii=False)
-    )
-    return manifest
-
-
 def build_run_manifest(frozen: dict[str, Any], conflict_manifest: dict[str, Any], created_ts: str) -> dict[str, Any]:
     manifest: dict[str, Any] = {
         "git_commit": git_commit(),
@@ -246,7 +197,7 @@ def build_run_manifest(frozen: dict[str, Any], conflict_manifest: dict[str, Any]
         "conflict_gt_audit_hash": conflict_manifest["manifest_hash"],
         "conflict_gt_sample_audit_hash": sha256_text(json.dumps(conflict_manifest["conflict_groups"][:10], sort_keys=True, ensure_ascii=False)),
         "capability_metric_script_hash": sha256_file(ROOT / "scripts" / "validate_splits.py"),
-        "conflict_metric_script_hash": sha256_file(ROOT / "scripts" / "generate_formal_manifests.py"),
+        "conflict_metric_script_hash": sha256_file(ROOT / "scripts" / "build_conflict_gt.py"),
         "frozen_scu_hash": sha256_text("empty-scu-support-list"),
     }
 
@@ -264,7 +215,7 @@ def main() -> int:
     frozen = load_json(SPLITS_PATH)
     created_ts = datetime.now(timezone.utc).isoformat()
     dataset_manifest = build_dataset_manifest(frozen, created_ts)
-    conflict_manifest = build_conflict_manifest(created_ts)
+    conflict_manifest = build_conflict_manifest(frozen, created_ts)
     run_manifest = build_run_manifest(frozen, conflict_manifest, created_ts)
 
     write_json(DATASET_MANIFEST, dataset_manifest)

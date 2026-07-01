@@ -43,6 +43,8 @@
 - 已通过 `python scripts/verify_gate_db.py --offline-schema-check` 完成 G-DB schema 离线检查，并生成 `reports/audit/gate_db_schema_check.json`。
 - 已启动 `kwdb-cloud` Docker 容器，并通过 `python scripts/verify_gate_db.py` 完成 schema 应用、写入、查询和 CSV 导出 live gate。
 - 已生成 `reports/audit/gate_db_smoke.csv`，记录 G-DB smoke 查询与 outbox 查询结果。
+- 已新增 `scripts/download_models.py`，并将 G-CLOUD/G-KD 所需的三份 Qwen 模型下载到本地 `models/pretrained/`。
+- 已生成 `reports/audit/model_downloads.json`，记录本地模型目录、文件数、体积和权重文件 SHA256，供上传服务器后核对。
 
 ## 未开始
 
@@ -66,6 +68,7 @@ python scripts/preflight_runtime_smoke.py
 python scripts/verify_gate_db.py --offline-schema-check
 docker compose -f docker/docker-compose.kwdb.yml up -d
 python scripts/verify_gate_db.py
+python scripts/download_models.py
 ```
 
 第一条命令用于检查当前项目骨架、关键目录、基础配置、文档和 manifest 模板是否齐全。第二条命令用于确认 8 个目标数据集目录都已有 payload。第三条命令用于扫描本地数据集目录并生成 `reports/preflight/data_inventory.json`。第四条命令用于验证 split 文件 hash 与 train/validation/test 泄漏检查。第五条命令用于在 Bash 环境检查本地数据集标准目录。第六条命令用于基于冻结 split 重新生成 conflict ground truth manifest 和 audit 文件。第七条命令用于基于冻结 split 重新生成正式 manifest。第八条命令用于按当前脚本重新生成三个 manifest 模板。第九条命令用于严格验收正式 manifest。第十条命令用于执行当前工程骨架的 runtime smoke，并生成 `reports/preflight/runtime_smoke.json`。第十一条命令用于在没有 KWDB 容器时先检查 G-DB schema 文件完整性。第十二条和第十三条命令用于启动 KWDB/KaiwuDB 并执行 G-DB live gate。

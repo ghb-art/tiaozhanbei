@@ -31,6 +31,7 @@
 | 2026-07-01 | G-DATA | 新增数据集本地检查脚本和 conflict GT 独立生成脚本 | 补齐实施计划中的 `setup_datasets.sh` 与 `build_conflict_gt.py`，让数据集布局检查和冲突 GT 生成可单独执行、可复验 | Yes, manifest hashes regenerated | `scripts/setup_datasets.sh`, `scripts/build_conflict_gt.py`, `scripts/generate_formal_manifests.py`, `conflict_gt_manifest.json`, `manifest.json` |
 | 2026-07-01 | G-DATA/G-DB | 生成 conflict GT 审计文件，并新增 KWDB schema、compose 与 G-DB 验证脚本 | 闭合 G-DATA audit 产物要求，同时推进下一阶段数据库 gate 的可执行骨架 | Yes, audit and manifest hashes regenerated | `reports/audit/conflict_gt_audit.csv`, `reports/audit/conflict_gt_sample_audit.json`, `reports/audit/gate_db_schema_check.json`, `sql/cloud_schema.sql`, `docker/docker-compose.kwdb.yml`, `scripts/verify_gate_db.py`, `manifest.json` |
 | 2026-07-01 | G-DB | 启动 KWDB Docker 容器并完成 G-DB live gate | 验证 schema 创建、写入、查询和 CSV 导出链路可运行 | Yes, DB smoke report generated | `docker/docker-compose.kwdb.yml`, `scripts/verify_gate_db.py`, `reports/audit/gate_db_smoke.csv` |
+| 2026-07-01 | G-CLOUD | 下载三份 Qwen 模型到本地预训练模型目录并生成下载审计 | 为后续上传服务器和启动 14B-AWQ 云端教师服务做准备 | Yes, local model audit generated | `scripts/download_models.py`, `models/pretrained/`, `reports/audit/model_downloads.json` |
 
 ## Fallback Event Template
 

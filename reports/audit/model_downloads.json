@@ -1,0 +1,120 @@
+[
+  {
+    "role": "cloud_teacher",
+    "repo_id": "Qwen/Qwen2.5-14B-Instruct-AWQ",
+    "local_dir": "models/pretrained/Qwen--Qwen2.5-14B-Instruct-AWQ",
+    "file_count": 13,
+    "bytes": 9991785925,
+    "key_files": [
+      {
+        "path": "config.json",
+        "bytes": 841,
+        "sha256": "0c174aa8d52f5dec4c2e0d4b3ec4b1ff261d16bb80b58f03c1c06528e6ed6640"
+      },
+      {
+        "path": "generation_config.json",
+        "bytes": 243,
+        "sha256": "9df8ac8558514924f3481a609f1e5590ab4416efc600b12ad805155d79581c59"
+      },
+      {
+        "path": "model.safetensors.index.json",
+        "bytes": 107402,
+        "sha256": "ffa9ad9dba1428d7e924ab03ab51b28865ddfad58b60f4d3d786f4f811a723cc"
+      },
+      {
+        "path": "tokenizer_config.json",
+        "bytes": 7305,
+        "sha256": "5b5d4f65d0acd3b2d56a35b56d374a36cbc1c8fa5cf3b3febbbfabf22f359583"
+      }
+    ],
+    "weight_files": [
+      {
+        "path": "model-00001-of-00003.safetensors",
+        "bytes": 3988804408,
+        "sha256": "4e874dc3b1febb5b22fe74a8793066ae430d90cdbc51765d0a4eb44a82a1fbbd"
+      },
+      {
+        "path": "model-00002-of-00003.safetensors",
+        "bytes": 3968309440,
+        "sha256": "b3b25da74cc854cdc726956f8152f1dda8519c7bb7d4724ac12c1312463e61c8"
+      },
+      {
+        "path": "model-00003-of-00003.safetensors",
+        "bytes": 2023056736,
+        "sha256": "25b97bf28033ed4560387293ce76bd3dc55a22882fea005a10c137b6478dae85"
+      }
+    ]
+  },
+  {
+    "role": "high_edge",
+    "repo_id": "Qwen/Qwen2.5-7B-Instruct-AWQ",
+    "local_dir": "models/pretrained/Qwen--Qwen2.5-7B-Instruct-AWQ",
+    "file_count": 12,
+    "bytes": 5582400357,
+    "key_files": [
+      {
+        "path": "config.json",
+        "bytes": 841,
+        "sha256": "ec0c1f5f875ad8bc1f78c5140c22dbdde1b55478442ad358e7a4d9ecf947a327"
+      },
+      {
+        "path": "generation_config.json",
+        "bytes": 243,
+        "sha256": "9df8ac8558514924f3481a609f1e5590ab4416efc600b12ad805155d79581c59"
+      },
+      {
+        "path": "model.safetensors.index.json",
+        "bytes": 62662,
+        "sha256": "559b6859f37625080bf49eea80806ecc2f859a13b316b7fae2ff4432b6308e36"
+      },
+      {
+        "path": "tokenizer_config.json",
+        "bytes": 7305,
+        "sha256": "5b5d4f65d0acd3b2d56a35b56d374a36cbc1c8fa5cf3b3febbbfabf22f359583"
+      }
+    ],
+    "weight_files": [
+      {
+        "path": "model-00001-of-00002.safetensors",
+        "bytes": 3996422976,
+        "sha256": "4ad6e70f93823a9228931615e04b5e9293854c236fb4bd5f85e27f3b600605ad"
+      },
+      {
+        "path": "model-00002-of-00002.safetensors",
+        "bytes": 1574406784,
+        "sha256": "920a8cc9d3c81668f18014a69bb041ab8bab22a31640a713f90f5e7580e2f126"
+      }
+    ]
+  },
+  {
+    "role": "edge_student",
+    "repo_id": "Qwen/Qwen2.5-1.5B-Instruct",
+    "local_dir": "models/pretrained/Qwen--Qwen2.5-1.5B-Instruct",
+    "file_count": 10,
+    "bytes": 3098973447,
+    "key_files": [
+      {
+        "path": "config.json",
+        "bytes": 660,
+        "sha256": "98d2ff8cc47488d08a2b0b3acf4eb99ef210779b42bd48605f6b8e36acdbf670"
+      },
+      {
+        "path": "generation_config.json",
+        "bytes": 242,
+        "sha256": "e558847a8b4402616f1273797b015104dc266fe4b520056fca88823ba8f8ebe6"
+      },
+      {
+        "path": "tokenizer_config.json",
+        "bytes": 7305,
+        "sha256": "5b5d4f65d0acd3b2d56a35b56d374a36cbc1c8fa5cf3b3febbbfabf22f359583"
+      }
+    ],
+    "weight_files": [
+      {
+        "path": "model.safetensors",
+        "bytes": 3087467144,
+        "sha256": "dd924a11b4c220f385b51ffa522daea7c9f3d850e31b162bb5661df483c6d3ee"
+      }
+    ]
+  }
+]

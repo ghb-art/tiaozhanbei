@@ -1,0 +1,330 @@
+{
+  "split_version": "1.0",
+  "created_by": "scripts/validate_splits.py",
+  "sampling_seed": 42,
+  "global_split_hash": "d7f3fac67fd3f235802ed405cdbac46302db513925cdab56d13198b0b871e7cf",
+  "datasets": [
+    {
+      "dataset_key": "gsm8k",
+      "dataset_name": "GSM8K",
+      "dataset_version": "openai-grade-school-math@3101c7d",
+      "official_scale": "train=7473, test=1319",
+      "method": "Use official train for distillation; freeze deterministic 500-sample subset from official test for Final Gate.",
+      "sampling_seed": 42,
+      "counts": {
+        "train": 7473,
+        "validation": 0,
+        "test": 500
+      },
+      "hashes": {
+        "train": "885248680da5d8165a7f4810dd8017523c94ef984351e85b198f84494e0dba3a",
+        "validation": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+        "test": "afb4abca18ea8f98ee57cf5afcf9137dca6626bf0231c712f56dcfe2e5f3312a"
+      },
+      "split_hash": "780300b0e227e082cc1cc9f6b68999119c5968d0bbd1b1c5413301fa9b5cfa3c",
+      "metadata": {
+        "official_test_count": 1319,
+        "final_gate_subset_count": 500
+      },
+      "split_files": {
+        "train": "data/splits/gsm8k_train.txt",
+        "validation": "data/splits/gsm8k_validation.txt",
+        "test": "data/splits/gsm8k_test.txt"
+      }
+    },
+    {
+      "dataset_key": "humaneval",
+      "dataset_name": "HumanEval",
+      "dataset_version": "openai-human-eval@6d43fb9",
+      "official_scale": "tasks=164",
+      "method": "Use all official HumanEval tasks as Final Gate only; no train or validation split.",
+      "sampling_seed": 42,
+      "counts": {
+        "train": 0,
+        "validation": 0,
+        "test": 164
+      },
+      "hashes": {
+        "train": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+        "validation": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+        "test": "5db0af6f012e0b95cef1b217a3390c62bd0a433520fdc83334f86718726b943d"
+      },
+      "split_hash": "efde95f87736bacb7ac6963b867972daa25fd7a9e0f714fb1975403b9166b804",
+      "metadata": {
+        "execution_requires_sandbox": true
+      },
+      "split_files": {
+        "train": "data/splits/humaneval_train.txt",
+        "validation": "data/splits/humaneval_validation.txt",
+        "test": "data/splits/humaneval_test.txt"
+      }
+    },
+    {
+      "dataset_key": "mmlu",
+      "dataset_name": "MMLU",
+      "dataset_version": "hendrycks-data.tar",
+      "official_scale": "subjects=57, official test rows sampled to 1000 final items",
+      "method": "Use auxiliary_train plus official dev for train; official val for validation; stratified 1000-sample official test subset for Final Gate.",
+      "sampling_seed": 42,
+      "counts": {
+        "train": 100062,
+        "validation": 1474,
+        "test": 1000
+      },
+      "hashes": {
+        "train": "4f73e4b8e13f8fe0c6b686bd463d94ae766d53c0c7df353c989bb03a6cfcbd80",
+        "validation": "b3ba6b5da57080f2bae7c6043666c1b4a9b3e6326c65ee71e9803ef8aa39525e",
+        "test": "6f965919c51c31620c15e8678e924ff7bd9594fb2006c3c53f96f3552d70b2fa"
+      },
+      "split_hash": "4d2d2a116317f509a810fc08e84a4878c593b81ca4014ac5f0a8a9b63d0e2f84",
+      "metadata": {
+        "subject_count": 57,
+        "test_pool_count": 13985
+      },
+      "split_files": {
+        "train": "data/splits/mmlu_train.txt",
+        "validation": "data/splits/mmlu_validation.txt",
+        "test": "data/splits/mmlu_test.txt"
+      }
+    },
+    {
+      "dataset_key": "cmmlu",
+      "dataset_name": "CMMLU",
+      "dataset_version": "haonan-li-CMMLU@d6e7b71",
+      "official_scale": "subjects=67, test rows=11582",
+      "method": "Use official dev for validation; freeze stratified 1000-sample official test subset for Final Gate; no non-final train data yet.",
+      "sampling_seed": 42,
+      "counts": {
+        "train": 0,
+        "validation": 335,
+        "test": 1000
+      },
+      "hashes": {
+        "train": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+        "validation": "8023227fc0c04c55abfda465766e94a037dff10c387409d5b8d77ea48b353f4c",
+        "test": "8b9fde5a765238e30f7bda020558f731649c669308747d48ed7be2e752f18ffb"
+      },
+      "split_hash": "a28fed0d94499fa97702b8214424c682f97f675dfe48a80274be1978df457863",
+      "metadata": {
+        "subject_count": 67,
+        "test_pool_count": 11582
+      },
+      "split_files": {
+        "train": "data/splits/cmmlu_train.txt",
+        "validation": "data/splits/cmmlu_validation.txt",
+        "test": "data/splits/cmmlu_test.txt"
+      }
+    },
+    {
+      "dataset_key": "mvtec_ad",
+      "dataset_name": "MVTec AD",
+      "dataset_version": "mvtec_anomaly_detection.tar.xz",
+      "official_scale": "15 classes with official train/test layout",
+      "method": "Use all official train/good images for train; use full official test images for Final Gate; no validation split frozen here.",
+      "sampling_seed": 42,
+      "counts": {
+        "train": 3629,
+        "validation": 0,
+        "test": 1725
+      },
+      "hashes": {
+        "train": "5259635d7e57591c518014825d2d6a3c4ac57ac165435bf1e891489c27f4951e",
+        "validation": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+        "test": "4bcb132298788582fce1939b0698687ee91503f04709dc033d60592056796204"
+      },
+      "split_hash": "9c5db0cd7a207fa1327e701e99e3c670224ae08c6e8d6def2e483f361337a573",
+      "metadata": {
+        "class_counts": {
+          "bottle": {
+            "train_good": 209,
+            "test": 83
+          },
+          "cable": {
+            "train_good": 224,
+            "test": 150
+          },
+          "capsule": {
+            "train_good": 219,
+            "test": 132
+          },
+          "carpet": {
+            "train_good": 280,
+            "test": 117
+          },
+          "grid": {
+            "train_good": 264,
+            "test": 78
+          },
+          "hazelnut": {
+            "train_good": 391,
+            "test": 110
+          },
+          "leather": {
+            "train_good": 245,
+            "test": 124
+          },
+          "metal_nut": {
+            "train_good": 220,
+            "test": 115
+          },
+          "pill": {
+            "train_good": 267,
+            "test": 167
+          },
+          "screw": {
+            "train_good": 320,
+            "test": 160
+          },
+          "tile": {
+            "train_good": 230,
+            "test": 117
+          },
+          "toothbrush": {
+            "train_good": 60,
+            "test": 42
+          },
+          "transistor": {
+            "train_good": 213,
+            "test": 100
+          },
+          "wood": {
+            "train_good": 247,
+            "test": 79
+          },
+          "zipper": {
+            "train_good": 240,
+            "test": 151
+          }
+        },
+        "official_test_full_final_gate": true
+      },
+      "split_files": {
+        "train": "data/splits/mvtec_ad_train.txt",
+        "validation": "data/splits/mvtec_ad_validation.txt",
+        "test": "data/splits/mvtec_ad_test.txt"
+      }
+    },
+    {
+      "dataset_key": "neu_det",
+      "dataset_name": "NEU-DET",
+      "dataset_version": "kaggle-mirror-kaustubhdikshit-neu-surface-defect-database",
+      "official_scale": "1800 images, 1800 XML annotations, 6 classes",
+      "method": "Ignore mirror-provided split; pair image/XML globally by stem, then freeze 70/10/20 stratified class split with 210/30/60 per class.",
+      "sampling_seed": 42,
+      "counts": {
+        "train": 1260,
+        "validation": 180,
+        "test": 360
+      },
+      "hashes": {
+        "train": "dd1cc116458b0af72e3c48dbccb8638ff9c04be8b1a85c537936643271bdbad3",
+        "validation": "57b7df52a09c1c477010d3bf95cad1eba0042187d54e12fe79821a7ca4301210",
+        "test": "959837c28b9079a41f0fd7cf16b9aa9ba4cd3f88692f30a74ae792ea2563d5ff"
+      },
+      "split_hash": "5e67b92a24c893df622702fab7e0af9f0eed4af3f23a2cf21d6a91ef63bb67cf",
+      "metadata": {
+        "class_split_counts": {
+          "crazing": {
+            "train": 210,
+            "validation": 30,
+            "test": 60
+          },
+          "inclusion": {
+            "train": 210,
+            "validation": 30,
+            "test": 60
+          },
+          "patches": {
+            "train": 210,
+            "validation": 30,
+            "test": 60
+          },
+          "pitted_surface": {
+            "train": 210,
+            "validation": 30,
+            "test": 60
+          },
+          "rolled-in_scale": {
+            "train": 210,
+            "validation": 30,
+            "test": 60
+          },
+          "scratches": {
+            "train": 210,
+            "validation": 30,
+            "test": 60
+          }
+        },
+        "paired_sample_count": 1800,
+        "mirror_split_mismatch_fixed": "crazing_240 image/xml are paired before split assignment"
+      },
+      "split_files": {
+        "train": "data/splits/neu_det_train.txt",
+        "validation": "data/splits/neu_det_validation.txt",
+        "test": "data/splits/neu_det_test.txt"
+      }
+    },
+    {
+      "dataset_key": "cityflow",
+      "dataset_name": "CityFlow",
+      "dataset_version": "AICity22-Track1-CityFlowV2",
+      "official_scale": "camera_dirs=65",
+      "method": "Freeze official train/validation/test camera directories; relation statistics are derived from AI City eval ground-truth files.",
+      "sampling_seed": 42,
+      "counts": {
+        "train": 36,
+        "validation": 23,
+        "test": 6
+      },
+      "hashes": {
+        "train": "2d50acaa9253ca84279073a950c2e26e54d19a44d29585d4f97b6ece665b278c",
+        "validation": "69b487b293b778dfa0d64858dbee1c1851765160a1f475e6b83b1a873bacf810",
+        "test": "b20c39023dc7cd41997e16903accb94b83a0af7d6b2bf1e5dedaeeead5a7279d"
+      },
+      "split_hash": "bad0ce793c0796fefbe49cd05b9dd96dc6cc4b53396a0108e33c0f23f0874d5a",
+      "metadata": {
+        "vehicle_id_count": 666,
+        "relation_node_count": 3037,
+        "relation_edge_count": 253374,
+        "relation_group_count": 666,
+        "conflict_group_count": 60,
+        "camera_dir_count": 65
+      },
+      "split_files": {
+        "train": "data/splits/cityflow_train.txt",
+        "validation": "data/splits/cityflow_validation.txt",
+        "test": "data/splits/cityflow_test.txt"
+      }
+    },
+    {
+      "dataset_key": "ua_detrac",
+      "dataset_name": "UA-DETRAC",
+      "dataset_version": "kaggle-mirror-bratjay-ua-detrac-orig",
+      "official_scale": "sequences=100, frames=140131, train_xml=60, test_xml=40",
+      "method": "Use official-style annotation split from mirror: train XML sequences as validation/reference only, test XML sequences as Final Gate; no graph training.",
+      "sampling_seed": 42,
+      "counts": {
+        "train": 0,
+        "validation": 60,
+        "test": 40
+      },
+      "hashes": {
+        "train": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+        "validation": "5b841b921ca424e5446d6107968497df54d480a110e91e8f8545026e936f660a",
+        "test": "3d9eb554a51f4e34fa4759ec38e86f4c183361f317fb7ddc4e298eab721582fa"
+      },
+      "split_hash": "bfca3dfe8abc6c406468ade7981b9fd3ccb6ebe9bd425a7aea867fdeb00299f8",
+      "metadata": {
+        "sequence_count": 100,
+        "frame_count": 140131,
+        "train_xml_count": 60,
+        "test_xml_count": 40
+      },
+      "split_files": {
+        "train": "data/splits/ua_detrac_train.txt",
+        "validation": "data/splits/ua_detrac_validation.txt",
+        "test": "data/splits/ua_detrac_test.txt"
+      }
+    }
+  ]
+}

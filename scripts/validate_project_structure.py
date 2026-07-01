@@ -40,6 +40,9 @@ REQUIRED_FILES = [
     "dataset_manifest.template.json",
     "manifest.template.json",
     "conflict_gt_manifest.template.json",
+    "dataset_manifest.json",
+    "manifest.json",
+    "conflict_gt_manifest.json",
     "configs/network_profiles.yaml",
     "configs/workload_profiles.yaml",
     "configs/models.yaml",
@@ -49,6 +52,10 @@ REQUIRED_FILES = [
     "scripts/inspect_datasets.py",
     "scripts/validate_dataset_presence.py",
     "scripts/preflight_runtime_smoke.py",
+    "scripts/validate_splits.py",
+    "scripts/generate_formal_manifests.py",
+    "docs/DATASET_SPLIT_STRATEGY.md",
+    "data/splits/frozen_splits.json",
 ]
 
 GITIGNORE_PATTERNS = [

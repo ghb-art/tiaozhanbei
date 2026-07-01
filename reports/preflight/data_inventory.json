@@ -1,7 +1,7 @@
 {
   "inventory_version": "0.1",
   "created_by": "scripts/inspect_datasets.py",
-  "created_ts": "2026-07-01T03:54:04.474135+00:00",
+  "created_ts": "2026-07-01T08:24:15.065492+00:00",
   "project_root": "E:\\Study\\code\\tiaozhanbei",
   "datasets_root": "data/datasets",
   "notes": [
@@ -15,8 +15,8 @@
     "payload_dataset_count": 8,
     "empty_dataset_count": 0,
     "missing_dataset_count": 0,
-    "total_payload_files": 3945,
-    "total_payload_bytes": 32323566575,
+    "total_payload_files": 152690,
+    "total_payload_bytes": 67164861206,
     "missing_dataset_keys": [],
     "empty_dataset_keys": [],
     "payload_dataset_keys": [
@@ -438,25 +438,123 @@
       "purpose": "Industrial defect detection support and final evaluation.",
       "exists": true,
       "status": "has_payload",
-      "file_count": 2,
-      "payload_file_count": 1,
-      "directory_count": 0,
-      "total_bytes": 5264982680,
-      "payload_bytes": 5264982680,
+      "file_count": 6646,
+      "payload_file_count": 6645,
+      "directory_count": 237,
+      "total_bytes": 10536229804,
+      "payload_bytes": 10536229804,
       "extensions": {
+        ".png": 6612,
+        ".txt": 32,
         ".xz": 1
       },
       "top_level_entries": [
-        "mvtec_anomaly_detection.tar.xz"
+        "mvtec_anomaly_detection.tar.xz",
+        "mvtec_anomaly_detection/"
       ],
       "sample_payload_files": [
         {
           "path": "data/datasets/mvtec_ad/mvtec_anomaly_detection.tar.xz",
           "size_bytes": 5264982680,
           "modified_ts": "2026-06-30T09:50:32.500847+00:00"
+        },
+        {
+          "path": "data/datasets/mvtec_ad/mvtec_anomaly_detection/license.txt",
+          "size_bytes": 20845,
+          "modified_ts": "2019-03-07T12:05:34+00:00"
+        },
+        {
+          "path": "data/datasets/mvtec_ad/mvtec_anomaly_detection/readme.txt",
+          "size_bytes": 881,
+          "modified_ts": "2019-03-07T12:05:34+00:00"
+        },
+        {
+          "path": "data/datasets/mvtec_ad/mvtec_anomaly_detection/bottle/license.txt",
+          "size_bytes": 20845,
+          "modified_ts": "2019-03-07T12:07:19+00:00"
+        },
+        {
+          "path": "data/datasets/mvtec_ad/mvtec_anomaly_detection/bottle/readme.txt",
+          "size_bytes": 881,
+          "modified_ts": "2019-03-07T12:07:10+00:00"
+        },
+        {
+          "path": "data/datasets/mvtec_ad/mvtec_anomaly_detection/cable/license.txt",
+          "size_bytes": 20845,
+          "modified_ts": "2019-03-07T12:07:19+00:00"
+        },
+        {
+          "path": "data/datasets/mvtec_ad/mvtec_anomaly_detection/cable/readme.txt",
+          "size_bytes": 881,
+          "modified_ts": "2019-03-07T12:07:10+00:00"
+        },
+        {
+          "path": "data/datasets/mvtec_ad/mvtec_anomaly_detection/capsule/license.txt",
+          "size_bytes": 20845,
+          "modified_ts": "2019-03-07T12:07:19+00:00"
+        },
+        {
+          "path": "data/datasets/mvtec_ad/mvtec_anomaly_detection/capsule/readme.txt",
+          "size_bytes": 881,
+          "modified_ts": "2019-03-07T12:07:10+00:00"
+        },
+        {
+          "path": "data/datasets/mvtec_ad/mvtec_anomaly_detection/carpet/license.txt",
+          "size_bytes": 20845,
+          "modified_ts": "2019-03-07T12:07:19+00:00"
+        },
+        {
+          "path": "data/datasets/mvtec_ad/mvtec_anomaly_detection/carpet/readme.txt",
+          "size_bytes": 881,
+          "modified_ts": "2019-03-07T12:07:10+00:00"
+        },
+        {
+          "path": "data/datasets/mvtec_ad/mvtec_anomaly_detection/grid/license.txt",
+          "size_bytes": 20845,
+          "modified_ts": "2019-03-07T12:07:19+00:00"
+        },
+        {
+          "path": "data/datasets/mvtec_ad/mvtec_anomaly_detection/grid/readme.txt",
+          "size_bytes": 881,
+          "modified_ts": "2019-03-07T12:07:10+00:00"
+        },
+        {
+          "path": "data/datasets/mvtec_ad/mvtec_anomaly_detection/hazelnut/license.txt",
+          "size_bytes": 20845,
+          "modified_ts": "2019-03-07T12:07:19+00:00"
+        },
+        {
+          "path": "data/datasets/mvtec_ad/mvtec_anomaly_detection/hazelnut/readme.txt",
+          "size_bytes": 881,
+          "modified_ts": "2019-03-07T12:07:10+00:00"
+        },
+        {
+          "path": "data/datasets/mvtec_ad/mvtec_anomaly_detection/leather/license.txt",
+          "size_bytes": 20845,
+          "modified_ts": "2019-03-07T12:07:19+00:00"
+        },
+        {
+          "path": "data/datasets/mvtec_ad/mvtec_anomaly_detection/leather/readme.txt",
+          "size_bytes": 881,
+          "modified_ts": "2019-03-07T12:07:10+00:00"
+        },
+        {
+          "path": "data/datasets/mvtec_ad/mvtec_anomaly_detection/metal_nut/license.txt",
+          "size_bytes": 20845,
+          "modified_ts": "2019-03-07T12:07:19+00:00"
+        },
+        {
+          "path": "data/datasets/mvtec_ad/mvtec_anomaly_detection/metal_nut/readme.txt",
+          "size_bytes": 881,
+          "modified_ts": "2019-03-07T12:07:10+00:00"
+        },
+        {
+          "path": "data/datasets/mvtec_ad/mvtec_anomaly_detection/pill/license.txt",
+          "size_bytes": 20845,
+          "modified_ts": "2019-03-07T12:07:19+00:00"
         }
       ],
-      "last_modified_ts": "2026-06-30T09:50:32.500847+00:00"
+      "last_modified_ts": "2026-07-01T08:10:28.878013+00:00"
     },
     {
       "dataset_key": "neu_det",
@@ -590,25 +688,127 @@
       "purpose": "Traffic multi-camera relation and conflict evaluation.",
       "exists": true,
       "status": "has_payload",
-      "file_count": 2,
-      "payload_file_count": 1,
-      "directory_count": 0,
-      "total_bytes": 16912529116,
-      "payload_bytes": 16912529116,
+      "file_count": 1064,
+      "payload_file_count": 1063,
+      "directory_count": 333,
+      "total_bytes": 34973435649,
+      "payload_bytes": 34973435649,
       "extensions": {
+        ".avi": 65,
+        ".jpg": 65,
+        ".pdf": 1,
+        ".png": 4,
+        ".py": 1,
+        ".txt": 926,
         ".zip": 1
       },
       "top_level_entries": [
-        "AICity22_Track1_MTMC_Tracking.zip"
+        "AICity22_Track1_MTMC_Tracking.zip",
+        "AICity22_Track1_MTMC_Tracking/"
       ],
       "sample_payload_files": [
         {
           "path": "data/datasets/cityflow/AICity22_Track1_MTMC_Tracking.zip",
           "size_bytes": 16912529116,
           "modified_ts": "2026-06-30T10:59:23.943654+00:00"
+        },
+        {
+          "path": "data/datasets/cityflow/AICity22_Track1_MTMC_Tracking/Dataset License AIC2022.pdf",
+          "size_bytes": 131193,
+          "modified_ts": "2026-07-01T08:12:08.839060+00:00"
+        },
+        {
+          "path": "data/datasets/cityflow/AICity22_Track1_MTMC_Tracking/list_cam.txt",
+          "size_bytes": 1279,
+          "modified_ts": "2026-07-01T08:12:08.870125+00:00"
+        },
+        {
+          "path": "data/datasets/cityflow/AICity22_Track1_MTMC_Tracking/ReadMe.txt",
+          "size_bytes": 6784,
+          "modified_ts": "2026-07-01T08:12:08.870125+00:00"
+        },
+        {
+          "path": "data/datasets/cityflow/AICity22_Track1_MTMC_Tracking/cam_framenum/S01.txt",
+          "size_bytes": 55,
+          "modified_ts": "2026-07-01T08:12:08.821779+00:00"
+        },
+        {
+          "path": "data/datasets/cityflow/AICity22_Track1_MTMC_Tracking/cam_framenum/S02.txt",
+          "size_bytes": 44,
+          "modified_ts": "2026-07-01T08:12:08.820825+00:00"
+        },
+        {
+          "path": "data/datasets/cityflow/AICity22_Track1_MTMC_Tracking/cam_framenum/S03.txt",
+          "size_bytes": 66,
+          "modified_ts": "2026-07-01T08:12:08.821779+00:00"
+        },
+        {
+          "path": "data/datasets/cityflow/AICity22_Track1_MTMC_Tracking/cam_framenum/S04.txt",
+          "size_bytes": 250,
+          "modified_ts": "2026-07-01T08:12:08.820825+00:00"
+        },
+        {
+          "path": "data/datasets/cityflow/AICity22_Track1_MTMC_Tracking/cam_framenum/S05.txt",
+          "size_bytes": 209,
+          "modified_ts": "2026-07-01T08:12:08.820825+00:00"
+        },
+        {
+          "path": "data/datasets/cityflow/AICity22_Track1_MTMC_Tracking/cam_framenum/S06.txt",
+          "size_bytes": 66,
+          "modified_ts": "2026-07-01T08:12:08.822779+00:00"
+        },
+        {
+          "path": "data/datasets/cityflow/AICity22_Track1_MTMC_Tracking/cam_loc/S01.png",
+          "size_bytes": 863384,
+          "modified_ts": "2026-07-01T08:12:08.825290+00:00"
+        },
+        {
+          "path": "data/datasets/cityflow/AICity22_Track1_MTMC_Tracking/cam_loc/S02.png",
+          "size_bytes": 761955,
+          "modified_ts": "2026-07-01T08:12:08.827290+00:00"
+        },
+        {
+          "path": "data/datasets/cityflow/AICity22_Track1_MTMC_Tracking/cam_loc/S0345.png",
+          "size_bytes": 624600,
+          "modified_ts": "2026-07-01T08:12:08.828444+00:00"
+        },
+        {
+          "path": "data/datasets/cityflow/AICity22_Track1_MTMC_Tracking/cam_loc/S06.png",
+          "size_bytes": 2169906,
+          "modified_ts": "2026-07-01T08:12:08.836209+00:00"
+        },
+        {
+          "path": "data/datasets/cityflow/AICity22_Track1_MTMC_Tracking/cam_timestamp/S01.txt",
+          "size_bytes": 56,
+          "modified_ts": "2026-07-01T08:12:08.838053+00:00"
+        },
+        {
+          "path": "data/datasets/cityflow/AICity22_Track1_MTMC_Tracking/cam_timestamp/S02.txt",
+          "size_bytes": 43,
+          "modified_ts": "2026-07-01T08:12:08.837110+00:00"
+        },
+        {
+          "path": "data/datasets/cityflow/AICity22_Track1_MTMC_Tracking/cam_timestamp/S03.txt",
+          "size_bytes": 67,
+          "modified_ts": "2026-07-01T08:12:08.838053+00:00"
+        },
+        {
+          "path": "data/datasets/cityflow/AICity22_Track1_MTMC_Tracking/cam_timestamp/S04.txt",
+          "size_bytes": 333,
+          "modified_ts": "2026-07-01T08:12:08.836209+00:00"
+        },
+        {
+          "path": "data/datasets/cityflow/AICity22_Track1_MTMC_Tracking/cam_timestamp/S05.txt",
+          "size_bytes": 152,
+          "modified_ts": "2026-07-01T08:12:08.837110+00:00"
+        },
+        {
+          "path": "data/datasets/cityflow/AICity22_Track1_MTMC_Tracking/cam_timestamp/S06.txt",
+          "size_bytes": 48,
+          "modified_ts": "2026-07-01T08:12:08.838053+00:00"
         }
       ],
-      "last_modified_ts": "2026-06-30T10:59:23.943654+00:00"
+      "last_modified_ts": "2026-07-01T08:13:31.388669+00:00"
     },
     {
       "dataset_key": "ua_detrac",
@@ -617,25 +817,139 @@
       "purpose": "Traffic detection and tracking auxiliary evaluation.",
       "exists": true,
       "status": "has_payload",
-      "file_count": 2,
-      "payload_file_count": 1,
-      "directory_count": 0,
-      "total_bytes": 9907608622,
-      "payload_bytes": 9907608622,
+      "file_count": 141041,
+      "payload_file_count": 141040,
+      "directory_count": 165,
+      "total_bytes": 21416749596,
+      "payload_bytes": 21416749596,
       "extensions": {
+        ".c": 9,
+        ".cpp": 1,
+        ".dll": 10,
+        ".exe": 6,
+        ".html": 2,
+        ".jpg": 140131,
+        ".m": 573,
+        ".mat": 6,
+        ".md": 2,
+        ".mexa64": 10,
+        ".mexmaci": 10,
+        ".mexmaci64": 10,
+        ".mexw32": 10,
+        ".mexw64": 10,
+        ".pdb": 2,
+        ".png": 16,
+        ".txt": 131,
+        ".xml": 100,
         ".zip": 1
       },
       "top_level_entries": [
-        "ua_detrac_kaggle_archive.zip"
+        "ua_detrac_kaggle_archive.zip",
+        "ua_detrac_kaggle_archive/"
       ],
       "sample_payload_files": [
         {
           "path": "data/datasets/ua_detrac/ua_detrac_kaggle_archive.zip",
           "size_bytes": 9907608622,
           "modified_ts": "2026-06-30T16:38:16.381265+00:00"
+        },
+        {
+          "path": "data/datasets/ua_detrac/ua_detrac_kaggle_archive/DETRAC-Images/DETRAC-Images/MVI_20011/img00001.jpg",
+          "size_bytes": 80170,
+          "modified_ts": "2026-07-01T08:14:52.731621+00:00"
+        },
+        {
+          "path": "data/datasets/ua_detrac/ua_detrac_kaggle_archive/DETRAC-Images/DETRAC-Images/MVI_20011/img00002.jpg",
+          "size_bytes": 81502,
+          "modified_ts": "2026-07-01T08:14:52.732669+00:00"
+        },
+        {
+          "path": "data/datasets/ua_detrac/ua_detrac_kaggle_archive/DETRAC-Images/DETRAC-Images/MVI_20011/img00003.jpg",
+          "size_bytes": 81683,
+          "modified_ts": "2026-07-01T08:14:52.732669+00:00"
+        },
+        {
+          "path": "data/datasets/ua_detrac/ua_detrac_kaggle_archive/DETRAC-Images/DETRAC-Images/MVI_20011/img00004.jpg",
+          "size_bytes": 81216,
+          "modified_ts": "2026-07-01T08:14:52.734192+00:00"
+        },
+        {
+          "path": "data/datasets/ua_detrac/ua_detrac_kaggle_archive/DETRAC-Images/DETRAC-Images/MVI_20011/img00005.jpg",
+          "size_bytes": 81321,
+          "modified_ts": "2026-07-01T08:14:52.734192+00:00"
+        },
+        {
+          "path": "data/datasets/ua_detrac/ua_detrac_kaggle_archive/DETRAC-Images/DETRAC-Images/MVI_20011/img00006.jpg",
+          "size_bytes": 81330,
+          "modified_ts": "2026-07-01T08:14:52.735693+00:00"
+        },
+        {
+          "path": "data/datasets/ua_detrac/ua_detrac_kaggle_archive/DETRAC-Images/DETRAC-Images/MVI_20011/img00007.jpg",
+          "size_bytes": 80843,
+          "modified_ts": "2026-07-01T08:14:52.736698+00:00"
+        },
+        {
+          "path": "data/datasets/ua_detrac/ua_detrac_kaggle_archive/DETRAC-Images/DETRAC-Images/MVI_20011/img00008.jpg",
+          "size_bytes": 80957,
+          "modified_ts": "2026-07-01T08:14:52.736698+00:00"
+        },
+        {
+          "path": "data/datasets/ua_detrac/ua_detrac_kaggle_archive/DETRAC-Images/DETRAC-Images/MVI_20011/img00009.jpg",
+          "size_bytes": 80102,
+          "modified_ts": "2026-07-01T08:14:52.737697+00:00"
+        },
+        {
+          "path": "data/datasets/ua_detrac/ua_detrac_kaggle_archive/DETRAC-Images/DETRAC-Images/MVI_20011/img00010.jpg",
+          "size_bytes": 80716,
+          "modified_ts": "2026-07-01T08:14:52.737697+00:00"
+        },
+        {
+          "path": "data/datasets/ua_detrac/ua_detrac_kaggle_archive/DETRAC-Images/DETRAC-Images/MVI_20011/img00011.jpg",
+          "size_bytes": 80375,
+          "modified_ts": "2026-07-01T08:14:52.738697+00:00"
+        },
+        {
+          "path": "data/datasets/ua_detrac/ua_detrac_kaggle_archive/DETRAC-Images/DETRAC-Images/MVI_20011/img00012.jpg",
+          "size_bytes": 80378,
+          "modified_ts": "2026-07-01T08:14:52.738697+00:00"
+        },
+        {
+          "path": "data/datasets/ua_detrac/ua_detrac_kaggle_archive/DETRAC-Images/DETRAC-Images/MVI_20011/img00013.jpg",
+          "size_bytes": 76020,
+          "modified_ts": "2026-07-01T08:14:52.738697+00:00"
+        },
+        {
+          "path": "data/datasets/ua_detrac/ua_detrac_kaggle_archive/DETRAC-Images/DETRAC-Images/MVI_20011/img00014.jpg",
+          "size_bytes": 67885,
+          "modified_ts": "2026-07-01T08:14:52.739718+00:00"
+        },
+        {
+          "path": "data/datasets/ua_detrac/ua_detrac_kaggle_archive/DETRAC-Images/DETRAC-Images/MVI_20011/img00015.jpg",
+          "size_bytes": 62029,
+          "modified_ts": "2026-07-01T08:14:52.740698+00:00"
+        },
+        {
+          "path": "data/datasets/ua_detrac/ua_detrac_kaggle_archive/DETRAC-Images/DETRAC-Images/MVI_20011/img00016.jpg",
+          "size_bytes": 75356,
+          "modified_ts": "2026-07-01T08:14:52.740698+00:00"
+        },
+        {
+          "path": "data/datasets/ua_detrac/ua_detrac_kaggle_archive/DETRAC-Images/DETRAC-Images/MVI_20011/img00017.jpg",
+          "size_bytes": 75041,
+          "modified_ts": "2026-07-01T08:14:52.741722+00:00"
+        },
+        {
+          "path": "data/datasets/ua_detrac/ua_detrac_kaggle_archive/DETRAC-Images/DETRAC-Images/MVI_20011/img00018.jpg",
+          "size_bytes": 74907,
+          "modified_ts": "2026-07-01T08:14:52.741722+00:00"
+        },
+        {
+          "path": "data/datasets/ua_detrac/ua_detrac_kaggle_archive/DETRAC-Images/DETRAC-Images/MVI_20011/img00019.jpg",
+          "size_bytes": 74772,
+          "modified_ts": "2026-07-01T08:14:52.742697+00:00"
         }
       ],
-      "last_modified_ts": "2026-06-30T16:38:16.381265+00:00"
+      "last_modified_ts": "2026-07-01T08:16:29.651809+00:00"
     }
   ]
 }

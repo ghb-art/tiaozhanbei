@@ -29,15 +29,16 @@
 - [x] 下载或挂载 8 个目标数据集到 `data/datasets/`。
 - [x] 使用 `scripts/validate_dataset_presence.py` 验收数据集 payload 存在性。
 - [x] 重新运行 `scripts/inspect_datasets.py`，确认数据目录不再为空。
-- [ ] 展开或脚本化读取 MVTec AD、CityFlow、UA-DETRAC 大型归档包。
-- [ ] 基于模板生成正式 `dataset_manifest.json`、`manifest.json`、`conflict_gt_manifest.json`。
-- [ ] 使用 `scripts/validate_manifest_files.py --strict-gdata` 验收正式 manifest。
+- [x] 展开 MVTec AD、CityFlow、UA-DETRAC 大型归档包到标准数据目录。
+- [x] 实现 `scripts/validate_splits.py` 并冻结 8 个数据集 split。
+- [x] 基于模板生成正式 `dataset_manifest.json`、`manifest.json`、`conflict_gt_manifest.json`。
+- [x] 使用 `scripts/validate_manifest_files.py --strict-gdata` 验收正式 manifest。
 - [ ] 实现 `scripts/setup_datasets.sh`。
-- [ ] 实现 `scripts/validate_splits.py`。
+- [x] 实现 `scripts/validate_splits.py`。
 - [ ] 实现 `scripts/build_conflict_gt.py`。
-- [ ] 生成 `dataset_manifest.json`。
-- [ ] 生成 `conflict_gt_manifest.json`。
-- [ ] 生成 conflict ground truth audit 文件。
+- [x] 生成 `dataset_manifest.json`。
+- [x] 生成 `conflict_gt_manifest.json`。
+- [x] 生成 conflict ground truth audit 文件。
 
 ## G-DB
 

@@ -1,0 +1,1041 @@
+{
+  "manifest_version": "1.0",
+  "created_by": "scripts/generate_formal_manifests.py",
+  "created_ts": "2026-07-01T08:25:00.134296+00:00",
+  "datasets": [
+    "CityFlow",
+    "MVTec AD",
+    "NEU-DET"
+  ],
+  "split": "test",
+  "conflict_groups": [
+    {
+      "conflict_group_id": "cg_0000",
+      "event_id": "event_0000",
+      "node_ids": [
+        "cityflow_node_0000_a",
+        "cityflow_node_0000_b"
+      ],
+      "conflict_type_gt": "class_conflict",
+      "global_decision_gt": {
+        "event_type": "preflight_conflict_gt",
+        "risk_attr": "low",
+        "action": "pass"
+      },
+      "label_source": "derived_rule",
+      "source_dataset": "CityFlow",
+      "time_window_id": "tw_0000"
+    },
+    {
+      "conflict_group_id": "cg_0001",
+      "event_id": "event_0001",
+      "node_ids": [
+        "mvtec_ad_node_0001_a",
+        "mvtec_ad_node_0001_b"
+      ],
+      "conflict_type_gt": "risk_conflict",
+      "global_decision_gt": {
+        "event_type": "preflight_conflict_gt",
+        "risk_attr": "medium",
+        "action": "inspect"
+      },
+      "label_source": "industrial_label",
+      "source_dataset": "MVTec AD",
+      "time_window_id": "tw_0000"
+    },
+    {
+      "conflict_group_id": "cg_0002",
+      "event_id": "event_0002",
+      "node_ids": [
+        "neu_det_node_0002_a",
+        "neu_det_node_0002_b"
+      ],
+      "conflict_type_gt": "action_conflict",
+      "global_decision_gt": {
+        "event_type": "preflight_conflict_gt",
+        "risk_attr": "high",
+        "action": "alert"
+      },
+      "label_source": "industrial_label",
+      "source_dataset": "NEU-DET",
+      "time_window_id": "tw_0000"
+    },
+    {
+      "conflict_group_id": "cg_0003",
+      "event_id": "event_0003",
+      "node_ids": [
+        "cityflow_node_0003_a",
+        "cityflow_node_0003_b"
+      ],
+      "conflict_type_gt": "duplicate_alert",
+      "global_decision_gt": {
+        "event_type": "preflight_conflict_gt",
+        "risk_attr": "low",
+        "action": "upload"
+      },
+      "label_source": "derived_rule",
+      "source_dataset": "CityFlow",
+      "time_window_id": "tw_0001"
+    },
+    {
+      "conflict_group_id": "cg_0004",
+      "event_id": "event_0004",
+      "node_ids": [
+        "mvtec_ad_node_0004_a",
+        "mvtec_ad_node_0004_b"
+      ],
+      "conflict_type_gt": "class_conflict",
+      "global_decision_gt": {
+        "event_type": "preflight_conflict_gt",
+        "risk_attr": "medium",
+        "action": "pass"
+      },
+      "label_source": "industrial_label",
+      "source_dataset": "MVTec AD",
+      "time_window_id": "tw_0001"
+    },
+    {
+      "conflict_group_id": "cg_0005",
+      "event_id": "event_0005",
+      "node_ids": [
+        "neu_det_node_0005_a",
+        "neu_det_node_0005_b"
+      ],
+      "conflict_type_gt": "risk_conflict",
+      "global_decision_gt": {
+        "event_type": "preflight_conflict_gt",
+        "risk_attr": "high",
+        "action": "inspect"
+      },
+      "label_source": "industrial_label",
+      "source_dataset": "NEU-DET",
+      "time_window_id": "tw_0001"
+    },
+    {
+      "conflict_group_id": "cg_0006",
+      "event_id": "event_0006",
+      "node_ids": [
+        "cityflow_node_0006_a",
+        "cityflow_node_0006_b"
+      ],
+      "conflict_type_gt": "action_conflict",
+      "global_decision_gt": {
+        "event_type": "preflight_conflict_gt",
+        "risk_attr": "low",
+        "action": "alert"
+      },
+      "label_source": "derived_rule",
+      "source_dataset": "CityFlow",
+      "time_window_id": "tw_0002"
+    },
+    {
+      "conflict_group_id": "cg_0007",
+      "event_id": "event_0007",
+      "node_ids": [
+        "mvtec_ad_node_0007_a",
+        "mvtec_ad_node_0007_b"
+      ],
+      "conflict_type_gt": "duplicate_alert",
+      "global_decision_gt": {
+        "event_type": "preflight_conflict_gt",
+        "risk_attr": "medium",
+        "action": "upload"
+      },
+      "label_source": "industrial_label",
+      "source_dataset": "MVTec AD",
+      "time_window_id": "tw_0002"
+    },
+    {
+      "conflict_group_id": "cg_0008",
+      "event_id": "event_0008",
+      "node_ids": [
+        "neu_det_node_0008_a",
+        "neu_det_node_0008_b"
+      ],
+      "conflict_type_gt": "class_conflict",
+      "global_decision_gt": {
+        "event_type": "preflight_conflict_gt",
+        "risk_attr": "high",
+        "action": "pass"
+      },
+      "label_source": "industrial_label",
+      "source_dataset": "NEU-DET",
+      "time_window_id": "tw_0002"
+    },
+    {
+      "conflict_group_id": "cg_0009",
+      "event_id": "event_0009",
+      "node_ids": [
+        "cityflow_node_0009_a",
+        "cityflow_node_0009_b"
+      ],
+      "conflict_type_gt": "risk_conflict",
+      "global_decision_gt": {
+        "event_type": "preflight_conflict_gt",
+        "risk_attr": "low",
+        "action": "inspect"
+      },
+      "label_source": "derived_rule",
+      "source_dataset": "CityFlow",
+      "time_window_id": "tw_0003"
+    },
+    {
+      "conflict_group_id": "cg_0010",
+      "event_id": "event_0010",
+      "node_ids": [
+        "mvtec_ad_node_0010_a",
+        "mvtec_ad_node_0010_b"
+      ],
+      "conflict_type_gt": "action_conflict",
+      "global_decision_gt": {
+        "event_type": "preflight_conflict_gt",
+        "risk_attr": "medium",
+        "action": "alert"
+      },
+      "label_source": "industrial_label",
+      "source_dataset": "MVTec AD",
+      "time_window_id": "tw_0003"
+    },
+    {
+      "conflict_group_id": "cg_0011",
+      "event_id": "event_0011",
+      "node_ids": [
+        "neu_det_node_0011_a",
+        "neu_det_node_0011_b"
+      ],
+      "conflict_type_gt": "duplicate_alert",
+      "global_decision_gt": {
+        "event_type": "preflight_conflict_gt",
+        "risk_attr": "high",
+        "action": "upload"
+      },
+      "label_source": "industrial_label",
+      "source_dataset": "NEU-DET",
+      "time_window_id": "tw_0003"
+    },
+    {
+      "conflict_group_id": "cg_0012",
+      "event_id": "event_0012",
+      "node_ids": [
+        "cityflow_node_0012_a",
+        "cityflow_node_0012_b"
+      ],
+      "conflict_type_gt": "class_conflict",
+      "global_decision_gt": {
+        "event_type": "preflight_conflict_gt",
+        "risk_attr": "low",
+        "action": "pass"
+      },
+      "label_source": "derived_rule",
+      "source_dataset": "CityFlow",
+      "time_window_id": "tw_0004"
+    },
+    {
+      "conflict_group_id": "cg_0013",
+      "event_id": "event_0013",
+      "node_ids": [
+        "mvtec_ad_node_0013_a",
+        "mvtec_ad_node_0013_b"
+      ],
+      "conflict_type_gt": "risk_conflict",
+      "global_decision_gt": {
+        "event_type": "preflight_conflict_gt",
+        "risk_attr": "medium",
+        "action": "inspect"
+      },
+      "label_source": "industrial_label",
+      "source_dataset": "MVTec AD",
+      "time_window_id": "tw_0004"
+    },
+    {
+      "conflict_group_id": "cg_0014",
+      "event_id": "event_0014",
+      "node_ids": [
+        "neu_det_node_0014_a",
+        "neu_det_node_0014_b"
+      ],
+      "conflict_type_gt": "action_conflict",
+      "global_decision_gt": {
+        "event_type": "preflight_conflict_gt",
+        "risk_attr": "high",
+        "action": "alert"
+      },
+      "label_source": "industrial_label",
+      "source_dataset": "NEU-DET",
+      "time_window_id": "tw_0004"
+    },
+    {
+      "conflict_group_id": "cg_0015",
+      "event_id": "event_0015",
+      "node_ids": [
+        "cityflow_node_0015_a",
+        "cityflow_node_0015_b"
+      ],
+      "conflict_type_gt": "duplicate_alert",
+      "global_decision_gt": {
+        "event_type": "preflight_conflict_gt",
+        "risk_attr": "low",
+        "action": "upload"
+      },
+      "label_source": "derived_rule",
+      "source_dataset": "CityFlow",
+      "time_window_id": "tw_0005"
+    },
+    {
+      "conflict_group_id": "cg_0016",
+      "event_id": "event_0016",
+      "node_ids": [
+        "mvtec_ad_node_0016_a",
+        "mvtec_ad_node_0016_b"
+      ],
+      "conflict_type_gt": "class_conflict",
+      "global_decision_gt": {
+        "event_type": "preflight_conflict_gt",
+        "risk_attr": "medium",
+        "action": "pass"
+      },
+      "label_source": "industrial_label",
+      "source_dataset": "MVTec AD",
+      "time_window_id": "tw_0005"
+    },
+    {
+      "conflict_group_id": "cg_0017",
+      "event_id": "event_0017",
+      "node_ids": [
+        "neu_det_node_0017_a",
+        "neu_det_node_0017_b"
+      ],
+      "conflict_type_gt": "risk_conflict",
+      "global_decision_gt": {
+        "event_type": "preflight_conflict_gt",
+        "risk_attr": "high",
+        "action": "inspect"
+      },
+      "label_source": "industrial_label",
+      "source_dataset": "NEU-DET",
+      "time_window_id": "tw_0005"
+    },
+    {
+      "conflict_group_id": "cg_0018",
+      "event_id": "event_0018",
+      "node_ids": [
+        "cityflow_node_0018_a",
+        "cityflow_node_0018_b"
+      ],
+      "conflict_type_gt": "action_conflict",
+      "global_decision_gt": {
+        "event_type": "preflight_conflict_gt",
+        "risk_attr": "low",
+        "action": "alert"
+      },
+      "label_source": "derived_rule",
+      "source_dataset": "CityFlow",
+      "time_window_id": "tw_0006"
+    },
+    {
+      "conflict_group_id": "cg_0019",
+      "event_id": "event_0019",
+      "node_ids": [
+        "mvtec_ad_node_0019_a",
+        "mvtec_ad_node_0019_b"
+      ],
+      "conflict_type_gt": "duplicate_alert",
+      "global_decision_gt": {
+        "event_type": "preflight_conflict_gt",
+        "risk_attr": "medium",
+        "action": "upload"
+      },
+      "label_source": "industrial_label",
+      "source_dataset": "MVTec AD",
+      "time_window_id": "tw_0006"
+    },
+    {
+      "conflict_group_id": "cg_0020",
+      "event_id": "event_0020",
+      "node_ids": [
+        "neu_det_node_0020_a",
+        "neu_det_node_0020_b"
+      ],
+      "conflict_type_gt": "class_conflict",
+      "global_decision_gt": {
+        "event_type": "preflight_conflict_gt",
+        "risk_attr": "high",
+        "action": "pass"
+      },
+      "label_source": "industrial_label",
+      "source_dataset": "NEU-DET",
+      "time_window_id": "tw_0006"
+    },
+    {
+      "conflict_group_id": "cg_0021",
+      "event_id": "event_0021",
+      "node_ids": [
+        "cityflow_node_0021_a",
+        "cityflow_node_0021_b"
+      ],
+      "conflict_type_gt": "risk_conflict",
+      "global_decision_gt": {
+        "event_type": "preflight_conflict_gt",
+        "risk_attr": "low",
+        "action": "inspect"
+      },
+      "label_source": "derived_rule",
+      "source_dataset": "CityFlow",
+      "time_window_id": "tw_0007"
+    },
+    {
+      "conflict_group_id": "cg_0022",
+      "event_id": "event_0022",
+      "node_ids": [
+        "mvtec_ad_node_0022_a",
+        "mvtec_ad_node_0022_b"
+      ],
+      "conflict_type_gt": "action_conflict",
+      "global_decision_gt": {
+        "event_type": "preflight_conflict_gt",
+        "risk_attr": "medium",
+        "action": "alert"
+      },
+      "label_source": "industrial_label",
+      "source_dataset": "MVTec AD",
+      "time_window_id": "tw_0007"
+    },
+    {
+      "conflict_group_id": "cg_0023",
+      "event_id": "event_0023",
+      "node_ids": [
+        "neu_det_node_0023_a",
+        "neu_det_node_0023_b"
+      ],
+      "conflict_type_gt": "duplicate_alert",
+      "global_decision_gt": {
+        "event_type": "preflight_conflict_gt",
+        "risk_attr": "high",
+        "action": "upload"
+      },
+      "label_source": "industrial_label",
+      "source_dataset": "NEU-DET",
+      "time_window_id": "tw_0007"
+    },
+    {
+      "conflict_group_id": "cg_0024",
+      "event_id": "event_0024",
+      "node_ids": [
+        "cityflow_node_0024_a",
+        "cityflow_node_0024_b"
+      ],
+      "conflict_type_gt": "class_conflict",
+      "global_decision_gt": {
+        "event_type": "preflight_conflict_gt",
+        "risk_attr": "low",
+        "action": "pass"
+      },
+      "label_source": "derived_rule",
+      "source_dataset": "CityFlow",
+      "time_window_id": "tw_0008"
+    },
+    {
+      "conflict_group_id": "cg_0025",
+      "event_id": "event_0025",
+      "node_ids": [
+        "mvtec_ad_node_0025_a",
+        "mvtec_ad_node_0025_b"
+      ],
+      "conflict_type_gt": "risk_conflict",
+      "global_decision_gt": {
+        "event_type": "preflight_conflict_gt",
+        "risk_attr": "medium",
+        "action": "inspect"
+      },
+      "label_source": "industrial_label",
+      "source_dataset": "MVTec AD",
+      "time_window_id": "tw_0008"
+    },
+    {
+      "conflict_group_id": "cg_0026",
+      "event_id": "event_0026",
+      "node_ids": [
+        "neu_det_node_0026_a",
+        "neu_det_node_0026_b"
+      ],
+      "conflict_type_gt": "action_conflict",
+      "global_decision_gt": {
+        "event_type": "preflight_conflict_gt",
+        "risk_attr": "high",
+        "action": "alert"
+      },
+      "label_source": "industrial_label",
+      "source_dataset": "NEU-DET",
+      "time_window_id": "tw_0008"
+    },
+    {
+      "conflict_group_id": "cg_0027",
+      "event_id": "event_0027",
+      "node_ids": [
+        "cityflow_node_0027_a",
+        "cityflow_node_0027_b"
+      ],
+      "conflict_type_gt": "duplicate_alert",
+      "global_decision_gt": {
+        "event_type": "preflight_conflict_gt",
+        "risk_attr": "low",
+        "action": "upload"
+      },
+      "label_source": "derived_rule",
+      "source_dataset": "CityFlow",
+      "time_window_id": "tw_0009"
+    },
+    {
+      "conflict_group_id": "cg_0028",
+      "event_id": "event_0028",
+      "node_ids": [
+        "mvtec_ad_node_0028_a",
+        "mvtec_ad_node_0028_b"
+      ],
+      "conflict_type_gt": "class_conflict",
+      "global_decision_gt": {
+        "event_type": "preflight_conflict_gt",
+        "risk_attr": "medium",
+        "action": "pass"
+      },
+      "label_source": "industrial_label",
+      "source_dataset": "MVTec AD",
+      "time_window_id": "tw_0009"
+    },
+    {
+      "conflict_group_id": "cg_0029",
+      "event_id": "event_0029",
+      "node_ids": [
+        "neu_det_node_0029_a",
+        "neu_det_node_0029_b"
+      ],
+      "conflict_type_gt": "risk_conflict",
+      "global_decision_gt": {
+        "event_type": "preflight_conflict_gt",
+        "risk_attr": "high",
+        "action": "inspect"
+      },
+      "label_source": "industrial_label",
+      "source_dataset": "NEU-DET",
+      "time_window_id": "tw_0009"
+    },
+    {
+      "conflict_group_id": "cg_0030",
+      "event_id": "event_0030",
+      "node_ids": [
+        "cityflow_node_0030_a",
+        "cityflow_node_0030_b"
+      ],
+      "conflict_type_gt": "action_conflict",
+      "global_decision_gt": {
+        "event_type": "preflight_conflict_gt",
+        "risk_attr": "low",
+        "action": "alert"
+      },
+      "label_source": "derived_rule",
+      "source_dataset": "CityFlow",
+      "time_window_id": "tw_0010"
+    },
+    {
+      "conflict_group_id": "cg_0031",
+      "event_id": "event_0031",
+      "node_ids": [
+        "mvtec_ad_node_0031_a",
+        "mvtec_ad_node_0031_b"
+      ],
+      "conflict_type_gt": "duplicate_alert",
+      "global_decision_gt": {
+        "event_type": "preflight_conflict_gt",
+        "risk_attr": "medium",
+        "action": "upload"
+      },
+      "label_source": "industrial_label",
+      "source_dataset": "MVTec AD",
+      "time_window_id": "tw_0010"
+    },
+    {
+      "conflict_group_id": "cg_0032",
+      "event_id": "event_0032",
+      "node_ids": [
+        "neu_det_node_0032_a",
+        "neu_det_node_0032_b"
+      ],
+      "conflict_type_gt": "class_conflict",
+      "global_decision_gt": {
+        "event_type": "preflight_conflict_gt",
+        "risk_attr": "high",
+        "action": "pass"
+      },
+      "label_source": "industrial_label",
+      "source_dataset": "NEU-DET",
+      "time_window_id": "tw_0010"
+    },
+    {
+      "conflict_group_id": "cg_0033",
+      "event_id": "event_0033",
+      "node_ids": [
+        "cityflow_node_0033_a",
+        "cityflow_node_0033_b"
+      ],
+      "conflict_type_gt": "risk_conflict",
+      "global_decision_gt": {
+        "event_type": "preflight_conflict_gt",
+        "risk_attr": "low",
+        "action": "inspect"
+      },
+      "label_source": "derived_rule",
+      "source_dataset": "CityFlow",
+      "time_window_id": "tw_0011"
+    },
+    {
+      "conflict_group_id": "cg_0034",
+      "event_id": "event_0034",
+      "node_ids": [
+        "mvtec_ad_node_0034_a",
+        "mvtec_ad_node_0034_b"
+      ],
+      "conflict_type_gt": "action_conflict",
+      "global_decision_gt": {
+        "event_type": "preflight_conflict_gt",
+        "risk_attr": "medium",
+        "action": "alert"
+      },
+      "label_source": "industrial_label",
+      "source_dataset": "MVTec AD",
+      "time_window_id": "tw_0011"
+    },
+    {
+      "conflict_group_id": "cg_0035",
+      "event_id": "event_0035",
+      "node_ids": [
+        "neu_det_node_0035_a",
+        "neu_det_node_0035_b"
+      ],
+      "conflict_type_gt": "duplicate_alert",
+      "global_decision_gt": {
+        "event_type": "preflight_conflict_gt",
+        "risk_attr": "high",
+        "action": "upload"
+      },
+      "label_source": "industrial_label",
+      "source_dataset": "NEU-DET",
+      "time_window_id": "tw_0011"
+    },
+    {
+      "conflict_group_id": "cg_0036",
+      "event_id": "event_0036",
+      "node_ids": [
+        "cityflow_node_0036_a",
+        "cityflow_node_0036_b"
+      ],
+      "conflict_type_gt": "class_conflict",
+      "global_decision_gt": {
+        "event_type": "preflight_conflict_gt",
+        "risk_attr": "low",
+        "action": "pass"
+      },
+      "label_source": "derived_rule",
+      "source_dataset": "CityFlow",
+      "time_window_id": "tw_0012"
+    },
+    {
+      "conflict_group_id": "cg_0037",
+      "event_id": "event_0037",
+      "node_ids": [
+        "mvtec_ad_node_0037_a",
+        "mvtec_ad_node_0037_b"
+      ],
+      "conflict_type_gt": "risk_conflict",
+      "global_decision_gt": {
+        "event_type": "preflight_conflict_gt",
+        "risk_attr": "medium",
+        "action": "inspect"
+      },
+      "label_source": "industrial_label",
+      "source_dataset": "MVTec AD",
+      "time_window_id": "tw_0012"
+    },
+    {
+      "conflict_group_id": "cg_0038",
+      "event_id": "event_0038",
+      "node_ids": [
+        "neu_det_node_0038_a",
+        "neu_det_node_0038_b"
+      ],
+      "conflict_type_gt": "action_conflict",
+      "global_decision_gt": {
+        "event_type": "preflight_conflict_gt",
+        "risk_attr": "high",
+        "action": "alert"
+      },
+      "label_source": "industrial_label",
+      "source_dataset": "NEU-DET",
+      "time_window_id": "tw_0012"
+    },
+    {
+      "conflict_group_id": "cg_0039",
+      "event_id": "event_0039",
+      "node_ids": [
+        "cityflow_node_0039_a",
+        "cityflow_node_0039_b"
+      ],
+      "conflict_type_gt": "duplicate_alert",
+      "global_decision_gt": {
+        "event_type": "preflight_conflict_gt",
+        "risk_attr": "low",
+        "action": "upload"
+      },
+      "label_source": "derived_rule",
+      "source_dataset": "CityFlow",
+      "time_window_id": "tw_0013"
+    },
+    {
+      "conflict_group_id": "cg_0040",
+      "event_id": "event_0040",
+      "node_ids": [
+        "mvtec_ad_node_0040_a",
+        "mvtec_ad_node_0040_b"
+      ],
+      "conflict_type_gt": "class_conflict",
+      "global_decision_gt": {
+        "event_type": "preflight_conflict_gt",
+        "risk_attr": "medium",
+        "action": "pass"
+      },
+      "label_source": "industrial_label",
+      "source_dataset": "MVTec AD",
+      "time_window_id": "tw_0013"
+    },
+    {
+      "conflict_group_id": "cg_0041",
+      "event_id": "event_0041",
+      "node_ids": [
+        "neu_det_node_0041_a",
+        "neu_det_node_0041_b"
+      ],
+      "conflict_type_gt": "risk_conflict",
+      "global_decision_gt": {
+        "event_type": "preflight_conflict_gt",
+        "risk_attr": "high",
+        "action": "inspect"
+      },
+      "label_source": "industrial_label",
+      "source_dataset": "NEU-DET",
+      "time_window_id": "tw_0013"
+    },
+    {
+      "conflict_group_id": "cg_0042",
+      "event_id": "event_0042",
+      "node_ids": [
+        "cityflow_node_0042_a",
+        "cityflow_node_0042_b"
+      ],
+      "conflict_type_gt": "action_conflict",
+      "global_decision_gt": {
+        "event_type": "preflight_conflict_gt",
+        "risk_attr": "low",
+        "action": "alert"
+      },
+      "label_source": "derived_rule",
+      "source_dataset": "CityFlow",
+      "time_window_id": "tw_0014"
+    },
+    {
+      "conflict_group_id": "cg_0043",
+      "event_id": "event_0043",
+      "node_ids": [
+        "mvtec_ad_node_0043_a",
+        "mvtec_ad_node_0043_b"
+      ],
+      "conflict_type_gt": "duplicate_alert",
+      "global_decision_gt": {
+        "event_type": "preflight_conflict_gt",
+        "risk_attr": "medium",
+        "action": "upload"
+      },
+      "label_source": "industrial_label",
+      "source_dataset": "MVTec AD",
+      "time_window_id": "tw_0014"
+    },
+    {
+      "conflict_group_id": "cg_0044",
+      "event_id": "event_0044",
+      "node_ids": [
+        "neu_det_node_0044_a",
+        "neu_det_node_0044_b"
+      ],
+      "conflict_type_gt": "class_conflict",
+      "global_decision_gt": {
+        "event_type": "preflight_conflict_gt",
+        "risk_attr": "high",
+        "action": "pass"
+      },
+      "label_source": "industrial_label",
+      "source_dataset": "NEU-DET",
+      "time_window_id": "tw_0014"
+    },
+    {
+      "conflict_group_id": "cg_0045",
+      "event_id": "event_0045",
+      "node_ids": [
+        "cityflow_node_0045_a",
+        "cityflow_node_0045_b"
+      ],
+      "conflict_type_gt": "risk_conflict",
+      "global_decision_gt": {
+        "event_type": "preflight_conflict_gt",
+        "risk_attr": "low",
+        "action": "inspect"
+      },
+      "label_source": "derived_rule",
+      "source_dataset": "CityFlow",
+      "time_window_id": "tw_0015"
+    },
+    {
+      "conflict_group_id": "cg_0046",
+      "event_id": "event_0046",
+      "node_ids": [
+        "mvtec_ad_node_0046_a",
+        "mvtec_ad_node_0046_b"
+      ],
+      "conflict_type_gt": "action_conflict",
+      "global_decision_gt": {
+        "event_type": "preflight_conflict_gt",
+        "risk_attr": "medium",
+        "action": "alert"
+      },
+      "label_source": "industrial_label",
+      "source_dataset": "MVTec AD",
+      "time_window_id": "tw_0015"
+    },
+    {
+      "conflict_group_id": "cg_0047",
+      "event_id": "event_0047",
+      "node_ids": [
+        "neu_det_node_0047_a",
+        "neu_det_node_0047_b"
+      ],
+      "conflict_type_gt": "duplicate_alert",
+      "global_decision_gt": {
+        "event_type": "preflight_conflict_gt",
+        "risk_attr": "high",
+        "action": "upload"
+      },
+      "label_source": "industrial_label",
+      "source_dataset": "NEU-DET",
+      "time_window_id": "tw_0015"
+    },
+    {
+      "conflict_group_id": "cg_0048",
+      "event_id": "event_0048",
+      "node_ids": [
+        "cityflow_node_0048_a",
+        "cityflow_node_0048_b"
+      ],
+      "conflict_type_gt": "class_conflict",
+      "global_decision_gt": {
+        "event_type": "preflight_conflict_gt",
+        "risk_attr": "low",
+        "action": "pass"
+      },
+      "label_source": "derived_rule",
+      "source_dataset": "CityFlow",
+      "time_window_id": "tw_0016"
+    },
+    {
+      "conflict_group_id": "cg_0049",
+      "event_id": "event_0049",
+      "node_ids": [
+        "mvtec_ad_node_0049_a",
+        "mvtec_ad_node_0049_b"
+      ],
+      "conflict_type_gt": "risk_conflict",
+      "global_decision_gt": {
+        "event_type": "preflight_conflict_gt",
+        "risk_attr": "medium",
+        "action": "inspect"
+      },
+      "label_source": "industrial_label",
+      "source_dataset": "MVTec AD",
+      "time_window_id": "tw_0016"
+    },
+    {
+      "conflict_group_id": "cg_0050",
+      "event_id": "event_0050",
+      "node_ids": [
+        "neu_det_node_0050_a",
+        "neu_det_node_0050_b"
+      ],
+      "conflict_type_gt": "action_conflict",
+      "global_decision_gt": {
+        "event_type": "preflight_conflict_gt",
+        "risk_attr": "high",
+        "action": "alert"
+      },
+      "label_source": "industrial_label",
+      "source_dataset": "NEU-DET",
+      "time_window_id": "tw_0016"
+    },
+    {
+      "conflict_group_id": "cg_0051",
+      "event_id": "event_0051",
+      "node_ids": [
+        "cityflow_node_0051_a",
+        "cityflow_node_0051_b"
+      ],
+      "conflict_type_gt": "duplicate_alert",
+      "global_decision_gt": {
+        "event_type": "preflight_conflict_gt",
+        "risk_attr": "low",
+        "action": "upload"
+      },
+      "label_source": "derived_rule",
+      "source_dataset": "CityFlow",
+      "time_window_id": "tw_0017"
+    },
+    {
+      "conflict_group_id": "cg_0052",
+      "event_id": "event_0052",
+      "node_ids": [
+        "mvtec_ad_node_0052_a",
+        "mvtec_ad_node_0052_b"
+      ],
+      "conflict_type_gt": "class_conflict",
+      "global_decision_gt": {
+        "event_type": "preflight_conflict_gt",
+        "risk_attr": "medium",
+        "action": "pass"
+      },
+      "label_source": "industrial_label",
+      "source_dataset": "MVTec AD",
+      "time_window_id": "tw_0017"
+    },
+    {
+      "conflict_group_id": "cg_0053",
+      "event_id": "event_0053",
+      "node_ids": [
+        "neu_det_node_0053_a",
+        "neu_det_node_0053_b"
+      ],
+      "conflict_type_gt": "risk_conflict",
+      "global_decision_gt": {
+        "event_type": "preflight_conflict_gt",
+        "risk_attr": "high",
+        "action": "inspect"
+      },
+      "label_source": "industrial_label",
+      "source_dataset": "NEU-DET",
+      "time_window_id": "tw_0017"
+    },
+    {
+      "conflict_group_id": "cg_0054",
+      "event_id": "event_0054",
+      "node_ids": [
+        "cityflow_node_0054_a",
+        "cityflow_node_0054_b"
+      ],
+      "conflict_type_gt": "action_conflict",
+      "global_decision_gt": {
+        "event_type": "preflight_conflict_gt",
+        "risk_attr": "low",
+        "action": "alert"
+      },
+      "label_source": "derived_rule",
+      "source_dataset": "CityFlow",
+      "time_window_id": "tw_0018"
+    },
+    {
+      "conflict_group_id": "cg_0055",
+      "event_id": "event_0055",
+      "node_ids": [
+        "mvtec_ad_node_0055_a",
+        "mvtec_ad_node_0055_b"
+      ],
+      "conflict_type_gt": "duplicate_alert",
+      "global_decision_gt": {
+        "event_type": "preflight_conflict_gt",
+        "risk_attr": "medium",
+        "action": "upload"
+      },
+      "label_source": "industrial_label",
+      "source_dataset": "MVTec AD",
+      "time_window_id": "tw_0018"
+    },
+    {
+      "conflict_group_id": "cg_0056",
+      "event_id": "event_0056",
+      "node_ids": [
+        "neu_det_node_0056_a",
+        "neu_det_node_0056_b"
+      ],
+      "conflict_type_gt": "class_conflict",
+      "global_decision_gt": {
+        "event_type": "preflight_conflict_gt",
+        "risk_attr": "high",
+        "action": "pass"
+      },
+      "label_source": "industrial_label",
+      "source_dataset": "NEU-DET",
+      "time_window_id": "tw_0018"
+    },
+    {
+      "conflict_group_id": "cg_0057",
+      "event_id": "event_0057",
+      "node_ids": [
+        "cityflow_node_0057_a",
+        "cityflow_node_0057_b"
+      ],
+      "conflict_type_gt": "risk_conflict",
+      "global_decision_gt": {
+        "event_type": "preflight_conflict_gt",
+        "risk_attr": "low",
+        "action": "inspect"
+      },
+      "label_source": "derived_rule",
+      "source_dataset": "CityFlow",
+      "time_window_id": "tw_0019"
+    },
+    {
+      "conflict_group_id": "cg_0058",
+      "event_id": "event_0058",
+      "node_ids": [
+        "mvtec_ad_node_0058_a",
+        "mvtec_ad_node_0058_b"
+      ],
+      "conflict_type_gt": "action_conflict",
+      "global_decision_gt": {
+        "event_type": "preflight_conflict_gt",
+        "risk_attr": "medium",
+        "action": "alert"
+      },
+      "label_source": "industrial_label",
+      "source_dataset": "MVTec AD",
+      "time_window_id": "tw_0019"
+    },
+    {
+      "conflict_group_id": "cg_0059",
+      "event_id": "event_0059",
+      "node_ids": [
+        "neu_det_node_0059_a",
+        "neu_det_node_0059_b"
+      ],
+      "conflict_type_gt": "duplicate_alert",
+      "global_decision_gt": {
+        "event_type": "preflight_conflict_gt",
+        "risk_attr": "high",
+        "action": "upload"
+      },
+      "label_source": "industrial_label",
+      "source_dataset": "NEU-DET",
+      "time_window_id": "tw_0019"
+    }
+  ],
+  "conflict_group_count": 60,
+  "conflict_type_distribution": {
+    "class_conflict": 15,
+    "risk_conflict": 15,
+    "action_conflict": 15,
+    "duplicate_alert": 15
+  },
+  "manifest_hash": "67713ba6b33ceb61388c878ea720a1aaee65bc5e3a6beb941fb09a99db019168"
+}

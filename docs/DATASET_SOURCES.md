@@ -10,7 +10,7 @@
 
 - 所有真实数据放在 `data/datasets/<dataset_key>/` 下。
 - `.gitkeep` 只用于保留空目录，不算真实数据。
-- 大型压缩包可先以硬链接归档方式挂载在对应数据集目录下；正式 split、统计和 manifest 生成前必须展开或由脚本显式支持归档读取。
+- 大型压缩包已在对应数据集目录下保留为来源归档，并已展开到同目录下的标准子目录；正式 split、统计和 manifest 使用展开后的文件树。
 - 不自动下载大型数据集，也不绕过表单、账号、license agreement 或挑战赛数据协议。
 - 下载或挂载数据后，先运行 `python scripts/validate_dataset_presence.py` 检查目录是否有 payload。
 - 然后运行 `python scripts/inspect_datasets.py` 更新 `reports/preflight/data_inventory.json`。
@@ -79,7 +79,7 @@
 - 目录：`data/datasets/mvtec_ad`
 - 主来源：MVTec 官方 MVTec AD 页面。
 - 下载方式：官方页面要求填写表单下载；不要使用未说明来源的镜像替代官方数据。
-- 本地接入记录：2026-07-01 已将 `E:\Downloads\mvtec_anomaly_detection.tar.xz` 以硬链接归档方式挂载到 `data/datasets/mvtec_ad/`，SHA256 为 `CF4313B13603BEC67ABB49CA959488F7EEDCE2A9F7795EC54446C649AC98CD3D`；归档结构已抽样确认包含官方 15 类目录。
+- 本地接入记录：2026-07-01 已将 `E:\Downloads\mvtec_anomaly_detection.tar.xz` 以硬链接归档方式挂载到 `data/datasets/mvtec_ad/`，SHA256 为 `CF4313B13603BEC67ABB49CA959488F7EEDCE2A9F7795EC54446C649AC98CD3D`；已展开到 `data/datasets/mvtec_ad/mvtec_anomaly_detection/`，包含官方 15 类目录。
 - 需要记录：下载日期、表单/协议确认、dataset version、train normal 样本数、official test 是否全量进入 Final Gate。
 - 注意：官方页面标明 CC BY-NC-SA 4.0 且禁止商业用途。validation 使用 train 正常子集、NEU-DET val 缺陷样本和非 final 派生异常样本，不使用官方 test 做 validation。
 
@@ -98,7 +98,7 @@
 - 目录：`data/datasets/cityflow`
 - 主来源：AI City Challenge 2022 Track 1 CityFlowV2 数据页。
 - 下载方式：官方页面提供 Track 1 data download，点击即接受 data license agreement；必须人工确认协议后下载。
-- 本地接入记录：2026-07-01 已将 `E:\Downloads\AICity22_Track1_MTMC_Tracking.zip` 以硬链接归档方式挂载到 `data/datasets/cityflow/`，SHA256 为 `55885E884F2453531AF0B41B41D56F5DAE625E5B8F7B21BE690F2B6B07B3B919`；zip 结构已确认包含 `train`、`validation`、`test`、`eval`、camera metadata 和 license PDF。
+- 本地接入记录：2026-07-01 已将 `E:\Downloads\AICity22_Track1_MTMC_Tracking.zip` 以硬链接归档方式挂载到 `data/datasets/cityflow/`，SHA256 为 `55885E884F2453531AF0B41B41D56F5DAE625E5B8F7B21BE690F2B6B07B3B919`；已展开到 `data/datasets/cityflow/AICity22_Track1_MTMC_Tracking/`，包含 `train`、`validation`、`test`、`eval`、camera metadata 和 license PDF。
 - 需要记录：下载日期、data license agreement 确认、dataset version、camera/intersection 子集、vehicle id 数、relation edge/group/conflict group 统计。
 - 注意：当前项目计划优先使用 CityFlow-Original；若实际使用 CityFlowV2，必须在 `dataset_manifest.json` 记录实际版本。若官方 test 标签不可用，按 scene/camera/time window 冻结划分并记录 split hash。
 
@@ -109,7 +109,7 @@
 - 下载方式：从官方项目页或 UBMDFL downloads 入口进入后下载；下载前确认研究用途、license/terms 和文件列表。
 - 需要记录：下载日期、source URL、license/terms 复核结果、dataset version、视频/帧/标注统计、final sample ids hash。
 - Mirror fallback 记录：2026-07-01 因官方项目页未提供直接下载入口，使用 Kaggle mirror `bratjay/ua-detrac-orig`，本地下载包为 `E:\Downloads\archive.zip`，SHA256 为 `AE4317B2A81CCF8BEBC78FA2BDBBC5EC2720B745E0305746D9AA12D40127C32D`。
-- Mirror 本地结构校验：zip 可读取，包含 `DETRAC-Images`、`DETRAC-Train-Annotations-XML`、`DETRAC-Test-Annotations-XML` 和 `DETRAC-MOT-toolkit`；图像序列 100 个，`.jpg` 共 140131 张，train XML 60 个，test XML 40 个。
+- Mirror 本地结构校验：zip 可读取并已展开到 `data/datasets/ua_detrac/ua_detrac_kaggle_archive/`，包含 `DETRAC-Images`、`DETRAC-Train-Annotations-XML`、`DETRAC-Test-Annotations-XML` 和 `DETRAC-MOT-toolkit`；图像序列 100 个，`.jpg` 共 140131 张，train XML 60 个，test XML 40 个。
 - 注意：仅声明同视频内 track id 或 derived tracklet，不把同视频轨迹人工外推为跨摄像头 identity。
 
 ## 接入后检查

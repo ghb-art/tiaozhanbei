@@ -27,6 +27,7 @@
 | 2026-06-30 | G-DATA | 核验并补充 8 个目标数据集的官方/主来源、访问方式和 license/terms 注意事项 | 在正式下载数据前固定来源口径，降低使用未授权镜像或混入 final 数据的风险 | No Final hash yet | `docs/DATASET_SOURCES.md`, `docs/TODO.md`, `docs/PROJECT_STATUS.md` |
 | 2026-06-30 | P0-A0 | 新增 runtime smoke 预检脚本并生成预检报告 | 在进入数据下载和模型运行前确认工程骨架、配置、模板和轻量校验脚本可执行 | No Final hash yet | `scripts/preflight_runtime_smoke.py`, `reports/preflight/runtime_smoke.json`, `scripts/validate_project_structure.py` |
 | 2026-07-01 | G-DATA | 接入 8 个目标数据集 payload，并记录 NEU-DET/UA-DETRAC Kaggle mirror fallback | 官方 NEU-DET 页面不可达、UA-DETRAC 官方页未提供直接下载入口；先以本地结构校验和 archive hash 固定 fallback 口径 | No Final hash yet; archive hashes recorded | `data/datasets/`, `reports/preflight/data_inventory.json`, `docs/DATASET_SOURCES.md`, `.gitignore` |
+| 2026-07-01 | G-DATA | 展开大型数据集、冻结 split、修复 NEU-DET split 错位并生成正式 manifest | 将 preflight 数据接入推进到可严格验收的 G-DATA manifest 状态 | Yes, split and manifest hashes generated | `data/splits/`, `dataset_manifest.json`, `manifest.json`, `conflict_gt_manifest.json`, `scripts/validate_splits.py`, `scripts/generate_formal_manifests.py` |
 
 ## Fallback Event Template
 

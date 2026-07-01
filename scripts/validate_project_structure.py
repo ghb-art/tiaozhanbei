@@ -45,6 +45,8 @@ REQUIRED_FILES = [
     "conflict_gt_manifest.json",
     "reports/audit/conflict_gt_audit.csv",
     "reports/audit/conflict_gt_sample_audit.json",
+    "reports/audit/gate_db_schema_check.json",
+    "reports/audit/gate_db_smoke.csv",
     "configs/network_profiles.yaml",
     "configs/workload_profiles.yaml",
     "configs/models.yaml",

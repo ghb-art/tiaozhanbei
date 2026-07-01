@@ -1,0 +1,4 @@
+task_id,edge_node_id,split,source_dataset
+gdb_smoke_task,edge_smoke_001,validation,G-DB smoke
+outbox_id,source_edge_node_id,target,status
+gdb_smoke_outbox,edge_smoke_001,kwdb-cloud,pending

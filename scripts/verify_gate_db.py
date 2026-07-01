@@ -207,7 +207,8 @@ def run_live_gate(schema_path: Path, container: str, kwbase_bin: str, database: 
         return csv_result.returncode
 
     csv_output.parent.mkdir(parents=True, exist_ok=True)
-    csv_output.write_text(csv_result.stdout, encoding="utf-8")
+    csv_lines = [line for line in csv_result.stdout.splitlines() if line.strip() != "SET"]
+    csv_output.write_text("\n".join(csv_lines) + "\n", encoding="utf-8")
     print("G-DB live gate passed.")
     print(f"Wrote {display_path(csv_output)}")
     return 0

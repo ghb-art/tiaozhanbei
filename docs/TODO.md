@@ -45,7 +45,7 @@
 - [x] 创建 `sql/cloud_schema.sql`。
 - [x] 创建 `docker/docker-compose.kwdb.yml`。
 - [x] 实现 `scripts/verify_gate_db.py`。
-- [ ] 启动 KWDB Docker 并运行 `scripts/verify_gate_db.py` 完成 live gate。
+- [x] 启动 KWDB Docker 并运行 `scripts/verify_gate_db.py` 完成 live gate。
 
 ## G-CLOUD
 

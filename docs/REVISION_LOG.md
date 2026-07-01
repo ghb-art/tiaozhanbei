@@ -30,6 +30,7 @@
 | 2026-07-01 | G-DATA | 展开大型数据集、冻结 split、修复 NEU-DET split 错位并生成正式 manifest | 将 preflight 数据接入推进到可严格验收的 G-DATA manifest 状态 | Yes, split and manifest hashes generated | `data/splits/`, `dataset_manifest.json`, `manifest.json`, `conflict_gt_manifest.json`, `scripts/validate_splits.py`, `scripts/generate_formal_manifests.py` |
 | 2026-07-01 | G-DATA | 新增数据集本地检查脚本和 conflict GT 独立生成脚本 | 补齐实施计划中的 `setup_datasets.sh` 与 `build_conflict_gt.py`，让数据集布局检查和冲突 GT 生成可单独执行、可复验 | Yes, manifest hashes regenerated | `scripts/setup_datasets.sh`, `scripts/build_conflict_gt.py`, `scripts/generate_formal_manifests.py`, `conflict_gt_manifest.json`, `manifest.json` |
 | 2026-07-01 | G-DATA/G-DB | 生成 conflict GT 审计文件，并新增 KWDB schema、compose 与 G-DB 验证脚本 | 闭合 G-DATA audit 产物要求，同时推进下一阶段数据库 gate 的可执行骨架 | Yes, audit and manifest hashes regenerated | `reports/audit/conflict_gt_audit.csv`, `reports/audit/conflict_gt_sample_audit.json`, `reports/audit/gate_db_schema_check.json`, `sql/cloud_schema.sql`, `docker/docker-compose.kwdb.yml`, `scripts/verify_gate_db.py`, `manifest.json` |
+| 2026-07-01 | G-DB | 启动 KWDB Docker 容器并完成 G-DB live gate | 验证 schema 创建、写入、查询和 CSV 导出链路可运行 | Yes, DB smoke report generated | `docker/docker-compose.kwdb.yml`, `scripts/verify_gate_db.py`, `reports/audit/gate_db_smoke.csv` |
 
 ## Fallback Event Template
 

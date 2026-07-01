@@ -2,11 +2,11 @@
 
 更新时间：2026-07-01
 
-当前阶段：G-DB 工程骨架，已完成 G-DATA 本地 payload、split、manifest 与 conflict audit 产物，并开始补齐 KWDB/KaiwuDB schema 和验证脚本。
+当前阶段：G-CLOUD 前置，已完成 G-DATA 本地 payload、split、manifest、conflict audit 产物与 G-DB live gate。
 
 ## 当前结论
 
-项目已经有完整的研究方案、目录规划、本地数据 payload、冻结 split、正式 manifest 和 conflict audit 文件。当前已进入 G-DB 工程骨架阶段，但尚未完成真实 KWDB/KaiwuDB 容器 live gate。
+项目已经有完整的研究方案、目录规划、本地数据 payload、冻结 split、正式 manifest、conflict audit 文件和可运行的 KWDB/KaiwuDB 单节点验证。下一步应进入 G-CLOUD，验证 14B-AWQ 云端教师模型服务。
 
 ## 已完成
 
@@ -41,10 +41,11 @@
 - 已新增 `docker/docker-compose.kwdb.yml`，用于启动 KWDB/KaiwuDB 单节点容器。
 - 已新增 `scripts/verify_gate_db.py`，支持 G-DB live gate 和离线 schema 检查。
 - 已通过 `python scripts/verify_gate_db.py --offline-schema-check` 完成 G-DB schema 离线检查，并生成 `reports/audit/gate_db_schema_check.json`。
+- 已启动 `kwdb-cloud` Docker 容器，并通过 `python scripts/verify_gate_db.py` 完成 schema 应用、写入、查询和 CSV 导出 live gate。
+- 已生成 `reports/audit/gate_db_smoke.csv`，记录 G-DB smoke 查询与 outbox 查询结果。
 
 ## 未开始
 
-- KWDB/KaiwuDB Docker live gate：启动容器、应用 schema、写入/查询/CSV 导出。
 - 14B 云端教师模型服务验证。
 - 1.5B 学生模型蒸馏、repair 和 INT4 量化。
 - P0-B、P1、P2 实验运行。
@@ -63,6 +64,8 @@ python scripts/generate_manifest_template.py --overwrite
 python scripts/validate_manifest_files.py --strict-gdata
 python scripts/preflight_runtime_smoke.py
 python scripts/verify_gate_db.py --offline-schema-check
+docker compose -f docker/docker-compose.kwdb.yml up -d
+python scripts/verify_gate_db.py
 ```
 
-第一条命令用于检查当前项目骨架、关键目录、基础配置、文档和 manifest 模板是否齐全。第二条命令用于确认 8 个目标数据集目录都已有 payload。第三条命令用于扫描本地数据集目录并生成 `reports/preflight/data_inventory.json`。第四条命令用于验证 split 文件 hash 与 train/validation/test 泄漏检查。第五条命令用于在 Bash 环境检查本地数据集标准目录。第六条命令用于基于冻结 split 重新生成 conflict ground truth manifest 和 audit 文件。第七条命令用于基于冻结 split 重新生成正式 manifest。第八条命令用于按当前脚本重新生成三个 manifest 模板。第九条命令用于严格验收正式 manifest。第十条命令用于执行当前工程骨架的 runtime smoke，并生成 `reports/preflight/runtime_smoke.json`。第十一条命令用于在没有 KWDB 容器时先检查 G-DB schema 文件完整性。
+第一条命令用于检查当前项目骨架、关键目录、基础配置、文档和 manifest 模板是否齐全。第二条命令用于确认 8 个目标数据集目录都已有 payload。第三条命令用于扫描本地数据集目录并生成 `reports/preflight/data_inventory.json`。第四条命令用于验证 split 文件 hash 与 train/validation/test 泄漏检查。第五条命令用于在 Bash 环境检查本地数据集标准目录。第六条命令用于基于冻结 split 重新生成 conflict ground truth manifest 和 audit 文件。第七条命令用于基于冻结 split 重新生成正式 manifest。第八条命令用于按当前脚本重新生成三个 manifest 模板。第九条命令用于严格验收正式 manifest。第十条命令用于执行当前工程骨架的 runtime smoke，并生成 `reports/preflight/runtime_smoke.json`。第十一条命令用于在没有 KWDB 容器时先检查 G-DB schema 文件完整性。第十二条和第十三条命令用于启动 KWDB/KaiwuDB 并执行 G-DB live gate。

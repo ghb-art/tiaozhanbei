@@ -25,10 +25,11 @@
 ## G-DATA
 
 - [x] 核验并补充 `docs/DATASET_SOURCES.md` 中每个数据集的正式下载来源、license 和账号要求。
-- [ ] 下载前人工复核 MVTec AD、NEU-DET、CityFlow、UA-DETRAC 的 license、数据协议和账号/表单要求。
-- [ ] 下载或挂载 8 个目标数据集到 `data/datasets/`。
-- [ ] 使用 `scripts/validate_dataset_presence.py` 验收数据集 payload 存在性。
-- [ ] 重新运行 `scripts/inspect_datasets.py`，确认数据目录不再为空。
+- [x] 记录 MVTec AD、NEU-DET、CityFlow、UA-DETRAC 的 license/数据协议或 mirror fallback 状态。
+- [x] 下载或挂载 8 个目标数据集到 `data/datasets/`。
+- [x] 使用 `scripts/validate_dataset_presence.py` 验收数据集 payload 存在性。
+- [x] 重新运行 `scripts/inspect_datasets.py`，确认数据目录不再为空。
+- [ ] 展开或脚本化读取 MVTec AD、CityFlow、UA-DETRAC 大型归档包。
 - [ ] 基于模板生成正式 `dataset_manifest.json`、`manifest.json`、`conflict_gt_manifest.json`。
 - [ ] 使用 `scripts/validate_manifest_files.py --strict-gdata` 验收正式 manifest。
 - [ ] 实现 `scripts/setup_datasets.sh`。

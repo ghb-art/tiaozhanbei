@@ -1,8 +1,8 @@
 {
   "inventory_version": "0.1",
   "created_by": "scripts/inspect_datasets.py",
-  "created_ts": "2026-06-30T03:27:35.496235+00:00",
-  "project_root": "D:\\Desktop\\STUDY\\code\\tiaozhanbei",
+  "created_ts": "2026-07-01T03:54:04.474135+00:00",
+  "project_root": "E:\\Study\\code\\tiaozhanbei",
   "datasets_root": "data/datasets",
   "notes": [
     "This inventory is a preflight snapshot, not dataset_manifest.json.",
@@ -12,13 +12,14 @@
   "summary": {
     "expected_dataset_count": 8,
     "present_dataset_dir_count": 8,
-    "payload_dataset_count": 0,
-    "empty_dataset_count": 8,
+    "payload_dataset_count": 8,
+    "empty_dataset_count": 0,
     "missing_dataset_count": 0,
-    "total_payload_files": 0,
-    "total_payload_bytes": 0,
+    "total_payload_files": 3945,
+    "total_payload_bytes": 32323566575,
     "missing_dataset_keys": [],
-    "empty_dataset_keys": [
+    "empty_dataset_keys": [],
+    "payload_dataset_keys": [
       "gsm8k",
       "humaneval",
       "mmlu",
@@ -28,7 +29,6 @@
       "cityflow",
       "ua_detrac"
     ],
-    "payload_dataset_keys": [],
     "unknown_dataset_dirs": []
   },
   "datasets": [
@@ -38,16 +38,60 @@
       "path": "data/datasets/gsm8k",
       "purpose": "Math capability evaluation and distillation train source.",
       "exists": true,
-      "status": "empty",
-      "file_count": 1,
-      "payload_file_count": 0,
-      "directory_count": 0,
-      "total_bytes": 0,
-      "payload_bytes": 0,
-      "extensions": {},
-      "top_level_entries": [],
-      "sample_payload_files": [],
-      "last_modified_ts": "2026-06-30T02:05:15.558082+00:00"
+      "status": "has_payload",
+      "file_count": 8,
+      "payload_file_count": 7,
+      "directory_count": 2,
+      "total_bytes": 13880370,
+      "payload_bytes": 13880370,
+      "extensions": {
+        ".jsonl": 5,
+        ".md": 1,
+        "<no_ext>": 1
+      },
+      "top_level_entries": [
+        "LICENSE",
+        "README.md",
+        "grade_school_math/"
+      ],
+      "sample_payload_files": [
+        {
+          "path": "data/datasets/gsm8k/LICENSE",
+          "size_bytes": 1082,
+          "modified_ts": "2026-06-30T10:13:17.710192+00:00"
+        },
+        {
+          "path": "data/datasets/gsm8k/README.md",
+          "size_bytes": 6211,
+          "modified_ts": "2026-06-30T10:13:17.710758+00:00"
+        },
+        {
+          "path": "data/datasets/gsm8k/grade_school_math/data/example_model_solutions.jsonl",
+          "size_bytes": 2564832,
+          "modified_ts": "2026-06-30T10:13:17.710758+00:00"
+        },
+        {
+          "path": "data/datasets/gsm8k/grade_school_math/data/test.jsonl",
+          "size_bytes": 751057,
+          "modified_ts": "2026-06-30T10:13:17.726642+00:00"
+        },
+        {
+          "path": "data/datasets/gsm8k/grade_school_math/data/test_socratic.jsonl",
+          "size_bytes": 974297,
+          "modified_ts": "2026-06-30T10:13:17.726642+00:00"
+        },
+        {
+          "path": "data/datasets/gsm8k/grade_school_math/data/train.jsonl",
+          "size_bytes": 4173679,
+          "modified_ts": "2026-06-30T10:13:17.741779+00:00"
+        },
+        {
+          "path": "data/datasets/gsm8k/grade_school_math/data/train_socratic.jsonl",
+          "size_bytes": 5409212,
+          "modified_ts": "2026-06-30T10:13:17.774972+00:00"
+        }
+      ],
+      "last_modified_ts": "2026-07-01T03:53:52.927095+00:00"
     },
     {
       "dataset_key": "humaneval",
@@ -55,16 +99,85 @@
       "path": "data/datasets/humaneval",
       "purpose": "Code capability final evaluation.",
       "exists": true,
-      "status": "empty",
-      "file_count": 1,
-      "payload_file_count": 0,
-      "directory_count": 0,
-      "total_bytes": 0,
-      "payload_bytes": 0,
-      "extensions": {},
-      "top_level_entries": [],
-      "sample_payload_files": [],
-      "last_modified_ts": "2026-06-30T02:05:15.559087+00:00"
+      "status": "has_payload",
+      "file_count": 12,
+      "payload_file_count": 11,
+      "directory_count": 2,
+      "total_bytes": 64174,
+      "payload_bytes": 64174,
+      "extensions": {
+        ".gz": 1,
+        ".jsonl": 2,
+        ".md": 1,
+        ".py": 5,
+        ".txt": 1,
+        "<no_ext>": 1
+      },
+      "top_level_entries": [
+        "LICENSE",
+        "README.md",
+        "data/",
+        "human_eval/",
+        "requirements.txt"
+      ],
+      "sample_payload_files": [
+        {
+          "path": "data/datasets/humaneval/LICENSE",
+          "size_bytes": 1104,
+          "modified_ts": "2026-06-30T10:14:00.977618+00:00"
+        },
+        {
+          "path": "data/datasets/humaneval/README.md",
+          "size_bytes": 4963,
+          "modified_ts": "2026-06-30T10:14:00.978162+00:00"
+        },
+        {
+          "path": "data/datasets/humaneval/requirements.txt",
+          "size_bytes": 19,
+          "modified_ts": "2026-06-30T10:14:00.980127+00:00"
+        },
+        {
+          "path": "data/datasets/humaneval/data/example_problem.jsonl",
+          "size_bytes": 179,
+          "modified_ts": "2026-06-30T10:14:00.978651+00:00"
+        },
+        {
+          "path": "data/datasets/humaneval/data/example_samples.jsonl",
+          "size_bytes": 425,
+          "modified_ts": "2026-06-30T10:14:00.978651+00:00"
+        },
+        {
+          "path": "data/datasets/humaneval/data/HumanEval.jsonl.gz",
+          "size_bytes": 44877,
+          "modified_ts": "2026-06-30T10:14:00.978651+00:00"
+        },
+        {
+          "path": "data/datasets/humaneval/human_eval/data.py",
+          "size_bytes": 1578,
+          "modified_ts": "2026-06-30T10:14:00.979319+00:00"
+        },
+        {
+          "path": "data/datasets/humaneval/human_eval/evaluate_functional_correctness.py",
+          "size_bytes": 663,
+          "modified_ts": "2026-06-30T10:14:00.979319+00:00"
+        },
+        {
+          "path": "data/datasets/humaneval/human_eval/evaluation.py",
+          "size_bytes": 3543,
+          "modified_ts": "2026-06-30T10:14:00.979319+00:00"
+        },
+        {
+          "path": "data/datasets/humaneval/human_eval/execution.py",
+          "size_bytes": 6823,
+          "modified_ts": "2026-06-30T10:14:00.979989+00:00"
+        },
+        {
+          "path": "data/datasets/humaneval/human_eval/__init__.py",
+          "size_bytes": 0,
+          "modified_ts": "2026-06-30T10:14:00.978651+00:00"
+        }
+      ],
+      "last_modified_ts": "2026-07-01T03:53:52.941095+00:00"
     },
     {
       "dataset_key": "mmlu",
@@ -72,16 +185,126 @@
       "path": "data/datasets/mmlu",
       "purpose": "English NLP capability evaluation.",
       "exists": true,
-      "status": "empty",
-      "file_count": 1,
-      "payload_file_count": 0,
-      "directory_count": 0,
-      "total_bytes": 0,
-      "payload_bytes": 0,
-      "extensions": {},
-      "top_level_entries": [],
-      "sample_payload_files": [],
-      "last_modified_ts": "2026-06-30T02:05:15.559087+00:00"
+      "status": "has_payload",
+      "file_count": 188,
+      "payload_file_count": 187,
+      "directory_count": 6,
+      "total_bytes": 166066477,
+      "payload_bytes": 166066477,
+      "extensions": {
+        ".csv": 179,
+        ".md": 1,
+        ".py": 4,
+        ".txt": 2,
+        "<no_ext>": 1
+      },
+      "top_level_entries": [
+        "data/",
+        "source_repo/"
+      ],
+      "sample_payload_files": [
+        {
+          "path": "data/datasets/mmlu/data/possibly_contaminated_urls.txt",
+          "size_bytes": 8831,
+          "modified_ts": "2020-09-09T01:07:55+00:00"
+        },
+        {
+          "path": "data/datasets/mmlu/data/README.txt",
+          "size_bytes": 1486,
+          "modified_ts": "2021-03-21T19:04:02+00:00"
+        },
+        {
+          "path": "data/datasets/mmlu/source_repo/calib_tools.py",
+          "size_bytes": 17484,
+          "modified_ts": "2026-06-30T10:14:53.487246+00:00"
+        },
+        {
+          "path": "data/datasets/mmlu/source_repo/categories.py",
+          "size_bytes": 2629,
+          "modified_ts": "2026-06-30T10:14:53.487246+00:00"
+        },
+        {
+          "path": "data/datasets/mmlu/source_repo/evaluate.py",
+          "size_bytes": 4842,
+          "modified_ts": "2026-06-30T10:14:53.488014+00:00"
+        },
+        {
+          "path": "data/datasets/mmlu/source_repo/evaluate_flan.py",
+          "size_bytes": 6182,
+          "modified_ts": "2026-06-30T10:14:53.488517+00:00"
+        },
+        {
+          "path": "data/datasets/mmlu/source_repo/LICENSE",
+          "size_bytes": 1091,
+          "modified_ts": "2026-06-30T10:14:53.486025+00:00"
+        },
+        {
+          "path": "data/datasets/mmlu/source_repo/README.md",
+          "size_bytes": 3301,
+          "modified_ts": "2026-06-30T10:14:53.486742+00:00"
+        },
+        {
+          "path": "data/datasets/mmlu/data/auxiliary_train/arc_easy.csv",
+          "size_bytes": 472738,
+          "modified_ts": "2020-09-17T08:21:25+00:00"
+        },
+        {
+          "path": "data/datasets/mmlu/data/auxiliary_train/arc_hard.csv",
+          "size_bytes": 278099,
+          "modified_ts": "2020-09-17T08:22:15+00:00"
+        },
+        {
+          "path": "data/datasets/mmlu/data/auxiliary_train/aux_law_90s.csv",
+          "size_bytes": 1349326,
+          "modified_ts": "2021-03-21T18:50:43+00:00"
+        },
+        {
+          "path": "data/datasets/mmlu/data/auxiliary_train/mc_test.csv",
+          "size_bytes": 1798082,
+          "modified_ts": "2020-09-17T08:21:27+00:00"
+        },
+        {
+          "path": "data/datasets/mmlu/data/auxiliary_train/obqa.csv",
+          "size_bytes": 626303,
+          "modified_ts": "2020-09-17T08:21:25+00:00"
+        },
+        {
+          "path": "data/datasets/mmlu/data/auxiliary_train/race.csv",
+          "size_bytes": 154030184,
+          "modified_ts": "2021-03-21T06:59:43+00:00"
+        },
+        {
+          "path": "data/datasets/mmlu/data/auxiliary_train/science_elementary.csv",
+          "size_bytes": 137117,
+          "modified_ts": "2020-09-17T08:21:25+00:00"
+        },
+        {
+          "path": "data/datasets/mmlu/data/auxiliary_train/science_middle.csv",
+          "size_bytes": 152243,
+          "modified_ts": "2020-09-17T08:22:15+00:00"
+        },
+        {
+          "path": "data/datasets/mmlu/data/dev/abstract_algebra_dev.csv",
+          "size_bytes": 719,
+          "modified_ts": "2020-09-09T01:07:55+00:00"
+        },
+        {
+          "path": "data/datasets/mmlu/data/dev/anatomy_dev.csv",
+          "size_bytes": 830,
+          "modified_ts": "2020-09-09T01:07:55+00:00"
+        },
+        {
+          "path": "data/datasets/mmlu/data/dev/astronomy_dev.csv",
+          "size_bytes": 1943,
+          "modified_ts": "2020-09-09T01:07:55+00:00"
+        },
+        {
+          "path": "data/datasets/mmlu/data/dev/business_ethics_dev.csv",
+          "size_bytes": 2095,
+          "modified_ts": "2020-09-09T01:07:55+00:00"
+        }
+      ],
+      "last_modified_ts": "2026-07-01T03:37:25.291821+00:00"
     },
     {
       "dataset_key": "cmmlu",
@@ -89,16 +312,124 @@
       "path": "data/datasets/cmmlu",
       "purpose": "Chinese NLP capability evaluation.",
       "exists": true,
-      "status": "empty",
-      "file_count": 1,
-      "payload_file_count": 0,
-      "directory_count": 0,
-      "total_bytes": 0,
-      "payload_bytes": 0,
-      "extensions": {},
-      "top_level_entries": [],
-      "sample_payload_files": [],
-      "last_modified_ts": "2026-06-30T02:05:15.557578+00:00"
+      "status": "has_payload",
+      "file_count": 137,
+      "payload_file_count": 136,
+      "directory_count": 3,
+      "total_bytes": 2512537,
+      "payload_bytes": 2512537,
+      "extensions": {
+        ".csv": 134,
+        ".md": 2
+      },
+      "top_level_entries": [
+        "README.md",
+        "README_EN.md",
+        "data/"
+      ],
+      "sample_payload_files": [
+        {
+          "path": "data/datasets/cmmlu/README.md",
+          "size_bytes": 19146,
+          "modified_ts": "2026-06-30T10:15:40.508943+00:00"
+        },
+        {
+          "path": "data/datasets/cmmlu/README_EN.md",
+          "size_bytes": 19836,
+          "modified_ts": "2026-06-30T10:15:40.508943+00:00"
+        },
+        {
+          "path": "data/datasets/cmmlu/data/dev/agronomy.csv",
+          "size_bytes": 427,
+          "modified_ts": "2026-06-30T10:15:40.508943+00:00"
+        },
+        {
+          "path": "data/datasets/cmmlu/data/dev/anatomy.csv",
+          "size_bytes": 355,
+          "modified_ts": "2026-06-30T10:15:40.508943+00:00"
+        },
+        {
+          "path": "data/datasets/cmmlu/data/dev/ancient_chinese.csv",
+          "size_bytes": 706,
+          "modified_ts": "2026-06-30T10:15:40.511445+00:00"
+        },
+        {
+          "path": "data/datasets/cmmlu/data/dev/arts.csv",
+          "size_bytes": 394,
+          "modified_ts": "2026-06-30T10:15:40.511445+00:00"
+        },
+        {
+          "path": "data/datasets/cmmlu/data/dev/astronomy.csv",
+          "size_bytes": 446,
+          "modified_ts": "2026-06-30T10:15:40.512008+00:00"
+        },
+        {
+          "path": "data/datasets/cmmlu/data/dev/business_ethics.csv",
+          "size_bytes": 430,
+          "modified_ts": "2026-06-30T10:15:40.512008+00:00"
+        },
+        {
+          "path": "data/datasets/cmmlu/data/dev/chinese_civil_service_exam.csv",
+          "size_bytes": 1117,
+          "modified_ts": "2026-06-30T10:15:40.512008+00:00"
+        },
+        {
+          "path": "data/datasets/cmmlu/data/dev/chinese_driving_rule.csv",
+          "size_bytes": 694,
+          "modified_ts": "2026-06-30T10:15:40.512591+00:00"
+        },
+        {
+          "path": "data/datasets/cmmlu/data/dev/chinese_food_culture.csv",
+          "size_bytes": 445,
+          "modified_ts": "2026-06-30T10:15:40.513171+00:00"
+        },
+        {
+          "path": "data/datasets/cmmlu/data/dev/chinese_foreign_policy.csv",
+          "size_bytes": 1097,
+          "modified_ts": "2026-06-30T10:15:40.513171+00:00"
+        },
+        {
+          "path": "data/datasets/cmmlu/data/dev/chinese_history.csv",
+          "size_bytes": 1142,
+          "modified_ts": "2026-06-30T10:15:40.513171+00:00"
+        },
+        {
+          "path": "data/datasets/cmmlu/data/dev/chinese_literature.csv",
+          "size_bytes": 490,
+          "modified_ts": "2026-06-30T10:15:40.513726+00:00"
+        },
+        {
+          "path": "data/datasets/cmmlu/data/dev/chinese_teacher_qualification.csv",
+          "size_bytes": 841,
+          "modified_ts": "2026-06-30T10:15:40.513726+00:00"
+        },
+        {
+          "path": "data/datasets/cmmlu/data/dev/clinical_knowledge.csv",
+          "size_bytes": 732,
+          "modified_ts": "2026-06-30T10:15:40.513726+00:00"
+        },
+        {
+          "path": "data/datasets/cmmlu/data/dev/college_actuarial_science.csv",
+          "size_bytes": 819,
+          "modified_ts": "2026-06-30T10:15:40.514291+00:00"
+        },
+        {
+          "path": "data/datasets/cmmlu/data/dev/college_education.csv",
+          "size_bytes": 599,
+          "modified_ts": "2026-06-30T10:15:40.514291+00:00"
+        },
+        {
+          "path": "data/datasets/cmmlu/data/dev/college_engineering_hydrology.csv",
+          "size_bytes": 519,
+          "modified_ts": "2026-06-30T10:15:40.514291+00:00"
+        },
+        {
+          "path": "data/datasets/cmmlu/data/dev/college_law.csv",
+          "size_bytes": 838,
+          "modified_ts": "2026-06-30T10:15:40.514291+00:00"
+        }
+      ],
+      "last_modified_ts": "2026-07-01T03:53:53.038681+00:00"
     },
     {
       "dataset_key": "mvtec_ad",
@@ -106,16 +437,26 @@
       "path": "data/datasets/mvtec_ad",
       "purpose": "Industrial defect detection support and final evaluation.",
       "exists": true,
-      "status": "empty",
-      "file_count": 1,
-      "payload_file_count": 0,
+      "status": "has_payload",
+      "file_count": 2,
+      "payload_file_count": 1,
       "directory_count": 0,
-      "total_bytes": 0,
-      "payload_bytes": 0,
-      "extensions": {},
-      "top_level_entries": [],
-      "sample_payload_files": [],
-      "last_modified_ts": "2026-06-30T02:05:15.560092+00:00"
+      "total_bytes": 5264982680,
+      "payload_bytes": 5264982680,
+      "extensions": {
+        ".xz": 1
+      },
+      "top_level_entries": [
+        "mvtec_anomaly_detection.tar.xz"
+      ],
+      "sample_payload_files": [
+        {
+          "path": "data/datasets/mvtec_ad/mvtec_anomaly_detection.tar.xz",
+          "size_bytes": 5264982680,
+          "modified_ts": "2026-06-30T09:50:32.500847+00:00"
+        }
+      ],
+      "last_modified_ts": "2026-06-30T09:50:32.500847+00:00"
     },
     {
       "dataset_key": "neu_det",
@@ -123,16 +464,124 @@
       "path": "data/datasets/neu_det",
       "purpose": "Industrial defect detection auxiliary data.",
       "exists": true,
-      "status": "empty",
-      "file_count": 1,
-      "payload_file_count": 0,
-      "directory_count": 0,
-      "total_bytes": 0,
-      "payload_bytes": 0,
-      "extensions": {},
-      "top_level_entries": [],
-      "sample_payload_files": [],
-      "last_modified_ts": "2026-06-30T02:05:15.561094+00:00"
+      "status": "has_payload",
+      "file_count": 3602,
+      "payload_file_count": 3601,
+      "directory_count": 19,
+      "total_bytes": 55922599,
+      "payload_bytes": 55922599,
+      "extensions": {
+        ".jpg": 1800,
+        ".xml": 1800,
+        ".zip": 1
+      },
+      "top_level_entries": [
+        "NEU-DET/",
+        "neu_det_kaggle_archive.zip"
+      ],
+      "sample_payload_files": [
+        {
+          "path": "data/datasets/neu_det/neu_det_kaggle_archive.zip",
+          "size_bytes": 27720680,
+          "modified_ts": "2026-06-30T14:56:21.790108+00:00"
+        },
+        {
+          "path": "data/datasets/neu_det/NEU-DET/train/annotations/crazing_1.xml",
+          "size_bytes": 466,
+          "modified_ts": "2020-08-06T10:04:52+00:00"
+        },
+        {
+          "path": "data/datasets/neu_det/NEU-DET/train/annotations/crazing_10.xml",
+          "size_bytes": 693,
+          "modified_ts": "2020-08-06T10:04:52+00:00"
+        },
+        {
+          "path": "data/datasets/neu_det/NEU-DET/train/annotations/crazing_100.xml",
+          "size_bytes": 1147,
+          "modified_ts": "2020-08-06T10:04:52+00:00"
+        },
+        {
+          "path": "data/datasets/neu_det/NEU-DET/train/annotations/crazing_101.xml",
+          "size_bytes": 470,
+          "modified_ts": "2020-08-06T10:04:52+00:00"
+        },
+        {
+          "path": "data/datasets/neu_det/NEU-DET/train/annotations/crazing_102.xml",
+          "size_bytes": 695,
+          "modified_ts": "2020-08-06T10:04:52+00:00"
+        },
+        {
+          "path": "data/datasets/neu_det/NEU-DET/train/annotations/crazing_103.xml",
+          "size_bytes": 920,
+          "modified_ts": "2020-08-06T10:04:52+00:00"
+        },
+        {
+          "path": "data/datasets/neu_det/NEU-DET/train/annotations/crazing_104.xml",
+          "size_bytes": 1148,
+          "modified_ts": "2020-08-06T10:04:52+00:00"
+        },
+        {
+          "path": "data/datasets/neu_det/NEU-DET/train/annotations/crazing_105.xml",
+          "size_bytes": 1145,
+          "modified_ts": "2020-08-06T10:04:52+00:00"
+        },
+        {
+          "path": "data/datasets/neu_det/NEU-DET/train/annotations/crazing_106.xml",
+          "size_bytes": 924,
+          "modified_ts": "2020-08-06T10:04:52+00:00"
+        },
+        {
+          "path": "data/datasets/neu_det/NEU-DET/train/annotations/crazing_107.xml",
+          "size_bytes": 921,
+          "modified_ts": "2020-08-06T10:04:52+00:00"
+        },
+        {
+          "path": "data/datasets/neu_det/NEU-DET/train/annotations/crazing_108.xml",
+          "size_bytes": 695,
+          "modified_ts": "2020-08-06T10:04:54+00:00"
+        },
+        {
+          "path": "data/datasets/neu_det/NEU-DET/train/annotations/crazing_109.xml",
+          "size_bytes": 919,
+          "modified_ts": "2020-08-06T10:04:54+00:00"
+        },
+        {
+          "path": "data/datasets/neu_det/NEU-DET/train/annotations/crazing_11.xml",
+          "size_bytes": 921,
+          "modified_ts": "2020-08-06T10:04:54+00:00"
+        },
+        {
+          "path": "data/datasets/neu_det/NEU-DET/train/annotations/crazing_110.xml",
+          "size_bytes": 693,
+          "modified_ts": "2020-08-06T10:04:54+00:00"
+        },
+        {
+          "path": "data/datasets/neu_det/NEU-DET/train/annotations/crazing_111.xml",
+          "size_bytes": 697,
+          "modified_ts": "2020-08-06T10:04:54+00:00"
+        },
+        {
+          "path": "data/datasets/neu_det/NEU-DET/train/annotations/crazing_112.xml",
+          "size_bytes": 923,
+          "modified_ts": "2020-08-06T10:04:54+00:00"
+        },
+        {
+          "path": "data/datasets/neu_det/NEU-DET/train/annotations/crazing_113.xml",
+          "size_bytes": 696,
+          "modified_ts": "2020-08-06T10:04:54+00:00"
+        },
+        {
+          "path": "data/datasets/neu_det/NEU-DET/train/annotations/crazing_114.xml",
+          "size_bytes": 918,
+          "modified_ts": "2020-08-06T10:04:54+00:00"
+        },
+        {
+          "path": "data/datasets/neu_det/NEU-DET/train/annotations/crazing_115.xml",
+          "size_bytes": 920,
+          "modified_ts": "2020-08-06T10:04:54+00:00"
+        }
+      ],
+      "last_modified_ts": "2026-07-01T03:53:36.896978+00:00"
     },
     {
       "dataset_key": "cityflow",
@@ -140,16 +589,26 @@
       "path": "data/datasets/cityflow",
       "purpose": "Traffic multi-camera relation and conflict evaluation.",
       "exists": true,
-      "status": "empty",
-      "file_count": 1,
-      "payload_file_count": 0,
+      "status": "has_payload",
+      "file_count": 2,
+      "payload_file_count": 1,
       "directory_count": 0,
-      "total_bytes": 0,
-      "payload_bytes": 0,
-      "extensions": {},
-      "top_level_entries": [],
-      "sample_payload_files": [],
-      "last_modified_ts": "2026-06-30T02:05:15.556578+00:00"
+      "total_bytes": 16912529116,
+      "payload_bytes": 16912529116,
+      "extensions": {
+        ".zip": 1
+      },
+      "top_level_entries": [
+        "AICity22_Track1_MTMC_Tracking.zip"
+      ],
+      "sample_payload_files": [
+        {
+          "path": "data/datasets/cityflow/AICity22_Track1_MTMC_Tracking.zip",
+          "size_bytes": 16912529116,
+          "modified_ts": "2026-06-30T10:59:23.943654+00:00"
+        }
+      ],
+      "last_modified_ts": "2026-06-30T10:59:23.943654+00:00"
     },
     {
       "dataset_key": "ua_detrac",
@@ -157,16 +616,26 @@
       "path": "data/datasets/ua_detrac",
       "purpose": "Traffic detection and tracking auxiliary evaluation.",
       "exists": true,
-      "status": "empty",
-      "file_count": 1,
-      "payload_file_count": 0,
+      "status": "has_payload",
+      "file_count": 2,
+      "payload_file_count": 1,
       "directory_count": 0,
-      "total_bytes": 0,
-      "payload_bytes": 0,
-      "extensions": {},
-      "top_level_entries": [],
-      "sample_payload_files": [],
-      "last_modified_ts": "2026-06-30T02:05:15.561094+00:00"
+      "total_bytes": 9907608622,
+      "payload_bytes": 9907608622,
+      "extensions": {
+        ".zip": 1
+      },
+      "top_level_entries": [
+        "ua_detrac_kaggle_archive.zip"
+      ],
+      "sample_payload_files": [
+        {
+          "path": "data/datasets/ua_detrac/ua_detrac_kaggle_archive.zip",
+          "size_bytes": 9907608622,
+          "modified_ts": "2026-06-30T16:38:16.381265+00:00"
+        }
+      ],
+      "last_modified_ts": "2026-06-30T16:38:16.381265+00:00"
     }
   ]
 }

@@ -13,6 +13,10 @@ data/raw/
 data/processed/
 data/kwdb/
 data/distill/
+data/datasets/**
+!data/datasets/
+!data/datasets/**/
+!data/datasets/**/.gitkeep
 results/
 reports/final/
 

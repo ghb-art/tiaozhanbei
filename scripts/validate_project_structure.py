@@ -58,6 +58,8 @@ GITIGNORE_PATTERNS = [
     "data/processed/",
     "data/kwdb/",
     "data/distill/",
+    "data/datasets/**",
+    "!data/datasets/**/.gitkeep",
     "results/",
     "models/pretrained/",
     "models/checkpoints/",

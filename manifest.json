@@ -1,5 +1,5 @@
 {
-  "git_commit": "f45e42f2650e",
+  "git_commit": "5bff68c46ccf",
   "teacher_model_id": "Qwen/Qwen2.5-14B-Instruct-AWQ",
   "student_init_model_id": "Qwen/Qwen2.5-1.5B-Instruct",
   "edge_model_name": "DB4AI-Edge-1.5B-KD-INT4",
@@ -51,7 +51,7 @@
       "hash_regeneration_required": true
     }
   ],
-  "timestamp": "2026-07-02T10:54:40.790501+00:00",
+  "timestamp": "2026-07-02T11:03:48.900891+00:00",
   "cloud_teacher_first_token_latency_sec": 0.5839526350609958,
   "cloud_gate_status": "passed",
   "kd_trace_teacher_smoke_audit_hash": "3c9748df5a25272bd2d72c27af917b8d25c5744903b417e00f2cdbb336dcaf2c",
@@ -243,7 +243,7 @@
   "final_config_hash": "a931021552b4c1d16c8d308af0fccce6c97182a0ca2208b41c4561d874518f02",
   "risk_matrix_hash": "429d7517e85584ab403b757a94d7d1c3d05ab42c81335593b636e7b33f7345f8",
   "fallback_policy_hash": "902918d3f6fdfefb1f94dfbd32e5d72333cf0f18d795c49fe30f022274936f6c",
-  "preflight_report_hash": "9b15bdf9ce8addb285679e31c7b704cc283bc809812611dbd245696ee18c4f7c",
+  "preflight_report_hash": "c10029b5903684fee37645a1b6c6d24e80fd13a036cf2a8a3f3c00778ccce3eb",
   "baseline_fairness_hash": "e16a5ff991da9354b92bcb609d964720a5b6c7d4086dc399889b9a85333d4cc9",
   "edge_model_sha256": "a5650613e33771d61f5f466b0c49e64ce308d411108d72abdd036e1eb137213f",
   "distill_dataset_hash": "610d23903a5d8d4117c03159268ce068620fee2b97de7ed7ce2dc9fb178c9443",
@@ -260,8 +260,8 @@
   "policy_snapshot_hash": "e349b076a98b53a20cfa97ce34420bf8b3bd891371fca8f01cfbdf6cb9189e09",
   "graph_model_hash": "44df043ac35ba994a452de6d83d0658b394d7160222e1a2b2b3481aba7fc0040",
   "trust_posterior_snapshot_hash": "7f9eb98bff5c3872cd7ce84b372ccf90b73c17f8eb1cb2441f189524022e1df7",
-  "conflict_gt_audit_hash": "936cd7dd38b54eab643d8aa2c6f509117417b38943f296fbdd2512d09128492c",
-  "conflict_gt_sample_audit_hash": "5cd244d5aae16e2e6d2dae4e75dc004d8b428f04e56a64cbb435e25c23250890",
+  "conflict_gt_audit_hash": "d1974110b327a28df15662611884d6d364a05c67be9de5e62827c53beb81dcbd",
+  "conflict_gt_sample_audit_hash": "824627f783af0820f88035f2c71ef26899b8cec830fe01c16a41177631dadac8",
   "latency_breakdown_hash": "e95e884e77b86c27f8f6ed2da9f20d8c6da93fec41b8bda5506db87dc6021101",
   "online_perception_smoke_hash": "e448f71c83e8258ed02641ec9fee48abfdecb2d6eeda749eca322dec8b24d3ae",
   "data_split_hash": "d7f3fac67fd3f235802ed405cdbac46302db513925cdab56d13198b0b871e7cf",

@@ -63,6 +63,7 @@ REQUIRED_FILES = [
     "scripts/setup_datasets.sh",
     "scripts/build_conflict_gt.py",
     "scripts/download_models.py",
+    "scripts/serve_vllm_teachers.py",
     "scripts/verify_gate_cloud.py",
     "model_compression/generate_teacher_traces.py",
     "model_compression/run_student_probe.py",

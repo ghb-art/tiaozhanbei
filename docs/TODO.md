@@ -51,6 +51,7 @@
 
 - [x] 下载 `Qwen/Qwen2.5-14B-Instruct-AWQ`、`Qwen/Qwen2.5-7B-Instruct-AWQ`、`Qwen/Qwen2.5-1.5B-Instruct` 到本地 `models/pretrained/`。
 - [x] 确认 14B-AWQ 服务启动方式。
+- [x] 新增前台 vLLM teacher 启动器，统一用 Ctrl+C 停止多 endpoint 服务。
 - [x] 实现 `scripts/verify_gate_cloud.py`。
 - [x] 记录 model hash 和 prompt hash。
 - [x] 通过 14B-AWQ vLLM live gate：`/health` 200，首 token 0.581s。

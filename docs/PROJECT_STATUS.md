@@ -2,11 +2,11 @@
 
 更新时间：2026-07-02
 
-当前阶段：G-KD-TRACE 已按第 2 章主实验口径完成全量 train split teacher trace gate，下一步实现学生模型蒸馏、repair/INT4 量化 trace 与 GSM8K/HumanEval/CMMLU 能力保持率评测脚本。
+当前阶段：G-KD-TRACE 已按第 2 章主实验口径完成全量 train split teacher trace gate，并完成 Student-Base probe / repair mining smoke；下一步训练 CEDD-Structured adapter、运行正式 student probe，并实现 GSM8K/HumanEval/CMMLU 能力保持率评测脚本。
 
 ## 当前结论
 
-项目已经有完整的研究方案、目录规划、本地数据 payload、冻结 split、正式 manifest、conflict audit 文件、可运行的 KWDB/KaiwuDB 单节点验证、通过 live gate 的 14B-AWQ vLLM 云端教师服务验证，以及通过 gate 的第 2 章主实验全量 teacher trace。当前主实验数据集固定为 `GSM8K`、`HumanEval`、`CMMLU`、`NEU-DET`、`CityFlow`；`MMLU`、`MVTec AD`、`UA-DETRAC` 保留为支持/备份资产，不进入主实验。
+项目已经有完整的研究方案、目录规划、本地数据 payload、冻结 split、正式 manifest、conflict audit 文件、可运行的 KWDB/KaiwuDB 单节点验证、通过 live gate 的 14B-AWQ vLLM 云端教师服务验证、通过 gate 的第 2 章主实验全量 teacher trace，以及可运行的 student probe / repair mining smoke 链路。当前主实验数据集固定为 `GSM8K`、`HumanEval`、`CMMLU`、`NEU-DET`、`CityFlow`；`MMLU`、`MVTec AD`、`UA-DETRAC` 保留为支持/备份资产，不进入主实验。
 
 第 2 章当前已闭合的是任务表征压缩的数据生成链路：teacher trace 只使用有 train split 且属于主实验的 `GSM8K`、`NEU-DET`、`CityFlow`。`HumanEval` 和 `CMMLU` 只用于后续能力保持率评测，不进入蒸馏训练。
 
@@ -64,10 +64,14 @@
 - 已修复正式全量 teacher trace 长跑中暴露的 NEU-DET mirror 物理目录错位问题：loader 现在按 image/XML stem 在 `NEU-DET/train` 与 `NEU-DET/validation` 中全局配对，不再把项目冻结 split 当作 mirror 物理目录；同时为教师 JSON 响应增加 trailing comma 容错。
 - 已完成第 2 章主实验全量 teacher trace gate：`selected_sample_count=8769`，`dataset_counts={"cityflow":36,"gsm8k":7473,"neu_det":1260}`，`successful_trace_count=8769`，`failed_trace_count=0`，`parse_success_rate=1.0`，`action_counts={"alert":76,"inspect":471,"pass":8222}`。正式 audit 为 `reports/audit/gate_kd_trace_teacher.json`，completed partial audit 为 `reports/audit/gate_kd_trace_teacher.partial.json`。
 - 已生成 `data/distill/teacher_decision_trace.jsonl` 和 `data/distill/distill_dataset.jsonl`；`teacher_trace_hash=f6f9ce25ffc8aff2cce62978bb1c4b7844a8937a03b0cd5ba137e1d7c0327486`，`distill_dataset_hash=610d23903a5d8d4117c03159268ce068620fee2b97de7ed7ce2dc9fb178c9443`，并写入 `manifest.json`。
+- 已新增 `model_compression/run_student_probe.py`，支持 dry-run replay smoke 和 OpenAI-compatible student endpoint，用于生成 `student_probe_trace`、结构化解析结果、teacher/student decision agreement、repair candidate reasons 与审计 hash。
+- 已新增 `model_compression/mine_counterfactual_repairs.py`，从 `student_probe_trace` 自动挖掘 action/risk/confidence/review_intent 边界样本并生成 `counterfactual_repair_trace`。
+- 已完成 96 条三数据集轮转 Student-Base probe smoke：`dataset_counts={"cityflow":32,"gsm8k":32,"neu_det":32}`，`successful_probe_count=96`，`failed_probe_count=0`，`parse_success_rate=1.0`，`repair_candidate_count=26`，`action_match_rate=0.875`。审计为 `reports/audit/gate_kd_student_probe_smoke.json`，smoke trace hash 为 `8a34e4737c7791e90d4bbb309ea9ac080ba3165c01f3abc7fc418fe97c46b0a3`。
+- 已完成 counterfactual repair mining smoke：从 96 条 probe 中生成 26 条 repair trace，`dataset_counts={"cityflow":12,"gsm8k":4,"neu_det":10}`，repair trace hash 为 `c3cb8720062c69eafe12c91eff05343d4e90f49ddb6e41d4c78511b191b9c2df`。审计为 `reports/audit/gate_kd_repair_mining_smoke.json`。
 
 ## 未开始
 
-- 1.5B 学生模型蒸馏、repair 和 INT4 量化。
+- 1.5B CEDD-Structured adapter 训练、正式 student probe、CEDD-Repair adapter 训练和 INT4 量化。
 - GSM8K、HumanEval、CMMLU 的 Cloud/Edge 能力评测脚本与能力保持率汇总。
 - P0-B、P1、P2 实验运行。
 
@@ -136,6 +140,8 @@ python3 model_compression/generate_teacher_traces.py --teacher_url http://127.0.
 python3 model_compression/generate_teacher_traces.py --teacher_url http://127.0.0.1:8000 --teacher_url http://127.0.0.1:8001 --workers 2 --resume --sample_limit 100 --checkpoint_interval 10 --output_teacher_trace data/distill/teacher_decision_trace.pilot.jsonl --output_distill data/distill/distill_dataset.pilot.jsonl --audit reports/audit/gate_kd_trace_teacher_pilot.json
 python3 model_compression/generate_teacher_traces.py --teacher_url http://127.0.0.1:8000 --teacher_url http://127.0.0.1:8001 --workers 2 --resume --dataset gsm8k --dataset neu_det --dataset cityflow --sample_limit 108 --checkpoint_interval 12 --output_teacher_trace data/distill/teacher_decision_trace.chapter2_main_pilot.jsonl --output_distill data/distill/distill_dataset.chapter2_main_pilot.jsonl --audit reports/audit/gate_kd_trace_teacher_chapter2_main_pilot.json
 python3 model_compression/generate_teacher_traces.py --teacher_url http://127.0.0.1:8000 --teacher_url http://127.0.0.1:8001 --teacher_url http://127.0.0.1:8002 --teacher_url http://127.0.0.1:8003 --workers 8 --resume --dataset gsm8k --dataset neu_det --dataset cityflow --checkpoint_interval 50 --output_teacher_trace data/distill/teacher_decision_trace.jsonl --output_distill data/distill/distill_dataset.jsonl --audit reports/audit/gate_kd_trace_teacher.json
+python3 model_compression/run_student_probe.py --dry-run --dataset cityflow --dataset gsm8k --dataset neu_det --sample_limit 96 --output_probe data/distill/student_probe_trace.smoke.jsonl --audit reports/audit/gate_kd_student_probe_smoke.json
+python3 model_compression/mine_counterfactual_repairs.py --probe_trace data/distill/student_probe_trace.smoke.jsonl --output_repair data/distill/counterfactual_repair_trace.smoke.jsonl --audit reports/audit/gate_kd_repair_mining_smoke.json --min_repairs 1
 ```
 
-第一条命令用于检查当前项目骨架、关键目录、基础配置、文档和 manifest 模板是否齐全。第二条命令用于确认 8 个目标数据集目录都已有 payload。第三条命令用于扫描本地数据集目录并生成 `reports/preflight/data_inventory.json`。第四条命令用于验证 split 文件 hash 与 train/validation/test 泄漏检查。第五条命令用于在 Bash 环境检查本地数据集标准目录。第六条命令用于基于冻结 split 重新生成 conflict ground truth manifest 和 audit 文件。第七条命令用于基于冻结 split 重新生成正式 manifest。第八条命令用于按当前脚本重新生成三个 manifest 模板。第九条命令用于严格验收正式 manifest。第十条命令用于执行当前工程骨架的 runtime smoke，并生成 `reports/preflight/runtime_smoke.json`。第十一条命令用于在没有 KWDB 容器时先检查 G-DB schema 文件完整性。第十二条和第十三条命令用于启动 KWDB/KaiwuDB 并执行 G-DB live gate。最后几条命令用于执行 G-CLOUD 离线模型审计、启动 14B-AWQ vLLM teacher 服务、运行 live gate、执行 teacher smoke/parallel smoke/pilot，以及执行第 2 章主实验全量 teacher trace gate。
+第一条命令用于检查当前项目骨架、关键目录、基础配置、文档和 manifest 模板是否齐全。第二条命令用于确认 8 个目标数据集目录都已有 payload。第三条命令用于扫描本地数据集目录并生成 `reports/preflight/data_inventory.json`。第四条命令用于验证 split 文件 hash 与 train/validation/test 泄漏检查。第五条命令用于在 Bash 环境检查本地数据集标准目录。第六条命令用于基于冻结 split 重新生成 conflict ground truth manifest 和 audit 文件。第七条命令用于基于冻结 split 重新生成正式 manifest。第八条命令用于按当前脚本重新生成三个 manifest 模板。第九条命令用于严格验收正式 manifest。第十条命令用于执行当前工程骨架的 runtime smoke，并生成 `reports/preflight/runtime_smoke.json`。第十一条命令用于在没有 KWDB 容器时先检查 G-DB schema 文件完整性。第十二条和第十三条命令用于启动 KWDB/KaiwuDB 并执行 G-DB live gate。最后几条命令用于执行 G-CLOUD 离线模型审计、启动 14B-AWQ vLLM teacher 服务、运行 live gate、执行 teacher smoke/parallel smoke/pilot、第 2 章主实验全量 teacher trace gate、student probe smoke 和 repair mining smoke。

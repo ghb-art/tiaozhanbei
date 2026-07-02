@@ -1,7 +1,7 @@
 {
   "manifest_version": "1.0",
   "created_by": "scripts/generate_formal_manifests.py",
-  "created_ts": "2026-07-02T10:45:24.217214+00:00",
+  "created_ts": "2026-07-02T10:54:40.790501+00:00",
   "sampling_seed": 42,
   "data_split_global_hash": "d7f3fac67fd3f235802ed405cdbac46302db513925cdab56d13198b0b871e7cf",
   "chapter2_main_capability_dataset_keys": [

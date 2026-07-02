@@ -1,0 +1,42 @@
+{
+  "gate": "G-KD-TRACE-student-probe-smoke",
+  "check_version": "1.0",
+  "created_by": "model_compression/run_student_probe.py",
+  "created_ts": "2026-07-02T10:52:34.778562+00:00",
+  "status": "passed",
+  "teacher_trace_path": "data/distill/teacher_decision_trace.jsonl",
+  "teacher_trace_hash": "f6f9ce25ffc8aff2cce62978bb1c4b7844a8937a03b0cd5ba137e1d7c0327486",
+  "output_probe_path": "data/distill/student_probe_trace.smoke.jsonl",
+  "student_probe_trace_hash": "8a34e4737c7791e90d4bbb309ea9ac080ba3165c01f3abc7fc418fe97c46b0a3",
+  "probe_backend": "dry_run_replay",
+  "dry_run": true,
+  "student_url": "",
+  "student_endpoint_health_status": null,
+  "student_model_id": "Qwen/Qwen2.5-1.5B-Instruct",
+  "served_model_id": "Qwen/Qwen2.5-1.5B-Instruct",
+  "adapter_path": "",
+  "sample_limit": 96,
+  "selected_sample_count": 96,
+  "successful_probe_count": 96,
+  "failed_probe_count": 0,
+  "parse_ok_count": 96,
+  "parse_success_rate": 1.0,
+  "min_parse_rate": 0.9,
+  "repair_candidate_count": 26,
+  "action_match_rate": 0.875,
+  "selected_sample_ids_hash": "34392e8fba460ad758a0ab38da889e53cda90c49d42c500cba1d30ac6c21a7f5",
+  "dataset_counts": {
+    "cityflow": 32,
+    "gsm8k": 32,
+    "neu_det": 32
+  },
+  "repair_reason_counts": {
+    "action_mismatch": 12,
+    "confidence_gap": 10,
+    "low_student_confidence": 26,
+    "review_intent_mismatch": 10
+  },
+  "prompt_template_hash": "2e007f8b749c21d1612b4f671313ad52316111bc6ecc7216299e6815d30713a7",
+  "errors": [],
+  "report_hash": "f03a9a580429b4bb25f5b0f6327794e86b8ceaa524b74dafd91b2677e30a0311"
+}

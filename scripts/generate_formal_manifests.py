@@ -57,6 +57,8 @@ KD_TEACHER_AUDITS = (
         True,
     ),
 )
+KD_STUDENT_PROBE_SMOKE_AUDIT = ROOT / "reports" / "audit" / "gate_kd_student_probe_smoke.json"
+KD_REPAIR_MINING_SMOKE_AUDIT = ROOT / "reports" / "audit" / "gate_kd_repair_mining_smoke.json"
 
 RUN_HASH_KEYS = [
     "final_config_hash",
@@ -283,6 +285,67 @@ def add_kd_teacher_audit_fields(
     manifest.update(fields)
 
 
+def add_student_probe_smoke_fields(manifest: dict[str, Any]) -> None:
+    if not KD_STUDENT_PROBE_SMOKE_AUDIT.is_file():
+        return
+    probe = load_json(KD_STUDENT_PROBE_SMOKE_AUDIT)
+    manifest.update(
+        {
+            "kd_student_probe_smoke_audit_hash": sha256_file(KD_STUDENT_PROBE_SMOKE_AUDIT),
+            "kd_student_probe_smoke_report_hash": probe.get(
+                "report_hash",
+                derived_hash("kd_student_probe_smoke_report_hash"),
+            ),
+            "kd_student_probe_smoke_trace_hash": probe.get(
+                "student_probe_trace_hash",
+                derived_hash("kd_student_probe_smoke_trace_hash"),
+            ),
+            "kd_student_probe_smoke_selected_sample_ids_hash": probe.get(
+                "selected_sample_ids_hash",
+                derived_hash("kd_student_probe_smoke_selected_sample_ids_hash"),
+            ),
+            "kd_student_probe_smoke_status": probe.get("status", "unknown"),
+            "kd_student_probe_smoke_sample_count": probe.get("selected_sample_count", 0),
+            "kd_student_probe_smoke_successful_probe_count": probe.get("successful_probe_count", 0),
+            "kd_student_probe_smoke_failed_probe_count": probe.get("failed_probe_count", 0),
+            "kd_student_probe_smoke_parse_success_rate": probe.get("parse_success_rate", 0.0),
+            "kd_student_probe_smoke_repair_candidate_count": probe.get("repair_candidate_count", 0),
+            "kd_student_probe_smoke_action_match_rate": probe.get("action_match_rate", 0.0),
+            "kd_student_probe_smoke_dataset_counts": probe.get("dataset_counts", {}),
+            "kd_student_probe_smoke_repair_reason_counts": probe.get("repair_reason_counts", {}),
+        }
+    )
+
+
+def add_repair_mining_smoke_fields(manifest: dict[str, Any]) -> None:
+    if not KD_REPAIR_MINING_SMOKE_AUDIT.is_file():
+        return
+    repair = load_json(KD_REPAIR_MINING_SMOKE_AUDIT)
+    manifest.update(
+        {
+            "kd_repair_mining_smoke_audit_hash": sha256_file(KD_REPAIR_MINING_SMOKE_AUDIT),
+            "kd_repair_mining_smoke_report_hash": repair.get(
+                "report_hash",
+                derived_hash("kd_repair_mining_smoke_report_hash"),
+            ),
+            "kd_repair_mining_smoke_trace_hash": repair.get(
+                "counterfactual_repair_trace_hash",
+                derived_hash("kd_repair_mining_smoke_trace_hash"),
+            ),
+            "kd_repair_mining_smoke_selected_sample_ids_hash": repair.get(
+                "selected_sample_ids_hash",
+                derived_hash("kd_repair_mining_smoke_selected_sample_ids_hash"),
+            ),
+            "kd_repair_mining_smoke_status": repair.get("status", "unknown"),
+            "kd_repair_mining_smoke_input_probe_count": repair.get("input_probe_count", 0),
+            "kd_repair_mining_smoke_repair_trace_count": repair.get("repair_trace_count", 0),
+            "kd_repair_mining_smoke_dataset_counts": repair.get("dataset_counts", {}),
+            "kd_repair_mining_smoke_counterfactual_type_counts": repair.get("counterfactual_type_counts", {}),
+            "kd_repair_mining_smoke_repair_reason_counts": repair.get("repair_reason_counts", {}),
+        }
+    )
+
+
 def build_run_manifest(frozen: dict[str, Any], conflict_manifest: dict[str, Any], created_ts: str) -> dict[str, Any]:
     manifest: dict[str, Any] = {
         "git_commit": git_commit(),
@@ -352,6 +415,8 @@ def build_run_manifest(frozen: dict[str, Any], conflict_manifest: dict[str, Any]
             partial_audit_path,
             update_primary_hashes,
         )
+    add_student_probe_smoke_fields(manifest)
+    add_repair_mining_smoke_fields(manifest)
 
     for key in RUN_HASH_KEYS:
         manifest[key] = explicit_hashes.get(key, derived_hash(key))

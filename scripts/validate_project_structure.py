@@ -65,6 +65,8 @@ REQUIRED_FILES = [
     "scripts/download_models.py",
     "scripts/verify_gate_cloud.py",
     "model_compression/generate_teacher_traces.py",
+    "model_compression/run_student_probe.py",
+    "model_compression/mine_counterfactual_repairs.py",
     "scripts/generate_formal_manifests.py",
     "scripts/verify_gate_db.py",
     "sql/cloud_schema.sql",

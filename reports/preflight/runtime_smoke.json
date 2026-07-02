@@ -1,12 +1,12 @@
 {
   "report_version": "0.1",
   "created_by": "scripts/preflight_runtime_smoke.py",
-  "created_ts": "2026-07-02T10:45:13.194427+00:00",
+  "created_ts": "2026-07-02T10:54:34.865563+00:00",
   "project_root": "/workspace/project_tiaozhanbei/tiaozhanbei",
   "python_executable": "/usr/bin/python3",
   "summary": {
     "passed": true,
-    "check_count": 35,
+    "check_count": 37,
     "failed_check_count": 0,
     "errors": []
   },
@@ -97,7 +97,7 @@
       "passed": true,
       "details": {
         "path": "docs/TODO.md",
-        "size_chars": 2905
+        "size_chars": 3201
       }
     },
     {
@@ -105,7 +105,7 @@
       "passed": true,
       "details": {
         "path": "docs/PROJECT_STATUS.md",
-        "size_chars": 11812
+        "size_chars": 13525
       }
     },
     {
@@ -113,7 +113,7 @@
       "passed": true,
       "details": {
         "path": "docs/REVISION_LOG.md",
-        "size_chars": 7266
+        "size_chars": 8034
       }
     },
     {
@@ -185,7 +185,7 @@
       "passed": true,
       "details": {
         "path": "scripts/validate_project_structure.py",
-        "size_chars": 7330
+        "size_chars": 7432
       }
     },
     {
@@ -217,7 +217,7 @@
       "passed": true,
       "details": {
         "path": "scripts/preflight_runtime_smoke.py",
-        "size_chars": 10657
+        "size_chars": 10759
       }
     },
     {
@@ -234,6 +234,22 @@
       "details": {
         "path": "model_compression/generate_teacher_traces.py",
         "size_chars": 44416
+      }
+    },
+    {
+      "name": "readable_file:model_compression/run_student_probe.py",
+      "passed": true,
+      "details": {
+        "path": "model_compression/run_student_probe.py",
+        "size_chars": 19006
+      }
+    },
+    {
+      "name": "readable_file:model_compression/mine_counterfactual_repairs.py",
+      "passed": true,
+      "details": {
+        "path": "model_compression/mine_counterfactual_repairs.py",
+        "size_chars": 8795
       }
     },
     {
@@ -339,8 +355,8 @@
           "scripts/validate_project_structure.py"
         ],
         "returncode": 0,
-        "started_ts": "2026-07-02T10:45:11.011684+00:00",
-        "finished_ts": "2026-07-02T10:45:11.049983+00:00",
+        "started_ts": "2026-07-02T10:54:32.587472+00:00",
+        "finished_ts": "2026-07-02T10:54:32.626305+00:00",
         "stdout_tail": "[OK] Network profile declared: high_loss\n[OK] Network profile declared: short_disconnect\n[OK] Workload profile declared: stable\n[OK] Workload profile declared: burst\n[OK] Workload profile declared: replay\n[OK] Workload profile declared: scale\n[OK] Model role declared: cloud_teacher\n[OK] Model role declared: high_edge\n[OK] Model role declared: edge_student\n[OK] Manifest template is valid JSON: dataset_manifest.template.json\n[OK] Manifest template marked template_only: dataset_manifest.template.json\n[OK] Manifest template key present: dataset_manifest.template.json::manifest_version\n[OK] Manifest template key present: dataset_manifest.template.json::created_by\n[OK] Manifest template key present: dataset_manifest.template.json::created_ts\n[OK] Manifest template key present: dataset_manifest.template.json::sampling_seed\n[OK] Manifest template key present: dataset_manifest.template.json::datasets\n[OK] Manifest template key present: dataset_manifest.template.json::scu_support\n[OK] Manifest template key present: dataset_manifest.template.json::global_leakage_check\n[OK] Manifest template is valid JSON: manifest.template.json\n[OK] Manifest template marked template_only: manifest.template.json\n[OK] Manifest template key present: manifest.template.json::git_commit\n[OK] Manifest template key present: manifest.template.json::final_config_hash\n[OK] Manifest template key present: manifest.template.json::teacher_model_id\n[OK] Manifest template key present: manifest.template.json::student_init_model_id\n[OK] Manifest template key present: manifest.template.json::edge_model_name\n[OK] Manifest template key present: manifest.template.json::fallback_events\n[OK] Manifest template key present: manifest.template.json::timestamp\n[OK] Manifest template is valid JSON: conflict_gt_manifest.template.json\n[OK] Manifest template marked template_only: conflict_gt_manifest.template.json\n[OK] Manifest template key present: conflict_gt_manifest.template.json::manifest_version\n[OK] Manifest template key present: conflict_gt_manifest.template.json::created_by\n[OK] Manifest template key present: conflict_gt_manifest.template.json::created_ts\n[OK] Manifest template key present: conflict_gt_manifest.template.json::datasets\n[OK] Manifest template key present: conflict_gt_manifest.template.json::split\n[OK] Manifest template key present: conflict_gt_manifest.template.json::conflict_groups\n[OK] Manifest template key present: conflict_gt_manifest.template.json::conflict_group_count\n[OK] Manifest template key present: conflict_gt_manifest.template.json::conflict_type_distribution\n[OK] Manifest template key present: conflict_gt_manifest.template.json::manifest_hash\n\nProject structure validation passed.",
         "stderr_tail": ""
       }
@@ -355,8 +371,8 @@
           "--allow-empty"
         ],
         "returncode": 0,
-        "started_ts": "2026-07-02T10:45:11.050091+00:00",
-        "finished_ts": "2026-07-02T10:45:13.141347+00:00",
+        "started_ts": "2026-07-02T10:54:32.626408+00:00",
+        "finished_ts": "2026-07-02T10:54:34.813413+00:00",
         "stdout_tail": "[OK] GSM8K -> data/datasets/gsm8k (7 payload files, 13880370 bytes)\n[OK] HumanEval -> data/datasets/humaneval (11 payload files, 64174 bytes)\n[OK] MMLU -> data/datasets/mmlu (187 payload files, 166066477 bytes)\n[OK] CMMLU -> data/datasets/cmmlu (136 payload files, 2512537 bytes)\n[OK] MVTec AD -> data/datasets/mvtec_ad (6645 payload files, 10536229804 bytes)\n[OK] NEU-DET -> data/datasets/neu_det (3601 payload files, 55922599 bytes)\n[OK] CityFlow -> data/datasets/cityflow (1063 payload files, 34973435649 bytes)\n[OK] UA-DETRAC -> data/datasets/ua_detrac (141041 payload files, 31257170002 bytes)\n\nDataset presence check completed with empty directories allowed.",
         "stderr_tail": ""
       }
@@ -371,12 +387,12 @@
           "--allow-missing"
         ],
         "returncode": 0,
-        "started_ts": "2026-07-02T10:45:13.141415+00:00",
-        "finished_ts": "2026-07-02T10:45:13.194352+00:00",
+        "started_ts": "2026-07-02T10:54:34.813491+00:00",
+        "finished_ts": "2026-07-02T10:54:34.865451+00:00",
         "stdout_tail": "[OK] dataset_manifest.json passed\n[OK] manifest.json passed\n[OK] conflict_gt_manifest.json passed\n\nFormal manifest validation passed.",
         "stderr_tail": ""
       }
     }
   ],
-  "report_hash": "7bf8b7931f1a265c75decabaa7fcbf462abdf70b4c0539a969a310996245d15c"
+  "report_hash": "d9189fd7985c4a398b3765deea190e0576007f6db895f4c6ddee55ce2bf70c3e"
 }

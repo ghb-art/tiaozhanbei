@@ -65,5 +65,10 @@
 - [x] 按第 2 章主实验口径完成 108 条 teacher trace pilot，并生成 `reports/audit/gate_kd_trace_teacher_chapter2_main_pilot.json`。
 - [x] 基于第 2 章主实验 train split 生成 `data/distill/teacher_decision_trace.jsonl`。
 - [x] 生成 `data/distill/distill_dataset.jsonl` 并记录 hash。
+- [x] 实现 Student-Base probe trace 脚本，并完成 96 条三数据集轮转 smoke。
+- [x] 实现 counterfactual repair mining 脚本，并完成 repair trace smoke。
 - [ ] 实现 GSM8K、HumanEval、CMMLU 的 Cloud/Edge 能力评测脚本和能力保持率汇总。
-- [ ] 设计 Student-Base probe、CEDD-Structured、CEDD-Repair 与 INT4 量化 trace 产物。
+- [ ] 训练 CEDD-Structured adapter 并运行正式 train split student probe。
+- [ ] 生成正式 `data/distill/student_probe_trace.jsonl` 并记录 hash。
+- [ ] 生成正式 `data/distill/counterfactual_repair_trace.jsonl` 并记录 hash。
+- [ ] 训练 CEDD-Repair adapter 并生成 INT4 量化行为 trace。

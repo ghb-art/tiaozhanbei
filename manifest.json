@@ -1,5 +1,5 @@
 {
-  "git_commit": "dc74980ba9d8",
+  "git_commit": "f45e42f2650e",
   "teacher_model_id": "Qwen/Qwen2.5-14B-Instruct-AWQ",
   "student_init_model_id": "Qwen/Qwen2.5-1.5B-Instruct",
   "edge_model_name": "DB4AI-Edge-1.5B-KD-INT4",
@@ -51,7 +51,7 @@
       "hash_regeneration_required": true
     }
   ],
-  "timestamp": "2026-07-02T10:45:24.217214+00:00",
+  "timestamp": "2026-07-02T10:54:40.790501+00:00",
   "cloud_teacher_first_token_latency_sec": 0.5839526350609958,
   "cloud_gate_status": "passed",
   "kd_trace_teacher_smoke_audit_hash": "3c9748df5a25272bd2d72c27af917b8d25c5744903b417e00f2cdbb336dcaf2c",
@@ -196,10 +196,54 @@
     "pass": 8222
   },
   "kd_trace_teacher_partial_audit_hash": "94f73f9e56610ae0932793fb91f12046c9d9e04227cc5eed9ab0dc908cb8e6e9",
+  "kd_student_probe_smoke_audit_hash": "3395da24be9021146affb9f10be33242297a58451074a0f4d3adcd8d8785f947",
+  "kd_student_probe_smoke_report_hash": "f03a9a580429b4bb25f5b0f6327794e86b8ceaa524b74dafd91b2677e30a0311",
+  "kd_student_probe_smoke_trace_hash": "8a34e4737c7791e90d4bbb309ea9ac080ba3165c01f3abc7fc418fe97c46b0a3",
+  "kd_student_probe_smoke_selected_sample_ids_hash": "34392e8fba460ad758a0ab38da889e53cda90c49d42c500cba1d30ac6c21a7f5",
+  "kd_student_probe_smoke_status": "passed",
+  "kd_student_probe_smoke_sample_count": 96,
+  "kd_student_probe_smoke_successful_probe_count": 96,
+  "kd_student_probe_smoke_failed_probe_count": 0,
+  "kd_student_probe_smoke_parse_success_rate": 1.0,
+  "kd_student_probe_smoke_repair_candidate_count": 26,
+  "kd_student_probe_smoke_action_match_rate": 0.875,
+  "kd_student_probe_smoke_dataset_counts": {
+    "cityflow": 32,
+    "gsm8k": 32,
+    "neu_det": 32
+  },
+  "kd_student_probe_smoke_repair_reason_counts": {
+    "action_mismatch": 12,
+    "confidence_gap": 10,
+    "low_student_confidence": 26,
+    "review_intent_mismatch": 10
+  },
+  "kd_repair_mining_smoke_audit_hash": "0c880f4282bc7571f632470130147b46ab13e0f19d030e617e291647e00ab948",
+  "kd_repair_mining_smoke_report_hash": "cc7651eb10a8dd59a0e195f497dd4ba2bfd1547176fc048472c3cddd8a50b5cc",
+  "kd_repair_mining_smoke_trace_hash": "c3cb8720062c69eafe12c91eff05343d4e90f49ddb6e41d4c78511b191b9c2df",
+  "kd_repair_mining_smoke_selected_sample_ids_hash": "b026e811f9507d5614c9ee90a33a34a2c08c468e983b54195ff9abd6f4bad71d",
+  "kd_repair_mining_smoke_status": "passed",
+  "kd_repair_mining_smoke_input_probe_count": 96,
+  "kd_repair_mining_smoke_repair_trace_count": 26,
+  "kd_repair_mining_smoke_dataset_counts": {
+    "cityflow": 12,
+    "gsm8k": 4,
+    "neu_det": 10
+  },
+  "kd_repair_mining_smoke_counterfactual_type_counts": {
+    "action_boundary": 12,
+    "confidence_boundary": 14
+  },
+  "kd_repair_mining_smoke_repair_reason_counts": {
+    "action_mismatch": 12,
+    "confidence_gap": 10,
+    "low_student_confidence": 26,
+    "review_intent_mismatch": 10
+  },
   "final_config_hash": "a931021552b4c1d16c8d308af0fccce6c97182a0ca2208b41c4561d874518f02",
   "risk_matrix_hash": "429d7517e85584ab403b757a94d7d1c3d05ab42c81335593b636e7b33f7345f8",
   "fallback_policy_hash": "902918d3f6fdfefb1f94dfbd32e5d72333cf0f18d795c49fe30f022274936f6c",
-  "preflight_report_hash": "46cfdcc3bde9f72e05000192800f619ac1b15dad15a93536f037f39477aa87e4",
+  "preflight_report_hash": "9b15bdf9ce8addb285679e31c7b704cc283bc809812611dbd245696ee18c4f7c",
   "baseline_fairness_hash": "e16a5ff991da9354b92bcb609d964720a5b6c7d4086dc399889b9a85333d4cc9",
   "edge_model_sha256": "a5650613e33771d61f5f466b0c49e64ce308d411108d72abdd036e1eb137213f",
   "distill_dataset_hash": "610d23903a5d8d4117c03159268ce068620fee2b97de7ed7ce2dc9fb178c9443",
@@ -216,8 +260,8 @@
   "policy_snapshot_hash": "e349b076a98b53a20cfa97ce34420bf8b3bd891371fca8f01cfbdf6cb9189e09",
   "graph_model_hash": "44df043ac35ba994a452de6d83d0658b394d7160222e1a2b2b3481aba7fc0040",
   "trust_posterior_snapshot_hash": "7f9eb98bff5c3872cd7ce84b372ccf90b73c17f8eb1cb2441f189524022e1df7",
-  "conflict_gt_audit_hash": "b9dfa156fce88fe3ff6d4361394f04fd25ceefb967432675046ea42f95117cd9",
-  "conflict_gt_sample_audit_hash": "cbf8cc6f38ac9f4648a7c40a54e3b421da759213f219c84107ea60a635669e51",
+  "conflict_gt_audit_hash": "936cd7dd38b54eab643d8aa2c6f509117417b38943f296fbdd2512d09128492c",
+  "conflict_gt_sample_audit_hash": "5cd244d5aae16e2e6d2dae4e75dc004d8b428f04e56a64cbb435e25c23250890",
   "latency_breakdown_hash": "e95e884e77b86c27f8f6ed2da9f20d8c6da93fec41b8bda5506db87dc6021101",
   "online_perception_smoke_hash": "e448f71c83e8258ed02641ec9fee48abfdecb2d6eeda749eca322dec8b24d3ae",
   "data_split_hash": "d7f3fac67fd3f235802ed405cdbac46302db513925cdab56d13198b0b871e7cf",

@@ -202,6 +202,107 @@ def call_student_endpoint(
     }
 
 
+def resolve_torch_dtype(dtype_name: str) -> Any:
+    import torch
+
+    if dtype_name == "float16":
+        return torch.float16
+    if dtype_name == "bfloat16":
+        return torch.bfloat16
+    if dtype_name == "float32":
+        return torch.float32
+    raise ProbeError(f"Unsupported dtype: {dtype_name}")
+
+
+def load_local_student(
+    model_dir: Path,
+    adapter_path: Path | None,
+    device: str,
+    dtype_name: str,
+    quantize_adapter: bool,
+) -> tuple[Any, Any, dict[str, Any]]:
+    import torch
+    from transformers import AutoModelForCausalLM, AutoTokenizer
+
+    from lora_utils import load_lora_adapter
+
+    tokenizer = AutoTokenizer.from_pretrained(model_dir, local_files_only=True, trust_remote_code=True)
+    if tokenizer.pad_token_id is None:
+        tokenizer.pad_token = tokenizer.eos_token
+    model = AutoModelForCausalLM.from_pretrained(
+        model_dir,
+        torch_dtype=resolve_torch_dtype(dtype_name),
+        local_files_only=True,
+        low_cpu_mem_usage=True,
+        trust_remote_code=True,
+    )
+    adapter_config: dict[str, Any] = {}
+    if adapter_path is not None:
+        adapter_config = load_lora_adapter(model, adapter_path, quantize_adapter=quantize_adapter)
+    model.to(device)
+    model.eval()
+    return tokenizer, model, adapter_config
+
+
+def call_local_student(
+    tokenizer: Any,
+    model: Any,
+    row: dict[str, Any],
+    device: str,
+    max_tokens: int,
+) -> dict[str, Any]:
+    import torch
+
+    prompt, prompt_hash = build_prompt(row)
+    messages = [
+        {"role": "system", "content": PROBE_SYSTEM_PROMPT},
+        {"role": "user", "content": prompt},
+    ]
+    chat_prompt = tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
+    inputs = tokenizer(chat_prompt, return_tensors="pt", truncation=True).to(device)
+    input_length = int(inputs["input_ids"].shape[1])
+    payload = {
+        "backend": "local_transformers",
+        "messages": messages,
+        "max_new_tokens": max_tokens,
+        "do_sample": False,
+    }
+
+    started = time.perf_counter()
+    with torch.inference_mode():
+        output_ids = model.generate(
+            **inputs,
+            max_new_tokens=max_tokens,
+            do_sample=False,
+            eos_token_id=tokenizer.eos_token_id,
+            pad_token_id=tokenizer.pad_token_id,
+        )
+    latency_ms = (time.perf_counter() - started) * 1000
+    response_ids = output_ids[0, input_length:]
+    response_text = tokenizer.decode(response_ids, skip_special_tokens=True).strip()
+
+    parsed: dict[str, Any] = {}
+    decision: dict[str, Any] = {}
+    evidence_items: list[str] = []
+    parse_errors: list[str] = []
+    try:
+        parsed = extract_json_object(response_text)
+        decision, evidence_items, parse_errors = normalize_decision(parsed)
+    except Exception as exc:
+        parse_errors = [f"{type(exc).__name__}: {exc}"]
+
+    return {
+        "prompt_hash": prompt_hash,
+        "request_hash": sha256_text(json.dumps(payload, ensure_ascii=False, sort_keys=True)),
+        "response_text": response_text,
+        "parsed_response": parsed,
+        "decision_tuple": decision,
+        "evidence_items": evidence_items,
+        "parse_errors": parse_errors,
+        "latency_ms": latency_ms,
+    }
+
+
 def dry_run_student(row: dict[str, Any], dry_run_mismatch_mod: int) -> dict[str, Any]:
     _, prompt_hash = build_prompt(row)
     teacher_decision = dict(row.get("decision_tuple", {}))
@@ -336,6 +437,15 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--student-url", "--student_url", default="")
     parser.add_argument("--student-model-id", "--student_model_id", default=DEFAULT_STUDENT_MODEL_ID)
     parser.add_argument("--adapter-path", "--adapter_path", default="")
+    parser.add_argument("--local-model-dir", "--local_model_dir", default="")
+    parser.add_argument("--device", default="cuda")
+    parser.add_argument("--dtype", choices=["float16", "bfloat16", "float32"], default="float16")
+    parser.add_argument(
+        "--quantize-adapter",
+        "--quantize_adapter",
+        action="store_true",
+        help="Apply fake INT4 dequantization to LoRA adapter weights during local inference.",
+    )
     parser.add_argument("--timeout-sec", type=float, default=60.0)
     parser.add_argument("--max-tokens", type=int, default=256)
     parser.add_argument("--min-parse-rate", type=float, default=0.9)
@@ -356,13 +466,16 @@ def main() -> int:
     if args.sample_limit is not None and args.sample_limit <= 0:
         print("--sample-limit must be positive", file=sys.stderr)
         return 2
-    if not args.dry_run and not args.student_url:
-        print("Provide --student-url or use --dry-run.", file=sys.stderr)
+    backend_count = sum(bool(item) for item in (args.dry_run, args.student_url, args.local_model_dir))
+    if backend_count != 1:
+        print("Choose exactly one backend: --dry-run, --student-url, or --local-model-dir.", file=sys.stderr)
         return 2
 
     teacher_trace_path = resolve_path(args.teacher_trace)
     output_path = resolve_path(args.output_probe)
     audit_path = resolve_path(args.audit)
+    local_model_dir = resolve_path(args.local_model_dir) if args.local_model_dir else None
+    adapter_path = resolve_path(args.adapter_path) if args.adapter_path else None
     dataset_filter = set(parse_comma_values(args.dataset)) if args.dataset else None
 
     teacher_rows = load_jsonl(teacher_trace_path)
@@ -372,7 +485,19 @@ def main() -> int:
     backend = "dry_run_replay" if args.dry_run else "openai_compatible"
     served_model_id = args.student_model_id
     health = None
-    if not args.dry_run:
+    local_tokenizer = None
+    local_model = None
+    local_adapter_config: dict[str, Any] = {}
+    if local_model_dir is not None:
+        backend = "local_transformers_adapter" if adapter_path else "local_transformers_base"
+        local_tokenizer, local_model, local_adapter_config = load_local_student(
+            local_model_dir,
+            adapter_path,
+            args.device,
+            args.dtype,
+            args.quantize_adapter,
+        )
+    elif not args.dry_run:
         health = health_status(args.student_url, args.timeout_sec)
         if health != 200:
             print(f"Student endpoint health check failed: {args.student_url} status={health}", file=sys.stderr)
@@ -385,6 +510,14 @@ def main() -> int:
         try:
             if args.dry_run:
                 student_result = dry_run_student(teacher_row, args.dry_run_mismatch_mod)
+            elif local_model is not None and local_tokenizer is not None:
+                student_result = call_local_student(
+                    local_tokenizer,
+                    local_model,
+                    teacher_row,
+                    args.device,
+                    args.max_tokens,
+                )
             else:
                 student_result = call_student_endpoint(
                     args.student_url,
@@ -435,9 +568,14 @@ def main() -> int:
         "dry_run": bool(args.dry_run),
         "student_url": args.student_url,
         "student_endpoint_health_status": health,
+        "local_model_dir": display_path(local_model_dir) if local_model_dir else "",
+        "local_adapter_config": local_adapter_config,
+        "local_dtype": args.dtype if local_model_dir else "",
+        "local_device": args.device if local_model_dir else "",
         "student_model_id": args.student_model_id,
         "served_model_id": served_model_id,
         "adapter_path": args.adapter_path,
+        "quantize_adapter": bool(args.quantize_adapter),
         "sample_limit": args.sample_limit,
         "selected_sample_count": len(selected_rows),
         "successful_probe_count": len(probe_rows),

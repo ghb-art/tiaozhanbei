@@ -47,9 +47,13 @@ REQUIRED_READABLE_FILES = [
     "scripts/preflight_runtime_smoke.py",
     "scripts/serve_vllm_teachers.py",
     "scripts/verify_gate_cloud.py",
+    "scripts/evaluate_chapter2_capability.py",
     "model_compression/generate_teacher_traces.py",
+    "model_compression/lora_utils.py",
+    "model_compression/train_cedd_structured.py",
     "model_compression/run_student_probe.py",
     "model_compression/mine_counterfactual_repairs.py",
+    "model_compression/verify_quant_behavior.py",
 ]
 
 TEMPLATE_FILES = [

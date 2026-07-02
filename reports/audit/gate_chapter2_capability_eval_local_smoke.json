@@ -1,0 +1,57 @@
+{
+  "gate": "CH2-CAPABILITY-EVAL-smoke",
+  "check_version": "1.0",
+  "created_by": "scripts/evaluate_chapter2_capability.py",
+  "created_ts": "2026-07-02T11:21:31.751403+00:00",
+  "status": "passed",
+  "local_model_dir": "models/pretrained/Qwen--Qwen2.5-1.5B-Instruct",
+  "adapter_path": "models/adapters/cedd_structured_smoke",
+  "adapter_config": {
+    "adapter_type": "manual_lora",
+    "stage": "cedd_structured",
+    "base_model": "models/pretrained/Qwen--Qwen2.5-1.5B-Instruct",
+    "target_modules": [
+      "q_proj",
+      "v_proj"
+    ],
+    "rank": 8,
+    "alpha": 16.0,
+    "dropout": 0.05,
+    "dtype": "float16",
+    "trainable_parameters": 1089536,
+    "total_parameters": 1544803840,
+    "selected_sample_count": 12,
+    "selected_sample_ids_hash": "3322058a4dbbce00d0148e0c5827f2b2be8befab7120fdc971a9587cb9ca3576",
+    "distill_data_hash": "610d23903a5d8d4117c03159268ce068620fee2b97de7ed7ce2dc9fb178c9443"
+  },
+  "dtype": "float16",
+  "device": "cuda",
+  "output_trace_path": "reports/audit/chapter2_capability_eval_local_smoke.jsonl",
+  "capability_eval_trace_hash": "77d028e021954a0c4f569fb5bb7bbbfba0c60b70aa7556d7fe1f2f821b46361d",
+  "selected_dataset_keys": [
+    "cmmlu",
+    "gsm8k",
+    "humaneval"
+  ],
+  "sample_limit_per_dataset": 1,
+  "sample_count": 3,
+  "dataset_counts": {
+    "cmmlu": 1,
+    "gsm8k": 1,
+    "humaneval": 1
+  },
+  "correct_counts": {
+    "cmmlu": 1
+  },
+  "accuracy_by_dataset": {
+    "cmmlu": 1.0,
+    "gsm8k": 0.0,
+    "humaneval": 0.0
+  },
+  "overall_accuracy": 0.3333333333333333,
+  "min_accuracy": 0.0,
+  "peak_memory_mb": 2972.55322265625,
+  "prompt_template_hash": "d1019473f72612c1bef19c930b0518203cb5aa86549790d0ab40766e11621a76",
+  "errors": [],
+  "report_hash": "5d0a3225196b6230bd776c9b820b9fb0a692554b43e9037776dcb2c33664c990"
+}

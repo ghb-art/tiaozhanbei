@@ -59,6 +59,13 @@ KD_TEACHER_AUDITS = (
 )
 KD_STUDENT_PROBE_SMOKE_AUDIT = ROOT / "reports" / "audit" / "gate_kd_student_probe_smoke.json"
 KD_REPAIR_MINING_SMOKE_AUDIT = ROOT / "reports" / "audit" / "gate_kd_repair_mining_smoke.json"
+KD_CEDD_STRUCTURED_TRAIN_SMOKE_AUDIT = ROOT / "reports" / "audit" / "gate_kd_cedd_structured_train_smoke.json"
+KD_STUDENT_PROBE_LOCAL_SMOKE_AUDIT = ROOT / "reports" / "audit" / "gate_kd_student_probe_local_smoke.json"
+KD_REPAIR_MINING_LOCAL_SMOKE_AUDIT = ROOT / "reports" / "audit" / "gate_kd_repair_mining_local_smoke.json"
+KD_QUANT_BEHAVIOR_LOCAL_SMOKE_AUDIT = ROOT / "reports" / "audit" / "gate_kd_quant_behavior_local_smoke.json"
+CH2_CAPABILITY_EVAL_LOCAL_SMOKE_AUDIT = (
+    ROOT / "reports" / "audit" / "gate_chapter2_capability_eval_local_smoke.json"
+)
 
 RUN_HASH_KEYS = [
     "final_config_hash",
@@ -346,6 +353,183 @@ def add_repair_mining_smoke_fields(manifest: dict[str, Any]) -> None:
     )
 
 
+def add_cedd_structured_train_smoke_fields(
+    manifest: dict[str, Any],
+    explicit_hashes: dict[str, str],
+) -> None:
+    if not KD_CEDD_STRUCTURED_TRAIN_SMOKE_AUDIT.is_file():
+        return
+    train = load_json(KD_CEDD_STRUCTURED_TRAIN_SMOKE_AUDIT)
+    explicit_hashes.update(
+        {
+            "lora_adapter_sha256": train.get("adapter_hash", derived_hash("lora_adapter_sha256")),
+            "sft_config_hash": train.get("adapter_config_hash", derived_hash("sft_config_hash")),
+        }
+    )
+    manifest.update(
+        {
+            "kd_cedd_structured_train_smoke_audit_hash": sha256_file(KD_CEDD_STRUCTURED_TRAIN_SMOKE_AUDIT),
+            "kd_cedd_structured_train_smoke_report_hash": train.get(
+                "report_hash",
+                derived_hash("kd_cedd_structured_train_smoke_report_hash"),
+            ),
+            "kd_cedd_structured_train_smoke_status": train.get("status", "unknown"),
+            "kd_cedd_structured_train_smoke_adapter_hash": train.get(
+                "adapter_hash",
+                derived_hash("kd_cedd_structured_train_smoke_adapter_hash"),
+            ),
+            "kd_cedd_structured_train_smoke_adapter_config_hash": train.get(
+                "adapter_config_hash",
+                derived_hash("kd_cedd_structured_train_smoke_adapter_config_hash"),
+            ),
+            "kd_cedd_structured_train_smoke_distill_data_hash": train.get(
+                "distill_data_hash",
+                derived_hash("kd_cedd_structured_train_smoke_distill_data_hash"),
+            ),
+            "kd_cedd_structured_train_smoke_sample_count": train.get("selected_sample_count", 0),
+            "kd_cedd_structured_train_smoke_dataset_counts": train.get("dataset_counts", {}),
+            "kd_cedd_structured_train_smoke_trainable_parameter_ratio": train.get(
+                "trainable_parameter_ratio",
+                0.0,
+            ),
+            "kd_cedd_structured_train_smoke_mean_loss": train.get("mean_loss", 0.0),
+        }
+    )
+
+
+def add_student_probe_local_smoke_fields(
+    manifest: dict[str, Any],
+    explicit_hashes: dict[str, str],
+) -> None:
+    if not KD_STUDENT_PROBE_LOCAL_SMOKE_AUDIT.is_file():
+        return
+    probe = load_json(KD_STUDENT_PROBE_LOCAL_SMOKE_AUDIT)
+    explicit_hashes["student_probe_trace_hash"] = probe.get(
+        "student_probe_trace_hash",
+        derived_hash("student_probe_trace_hash"),
+    )
+    manifest.update(
+        {
+            "kd_student_probe_local_smoke_audit_hash": sha256_file(KD_STUDENT_PROBE_LOCAL_SMOKE_AUDIT),
+            "kd_student_probe_local_smoke_report_hash": probe.get(
+                "report_hash",
+                derived_hash("kd_student_probe_local_smoke_report_hash"),
+            ),
+            "kd_student_probe_local_smoke_trace_hash": probe.get(
+                "student_probe_trace_hash",
+                derived_hash("kd_student_probe_local_smoke_trace_hash"),
+            ),
+            "kd_student_probe_local_smoke_status": probe.get("status", "unknown"),
+            "kd_student_probe_local_smoke_backend": probe.get("probe_backend", "unknown"),
+            "kd_student_probe_local_smoke_sample_count": probe.get("selected_sample_count", 0),
+            "kd_student_probe_local_smoke_parse_success_rate": probe.get("parse_success_rate", 0.0),
+            "kd_student_probe_local_smoke_repair_candidate_count": probe.get("repair_candidate_count", 0),
+            "kd_student_probe_local_smoke_action_match_rate": probe.get("action_match_rate", 0.0),
+            "kd_student_probe_local_smoke_dataset_counts": probe.get("dataset_counts", {}),
+            "kd_student_probe_local_smoke_repair_reason_counts": probe.get("repair_reason_counts", {}),
+        }
+    )
+
+
+def add_repair_mining_local_smoke_fields(
+    manifest: dict[str, Any],
+    explicit_hashes: dict[str, str],
+) -> None:
+    if not KD_REPAIR_MINING_LOCAL_SMOKE_AUDIT.is_file():
+        return
+    repair = load_json(KD_REPAIR_MINING_LOCAL_SMOKE_AUDIT)
+    explicit_hashes["counterfactual_repair_trace_hash"] = repair.get(
+        "counterfactual_repair_trace_hash",
+        derived_hash("counterfactual_repair_trace_hash"),
+    )
+    manifest.update(
+        {
+            "kd_repair_mining_local_smoke_audit_hash": sha256_file(KD_REPAIR_MINING_LOCAL_SMOKE_AUDIT),
+            "kd_repair_mining_local_smoke_report_hash": repair.get(
+                "report_hash",
+                derived_hash("kd_repair_mining_local_smoke_report_hash"),
+            ),
+            "kd_repair_mining_local_smoke_trace_hash": repair.get(
+                "counterfactual_repair_trace_hash",
+                derived_hash("kd_repair_mining_local_smoke_trace_hash"),
+            ),
+            "kd_repair_mining_local_smoke_status": repair.get("status", "unknown"),
+            "kd_repair_mining_local_smoke_input_probe_count": repair.get("input_probe_count", 0),
+            "kd_repair_mining_local_smoke_repair_trace_count": repair.get("repair_trace_count", 0),
+            "kd_repair_mining_local_smoke_dataset_counts": repair.get("dataset_counts", {}),
+            "kd_repair_mining_local_smoke_counterfactual_type_counts": repair.get(
+                "counterfactual_type_counts",
+                {},
+            ),
+            "kd_repair_mining_local_smoke_repair_reason_counts": repair.get("repair_reason_counts", {}),
+        }
+    )
+
+
+def add_quant_behavior_local_smoke_fields(
+    manifest: dict[str, Any],
+    explicit_hashes: dict[str, str],
+) -> None:
+    if not KD_QUANT_BEHAVIOR_LOCAL_SMOKE_AUDIT.is_file():
+        return
+    quant = load_json(KD_QUANT_BEHAVIOR_LOCAL_SMOKE_AUDIT)
+    explicit_hashes.update(
+        {
+            "quant_behavior_trace_hash": quant.get(
+                "quant_behavior_trace_hash",
+                derived_hash("quant_behavior_trace_hash"),
+            ),
+            "quant_config_hash": quant.get("report_hash", derived_hash("quant_config_hash")),
+        }
+    )
+    manifest.update(
+        {
+            "kd_quant_behavior_local_smoke_audit_hash": sha256_file(KD_QUANT_BEHAVIOR_LOCAL_SMOKE_AUDIT),
+            "kd_quant_behavior_local_smoke_report_hash": quant.get(
+                "report_hash",
+                derived_hash("kd_quant_behavior_local_smoke_report_hash"),
+            ),
+            "kd_quant_behavior_local_smoke_trace_hash": quant.get(
+                "quant_behavior_trace_hash",
+                derived_hash("kd_quant_behavior_local_smoke_trace_hash"),
+            ),
+            "kd_quant_behavior_local_smoke_status": quant.get("status", "unknown"),
+            "kd_quant_behavior_local_smoke_sample_count": quant.get("selected_sample_count", 0),
+            "kd_quant_behavior_local_smoke_quant_parse_rate": quant.get("quant_parse_rate", 0.0),
+            "kd_quant_behavior_local_smoke_behavior_divergence_rate": quant.get(
+                "behavior_divergence_rate",
+                0.0,
+            ),
+            "kd_quant_behavior_local_smoke_dataset_counts": quant.get("dataset_counts", {}),
+        }
+    )
+
+
+def add_ch2_capability_eval_local_smoke_fields(manifest: dict[str, Any]) -> None:
+    if not CH2_CAPABILITY_EVAL_LOCAL_SMOKE_AUDIT.is_file():
+        return
+    capability = load_json(CH2_CAPABILITY_EVAL_LOCAL_SMOKE_AUDIT)
+    manifest.update(
+        {
+            "ch2_capability_eval_local_smoke_audit_hash": sha256_file(CH2_CAPABILITY_EVAL_LOCAL_SMOKE_AUDIT),
+            "ch2_capability_eval_local_smoke_report_hash": capability.get(
+                "report_hash",
+                derived_hash("ch2_capability_eval_local_smoke_report_hash"),
+            ),
+            "ch2_capability_eval_local_smoke_trace_hash": capability.get(
+                "capability_eval_trace_hash",
+                derived_hash("ch2_capability_eval_local_smoke_trace_hash"),
+            ),
+            "ch2_capability_eval_local_smoke_status": capability.get("status", "unknown"),
+            "ch2_capability_eval_local_smoke_sample_count": capability.get("sample_count", 0),
+            "ch2_capability_eval_local_smoke_accuracy_by_dataset": capability.get("accuracy_by_dataset", {}),
+            "ch2_capability_eval_local_smoke_overall_accuracy": capability.get("overall_accuracy", 0.0),
+            "ch2_capability_eval_local_smoke_peak_memory_mb": capability.get("peak_memory_mb", 0.0),
+            "ch2_capability_eval_local_smoke_dataset_counts": capability.get("dataset_counts", {}),
+        }
+    )
+
+
 def build_run_manifest(frozen: dict[str, Any], conflict_manifest: dict[str, Any], created_ts: str) -> dict[str, Any]:
     manifest: dict[str, Any] = {
         "git_commit": git_commit(),
@@ -383,7 +567,7 @@ def build_run_manifest(frozen: dict[str, Any], conflict_manifest: dict[str, Any]
         "network_profile_hash": sha256_file(ROOT / "configs" / "network_profiles.yaml"),
         "conflict_gt_audit_hash": sha256_file(CONFLICT_AUDIT_CSV),
         "conflict_gt_sample_audit_hash": sha256_file(CONFLICT_SAMPLE_AUDIT),
-        "capability_metric_script_hash": sha256_file(ROOT / "scripts" / "validate_splits.py"),
+        "capability_metric_script_hash": sha256_file(ROOT / "scripts" / "evaluate_chapter2_capability.py"),
         "conflict_metric_script_hash": sha256_file(ROOT / "scripts" / "build_conflict_gt.py"),
         "frozen_scu_hash": sha256_text("empty-scu-support-list"),
     }
@@ -417,6 +601,11 @@ def build_run_manifest(frozen: dict[str, Any], conflict_manifest: dict[str, Any]
         )
     add_student_probe_smoke_fields(manifest)
     add_repair_mining_smoke_fields(manifest)
+    add_cedd_structured_train_smoke_fields(manifest, explicit_hashes)
+    add_student_probe_local_smoke_fields(manifest, explicit_hashes)
+    add_repair_mining_local_smoke_fields(manifest, explicit_hashes)
+    add_quant_behavior_local_smoke_fields(manifest, explicit_hashes)
+    add_ch2_capability_eval_local_smoke_fields(manifest)
 
     for key in RUN_HASH_KEYS:
         manifest[key] = explicit_hashes.get(key, derived_hash(key))

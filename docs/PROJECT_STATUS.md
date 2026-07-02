@@ -2,11 +2,11 @@
 
 更新时间：2026-07-02
 
-当前阶段：G-KD-TRACE 已按第 2 章主实验口径完成全量 train split teacher trace gate，并完成 Student-Base probe / repair mining smoke；下一步训练 CEDD-Structured adapter、运行正式 student probe，并实现 GSM8K/HumanEval/CMMLU 能力保持率评测脚本。
+当前阶段：G-KD-TRACE 已按第 2 章主实验口径完成全量 train split teacher trace gate，并完成 CEDD-Structured、本地 student probe、repair mining、fake INT4 行为验证和 Chapter 2 能力评测的真实小样本 smoke；下一步是放大 CEDD-Structured 正式训练、运行正式 train split student probe / repair trace，并执行 GSM8K/HumanEval/CMMLU 的 Cloud/Edge 正式能力保持率评测。
 
 ## 当前结论
 
-项目已经有完整的研究方案、目录规划、本地数据 payload、冻结 split、正式 manifest、conflict audit 文件、可运行的 KWDB/KaiwuDB 单节点验证、通过 live gate 的 14B-AWQ vLLM 云端教师服务验证、通过 gate 的第 2 章主实验全量 teacher trace，以及可运行的 student probe / repair mining smoke 链路。当前主实验数据集固定为 `GSM8K`、`HumanEval`、`CMMLU`、`NEU-DET`、`CityFlow`；`MMLU`、`MVTec AD`、`UA-DETRAC` 保留为支持/备份资产，不进入主实验。
+项目已经有完整的研究方案、目录规划、本地数据 payload、冻结 split、正式 manifest、conflict audit 文件、可运行的 KWDB/KaiwuDB 单节点验证、通过 live gate 的 14B-AWQ vLLM 云端教师服务验证、通过 gate 的第 2 章主实验全量 teacher trace，以及可运行的 CEDD 训练、student probe、repair mining、fake INT4 行为验证和 Chapter 2 能力评测 smoke 链路。当前主实验数据集固定为 `GSM8K`、`HumanEval`、`CMMLU`、`NEU-DET`、`CityFlow`；`MMLU`、`MVTec AD`、`UA-DETRAC` 保留为支持/备份资产，不进入主实验。
 
 第 2 章当前已闭合的是任务表征压缩的数据生成链路：teacher trace 只使用有 train split 且属于主实验的 `GSM8K`、`NEU-DET`、`CityFlow`。`HumanEval` 和 `CMMLU` 只用于后续能力保持率评测，不进入蒸馏训练。
 
@@ -68,11 +68,17 @@
 - 已新增 `model_compression/mine_counterfactual_repairs.py`，从 `student_probe_trace` 自动挖掘 action/risk/confidence/review_intent 边界样本并生成 `counterfactual_repair_trace`。
 - 已完成 96 条三数据集轮转 Student-Base probe smoke：`dataset_counts={"cityflow":32,"gsm8k":32,"neu_det":32}`，`successful_probe_count=96`，`failed_probe_count=0`，`parse_success_rate=1.0`，`repair_candidate_count=26`，`action_match_rate=0.875`。审计为 `reports/audit/gate_kd_student_probe_smoke.json`，smoke trace hash 为 `8a34e4737c7791e90d4bbb309ea9ac080ba3165c01f3abc7fc418fe97c46b0a3`。
 - 已完成 counterfactual repair mining smoke：从 96 条 probe 中生成 26 条 repair trace，`dataset_counts={"cityflow":12,"gsm8k":4,"neu_det":10}`，repair trace hash 为 `c3cb8720062c69eafe12c91eff05343d4e90f49ddb6e41d4c78511b191b9c2df`。审计为 `reports/audit/gate_kd_repair_mining_smoke.json`。
+- 已新增 `model_compression/lora_utils.py` 和 `model_compression/train_cedd_structured.py`，支持无 PEFT 依赖的 Qwen2 LoRA 注入、adapter 保存/加载和 CEDD-Structured 蒸馏训练；已完成 12 条样本真实训练 smoke，`adapter_hash=f8140a01faf43ceb6e7c68d6078eb30cd62fac7a710df6343bde68aec817d6a6`，审计为 `reports/audit/gate_kd_cedd_structured_train_smoke.json`。
+- 已为 `model_compression/run_student_probe.py` 增加本地 transformers backend，支持直接加载 `Qwen2.5-1.5B-Instruct + LoRA adapter`；已完成 6 条真实本地 student probe smoke，`parse_success_rate=1.0`，`repair_candidate_count=2`，trace hash 为 `22e5e2392f29cb9182341d759d4179314a3fc9d513413e3760d9258f4f655f07`，审计为 `reports/audit/gate_kd_student_probe_local_smoke.json`。
+- 已基于真实本地 student probe 完成 repair mining smoke，生成 2 条 counterfactual repair trace，repair trace hash 为 `d2bef2ea959e0d311d861c062ed95b0bf4307f19f4e71c3df6708ac04b45ee69`，审计为 `reports/audit/gate_kd_repair_mining_local_smoke.json`。
+- 已新增 `model_compression/verify_quant_behavior.py`，对比常规 LoRA adapter 与 fake INT4 dequantized LoRA adapter 的结构化输出；已完成 3 条量化行为 smoke，`quant_parse_rate=1.0`，`behavior_divergence_rate=0.0`，trace hash 为 `e6ab2b5594575b37953b65e0966446e8bb080bae51b453a2c60e1ffb4a2587ef`，审计为 `reports/audit/gate_kd_quant_behavior_local_smoke.json`。
+- 已新增 `scripts/evaluate_chapter2_capability.py`，覆盖 GSM8K 数值答案、CMMLU 单选和 HumanEval 子进程执行检查；已完成 1 条/数据集本地 smoke，`overall_accuracy=0.3333`，`peak_memory_mb=2972.55`，审计为 `reports/audit/gate_chapter2_capability_eval_local_smoke.json`。该 smoke 只证明评测链路可运行，不作为正式能力保持率结果。
 
 ## 未开始
 
-- 1.5B CEDD-Structured adapter 训练、正式 student probe、CEDD-Repair adapter 训练和 INT4 量化。
-- GSM8K、HumanEval、CMMLU 的 Cloud/Edge 能力评测脚本与能力保持率汇总。
+- 正式规模 CEDD-Structured adapter 训练、正式 train split student probe 和正式 counterfactual repair trace。
+- CEDD-Repair adapter 训练、正式 INT4 量化行为 trace 和量化后能力/结构化输出复验。
+- GSM8K、HumanEval、CMMLU 的 Cloud/Edge 正式能力评测与能力保持率汇总。
 - P0-B、P1、P2 实验运行。
 
 ## 第 2 章当前实验命令
@@ -143,6 +149,11 @@ python3 scripts/serve_vllm_teachers.py --gpu 0 --gpu 1 --gpu 2 --gpu 3 --port 80
 python3 model_compression/generate_teacher_traces.py --teacher_url http://127.0.0.1:8000 --teacher_url http://127.0.0.1:8001 --teacher_url http://127.0.0.1:8002 --teacher_url http://127.0.0.1:8003 --workers 8 --resume --dataset gsm8k --dataset neu_det --dataset cityflow --checkpoint_interval 50 --output_teacher_trace data/distill/teacher_decision_trace.jsonl --output_distill data/distill/distill_dataset.jsonl --audit reports/audit/gate_kd_trace_teacher.json
 python3 model_compression/run_student_probe.py --dry-run --dataset cityflow --dataset gsm8k --dataset neu_det --sample_limit 96 --output_probe data/distill/student_probe_trace.smoke.jsonl --audit reports/audit/gate_kd_student_probe_smoke.json
 python3 model_compression/mine_counterfactual_repairs.py --probe_trace data/distill/student_probe_trace.smoke.jsonl --output_repair data/distill/counterfactual_repair_trace.smoke.jsonl --audit reports/audit/gate_kd_repair_mining_smoke.json --min_repairs 1
+python3 model_compression/train_cedd_structured.py --smoke --dataset cityflow --dataset gsm8k --dataset neu_det --sample_limit 12 --max_steps 1 --batch_size 1 --grad_accum_steps 2 --max_length 512 --output_dir models/adapters/cedd_structured_smoke --audit reports/audit/gate_kd_cedd_structured_train_smoke.json
+python3 model_compression/run_student_probe.py --local_model_dir models/pretrained/Qwen--Qwen2.5-1.5B-Instruct --adapter_path models/adapters/cedd_structured_smoke --dataset cityflow --dataset gsm8k --dataset neu_det --sample_limit 6 --output_probe data/distill/student_probe_trace.local_smoke.jsonl --audit reports/audit/gate_kd_student_probe_local_smoke.json --max_tokens 192 --min_parse_rate 0.0
+python3 model_compression/mine_counterfactual_repairs.py --probe_trace data/distill/student_probe_trace.local_smoke.jsonl --output_repair data/distill/counterfactual_repair_trace.local_smoke.jsonl --audit reports/audit/gate_kd_repair_mining_local_smoke.json --min_repairs 1
+python3 model_compression/verify_quant_behavior.py --local_model_dir models/pretrained/Qwen--Qwen2.5-1.5B-Instruct --adapter_path models/adapters/cedd_structured_smoke --dataset cityflow --dataset gsm8k --dataset neu_det --sample_limit 3 --output_trace data/distill/quant_behavior_trace.local_smoke.jsonl --audit reports/audit/gate_kd_quant_behavior_local_smoke.json --max_tokens 192 --min_parse_rate 0.0 --max_divergence_rate 1.0
+python3 scripts/evaluate_chapter2_capability.py --local_model_dir models/pretrained/Qwen--Qwen2.5-1.5B-Instruct --adapter_path models/adapters/cedd_structured_smoke --sample_limit_per_dataset 1 --output_trace reports/audit/chapter2_capability_eval_local_smoke.jsonl --audit reports/audit/gate_chapter2_capability_eval_local_smoke.json --max_new_tokens 96 --min_accuracy 0.0
 ```
 
-第一条命令用于检查当前项目骨架、关键目录、基础配置、文档和 manifest 模板是否齐全。第二条命令用于确认 8 个目标数据集目录都已有 payload。第三条命令用于扫描本地数据集目录并生成 `reports/preflight/data_inventory.json`。第四条命令用于验证 split 文件 hash 与 train/validation/test 泄漏检查。第五条命令用于在 Bash 环境检查本地数据集标准目录。第六条命令用于基于冻结 split 重新生成 conflict ground truth manifest 和 audit 文件。第七条命令用于基于冻结 split 重新生成正式 manifest。第八条命令用于按当前脚本重新生成三个 manifest 模板。第九条命令用于严格验收正式 manifest。第十条命令用于执行当前工程骨架的 runtime smoke，并生成 `reports/preflight/runtime_smoke.json`。第十一条命令用于在没有 KWDB 容器时先检查 G-DB schema 文件完整性。第十二条和第十三条命令用于启动 KWDB/KaiwuDB 并执行 G-DB live gate。最后几条命令用于执行 G-CLOUD 离线模型审计、以前台 Ctrl+C 可停止的方式启动 14B-AWQ vLLM teacher 服务、运行 live gate、执行 teacher smoke/parallel smoke/pilot、第 2 章主实验全量 teacher trace gate、student probe smoke 和 repair mining smoke。
+第一条命令用于检查当前项目骨架、关键目录、基础配置、文档和 manifest 模板是否齐全。第二条命令用于确认 8 个目标数据集目录都已有 payload。第三条命令用于扫描本地数据集目录并生成 `reports/preflight/data_inventory.json`。第四条命令用于验证 split 文件 hash 与 train/validation/test 泄漏检查。第五条命令用于在 Bash 环境检查本地数据集标准目录。第六条命令用于基于冻结 split 重新生成 conflict ground truth manifest 和 audit 文件。第七条命令用于基于冻结 split 重新生成正式 manifest。第八条命令用于按当前脚本重新生成三个 manifest 模板。第九条命令用于严格验收正式 manifest。第十条命令用于执行当前工程骨架的 runtime smoke，并生成 `reports/preflight/runtime_smoke.json`。第十一条命令用于在没有 KWDB 容器时先检查 G-DB schema 文件完整性。第十二条和第十三条命令用于启动 KWDB/KaiwuDB 并执行 G-DB live gate。最后几条命令用于执行 G-CLOUD 离线模型审计、以前台 Ctrl+C 可停止的方式启动 14B-AWQ vLLM teacher 服务、运行 live gate、执行 teacher smoke/parallel smoke/pilot、第 2 章主实验全量 teacher trace gate、student probe/repair smoke、CEDD-Structured 训练 smoke、本地 student probe/repair smoke、fake INT4 行为 smoke 和 Chapter 2 能力评测 smoke。

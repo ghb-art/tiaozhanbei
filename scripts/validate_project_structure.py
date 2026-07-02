@@ -66,9 +66,13 @@ REQUIRED_FILES = [
     "scripts/serve_vllm_teachers.py",
     "scripts/verify_gate_cloud.py",
     "model_compression/generate_teacher_traces.py",
+    "model_compression/lora_utils.py",
+    "model_compression/train_cedd_structured.py",
     "model_compression/run_student_probe.py",
     "model_compression/mine_counterfactual_repairs.py",
+    "model_compression/verify_quant_behavior.py",
     "scripts/generate_formal_manifests.py",
+    "scripts/evaluate_chapter2_capability.py",
     "scripts/verify_gate_db.py",
     "sql/cloud_schema.sql",
     "docker/docker-compose.kwdb.yml",
@@ -89,6 +93,8 @@ GITIGNORE_PATTERNS = [
     "models/pretrained/",
     "models/checkpoints/",
     "models/quantized/",
+    "models/adapters/*/*",
+    "!models/adapters/*/.gitkeep",
     "*.gguf",
 ]
 

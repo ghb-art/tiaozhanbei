@@ -1,0 +1,31 @@
+{
+  "gate": "G-KD-TRACE-repair-mining-smoke",
+  "check_version": "1.0",
+  "created_by": "model_compression/mine_counterfactual_repairs.py",
+  "created_ts": "2026-07-02T11:27:13.603329+00:00",
+  "status": "passed",
+  "probe_trace_path": "data/distill/student_probe_trace.local_smoke.jsonl",
+  "student_probe_trace_hash": "22e5e2392f29cb9182341d759d4179314a3fc9d513413e3760d9258f4f655f07",
+  "output_repair_path": "data/distill/counterfactual_repair_trace.local_smoke.jsonl",
+  "counterfactual_repair_trace_hash": "d2bef2ea959e0d311d861c062ed95b0bf4307f19f4e71c3df6708ac04b45ee69",
+  "input_probe_count": 6,
+  "repair_candidate_input_count": 2,
+  "repair_trace_count": 2,
+  "min_repairs": 1,
+  "sample_limit": 2,
+  "include_non_candidates": false,
+  "selected_sample_ids_hash": "d5955de9fd79f93419938ca635cdb725159e25029a88ce2f8d486f0a0cc10552",
+  "dataset_counts": {
+    "neu_det": 2
+  },
+  "counterfactual_type_counts": {
+    "action_boundary": 2
+  },
+  "repair_reason_counts": {
+    "action_mismatch": 2,
+    "review_intent_mismatch": 1,
+    "risk_attr_mismatch": 2
+  },
+  "errors": [],
+  "report_hash": "6d6b526f945e888be7018a864b3c4fd9850ea11b542fdbe16ee9be428430b819"
+}

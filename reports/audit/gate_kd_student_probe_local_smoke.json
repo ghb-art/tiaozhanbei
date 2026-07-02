@@ -1,0 +1,63 @@
+{
+  "gate": "G-KD-TRACE-student-probe-smoke",
+  "check_version": "1.0",
+  "created_by": "model_compression/run_student_probe.py",
+  "created_ts": "2026-07-02T11:15:46.126797+00:00",
+  "status": "passed",
+  "teacher_trace_path": "data/distill/teacher_decision_trace.jsonl",
+  "teacher_trace_hash": "f6f9ce25ffc8aff2cce62978bb1c4b7844a8937a03b0cd5ba137e1d7c0327486",
+  "output_probe_path": "data/distill/student_probe_trace.local_smoke.jsonl",
+  "student_probe_trace_hash": "22e5e2392f29cb9182341d759d4179314a3fc9d513413e3760d9258f4f655f07",
+  "probe_backend": "local_transformers_adapter",
+  "dry_run": false,
+  "student_url": "",
+  "student_endpoint_health_status": null,
+  "local_model_dir": "models/pretrained/Qwen--Qwen2.5-1.5B-Instruct",
+  "local_adapter_config": {
+    "adapter_type": "manual_lora",
+    "stage": "cedd_structured",
+    "base_model": "models/pretrained/Qwen--Qwen2.5-1.5B-Instruct",
+    "target_modules": [
+      "q_proj",
+      "v_proj"
+    ],
+    "rank": 8,
+    "alpha": 16.0,
+    "dropout": 0.05,
+    "dtype": "float16",
+    "trainable_parameters": 1089536,
+    "total_parameters": 1544803840,
+    "selected_sample_count": 12,
+    "selected_sample_ids_hash": "3322058a4dbbce00d0148e0c5827f2b2be8befab7120fdc971a9587cb9ca3576",
+    "distill_data_hash": "610d23903a5d8d4117c03159268ce068620fee2b97de7ed7ce2dc9fb178c9443"
+  },
+  "local_dtype": "float16",
+  "local_device": "cuda",
+  "student_model_id": "Qwen/Qwen2.5-1.5B-Instruct",
+  "served_model_id": "Qwen/Qwen2.5-1.5B-Instruct",
+  "adapter_path": "models/adapters/cedd_structured_smoke",
+  "quantize_adapter": false,
+  "sample_limit": 6,
+  "selected_sample_count": 6,
+  "successful_probe_count": 6,
+  "failed_probe_count": 0,
+  "parse_ok_count": 6,
+  "parse_success_rate": 1.0,
+  "min_parse_rate": 0.0,
+  "repair_candidate_count": 2,
+  "action_match_rate": 0.6666666666666666,
+  "selected_sample_ids_hash": "acafcbc9389593f4280f58eb9ea2b89e60489c37dcade687cb8339f736c79a61",
+  "dataset_counts": {
+    "cityflow": 2,
+    "gsm8k": 2,
+    "neu_det": 2
+  },
+  "repair_reason_counts": {
+    "action_mismatch": 2,
+    "review_intent_mismatch": 1,
+    "risk_attr_mismatch": 2
+  },
+  "prompt_template_hash": "2e007f8b749c21d1612b4f671313ad52316111bc6ecc7216299e6815d30713a7",
+  "errors": [],
+  "report_hash": "b4fb5823dcf5e229ade2cec3bb503ca236d9f000de2a487abcd6b3780e2fdd3b"
+}

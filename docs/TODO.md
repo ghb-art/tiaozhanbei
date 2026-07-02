@@ -68,8 +68,13 @@
 - [x] 生成 `data/distill/distill_dataset.jsonl` 并记录 hash。
 - [x] 实现 Student-Base probe trace 脚本，并完成 96 条三数据集轮转 smoke。
 - [x] 实现 counterfactual repair mining 脚本，并完成 repair trace smoke。
-- [ ] 实现 GSM8K、HumanEval、CMMLU 的 Cloud/Edge 能力评测脚本和能力保持率汇总。
-- [ ] 训练 CEDD-Structured adapter 并运行正式 train split student probe。
+- [x] 实现本地 LoRA 工具和 CEDD-Structured 训练入口，并完成 12 条样本真实训练 smoke。
+- [x] 为 Student probe 增加本地 `Qwen2.5-1.5B-Instruct + LoRA adapter` backend，并完成 6 条真实 student probe smoke。
+- [x] 基于真实本地 student probe 完成 counterfactual repair mining smoke。
+- [x] 实现 fake INT4 LoRA adapter 行为验证脚本，并完成 3 条量化行为 smoke。
+- [x] 实现 GSM8K、HumanEval、CMMLU 的第 2 章能力评测脚本，并完成 1 条/数据集本地 smoke。
+- [ ] 使用正式 CEDD-Structured 训练配置训练 adapter，并运行正式 train split student probe。
 - [ ] 生成正式 `data/distill/student_probe_trace.jsonl` 并记录 hash。
 - [ ] 生成正式 `data/distill/counterfactual_repair_trace.jsonl` 并记录 hash。
-- [ ] 训练 CEDD-Repair adapter 并生成 INT4 量化行为 trace。
+- [ ] 训练 CEDD-Repair adapter，生成正式 INT4 量化行为 trace。
+- [ ] 跑 GSM8K、HumanEval、CMMLU 的 Cloud/Edge 正式能力评测并汇总能力保持率。

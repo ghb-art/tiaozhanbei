@@ -24,6 +24,8 @@ reports/final/
 models/pretrained/
 models/checkpoints/
 models/quantized/
+models/adapters/*/*
+!models/adapters/*/.gitkeep
 *.pt
 *.pth
 *.bin

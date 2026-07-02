@@ -1,12 +1,12 @@
 {
   "report_version": "0.1",
   "created_by": "scripts/preflight_runtime_smoke.py",
-  "created_ts": "2026-07-02T11:03:42.129886+00:00",
+  "created_ts": "2026-07-02T11:26:02.552373+00:00",
   "project_root": "/workspace/project_tiaozhanbei/tiaozhanbei",
   "python_executable": "/usr/bin/python3",
   "summary": {
     "passed": true,
-    "check_count": 38,
+    "check_count": 42,
     "failed_check_count": 0,
     "errors": []
   },
@@ -97,7 +97,7 @@
       "passed": true,
       "details": {
         "path": "docs/TODO.md",
-        "size_chars": 3257
+        "size_chars": 3623
       }
     },
     {
@@ -105,7 +105,7 @@
       "passed": true,
       "details": {
         "path": "docs/PROJECT_STATUS.md",
-        "size_chars": 13021
+        "size_chars": 16559
       }
     },
     {
@@ -113,7 +113,7 @@
       "passed": true,
       "details": {
         "path": "docs/REVISION_LOG.md",
-        "size_chars": 8457
+        "size_chars": 9519
       }
     },
     {
@@ -185,7 +185,7 @@
       "passed": true,
       "details": {
         "path": "scripts/validate_project_structure.py",
-        "size_chars": 7470
+        "size_chars": 7718
       }
     },
     {
@@ -217,7 +217,7 @@
       "passed": true,
       "details": {
         "path": "scripts/preflight_runtime_smoke.py",
-        "size_chars": 10797
+        "size_chars": 10983
       }
     },
     {
@@ -237,6 +237,14 @@
       }
     },
     {
+      "name": "readable_file:scripts/evaluate_chapter2_capability.py",
+      "passed": true,
+      "details": {
+        "path": "scripts/evaluate_chapter2_capability.py",
+        "size_chars": 15225
+      }
+    },
+    {
       "name": "readable_file:model_compression/generate_teacher_traces.py",
       "passed": true,
       "details": {
@@ -245,11 +253,27 @@
       }
     },
     {
+      "name": "readable_file:model_compression/lora_utils.py",
+      "passed": true,
+      "details": {
+        "path": "model_compression/lora_utils.py",
+        "size_chars": 5291
+      }
+    },
+    {
+      "name": "readable_file:model_compression/train_cedd_structured.py",
+      "passed": true,
+      "details": {
+        "path": "model_compression/train_cedd_structured.py",
+        "size_chars": 15859
+      }
+    },
+    {
       "name": "readable_file:model_compression/run_student_probe.py",
       "passed": true,
       "details": {
         "path": "model_compression/run_student_probe.py",
-        "size_chars": 19006
+        "size_chars": 24087
       }
     },
     {
@@ -258,6 +282,14 @@
       "details": {
         "path": "model_compression/mine_counterfactual_repairs.py",
         "size_chars": 8795
+      }
+    },
+    {
+      "name": "readable_file:model_compression/verify_quant_behavior.py",
+      "passed": true,
+      "details": {
+        "path": "model_compression/verify_quant_behavior.py",
+        "size_chars": 9711
       }
     },
     {
@@ -363,8 +395,8 @@
           "scripts/validate_project_structure.py"
         ],
         "returncode": 0,
-        "started_ts": "2026-07-02T11:03:39.971011+00:00",
-        "finished_ts": "2026-07-02T11:03:40.003549+00:00",
+        "started_ts": "2026-07-02T11:26:00.230991+00:00",
+        "finished_ts": "2026-07-02T11:26:00.269656+00:00",
         "stdout_tail": "[OK] Network profile declared: high_loss\n[OK] Network profile declared: short_disconnect\n[OK] Workload profile declared: stable\n[OK] Workload profile declared: burst\n[OK] Workload profile declared: replay\n[OK] Workload profile declared: scale\n[OK] Model role declared: cloud_teacher\n[OK] Model role declared: high_edge\n[OK] Model role declared: edge_student\n[OK] Manifest template is valid JSON: dataset_manifest.template.json\n[OK] Manifest template marked template_only: dataset_manifest.template.json\n[OK] Manifest template key present: dataset_manifest.template.json::manifest_version\n[OK] Manifest template key present: dataset_manifest.template.json::created_by\n[OK] Manifest template key present: dataset_manifest.template.json::created_ts\n[OK] Manifest template key present: dataset_manifest.template.json::sampling_seed\n[OK] Manifest template key present: dataset_manifest.template.json::datasets\n[OK] Manifest template key present: dataset_manifest.template.json::scu_support\n[OK] Manifest template key present: dataset_manifest.template.json::global_leakage_check\n[OK] Manifest template is valid JSON: manifest.template.json\n[OK] Manifest template marked template_only: manifest.template.json\n[OK] Manifest template key present: manifest.template.json::git_commit\n[OK] Manifest template key present: manifest.template.json::final_config_hash\n[OK] Manifest template key present: manifest.template.json::teacher_model_id\n[OK] Manifest template key present: manifest.template.json::student_init_model_id\n[OK] Manifest template key present: manifest.template.json::edge_model_name\n[OK] Manifest template key present: manifest.template.json::fallback_events\n[OK] Manifest template key present: manifest.template.json::timestamp\n[OK] Manifest template is valid JSON: conflict_gt_manifest.template.json\n[OK] Manifest template marked template_only: conflict_gt_manifest.template.json\n[OK] Manifest template key present: conflict_gt_manifest.template.json::manifest_version\n[OK] Manifest template key present: conflict_gt_manifest.template.json::created_by\n[OK] Manifest template key present: conflict_gt_manifest.template.json::created_ts\n[OK] Manifest template key present: conflict_gt_manifest.template.json::datasets\n[OK] Manifest template key present: conflict_gt_manifest.template.json::split\n[OK] Manifest template key present: conflict_gt_manifest.template.json::conflict_groups\n[OK] Manifest template key present: conflict_gt_manifest.template.json::conflict_group_count\n[OK] Manifest template key present: conflict_gt_manifest.template.json::conflict_type_distribution\n[OK] Manifest template key present: conflict_gt_manifest.template.json::manifest_hash\n\nProject structure validation passed.",
         "stderr_tail": ""
       }
@@ -379,8 +411,8 @@
           "--allow-empty"
         ],
         "returncode": 0,
-        "started_ts": "2026-07-02T11:03:40.003632+00:00",
-        "finished_ts": "2026-07-02T11:03:42.088222+00:00",
+        "started_ts": "2026-07-02T11:26:00.269782+00:00",
+        "finished_ts": "2026-07-02T11:26:02.497362+00:00",
         "stdout_tail": "[OK] GSM8K -> data/datasets/gsm8k (7 payload files, 13880370 bytes)\n[OK] HumanEval -> data/datasets/humaneval (11 payload files, 64174 bytes)\n[OK] MMLU -> data/datasets/mmlu (187 payload files, 166066477 bytes)\n[OK] CMMLU -> data/datasets/cmmlu (136 payload files, 2512537 bytes)\n[OK] MVTec AD -> data/datasets/mvtec_ad (6645 payload files, 10536229804 bytes)\n[OK] NEU-DET -> data/datasets/neu_det (3601 payload files, 55922599 bytes)\n[OK] CityFlow -> data/datasets/cityflow (1063 payload files, 34973435649 bytes)\n[OK] UA-DETRAC -> data/datasets/ua_detrac (141041 payload files, 31257170002 bytes)\n\nDataset presence check completed with empty directories allowed.",
         "stderr_tail": ""
       }
@@ -395,12 +427,12 @@
           "--allow-missing"
         ],
         "returncode": 0,
-        "started_ts": "2026-07-02T11:03:42.088289+00:00",
-        "finished_ts": "2026-07-02T11:03:42.129807+00:00",
+        "started_ts": "2026-07-02T11:26:02.497430+00:00",
+        "finished_ts": "2026-07-02T11:26:02.552299+00:00",
         "stdout_tail": "[OK] dataset_manifest.json passed\n[OK] manifest.json passed\n[OK] conflict_gt_manifest.json passed\n\nFormal manifest validation passed.",
         "stderr_tail": ""
       }
     }
   ],
-  "report_hash": "6a03a28d44351d49ee26be993841f6a3a0ce978596c93405a6bd077ddf317f25"
+  "report_hash": "a6ff97ab77bb896a9ce56df033b1abc2c7bc4df9adc585d6eb8d827a5a238db6"
 }

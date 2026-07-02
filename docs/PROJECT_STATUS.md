@@ -2,11 +2,13 @@
 
 更新时间：2026-07-02
 
-当前阶段：G-KD-TRACE 已完成 teacher trace smoke、GPU2/GPU3 parallel smoke 和 100 条 checkpoint pilot，下一步生成全量 train split 教师 trace 与蒸馏数据。
+当前阶段：G-KD-TRACE 已按第 2 章主实验口径完成 108 条 teacher trace checkpoint pilot，下一步实现学生模型蒸馏与 GSM8K/HumanEval/CMMLU 能力保持率评测脚本。
 
 ## 当前结论
 
-项目已经有完整的研究方案、目录规划、本地数据 payload、冻结 split、正式 manifest、conflict audit 文件、可运行的 KWDB/KaiwuDB 单节点验证、通过 live gate 的 14B-AWQ vLLM 云端教师服务验证，以及具备 checkpoint/resume 的 100 条 train split 教师结构化决策 trace pilot。下一步应使用同一脚本生成全量 train split 教师 trace 和蒸馏数据集。
+项目已经有完整的研究方案、目录规划、本地数据 payload、冻结 split、正式 manifest、conflict audit 文件、可运行的 KWDB/KaiwuDB 单节点验证、通过 live gate 的 14B-AWQ vLLM 云端教师服务验证，以及具备 checkpoint/resume 的第 2 章主实验 teacher trace pilot。当前主实验数据集固定为 `GSM8K`、`HumanEval`、`CMMLU`、`NEU-DET`、`CityFlow`；`MMLU`、`MVTec AD`、`UA-DETRAC` 保留为支持/备份资产，不进入主实验。
+
+第 2 章当前已跑通的是任务表征压缩的数据生成链路：teacher trace 默认只使用有 train split 且属于主实验的 `GSM8K`、`NEU-DET`、`CityFlow`。`HumanEval` 和 `CMMLU` 只用于后续能力保持率评测，不进入蒸馏训练。
 
 ## 已完成
 
@@ -30,6 +32,7 @@
 - 已将 MVTec AD、CityFlow、UA-DETRAC 大型下载包以硬链接归档方式挂载到对应 `data/datasets/` 目录，避免重复占用磁盘空间。
 - 已解压 NEU-DET Kaggle mirror 到 `data/datasets/neu_det/`，并记录其 split 中 `crazing_240` 图像/标注错位问题。
 - 已展开 MVTec AD、CityFlow、UA-DETRAC 到标准子目录。
+- 已将第 2 章主实验口径固定为 `GSM8K`、`HumanEval`、`CMMLU`、`NEU-DET`、`CityFlow`；`MMLU`、`MVTec AD`、`UA-DETRAC` 不进入主实验。
 - 已新增 `docs/DATASET_SPLIT_STRATEGY.md`，记录 8 个数据集的固定划分方法。
 - 已新增 `scripts/validate_splits.py`，生成并验证 `data/splits/frozen_splits.json` 和各数据集 split id 文件。
 - 已新增 `scripts/generate_formal_manifests.py`，生成正式 `dataset_manifest.json`、`manifest.json`、`conflict_gt_manifest.json`。
@@ -56,13 +59,52 @@
 - 已为 `model_compression/generate_teacher_traces.py` 新增多 teacher URL 并发、`--workers`、`--num_shards/--shard_index`、`--resume` 和失败重试能力。
 - 已按当前 GPU 约束仅使用 GPU2/GPU3：GPU2 运行 `http://127.0.0.1:8000`，GPU3 运行 `http://127.0.0.1:8001`，并完成 8 条 parallel smoke，两个端点各处理 4 条，`parse_success_rate=1.0`。
 - 已为 `model_compression/generate_teacher_traces.py` 新增周期性 checkpoint 和 partial audit：每完成 `--checkpoint_interval` 条就重写当前 trace/distill JSONL 并生成 `.partial.json`，`--resume` 已验证可跳过已完成样本。
-- 已完成 100 条 G-KD-TRACE teacher pilot：GPU2/GPU3 双端点各处理 50 条，`successful_trace_count=100`，`failed_trace_count=0`，`parse_success_rate=1.0`；pilot 产物 hash 已写入 `manifest.json` 的 pilot 字段。
+- 已完成历史 100 条 G-KD-TRACE broad pilot：GPU2/GPU3 双端点各处理 50 条，`successful_trace_count=100`，`failed_trace_count=0`，`parse_success_rate=1.0`；该结果保留为脚本稳定性证据，不作为第 2 章主实验口径结果。
+- 已完成第 2 章主实验 108 条 teacher trace pilot：`GSM8K=36`、`NEU-DET=36`、`CityFlow=36`，GPU2/GPU3 双端点各处理 54 条，`successful_trace_count=108`，`failed_trace_count=0`，`parse_success_rate=1.0`，`action_counts={"pass":87,"inspect":18,"alert":3}`。正式 audit 为 `reports/audit/gate_kd_trace_teacher_chapter2_main_pilot.json`，partial audit 为 `reports/audit/gate_kd_trace_teacher_chapter2_main_pilot.partial.json`。
 
 ## 未开始
 
 - 1.5B 学生模型蒸馏、repair 和 INT4 量化。
-- G-KD-TRACE 全量 train split 教师结构化决策 trace 与蒸馏数据集生成。
+- 第 2 章主实验全量 train trace：`GSM8K train`、`NEU-DET train`、`CityFlow train`。
+- GSM8K、HumanEval、CMMLU 的 Cloud/Edge 能力评测脚本与能力保持率汇总。
 - P0-B、P1、P2 实验运行。
+
+## 第 2 章当前实验命令
+
+本轮已执行的主实验 pilot 命令：
+
+```bash
+python3 model_compression/generate_teacher_traces.py \
+  --teacher_url http://127.0.0.1:8000 \
+  --teacher_url http://127.0.0.1:8001 \
+  --workers 2 \
+  --resume \
+  --dataset gsm8k \
+  --dataset neu_det \
+  --dataset cityflow \
+  --sample_limit 108 \
+  --checkpoint_interval 12 \
+  --output_teacher_trace data/distill/teacher_decision_trace.chapter2_main_pilot.jsonl \
+  --output_distill data/distill/distill_dataset.chapter2_main_pilot.jsonl \
+  --audit reports/audit/gate_kd_trace_teacher_chapter2_main_pilot.json
+```
+
+同一命令带 `--resume` 已验证会跳过已完成的 108 条，不重复调用 teacher。下一步全量主实验 trace 命令去掉 `--sample_limit`，并写入正式产物路径：
+
+```bash
+python3 model_compression/generate_teacher_traces.py \
+  --teacher_url http://127.0.0.1:8000 \
+  --teacher_url http://127.0.0.1:8001 \
+  --workers 2 \
+  --resume \
+  --dataset gsm8k \
+  --dataset neu_det \
+  --dataset cityflow \
+  --checkpoint_interval 100 \
+  --output_teacher_trace data/distill/teacher_decision_trace.jsonl \
+  --output_distill data/distill/distill_dataset.jsonl \
+  --audit reports/audit/gate_kd_trace_teacher.json
+```
 
 ## 当前可执行检查
 
@@ -88,6 +130,7 @@ python3 model_compression/generate_teacher_traces.py --teacher_url http://127.0.
 systemd-run --user --unit=tiaozhanbei-vllm-gpu3 --working-directory=/workspace/project_tiaozhanbei/tiaozhanbei --setenv=CUDA_VISIBLE_DEVICES=3 --setenv=VLLM_WORKER_MULTIPROC_METHOD=spawn /workspace/project_tiaozhanbei/tiaozhanbei/.venv/bin/python /workspace/project_tiaozhanbei/tiaozhanbei/.venv/bin/vllm serve models/pretrained/Qwen--Qwen2.5-14B-Instruct-AWQ --quantization awq --max-model-len 4096 --gpu-memory-utilization 0.85 --tensor-parallel-size 1 --host 0.0.0.0 --port 8001 --disable-log-requests
 python3 model_compression/generate_teacher_traces.py --teacher_url http://127.0.0.1:8000 --teacher_url http://127.0.0.1:8001 --workers 2 --sample_limit 8 --output_teacher_trace data/distill/teacher_decision_trace.parallel_smoke.jsonl --output_distill data/distill/distill_dataset.parallel_smoke.jsonl --audit reports/audit/gate_kd_trace_teacher_parallel_smoke.json
 python3 model_compression/generate_teacher_traces.py --teacher_url http://127.0.0.1:8000 --teacher_url http://127.0.0.1:8001 --workers 2 --resume --sample_limit 100 --checkpoint_interval 10 --output_teacher_trace data/distill/teacher_decision_trace.pilot.jsonl --output_distill data/distill/distill_dataset.pilot.jsonl --audit reports/audit/gate_kd_trace_teacher_pilot.json
+python3 model_compression/generate_teacher_traces.py --teacher_url http://127.0.0.1:8000 --teacher_url http://127.0.0.1:8001 --workers 2 --resume --dataset gsm8k --dataset neu_det --dataset cityflow --sample_limit 108 --checkpoint_interval 12 --output_teacher_trace data/distill/teacher_decision_trace.chapter2_main_pilot.jsonl --output_distill data/distill/distill_dataset.chapter2_main_pilot.jsonl --audit reports/audit/gate_kd_trace_teacher_chapter2_main_pilot.json
 ```
 
-第一条命令用于检查当前项目骨架、关键目录、基础配置、文档和 manifest 模板是否齐全。第二条命令用于确认 8 个目标数据集目录都已有 payload。第三条命令用于扫描本地数据集目录并生成 `reports/preflight/data_inventory.json`。第四条命令用于验证 split 文件 hash 与 train/validation/test 泄漏检查。第五条命令用于在 Bash 环境检查本地数据集标准目录。第六条命令用于基于冻结 split 重新生成 conflict ground truth manifest 和 audit 文件。第七条命令用于基于冻结 split 重新生成正式 manifest。第八条命令用于按当前脚本重新生成三个 manifest 模板。第九条命令用于严格验收正式 manifest。第十条命令用于执行当前工程骨架的 runtime smoke，并生成 `reports/preflight/runtime_smoke.json`。第十一条命令用于在没有 KWDB 容器时先检查 G-DB schema 文件完整性。第十二条和第十三条命令用于启动 KWDB/KaiwuDB 并执行 G-DB live gate。最后几条命令用于执行 G-CLOUD 离线模型审计、仅在 GPU2/GPU3 启动 14B-AWQ vLLM teacher 服务、运行 live gate、执行 32 条单端点 teacher smoke、执行 8 条双端点 parallel smoke，以及执行带 checkpoint/resume 的 100 条 pilot。
+第一条命令用于检查当前项目骨架、关键目录、基础配置、文档和 manifest 模板是否齐全。第二条命令用于确认 8 个目标数据集目录都已有 payload。第三条命令用于扫描本地数据集目录并生成 `reports/preflight/data_inventory.json`。第四条命令用于验证 split 文件 hash 与 train/validation/test 泄漏检查。第五条命令用于在 Bash 环境检查本地数据集标准目录。第六条命令用于基于冻结 split 重新生成 conflict ground truth manifest 和 audit 文件。第七条命令用于基于冻结 split 重新生成正式 manifest。第八条命令用于按当前脚本重新生成三个 manifest 模板。第九条命令用于严格验收正式 manifest。第十条命令用于执行当前工程骨架的 runtime smoke，并生成 `reports/preflight/runtime_smoke.json`。第十一条命令用于在没有 KWDB 容器时先检查 G-DB schema 文件完整性。第十二条和第十三条命令用于启动 KWDB/KaiwuDB 并执行 G-DB live gate。最后几条命令用于执行 G-CLOUD 离线模型审计、仅在 GPU2/GPU3 启动 14B-AWQ vLLM teacher 服务、运行 live gate、执行 32 条单端点 teacher smoke、执行 8 条双端点 parallel smoke、执行带 checkpoint/resume 的历史 100 条 broad pilot，以及执行第 2 章主实验 108 条 pilot。

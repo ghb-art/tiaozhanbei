@@ -4,6 +4,32 @@
   "created_ts": "2026-07-01T08:48:52.957889+00:00",
   "sampling_seed": 42,
   "data_split_global_hash": "d7f3fac67fd3f235802ed405cdbac46302db513925cdab56d13198b0b871e7cf",
+  "chapter2_main_capability_dataset_keys": [
+    "gsm8k",
+    "humaneval",
+    "cmmlu"
+  ],
+  "chapter2_main_application_dataset_keys": [
+    "neu_det",
+    "cityflow"
+  ],
+  "chapter2_main_experiment_dataset_keys": [
+    "gsm8k",
+    "humaneval",
+    "cmmlu",
+    "neu_det",
+    "cityflow"
+  ],
+  "chapter2_teacher_trace_dataset_keys": [
+    "gsm8k",
+    "neu_det",
+    "cityflow"
+  ],
+  "support_only_dataset_keys": [
+    "mmlu",
+    "mvtec_ad",
+    "ua_detrac"
+  ],
   "datasets": [
     {
       "dataset_name": "GSM8K",
@@ -20,7 +46,11 @@
         "train": "data/splits/gsm8k_train.txt",
         "validation": "data/splits/gsm8k_validation.txt",
         "test": "data/splits/gsm8k_test.txt"
-      }
+      },
+      "chapter2_main_experiment": true,
+      "chapter2_main_role": "capability_eval",
+      "chapter2_teacher_trace_source": true,
+      "support_only": false
     },
     {
       "dataset_name": "HumanEval",
@@ -37,7 +67,11 @@
         "train": "data/splits/humaneval_train.txt",
         "validation": "data/splits/humaneval_validation.txt",
         "test": "data/splits/humaneval_test.txt"
-      }
+      },
+      "chapter2_main_experiment": true,
+      "chapter2_main_role": "capability_eval",
+      "chapter2_teacher_trace_source": false,
+      "support_only": false
     },
     {
       "dataset_name": "MMLU",
@@ -54,7 +88,11 @@
         "train": "data/splits/mmlu_train.txt",
         "validation": "data/splits/mmlu_validation.txt",
         "test": "data/splits/mmlu_test.txt"
-      }
+      },
+      "chapter2_main_experiment": false,
+      "chapter2_main_role": "support_only",
+      "chapter2_teacher_trace_source": false,
+      "support_only": true
     },
     {
       "dataset_name": "CMMLU",
@@ -71,7 +109,11 @@
         "train": "data/splits/cmmlu_train.txt",
         "validation": "data/splits/cmmlu_validation.txt",
         "test": "data/splits/cmmlu_test.txt"
-      }
+      },
+      "chapter2_main_experiment": true,
+      "chapter2_main_role": "capability_eval",
+      "chapter2_teacher_trace_source": false,
+      "support_only": false
     },
     {
       "dataset_name": "MVTec AD",
@@ -89,6 +131,10 @@
         "validation": "data/splits/mvtec_ad_validation.txt",
         "test": "data/splits/mvtec_ad_test.txt"
       },
+      "chapter2_main_experiment": false,
+      "chapter2_main_role": "support_only",
+      "chapter2_teacher_trace_source": false,
+      "support_only": true,
       "official_test_full_final_gate": true,
       "class_counts": {
         "bottle": {
@@ -169,6 +215,10 @@
         "validation": "data/splits/neu_det_validation.txt",
         "test": "data/splits/neu_det_test.txt"
       },
+      "chapter2_main_experiment": true,
+      "chapter2_main_role": "application_trace",
+      "chapter2_teacher_trace_source": true,
+      "support_only": false,
       "class_split_counts": {
         "crazing": {
           "train": 210,
@@ -219,6 +269,10 @@
         "validation": "data/splits/cityflow_validation.txt",
         "test": "data/splits/cityflow_test.txt"
       },
+      "chapter2_main_experiment": true,
+      "chapter2_main_role": "application_trace",
+      "chapter2_teacher_trace_source": true,
+      "support_only": false,
       "relation_node_count": 3037,
       "relation_edge_count": 253374,
       "relation_group_count": 666,
@@ -241,6 +295,10 @@
         "validation": "data/splits/ua_detrac_validation.txt",
         "test": "data/splits/ua_detrac_test.txt"
       },
+      "chapter2_main_experiment": false,
+      "chapter2_main_role": "support_only",
+      "chapter2_teacher_trace_source": false,
+      "support_only": true,
       "sequence_count": 100,
       "frame_count": 140131
     }

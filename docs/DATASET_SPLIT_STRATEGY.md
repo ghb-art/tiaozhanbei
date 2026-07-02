@@ -14,7 +14,7 @@
 |---|---|---|---|---|
 | GSM8K | official train 全量 | none | official test 中 seed=42 固定 500 条 | 保持 OpenAI 官方 train/test 边界。 |
 | HumanEval | none | none | official 164 tasks 全量 | 只用于代码能力 Final Gate。 |
-| MMLU | auxiliary_train + official dev | official val | official test 分科目 stratified 1000 条 | 按科目比例采样，固定 sample ids。 |
+| MMLU | support-only auxiliary_train + official dev | support-only official val | support-only official test 分科目 stratified 1000 条 | 不进入第 2 章主实验，仅保留支持/备份 split。 |
 | CMMLU | none | official dev | official test 分科目 stratified 1000 条 | 中文 Final Gate 不进入蒸馏训练。 |
 | MVTec AD | official train/good 全量 | none | official test 全量 | official test 不用于 validation。 |
 | NEU-DET | 每类 210 | 每类 30 | 每类 60 | 不沿用 mirror split，先按 image/xml stem 配对，再做 70/10/20 分层划分。 |

@@ -142,7 +142,7 @@ Cloud-only-summary 基线: 共享 evidence candidates + summary_generation + 相
 Math_ratio = Edge_GSM8K_Accuracy / Cloud_GSM8K_Accuracy
 Code_ratio = Edge_HumanEval_pass@1 / Cloud_HumanEval_pass@1
 NLP_ratio  = Edge_NLPScore / Cloud_NLPScore
-  NLPScore = 0.5 × MMLU_accuracy + 0.5 × CMMLU_accuracy
+  NLPScore = CMMLU_accuracy
 
 用于 Overall_R_cap 时使用 capped ratio (截断不超过 1.0):
   Math_ratio_cap = min(Math_ratio, 1.0)
@@ -156,8 +156,9 @@ G1 hard gate (四项全部通过):
 原始未截断 ratio 单独报告。
 
 HumanEval: 统一 Python sandbox, timeout=10s/test, 禁止网络访问, pass@1 单候选。
-MMLU/CMMLU: 统一 multiple-choice parser, 无法解析为 A/B/C/D 记为错误,
-            Edge 与 Cloud 使用相同 prompt/parser/采样参数。
+CMMLU: 统一 multiple-choice parser, 无法解析为 A/B/C/D 记为错误,
+       Edge 与 Cloud 使用相同 prompt/parser/采样参数。
+MMLU 不进入第 2 章主实验，仅保留为支持/备份数据资产。
 ```
 
 ### 2.2 G2: TTFT 降低比例
@@ -317,16 +318,18 @@ async fields:
 
 ### 3.1 数据集矩阵
 
-| 数据集 | 公开规模 | Final test 规模 | seed | 进入蒸馏 | Final Gate |
+| 数据集 | 公开规模 | Final test 规模 | seed | 进入蒸馏 | 主实验/Final Gate |
 |--------|---------|--------------|------|---------|-----------|
 | GSM8K | train 7473 / test 1319 | 500 | 42 | train | 是 |
 | HumanEval | 164 全量 | 164 | — | 不进入 | 是 |
-| MMLU | 57 科目 | 1000 (科目分层) | 42 | train | 是 |
+| MMLU | 57 科目 | 1000 (科目分层) | 42 | 不进入主实验 | 否，支持/备份 |
 | CMMLU | 67 科目 | 1000 (科目分层) | 42 | 非final train/synthetic | 是 |
-| MVTec AD | 15类, train 3629(仅正常) / test 1725 | 1725 (官方test全量) | — | train 正常样本 | 是 |
+| MVTec AD | 15类, train 3629(仅正常) / test 1725 | 1725 (官方test全量) | — | 不进入主实验 | 否，支持/备份 |
 | NEU-DET | 6类×300=1800 | 360 (类别分层) | 42 | train(70%) | 是 |
 | CityFlow | CityFlow-Original: 3.25h, 40摄像头, 10路口, 5场景(3train+2test), 666 vehicle ID | 构造脚本统计 | 42 | train场景 | 是 |
-| UA-DETRAC | 100视频, >140k帧, 含车辆框/类别/遮挡/截断 | 构造脚本统计 | 42 | 不进入关联图训练 | 是 |
+| UA-DETRAC | 100视频, >140k帧, 含车辆框/类别/遮挡/截断 | 构造脚本统计 | 42 | 不进入主实验 | 否，支持/备份 |
+
+第 2 章主实验数据集固定为 GSM8K、HumanEval、CMMLU、NEU-DET、CityFlow。GSM8K、HumanEval、CMMLU 用于能力保持率；NEU-DET、CityFlow 用于工业检测与交通监控任务表征压缩。teacher trace 训练数据只使用有 train split 且属于主实验的 GSM8K、NEU-DET、CityFlow；HumanEval 和 CMMLU 仅用于后续能力评测，不进入蒸馏训练。
 
 MVTec AD validation 方案 A: 官方 test 不进 validation。validation 使用 train 正常样本固定子集 + NEU-DET val 缺陷样本 + 派生非 final 异常样本。
 
@@ -523,9 +526,10 @@ scale:    {edge_nodes:[2,4,8], relation_ratio:[0.10,0.25,0.40], duration_s:300}
 上述 profile 仅用于实验复现和压力测试，不作为在线路径策略、证据规划或冲突推理模型的人工规则输入。
 
 train/val/test 隔离硬规则:
-- train: GSM8K train · MMLU train · CMMLU 非final train/synthetic · MVTec AD train(仅正常) · NEU-DET train(70%) · CityFlow train
-- validation: MMLU val · MVTec AD train正常子集+NEU-DET val派生 · CityFlow val
-- test (仅 final gate, seed=42): GSM8K 500 · HumanEval 164 · MMLU 1000 · CMMLU 1000 · MVTec AD test 1725 · NEU-DET test 360 · CityFlow test · UA-DETRAC test
+- train trace/distill: GSM8K train · NEU-DET train(70%) · CityFlow train
+- validation: NEU-DET val · CityFlow val；CMMLU dev 仅用于评测 parser/格式检查，不进入蒸馏训练
+- test (主实验 Final Gate, seed=42): GSM8K 500 · HumanEval 164 · CMMLU 1000 · NEU-DET test 360 · CityFlow test
+- support-only: MMLU · MVTec AD · UA-DETRAC 不进入第 2 章主实验
 - test 不进入蒸馏/SFT/planner/policy/graph/calibration 训练或 validation 调参
 
 ---

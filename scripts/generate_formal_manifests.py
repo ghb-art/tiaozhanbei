@@ -20,6 +20,11 @@ CONFLICT_MANIFEST = ROOT / "conflict_gt_manifest.json"
 CONFLICT_AUDIT_CSV = ROOT / "reports" / "audit" / "conflict_gt_audit.csv"
 CONFLICT_SAMPLE_AUDIT = ROOT / "reports" / "audit" / "conflict_gt_sample_audit.json"
 CLOUD_GATE_AUDIT = ROOT / "reports" / "audit" / "gate_cloud_smoke.json"
+MAIN_CAPABILITY_DATASETS = ("gsm8k", "humaneval", "cmmlu")
+MAIN_APPLICATION_DATASETS = ("neu_det", "cityflow")
+MAIN_EXPERIMENT_DATASETS = MAIN_CAPABILITY_DATASETS + MAIN_APPLICATION_DATASETS
+CHAPTER2_TEACHER_TRACE_DATASETS = ("gsm8k", "neu_det", "cityflow")
+SUPPORT_ONLY_DATASETS = ("mmlu", "mvtec_ad", "ua_detrac")
 
 RUN_HASH_KEYS = [
     "final_config_hash",
@@ -104,6 +109,16 @@ def git_commit() -> str:
         return "0000000"
 
 
+def chapter2_role(dataset_key: str) -> str:
+    if dataset_key in MAIN_CAPABILITY_DATASETS:
+        return "capability_eval"
+    if dataset_key in MAIN_APPLICATION_DATASETS:
+        return "application_trace"
+    if dataset_key in SUPPORT_ONLY_DATASETS:
+        return "support_only"
+    return "not_main"
+
+
 def dataset_entry(split: dict[str, Any]) -> dict[str, Any]:
     key = split["dataset_key"]
     metadata = split.get("metadata", {})
@@ -119,6 +134,10 @@ def dataset_entry(split: dict[str, Any]) -> dict[str, Any]:
         "leakage_check_pass": True,
         "split_method": split["method"],
         "split_files": split["split_files"],
+        "chapter2_main_experiment": key in MAIN_EXPERIMENT_DATASETS,
+        "chapter2_main_role": chapter2_role(key),
+        "chapter2_teacher_trace_source": key in CHAPTER2_TEACHER_TRACE_DATASETS,
+        "support_only": key in SUPPORT_ONLY_DATASETS,
     }
 
     if key == "CityFlow".lower():
@@ -151,6 +170,11 @@ def build_dataset_manifest(frozen: dict[str, Any], created_ts: str) -> dict[str,
         "created_ts": created_ts,
         "sampling_seed": frozen["sampling_seed"],
         "data_split_global_hash": frozen["global_split_hash"],
+        "chapter2_main_capability_dataset_keys": list(MAIN_CAPABILITY_DATASETS),
+        "chapter2_main_application_dataset_keys": list(MAIN_APPLICATION_DATASETS),
+        "chapter2_main_experiment_dataset_keys": list(MAIN_EXPERIMENT_DATASETS),
+        "chapter2_teacher_trace_dataset_keys": list(CHAPTER2_TEACHER_TRACE_DATASETS),
+        "support_only_dataset_keys": list(SUPPORT_ONLY_DATASETS),
         "datasets": [dataset_entry(split) for split in frozen["datasets"]],
         "scu_support": {
             "scu_sample_count": 0,
@@ -177,6 +201,11 @@ def build_run_manifest(frozen: dict[str, Any], conflict_manifest: dict[str, Any]
         "teacher_model_id": "Qwen/Qwen2.5-14B-Instruct-AWQ",
         "student_init_model_id": "Qwen/Qwen2.5-1.5B-Instruct",
         "edge_model_name": "DB4AI-Edge-1.5B-KD-INT4",
+        "chapter2_main_capability_dataset_keys": list(MAIN_CAPABILITY_DATASETS),
+        "chapter2_main_application_dataset_keys": list(MAIN_APPLICATION_DATASETS),
+        "chapter2_main_experiment_dataset_keys": list(MAIN_EXPERIMENT_DATASETS),
+        "chapter2_teacher_trace_dataset_keys": list(CHAPTER2_TEACHER_TRACE_DATASETS),
+        "support_only_dataset_keys": list(SUPPORT_ONLY_DATASETS),
         "fallback_events": [
             {
                 "date": "2026-07-01",

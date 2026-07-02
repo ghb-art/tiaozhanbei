@@ -61,6 +61,9 @@
 - [x] 使用 14B-AWQ vLLM 服务完成 32 条 train split teacher trace smoke，并生成 `reports/audit/gate_kd_trace_teacher_smoke.json`。
 - [x] 为 teacher trace 生成脚本加入多 teacher URL 并发、分片、断点续跑和重试能力，并用 GPU2/GPU3 完成 8 条 parallel smoke。
 - [x] 为 teacher trace 生成脚本加入周期性 checkpoint/partial audit，并用 GPU2/GPU3 完成 100 条 pilot。
-- [ ] 基于 train split 生成 `data/distill/teacher_decision_trace.jsonl`。
+- [x] 将第 2 章主实验数据口径固定为 `GSM8K`、`HumanEval`、`CMMLU`、`NEU-DET`、`CityFlow`，并将 `MMLU`、`MVTec AD`、`UA-DETRAC` 标记为支持/备份资产。
+- [x] 按第 2 章主实验口径完成 108 条 teacher trace pilot，并生成 `reports/audit/gate_kd_trace_teacher_chapter2_main_pilot.json`。
+- [ ] 基于第 2 章主实验 train split 生成 `data/distill/teacher_decision_trace.jsonl`。
 - [ ] 生成 `data/distill/distill_dataset.jsonl` 并记录 hash。
+- [ ] 实现 GSM8K、HumanEval、CMMLU 的 Cloud/Edge 能力评测脚本和能力保持率汇总。
 - [ ] 设计 Student-Base probe、CEDD-Structured、CEDD-Repair 与 INT4 量化 trace 产物。

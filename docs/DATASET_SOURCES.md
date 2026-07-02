@@ -32,12 +32,12 @@
 |---|---|---|---|---|---|---|---|---|
 | GSM8K | `gsm8k` | `data/datasets/gsm8k` | 数学能力评测和 train 蒸馏来源 | train | yes, 500 final samples | [OpenAI grade-school-math][gsm8k-source] | public GitHub; repo MIT license | `verified-primary` |
 | HumanEval | `humaneval` | `data/datasets/humaneval` | 代码能力 Final Gate 评测 | no | yes, 164 full | [OpenAI human-eval][humaneval-source] | public GitHub; repo MIT license; 执行评测需沙箱 | `verified-primary` |
-| MMLU | `mmlu` | `data/datasets/mmlu` | 英文 NLP 能力评测和 train 蒸馏来源 | train | yes, 1000 stratified samples | [hendrycks/test][mmlu-source] | public GitHub; repo MIT license; README 链接 data tar | `verified-primary` |
+| MMLU | `mmlu` | `data/datasets/mmlu` | 支持/备份数据资产，不进入第 2 章主实验 | no main experiment | support-only | [hendrycks/test][mmlu-source] | public GitHub; repo MIT license; README 链接 data tar | `verified-primary-support` |
 | CMMLU | `cmmlu` | `data/datasets/cmmlu` | 中文 NLP 能力评测，非 final train 或 synthetic 用于蒸馏 | non-final train or synthetic | yes, 1000 stratified samples | [haonan-li/CMMLU][cmmlu-source] / [HF mirror][cmmlu-hf] | repo states CC BY-NC-SA 4.0; HF metadata shows CC BY-NC | `verified-primary` |
-| MVTec AD | `mvtec_ad` | `data/datasets/mvtec_ad` | 工业缺陷检测支撑和 Final Gate | train normal only | yes, official test full | [MVTec official dataset page][mvtec-source] | official page form download; CC BY-NC-SA 4.0; non-commercial only | `verified-primary-manual-download` |
+| MVTec AD | `mvtec_ad` | `data/datasets/mvtec_ad` | 支持/备份工业异常数据资产，不进入第 2 章主实验 | no main experiment | support-only | [MVTec official dataset page][mvtec-source] | official page form download; CC BY-NC-SA 4.0; non-commercial only | `verified-primary-manual-download-support` |
 | NEU-DET | `neu_det` | `data/datasets/neu_det` | 工业缺陷检测辅助数据 | train 70% | yes, 360 stratified samples | [NEU faculty page][neu-source] / [Kaggle mirror][neu-kaggle] | official page unreachable in current environment; Kaggle mirror fallback verified locally | `mirror-fallback-verified` |
 | CityFlow | `cityflow` | `data/datasets/cityflow` | 交通多摄像头关联、冲突构造和 G6/G7 主评测 | train scenes | yes, script-counted final test | [AI City 2022 Track 1][cityflow-source] | download link accepts AI City data license agreement; manual download required | `verified-primary-manual-download` |
-| UA-DETRAC | `ua_detrac` | `data/datasets/ua_detrac` | 交通检测/跟踪辅助评测 | no graph training | yes, script-counted final test | [UAlbany/CVML project page][uadetrac-source] / [UBMDFL downloads][uadetrac-downloads] / [Kaggle mirror][uadetrac-kaggle] | official project page no longer exposes direct file links; Kaggle mirror fallback verified locally | `mirror-fallback-verified` |
+| UA-DETRAC | `ua_detrac` | `data/datasets/ua_detrac` | 支持/备份交通检测数据资产，不进入第 2 章主实验 | no main experiment | support-only | [UAlbany/CVML project page][uadetrac-source] / [UBMDFL downloads][uadetrac-downloads] / [Kaggle mirror][uadetrac-kaggle] | official project page no longer exposes direct file links; Kaggle mirror fallback verified locally | `mirror-fallback-verified-support` |
 
 ## 逐项接入记录
 
@@ -64,7 +64,7 @@
 - 下载方式：仓库 README 指向 `https://people.eecs.berkeley.edu/~hendrycks/data.tar`；下载后记录 tar 文件 SHA256。
 - 本地接入记录：2026-07-01 已接入官方 `data.tar`，SHA256 为 `BEC563BA4BAC1D6AAF04141CD7D1605D7A5CA833E38F994051E818489592989B`；已展开到 `data/datasets/mmlu/data/`，包含 `dev`、`test`、`val` 和 `auxiliary_train`。
 - 需要记录：commit hash 或下载日期、dataset version、科目分层策略、final 1000 sample ids hash、split hash。
-- 注意：Edge 与 Cloud 必须使用相同 prompt、parser 和采样参数。
+- 注意：MMLU 不进入第 2 章主实验；若作为支持/备份评测使用，Edge 与 Cloud 必须使用相同 prompt、parser 和采样参数。
 
 ### CMMLU
 

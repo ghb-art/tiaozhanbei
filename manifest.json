@@ -25,7 +25,7 @@
       "hash_regeneration_required": true
     }
   ],
-  "timestamp": "2026-07-02T02:46:48.726141+00:00",
+  "timestamp": "2026-07-02T03:14:44.813606+00:00",
   "final_config_hash": "a931021552b4c1d16c8d308af0fccce6c97182a0ca2208b41c4561d874518f02",
   "risk_matrix_hash": "429d7517e85584ab403b757a94d7d1c3d05ab42c81335593b636e7b33f7345f8",
   "fallback_policy_hash": "902918d3f6fdfefb1f94dfbd32e5d72333cf0f18d795c49fe30f022274936f6c",
@@ -53,6 +53,32 @@
   "data_split_hash": "d7f3fac67fd3f235802ed405cdbac46302db513925cdab56d13198b0b871e7cf",
   "network_profile_hash": "22663f040b5aedee31c77ee870e2d417b92707206c4f6b280ee5489228636c8d",
   "prompt_template_hash": "498ddac66d4809cfacf198cca9e5cf3a1ff17e2b7401591510e89337c35fa696",
+  "chapter2_main_capability_dataset_keys": [
+    "gsm8k",
+    "humaneval",
+    "cmmlu"
+  ],
+  "chapter2_main_application_dataset_keys": [
+    "neu_det",
+    "cityflow"
+  ],
+  "chapter2_main_experiment_dataset_keys": [
+    "gsm8k",
+    "humaneval",
+    "cmmlu",
+    "neu_det",
+    "cityflow"
+  ],
+  "chapter2_teacher_trace_dataset_keys": [
+    "gsm8k",
+    "neu_det",
+    "cityflow"
+  ],
+  "support_only_dataset_keys": [
+    "mmlu",
+    "mvtec_ad",
+    "ua_detrac"
+  ],
   "cloud_gate_audit_hash": "252decbb1d35c5c41be56612d24ea906d3fb8ae5b4f4a4c539e537219b266701",
   "cloud_gate_report_hash": "931d9a7768661681a04a18934f5c22d8232c08567f2b2fb2de4126ed0c99fcee",
   "cloud_teacher_model_hash": "aec0cdb3bc0dcb0a71ba231e2747345325d9f8671ca4c530dac244b8fbc2a795",
@@ -84,6 +110,31 @@
   "kd_trace_teacher_pilot_workers": 2,
   "kd_trace_teacher_pilot_checkpoint_interval": 10,
   "kd_trace_teacher_pilot_parse_success_rate": 1.0,
+  "kd_trace_teacher_chapter2_main_pilot_audit_hash": "75db2ec2e6cdfb372e372dfb84fcea27f1ee4b10b467b1b6d662c521c96fa26d",
+  "kd_trace_teacher_chapter2_main_pilot_partial_audit_hash": "3e8d0aba4556d1c06da804dfee1081330ccf58e6330ae606f62e17aade259529",
+  "kd_trace_teacher_chapter2_main_pilot_report_hash": "872a5291d5f1f2a8d40a0b600d203243f933cb89cd741c8273ae2c2b25157589",
+  "kd_trace_teacher_chapter2_main_pilot_trace_hash": "dff73a300ca5287c78c191fc871b270ba323f2a45ebc6faac48d7a4f55ea68f6",
+  "kd_trace_teacher_chapter2_main_pilot_distill_dataset_hash": "ec46086a52861ba4a39e90198422c4088919bddf7ffb247a3addcaaa3c0f3a35",
+  "kd_trace_teacher_chapter2_main_pilot_selected_sample_ids_hash": "d35714ef1e85d5ed825cc5f82d2352750d49f397918042f6a56132e4de7acc92",
+  "kd_trace_teacher_chapter2_main_pilot_prompt_template_hash": "cc26d1a200cee87fe0c6183115fb5b0f27baac4ccc3fb289470c99bf6efeb9f3",
+  "kd_trace_teacher_chapter2_main_pilot_sample_count": 108,
+  "kd_trace_teacher_chapter2_main_pilot_workers": 2,
+  "kd_trace_teacher_chapter2_main_pilot_checkpoint_interval": 12,
+  "kd_trace_teacher_chapter2_main_pilot_parse_success_rate": 1.0,
+  "kd_trace_teacher_chapter2_main_pilot_dataset_counts": {
+    "cityflow": 36,
+    "gsm8k": 36,
+    "neu_det": 36
+  },
+  "kd_trace_teacher_chapter2_main_pilot_endpoint_counts": {
+    "http://127.0.0.1:8000": 54,
+    "http://127.0.0.1:8001": 54
+  },
+  "kd_trace_teacher_chapter2_main_pilot_action_counts": {
+    "alert": 3,
+    "inspect": 18,
+    "pass": 87
+  },
   "policy_config_hash": "0d8ffeb4c08961911bc23f11ac5a9415fe1011693f1c84c3d6db94c87b680afc",
   "decision_parser_hash": "e314b60bca3e0664d13e5ddaf000fd8ed7442ea881c2b638dcffd8c7c73c9554",
   "capability_metric_script_hash": "847c35cc700a3c0bd2069a9d3bf151b7861760f7273679186568c040f42a3b9b",

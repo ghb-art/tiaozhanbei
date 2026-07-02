@@ -26,6 +26,11 @@ DEFAULT_TEACHER_TRACE = ROOT / "data" / "distill" / "teacher_decision_trace.json
 DEFAULT_DISTILL = ROOT / "data" / "distill" / "distill_dataset.jsonl"
 DEFAULT_AUDIT = ROOT / "reports" / "audit" / "gate_kd_trace_teacher.json"
 ALLOWED_SPLITS = {"train", "validation"}
+MAIN_CAPABILITY_DATASETS = ("gsm8k", "humaneval", "cmmlu")
+MAIN_APPLICATION_DATASETS = ("neu_det", "cityflow")
+MAIN_EXPERIMENT_DATASETS = MAIN_CAPABILITY_DATASETS + MAIN_APPLICATION_DATASETS
+DEFAULT_TRACE_DATASETS = ("gsm8k", "neu_det", "cityflow")
+SUPPORT_ONLY_DATASETS = ("mmlu", "mvtec_ad", "ua_detrac")
 
 SYSTEM_PROMPT = (
     "You are the DB4AI-EdgeServe cloud teacher. Return only one JSON object. "
@@ -711,6 +716,15 @@ def parse_teacher_urls(teacher_url_values: list[str], teacher_urls_values: list[
     return unique_urls
 
 
+def resolve_include_datasets(args: argparse.Namespace) -> set[str] | None:
+    explicit = parse_dataset_filter(args.dataset)
+    if explicit is not None:
+        return explicit
+    if args.include_support_datasets:
+        return None
+    return set(DEFAULT_TRACE_DATASETS)
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Generate 14B teacher traces for G-KD-TRACE.")
     parser.add_argument(
@@ -731,7 +745,21 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--split", default="train", choices=sorted(ALLOWED_SPLITS | {"test"}))
     parser.add_argument("--sample-limit", "--sample_limit", type=int, default=None)
-    parser.add_argument("--dataset", action="append", default=[], help="Dataset key filter. Can be repeated or comma-separated.")
+    parser.add_argument(
+        "--dataset",
+        action="append",
+        default=[],
+        help=(
+            "Dataset key filter. Can be repeated or comma-separated. "
+            "By default, uses Chapter 2 main train-trace datasets: gsm8k, neu_det, cityflow."
+        ),
+    )
+    parser.add_argument(
+        "--include-support-datasets",
+        "--include_support_datasets",
+        action="store_true",
+        help="When --dataset is omitted, include all implemented loaders, including support-only datasets.",
+    )
     parser.add_argument("--workers", type=int, default=1, help="Concurrent teacher requests.")
     parser.add_argument("--num-shards", "--num_shards", type=int, default=1)
     parser.add_argument("--shard-index", "--shard_index", type=int, default=0)
@@ -792,7 +820,7 @@ def main() -> int:
     distill_path = resolve_output(args.output_distill)
     audit_path = resolve_output(args.audit)
     partial_audit_path = resolve_output(args.partial_audit) if args.partial_audit else default_partial_audit_path(audit_path)
-    include_datasets = parse_dataset_filter(args.dataset)
+    include_datasets = resolve_include_datasets(args)
     teacher_urls = parse_teacher_urls(args.teacher_url, args.teacher_urls)
 
     frozen = load_frozen_splits()
@@ -926,6 +954,14 @@ def main() -> int:
             "resume": bool(args.resume),
             "checkpoint_interval": args.checkpoint_interval,
             "partial_audit_path": display_path(partial_audit_path),
+            "experiment_scope": "chapter2_main",
+            "main_capability_dataset_keys": list(MAIN_CAPABILITY_DATASETS),
+            "main_application_dataset_keys": list(MAIN_APPLICATION_DATASETS),
+            "main_experiment_dataset_keys": list(MAIN_EXPERIMENT_DATASETS),
+            "default_trace_dataset_keys": list(DEFAULT_TRACE_DATASETS),
+            "support_only_dataset_keys": list(SUPPORT_ONLY_DATASETS),
+            "include_support_datasets": bool(args.include_support_datasets),
+            "requested_dataset_keys": sorted(include_datasets) if include_datasets else "all_implemented_loaders",
             "available_dataset_keys": sorted(ids_by_dataset),
             "empty_split_dataset_keys": empty_split_dataset_keys(frozen, args.split),
             "skipped_dataset_keys": skipped_dataset_keys,

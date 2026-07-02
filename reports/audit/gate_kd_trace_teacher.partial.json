@@ -1,0 +1,140 @@
+{
+  "gate": "G-KD-TRACE-teacher",
+  "check_version": "1.3",
+  "created_by": "model_compression/generate_teacher_traces.py",
+  "created_ts": "2026-07-02T10:42:49.863218+00:00",
+  "updated_ts": "2026-07-02T10:42:52.041128+00:00",
+  "status": "completed",
+  "is_partial": true,
+  "teacher_url": "http://127.0.0.1:8000",
+  "teacher_urls": [
+    "http://127.0.0.1:8000",
+    "http://127.0.0.1:8001",
+    "http://127.0.0.1:8002",
+    "http://127.0.0.1:8003"
+  ],
+  "teacher_model_id": "Qwen/Qwen2.5-14B-Instruct-AWQ",
+  "served_model_id": "models/pretrained/Qwen--Qwen2.5-14B-Instruct-AWQ",
+  "teacher_endpoints": [
+    {
+      "teacher_url": "http://127.0.0.1:8000",
+      "health_status": 200,
+      "served_model_id": "models/pretrained/Qwen--Qwen2.5-14B-Instruct-AWQ"
+    },
+    {
+      "teacher_url": "http://127.0.0.1:8001",
+      "health_status": 200,
+      "served_model_id": "models/pretrained/Qwen--Qwen2.5-14B-Instruct-AWQ"
+    },
+    {
+      "teacher_url": "http://127.0.0.1:8002",
+      "health_status": 200,
+      "served_model_id": "models/pretrained/Qwen--Qwen2.5-14B-Instruct-AWQ"
+    },
+    {
+      "teacher_url": "http://127.0.0.1:8003",
+      "health_status": 200,
+      "served_model_id": "models/pretrained/Qwen--Qwen2.5-14B-Instruct-AWQ"
+    }
+  ],
+  "teacher_health_status": 200,
+  "teacher_health_statuses": {
+    "http://127.0.0.1:8000": 200,
+    "http://127.0.0.1:8001": 200,
+    "http://127.0.0.1:8002": 200,
+    "http://127.0.0.1:8003": 200
+  },
+  "split": "train",
+  "global_split_hash": "d7f3fac67fd3f235802ed405cdbac46302db513925cdab56d13198b0b871e7cf",
+  "sample_limit": null,
+  "num_shards": 1,
+  "shard_index": 0,
+  "workers": 8,
+  "retry_count": 2,
+  "resume": true,
+  "checkpoint_interval": 50,
+  "partial_audit_path": "reports/audit/gate_kd_trace_teacher.partial.json",
+  "experiment_scope": "chapter2_main",
+  "neu_det_asset_lookup": "global_stem_pair_across_mirror_train_validation",
+  "main_capability_dataset_keys": [
+    "gsm8k",
+    "humaneval",
+    "cmmlu"
+  ],
+  "main_application_dataset_keys": [
+    "neu_det",
+    "cityflow"
+  ],
+  "main_experiment_dataset_keys": [
+    "gsm8k",
+    "humaneval",
+    "cmmlu",
+    "neu_det",
+    "cityflow"
+  ],
+  "default_trace_dataset_keys": [
+    "gsm8k",
+    "neu_det",
+    "cityflow"
+  ],
+  "support_only_dataset_keys": [
+    "mmlu",
+    "mvtec_ad",
+    "ua_detrac"
+  ],
+  "include_support_datasets": false,
+  "requested_dataset_keys": [
+    "cityflow",
+    "gsm8k",
+    "neu_det"
+  ],
+  "available_dataset_keys": [
+    "cityflow",
+    "gsm8k",
+    "mmlu",
+    "mvtec_ad",
+    "neu_det"
+  ],
+  "empty_split_dataset_keys": [
+    "cmmlu",
+    "humaneval",
+    "ua_detrac"
+  ],
+  "skipped_dataset_keys": [],
+  "selected_sample_count": 8769,
+  "resumed_trace_count": 8769,
+  "attempted_trace_count": 0,
+  "completed_attempt_count": 0,
+  "processed_trace_count": 0,
+  "successful_trace_count": 8769,
+  "failed_trace_count": 0,
+  "pending_trace_count": 0,
+  "parse_ok_count": 8769,
+  "parse_success_rate": 1.0,
+  "min_parse_rate": 0.9,
+  "selected_sample_ids_hash": "dd19cbb252f980b9b08fab92e61200cd418d41dfc64388e2077a00fdf482377c",
+  "dataset_counts": {
+    "cityflow": 36,
+    "gsm8k": 7473,
+    "neu_det": 1260
+  },
+  "action_counts": {
+    "alert": 76,
+    "inspect": 471,
+    "pass": 8222
+  },
+  "endpoint_counts": {
+    "http://127.0.0.1:8000": 2502,
+    "http://127.0.0.1:8001": 2499,
+    "http://127.0.0.1:8002": 1883,
+    "http://127.0.0.1:8003": 1885
+  },
+  "teacher_trace_path": "data/distill/teacher_decision_trace.jsonl",
+  "teacher_trace_hash": "f6f9ce25ffc8aff2cce62978bb1c4b7844a8937a03b0cd5ba137e1d7c0327486",
+  "distill_dataset_path": "data/distill/distill_dataset.jsonl",
+  "distill_dataset_hash": "610d23903a5d8d4117c03159268ce068620fee2b97de7ed7ce2dc9fb178c9443",
+  "prompt_template_hash": "cc26d1a200cee87fe0c6183115fb5b0f27baac4ccc3fb289470c99bf6efeb9f3",
+  "dry_run": false,
+  "errors": [],
+  "report_hash": "e39987717eb5a258f76afcc139d7cb580af4ffd95342a5dffe3dec7d1f03434e"
+}

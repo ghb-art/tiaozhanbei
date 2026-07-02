@@ -1,7 +1,7 @@
 {
   "manifest_version": "1.0",
   "created_by": "scripts/build_conflict_gt.py",
-  "created_ts": "2026-07-01T08:48:52.957889+00:00",
+  "created_ts": "2026-07-02T10:45:24.217214+00:00",
   "datasets": [
     "CityFlow",
     "MVTec AD",
@@ -1283,5 +1283,5 @@
     "action_conflict": 15,
     "duplicate_alert": 15
   },
-  "manifest_hash": "ca75c6494ad115af4c5fb0db63ae3dcde17fd39433bafdc009d9e02a64f2269f"
+  "manifest_hash": "9a31d599bf807d57ac4a03ae1dba354b120378ad9650668c34943e46c7b2b7b7"
 }

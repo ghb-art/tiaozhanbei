@@ -25,6 +25,38 @@ MAIN_APPLICATION_DATASETS = ("neu_det", "cityflow")
 MAIN_EXPERIMENT_DATASETS = MAIN_CAPABILITY_DATASETS + MAIN_APPLICATION_DATASETS
 CHAPTER2_TEACHER_TRACE_DATASETS = ("gsm8k", "neu_det", "cityflow")
 SUPPORT_ONLY_DATASETS = ("mmlu", "mvtec_ad", "ua_detrac")
+KD_TEACHER_AUDITS = (
+    (
+        "kd_trace_teacher_smoke",
+        ROOT / "reports" / "audit" / "gate_kd_trace_teacher_smoke.json",
+        None,
+        False,
+    ),
+    (
+        "kd_trace_teacher_parallel_smoke",
+        ROOT / "reports" / "audit" / "gate_kd_trace_teacher_parallel_smoke.json",
+        None,
+        False,
+    ),
+    (
+        "kd_trace_teacher_pilot",
+        ROOT / "reports" / "audit" / "gate_kd_trace_teacher_pilot.json",
+        ROOT / "reports" / "audit" / "gate_kd_trace_teacher_pilot.partial.json",
+        False,
+    ),
+    (
+        "kd_trace_teacher_chapter2_main_pilot",
+        ROOT / "reports" / "audit" / "gate_kd_trace_teacher_chapter2_main_pilot.json",
+        ROOT / "reports" / "audit" / "gate_kd_trace_teacher_chapter2_main_pilot.partial.json",
+        False,
+    ),
+    (
+        "kd_trace_teacher",
+        ROOT / "reports" / "audit" / "gate_kd_trace_teacher.json",
+        ROOT / "reports" / "audit" / "gate_kd_trace_teacher.partial.json",
+        True,
+    ),
+)
 
 RUN_HASH_KEYS = [
     "final_config_hash",
@@ -195,6 +227,62 @@ def build_dataset_manifest(frozen: dict[str, Any], created_ts: str) -> dict[str,
     }
 
 
+def add_kd_teacher_audit_fields(
+    manifest: dict[str, Any],
+    explicit_hashes: dict[str, str],
+    prefix: str,
+    audit_path: Path,
+    partial_audit_path: Path | None,
+    update_primary_hashes: bool,
+) -> None:
+    if not audit_path.is_file():
+        return
+
+    kd_teacher = load_json(audit_path)
+    if update_primary_hashes:
+        explicit_hashes.update(
+            {
+                "teacher_trace_hash": kd_teacher.get("teacher_trace_hash", derived_hash("teacher_trace_hash")),
+                "distill_dataset_hash": kd_teacher.get(
+                    "distill_dataset_hash",
+                    derived_hash("distill_dataset_hash"),
+                ),
+                "prompt_template_hash": kd_teacher.get("prompt_template_hash", derived_hash("prompt_template_hash")),
+            }
+        )
+
+    fields = {
+        f"{prefix}_audit_hash": sha256_file(audit_path),
+        f"{prefix}_report_hash": kd_teacher.get("report_hash", derived_hash(f"{prefix}_report_hash")),
+        f"{prefix}_status": kd_teacher.get("status", "unknown"),
+        f"{prefix}_trace_hash": kd_teacher.get("teacher_trace_hash", derived_hash(f"{prefix}_trace_hash")),
+        f"{prefix}_distill_dataset_hash": kd_teacher.get(
+            "distill_dataset_hash",
+            derived_hash(f"{prefix}_distill_dataset_hash"),
+        ),
+        f"{prefix}_selected_sample_ids_hash": kd_teacher.get(
+            "selected_sample_ids_hash",
+            derived_hash(f"{prefix}_selected_sample_ids_hash"),
+        ),
+        f"{prefix}_prompt_template_hash": kd_teacher.get(
+            "prompt_template_hash",
+            derived_hash(f"{prefix}_prompt_template_hash"),
+        ),
+        f"{prefix}_sample_count": kd_teacher.get("selected_sample_count", 0),
+        f"{prefix}_successful_trace_count": kd_teacher.get("successful_trace_count", 0),
+        f"{prefix}_failed_trace_count": kd_teacher.get("failed_trace_count", 0),
+        f"{prefix}_workers": kd_teacher.get("workers", 0),
+        f"{prefix}_checkpoint_interval": kd_teacher.get("checkpoint_interval", 0),
+        f"{prefix}_parse_success_rate": kd_teacher.get("parse_success_rate", 0.0),
+        f"{prefix}_dataset_counts": kd_teacher.get("dataset_counts", {}),
+        f"{prefix}_endpoint_counts": kd_teacher.get("endpoint_counts", {}),
+        f"{prefix}_action_counts": kd_teacher.get("action_counts", {}),
+    }
+    if partial_audit_path is not None and partial_audit_path.is_file():
+        fields[f"{prefix}_partial_audit_hash"] = sha256_file(partial_audit_path)
+    manifest.update(fields)
+
+
 def build_run_manifest(frozen: dict[str, Any], conflict_manifest: dict[str, Any], created_ts: str) -> dict[str, Any]:
     manifest: dict[str, Any] = {
         "git_commit": git_commit(),
@@ -254,6 +342,16 @@ def build_run_manifest(frozen: dict[str, Any], conflict_manifest: dict[str, Any]
         if isinstance(smoke, dict) and isinstance(smoke.get("first_token_latency_sec"), (int, float)):
             manifest["cloud_teacher_first_token_latency_sec"] = smoke["first_token_latency_sec"]
         manifest["cloud_gate_status"] = cloud_gate.get("status", "unknown")
+
+    for prefix, audit_path, partial_audit_path, update_primary_hashes in KD_TEACHER_AUDITS:
+        add_kd_teacher_audit_fields(
+            manifest,
+            explicit_hashes,
+            prefix,
+            audit_path,
+            partial_audit_path,
+            update_primary_hashes,
+        )
 
     for key in RUN_HASH_KEYS:
         manifest[key] = explicit_hashes.get(key, derived_hash(key))

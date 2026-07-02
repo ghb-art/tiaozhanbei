@@ -11,6 +11,7 @@ import xml.etree.ElementTree as ET
 from collections import Counter
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timezone
+from functools import lru_cache
 from pathlib import Path
 from typing import Any
 from urllib.error import HTTPError, URLError
@@ -31,6 +32,7 @@ MAIN_APPLICATION_DATASETS = ("neu_det", "cityflow")
 MAIN_EXPERIMENT_DATASETS = MAIN_CAPABILITY_DATASETS + MAIN_APPLICATION_DATASETS
 DEFAULT_TRACE_DATASETS = ("gsm8k", "neu_det", "cityflow")
 SUPPORT_ONLY_DATASETS = ("mmlu", "mvtec_ad", "ua_detrac")
+NEU_IMAGE_SUFFIXES = {".jpg", ".jpeg", ".png"}
 
 SYSTEM_PROMPT = (
     "You are the DB4AI-EdgeServe cloud teacher. Return only one JSON object. "
@@ -326,21 +328,62 @@ def parse_neu_xml(path: Path) -> dict[str, Any]:
     return {"object_count": len(objects), "objects": objects[:5]}
 
 
+@lru_cache(maxsize=1)
+def neu_det_asset_indexes() -> tuple[dict[str, tuple[Path, ...]], dict[str, tuple[Path, ...]]]:
+    root = DATASETS / "neu_det" / "NEU-DET"
+    image_paths_by_stem: dict[str, list[Path]] = {}
+    xml_paths_by_stem: dict[str, list[Path]] = {}
+
+    for image_path in sorted(root.glob("*/images/*/*")):
+        if image_path.is_file() and image_path.suffix.lower() in NEU_IMAGE_SUFFIXES:
+            image_paths_by_stem.setdefault(image_path.stem, []).append(image_path)
+    for xml_path in sorted(root.glob("*/annotations/*.xml")):
+        if xml_path.is_file():
+            xml_paths_by_stem.setdefault(xml_path.stem, []).append(xml_path)
+
+    return (
+        {stem: tuple(paths) for stem, paths in image_paths_by_stem.items()},
+        {stem: tuple(paths) for stem, paths in xml_paths_by_stem.items()},
+    )
+
+
+def prefer_neu_class(paths: tuple[Path, ...], class_name: str) -> tuple[Path, ...]:
+    class_matched = tuple(path for path in paths if path.parent.name == class_name)
+    return class_matched or paths
+
+
+def neu_asset_split(path: Path) -> str:
+    root = DATASETS / "neu_det" / "NEU-DET"
+    try:
+        relative = path.relative_to(root)
+    except ValueError:
+        return ""
+    return relative.parts[0] if relative.parts else ""
+
+
+def locate_neu_det_assets(sample_id: str, class_name: str, stem: str) -> tuple[Path, Path]:
+    image_paths_by_stem, xml_paths_by_stem = neu_det_asset_indexes()
+    image_candidates = prefer_neu_class(image_paths_by_stem.get(stem, ()), class_name)
+    xml_candidates = xml_paths_by_stem.get(stem, ())
+    if not image_candidates:
+        raise TraceError(f"NEU-DET image not found globally: {sample_id}")
+    if not xml_candidates:
+        raise TraceError(f"NEU-DET XML not found globally: {sample_id}")
+    return image_candidates[0], xml_candidates[0]
+
+
 def load_neu_det(sample_id: str) -> dict[str, Any]:
     _, split, stem = sample_id.split("/")
     class_name = neu_class_from_stem(stem)
-    base = DATASETS / "neu_det" / "NEU-DET" / split
-    image_path = base / "images" / class_name / f"{stem}.jpg"
-    xml_path = base / "annotations" / f"{stem}.xml"
-    if not image_path.is_file():
-        raise TraceError(f"NEU-DET image not found: {sample_id}")
-    if not xml_path.is_file():
-        raise TraceError(f"NEU-DET XML not found: {sample_id}")
+    image_path, xml_path = locate_neu_det_assets(sample_id, class_name, stem)
     annotation = parse_neu_xml(xml_path)
     context = {
         "dataset": "NEU-DET",
         "task_type": "surface_defect",
         "class_name": class_name,
+        "frozen_split": split,
+        "image_source_split": neu_asset_split(image_path),
+        "annotation_source_split": neu_asset_split(xml_path),
         "image_path": display_path(image_path),
         "annotation_path": display_path(xml_path),
         "annotation": annotation,
@@ -418,12 +461,24 @@ def load_sample(sample_id: str) -> dict[str, Any]:
 
 
 def extract_json_object(text: str) -> dict[str, Any]:
+    def load_candidate(candidate: str) -> dict[str, Any]:
+        try:
+            parsed = json.loads(candidate)
+        except json.JSONDecodeError:
+            repaired = re.sub(r",\s*([}\]])", r"\1", candidate)
+            if repaired == candidate:
+                raise
+            parsed = json.loads(repaired)
+        if not isinstance(parsed, dict):
+            raise TraceError("Teacher response JSON root is not an object")
+        return parsed
+
     stripped = text.strip()
     if stripped.startswith("```"):
         stripped = re.sub(r"^```(?:json)?", "", stripped, flags=re.IGNORECASE).strip()
         stripped = re.sub(r"```$", "", stripped).strip()
     try:
-        return json.loads(stripped)
+        return load_candidate(stripped)
     except json.JSONDecodeError:
         pass
 
@@ -450,7 +505,10 @@ def extract_json_object(text: str) -> dict[str, Any]:
         elif char == "}":
             depth -= 1
             if depth == 0:
-                return json.loads(stripped[start : index + 1])
+                try:
+                    return load_candidate(stripped[start : index + 1])
+                except json.JSONDecodeError as exc:
+                    raise TraceError(f"Teacher response JSON object is invalid: {exc}") from exc
     raise TraceError("Teacher response JSON object is incomplete")
 
 
@@ -928,7 +986,7 @@ def main() -> int:
         first_endpoint = teacher_endpoints[0]
         audit = {
             "gate": "G-KD-TRACE-teacher-smoke" if args.sample_limit else "G-KD-TRACE-teacher",
-            "check_version": "1.2",
+            "check_version": "1.3",
             "created_by": "model_compression/generate_teacher_traces.py",
             "created_ts": created_ts,
             "updated_ts": datetime.now(timezone.utc).isoformat(),
@@ -955,6 +1013,7 @@ def main() -> int:
             "checkpoint_interval": args.checkpoint_interval,
             "partial_audit_path": display_path(partial_audit_path),
             "experiment_scope": "chapter2_main",
+            "neu_det_asset_lookup": "global_stem_pair_across_mirror_train_validation",
             "main_capability_dataset_keys": list(MAIN_CAPABILITY_DATASETS),
             "main_application_dataset_keys": list(MAIN_APPLICATION_DATASETS),
             "main_experiment_dataset_keys": list(MAIN_EXPERIMENT_DATASETS),
@@ -1041,6 +1100,9 @@ def main() -> int:
     missing_count = len(selected_ids) - len(final_trace_rows) - len(errors)
     final_status = "passed" if not errors and missing_count == 0 and final_parse_rate >= args.min_parse_rate else "failed"
     audit = write_outputs_and_audit(audit_path, final_status, is_partial=False)
+    if args.checkpoint_interval > 0:
+        partial_status = "completed" if final_status == "passed" else "completed_with_errors"
+        write_outputs_and_audit(partial_audit_path, partial_status, is_partial=True)
 
     print(f"Wrote {display_path(teacher_trace_path)}")
     print(f"Wrote {display_path(distill_path)}")

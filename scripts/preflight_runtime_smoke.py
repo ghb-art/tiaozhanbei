@@ -46,6 +46,7 @@ REQUIRED_READABLE_FILES = [
     "scripts/inspect_datasets.py",
     "scripts/preflight_runtime_smoke.py",
     "scripts/verify_gate_cloud.py",
+    "model_compression/generate_teacher_traces.py",
 ]
 
 TEMPLATE_FILES = [

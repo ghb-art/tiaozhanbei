@@ -57,7 +57,8 @@
 
 ## G-KD-TRACE
 
-- [ ] 实现教师结构化决策 trace 生成脚本。
+- [x] 实现教师结构化决策 trace 生成脚本。
+- [x] 使用 14B-AWQ vLLM 服务完成 32 条 train split teacher trace smoke，并生成 `reports/audit/gate_kd_trace_teacher_smoke.json`。
 - [ ] 基于 train split 生成 `data/distill/teacher_decision_trace.jsonl`。
 - [ ] 生成 `data/distill/distill_dataset.jsonl` 并记录 hash。
 - [ ] 设计 Student-Base probe、CEDD-Structured、CEDD-Repair 与 INT4 量化 trace 产物。

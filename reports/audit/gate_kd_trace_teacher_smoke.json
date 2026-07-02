@@ -1,0 +1,54 @@
+{
+  "gate": "G-KD-TRACE-teacher-smoke",
+  "check_version": "1.0",
+  "created_by": "model_compression/generate_teacher_traces.py",
+  "created_ts": "2026-07-02T01:52:24.749943+00:00",
+  "teacher_url": "http://127.0.0.1:8000",
+  "teacher_model_id": "Qwen/Qwen2.5-14B-Instruct-AWQ",
+  "served_model_id": "models/pretrained/Qwen--Qwen2.5-14B-Instruct-AWQ",
+  "teacher_health_status": 200,
+  "split": "train",
+  "global_split_hash": "d7f3fac67fd3f235802ed405cdbac46302db513925cdab56d13198b0b871e7cf",
+  "sample_limit": 32,
+  "available_dataset_keys": [
+    "cityflow",
+    "gsm8k",
+    "mmlu",
+    "mvtec_ad",
+    "neu_det"
+  ],
+  "empty_split_dataset_keys": [
+    "cmmlu",
+    "humaneval",
+    "ua_detrac"
+  ],
+  "skipped_dataset_keys": [],
+  "selected_sample_count": 32,
+  "successful_trace_count": 32,
+  "failed_trace_count": 0,
+  "parse_ok_count": 32,
+  "parse_success_rate": 1.0,
+  "min_parse_rate": 0.9,
+  "selected_sample_ids_hash": "132f8aca34edacd1aa414070b9a68a9e7e3e2690925e6611581ada3b10df510f",
+  "dataset_counts": {
+    "cityflow": 7,
+    "gsm8k": 7,
+    "mmlu": 6,
+    "mvtec_ad": 6,
+    "neu_det": 6
+  },
+  "action_counts": {
+    "alert": 1,
+    "inspect": 2,
+    "pass": 29
+  },
+  "teacher_trace_path": "data/distill/teacher_decision_trace.smoke.jsonl",
+  "teacher_trace_hash": "e02e81f1ea4224ba979c62783ea8bfba7a4d2d0ccbaaa764a1277183d4bc3c24",
+  "distill_dataset_path": "data/distill/distill_dataset.smoke.jsonl",
+  "distill_dataset_hash": "ec69b63a01d90fb22dba4bca7ae517c7d8a5a287c878929f8a78e98386be8f67",
+  "prompt_template_hash": "cc26d1a200cee87fe0c6183115fb5b0f27baac4ccc3fb289470c99bf6efeb9f3",
+  "dry_run": false,
+  "errors": [],
+  "status": "passed",
+  "report_hash": "c19af2501b1602f485df90eb12d7b2c9f8d0c882f0943a0ca9fe0b7e332f4d66"
+}

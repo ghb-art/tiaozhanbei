@@ -33,6 +33,7 @@
 | 2026-07-01 | G-DB | 启动 KWDB Docker 容器并完成 G-DB live gate | 验证 schema 创建、写入、查询和 CSV 导出链路可运行 | Yes, DB smoke report generated | `docker/docker-compose.kwdb.yml`, `scripts/verify_gate_db.py`, `reports/audit/gate_db_smoke.csv` |
 | 2026-07-01 | G-CLOUD | 下载三份 Qwen 模型到本地预训练模型目录并生成下载审计 | 为后续上传服务器和启动 14B-AWQ 云端教师服务做准备 | Yes, local model audit generated | `scripts/download_models.py`, `models/pretrained/`, `reports/audit/model_downloads.json` |
 | 2026-07-01 | G-CLOUD | 新增云端教师服务验证脚本并完成 14B-AWQ vLLM live gate | 闭合实施计划中 `/health` 200、smoke 首 token <2s、model_hash/prompt_hash 记录要求；服务器缺少 vLLM，已在项目 `.venv` 中隔离安装 `vllm==0.8.5` 并固定 `transformers==4.51.3` 规避 Qwen tokenizer API 不兼容 | Yes, cloud gate audit and manifest hashes updated | `scripts/verify_gate_cloud.py`, `reports/audit/gate_cloud_smoke.json`, `manifest.json`, `docs/TODO.md`, `docs/PROJECT_STATUS.md` |
+| 2026-07-02 | G-KD-TRACE | 新增教师结构化决策 trace 生成脚本并完成 32 条 train split smoke | 修复缺失的 `model_compression/generate_teacher_traces.py`，打通 frozen split 采样、数据集 loader、OpenAI-compatible vLLM 调用、结构化 JSON 解析、distill JSONL 和审计输出链路 | Yes, smoke trace/distill/audit hashes recorded; final full-train hashes not replaced | `model_compression/generate_teacher_traces.py`, `reports/audit/gate_kd_trace_teacher_smoke.json`, `manifest.json`, `docs/TODO.md`, `docs/PROJECT_STATUS.md` |
 
 ## Fallback Event Template
 

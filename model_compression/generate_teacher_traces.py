@@ -8,7 +8,8 @@ import re
 import sys
 import time
 import xml.etree.ElementTree as ET
-from collections import Counter, defaultdict
+from collections import Counter
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -101,6 +102,17 @@ def load_jsonl(path: Path) -> list[dict[str, Any]]:
     return rows
 
 
+def load_trace_rows_by_sample_id(path: Path) -> dict[str, dict[str, Any]]:
+    if not path.is_file():
+        return {}
+    rows_by_id: dict[str, dict[str, Any]] = {}
+    for row in load_jsonl(path):
+        sample_id = str(row.get("sample_id", ""))
+        if sample_id:
+            rows_by_id[sample_id] = row
+    return rows_by_id
+
+
 def read_split_ids(split: str) -> dict[str, list[str]]:
     ids_by_dataset: dict[str, list[str]] = {}
     for path in sorted(SPLITS.glob(f"*_{split}.txt")):
@@ -167,6 +179,16 @@ def select_sample_ids(
         if not progressed:
             break
     return selected
+
+
+def apply_shard(sample_ids: list[str], num_shards: int, shard_index: int) -> list[str]:
+    if num_shards < 1:
+        raise TraceError("--num-shards must be >= 1")
+    if shard_index < 0 or shard_index >= num_shards:
+        raise TraceError("--shard-index must be in [0, num_shards)")
+    if num_shards == 1:
+        return sample_ids
+    return [sample_id for index, sample_id in enumerate(sample_ids) if index % num_shards == shard_index]
 
 
 def csv_rows_for_split(path: Path) -> list[list[str]]:
@@ -495,6 +517,22 @@ def get_served_model(base_url: str, timeout_sec: float, fallback: str) -> str:
     return fallback
 
 
+def probe_teacher_endpoints(urls: list[str], timeout_sec: float) -> list[dict[str, Any]]:
+    endpoints: list[dict[str, Any]] = []
+    for url in urls:
+        health_status = get_health(url, timeout_sec)
+        if health_status != 200:
+            raise TraceError(f"Teacher health check returned HTTP {health_status}: {url}")
+        endpoints.append(
+            {
+                "teacher_url": url,
+                "health_status": health_status,
+                "served_model_id": get_served_model(url, timeout_sec, DEFAULT_TEACHER_MODEL_ID),
+            }
+        )
+    return endpoints
+
+
 def call_teacher(
     teacher_url: str,
     api_model: str,
@@ -537,6 +575,48 @@ def call_teacher(
         "evidence_items": evidence_items,
         "parse_errors": parse_errors,
         "latency_ms": latency_ms,
+    }
+
+
+def call_teacher_with_retries(
+    teacher_url: str,
+    api_model: str,
+    sample: dict[str, Any],
+    timeout_sec: float,
+    max_tokens: int,
+    retry_count: int,
+    retry_sleep_sec: float,
+) -> dict[str, Any]:
+    last_error: Exception | None = None
+    for attempt in range(retry_count + 1):
+        try:
+            return call_teacher(teacher_url, api_model, sample, timeout_sec, max_tokens)
+        except Exception as exc:
+            last_error = exc
+            if attempt < retry_count:
+                time.sleep(retry_sleep_sec)
+    assert last_error is not None
+    raise last_error
+
+
+def dry_run_teacher_result(sample_id: str, sample: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "prompt_hash": sha256_text("dry-run"),
+        "request_hash": sha256_text(sample_id),
+        "response_text": "{}",
+        "parsed_response": {},
+        "decision_tuple": {
+            "object_state": "dry_run",
+            "event_type": sample["task_type"],
+            "risk_attr": "low",
+            "action": "pass",
+            "confidence": 1.0,
+            "review_intent": "none",
+            "short_rationale": "dry run",
+        },
+        "evidence_items": ["dry run"],
+        "parse_errors": [],
+        "latency_ms": 0.0,
     }
 
 
@@ -609,18 +689,61 @@ def parse_dataset_filter(values: list[str]) -> set[str] | None:
     return selected or None
 
 
+def parse_comma_values(values: list[str]) -> list[str]:
+    parsed: list[str] = []
+    for value in values:
+        parsed.extend(part.strip() for part in value.split(",") if part.strip())
+    return parsed
+
+
+def parse_teacher_urls(teacher_url_values: list[str], teacher_urls_values: list[str]) -> list[str]:
+    urls = parse_comma_values(teacher_url_values) + parse_comma_values(teacher_urls_values)
+    if not urls:
+        urls = [DEFAULT_TEACHER_URL]
+
+    unique_urls: list[str] = []
+    seen: set[str] = set()
+    for url in urls:
+        normalized = url.rstrip("/")
+        if normalized not in seen:
+            seen.add(normalized)
+            unique_urls.append(normalized)
+    return unique_urls
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Generate 14B teacher traces for G-KD-TRACE.")
-    parser.add_argument("--teacher-url", "--teacher_url", default=DEFAULT_TEACHER_URL)
+    parser.add_argument(
+        "--teacher-url",
+        "--teacher_url",
+        dest="teacher_url",
+        action="append",
+        default=[],
+        help="Teacher base URL. Can be repeated for parallel teacher replicas.",
+    )
+    parser.add_argument(
+        "--teacher-urls",
+        "--teacher_urls",
+        dest="teacher_urls",
+        action="append",
+        default=[],
+        help="Comma-separated teacher base URLs.",
+    )
     parser.add_argument("--split", default="train", choices=sorted(ALLOWED_SPLITS | {"test"}))
     parser.add_argument("--sample-limit", "--sample_limit", type=int, default=None)
     parser.add_argument("--dataset", action="append", default=[], help="Dataset key filter. Can be repeated or comma-separated.")
+    parser.add_argument("--workers", type=int, default=1, help="Concurrent teacher requests.")
+    parser.add_argument("--num-shards", "--num_shards", type=int, default=1)
+    parser.add_argument("--shard-index", "--shard_index", type=int, default=0)
     parser.add_argument("--timeout-sec", type=float, default=60.0)
     parser.add_argument("--max-tokens", type=int, default=256)
+    parser.add_argument("--retry-count", "--retry_count", type=int, default=2)
+    parser.add_argument("--retry-sleep-sec", "--retry_sleep_sec", type=float, default=1.0)
     parser.add_argument("--output-teacher-trace", "--output_teacher_trace", default=str(DEFAULT_TEACHER_TRACE))
     parser.add_argument("--output-distill", "--output_distill", default=str(DEFAULT_DISTILL))
     parser.add_argument("--audit", default=str(DEFAULT_AUDIT))
     parser.add_argument("--min-parse-rate", type=float, default=0.9)
+    parser.add_argument("--resume", action="store_true", help="Reuse existing trace rows and process only missing sample ids.")
     parser.add_argument("--dry-run", action="store_true", help="Build samples and audit without calling the teacher service.")
     return parser.parse_args()
 
@@ -638,75 +761,124 @@ def main() -> int:
     if args.sample_limit is not None and args.sample_limit <= 0:
         print("--sample-limit must be positive", file=sys.stderr)
         return 2
+    if args.workers <= 0:
+        print("--workers must be positive", file=sys.stderr)
+        return 2
+    if args.retry_count < 0:
+        print("--retry-count must be non-negative", file=sys.stderr)
+        return 2
 
     teacher_trace_path = resolve_output(args.output_teacher_trace)
     distill_path = resolve_output(args.output_distill)
     audit_path = resolve_output(args.audit)
     include_datasets = parse_dataset_filter(args.dataset)
+    teacher_urls = parse_teacher_urls(args.teacher_url, args.teacher_urls)
 
     frozen = load_frozen_splits()
     all_ids_by_dataset = read_split_ids(args.split)
     skipped_dataset_keys = sorted(key for key, ids in all_ids_by_dataset.items() if ids and key not in LOADERS)
     ids_by_dataset = {key: ids for key, ids in all_ids_by_dataset.items() if key in LOADERS}
     selected_ids = select_sample_ids(ids_by_dataset, include_datasets, args.sample_limit)
+    selected_ids = apply_shard(selected_ids, args.num_shards, args.shard_index)
+    if not selected_ids:
+        raise TraceError("Shard selection produced no sample ids")
 
     created_ts = datetime.now(timezone.utc).isoformat()
-    health_status = None
-    api_model = DEFAULT_TEACHER_MODEL_ID
+    teacher_endpoints: list[dict[str, Any]]
     if not args.dry_run:
-        health_status = get_health(args.teacher_url, args.timeout_sec)
-        if health_status != 200:
-            raise TraceError(f"Teacher health check returned HTTP {health_status}")
-        api_model = get_served_model(args.teacher_url, args.timeout_sec, DEFAULT_TEACHER_MODEL_ID)
+        teacher_endpoints = probe_teacher_endpoints(teacher_urls, args.timeout_sec)
+    else:
+        teacher_endpoints = [
+            {
+                "teacher_url": "dry-run",
+                "health_status": None,
+                "served_model_id": DEFAULT_TEACHER_MODEL_ID,
+            }
+        ]
 
-    trace_rows: list[dict[str, Any]] = []
-    distill_rows: list[dict[str, Any]] = []
+    existing_trace_rows = load_trace_rows_by_sample_id(teacher_trace_path) if args.resume else {}
+    selected_id_set = set(selected_ids)
+    trace_rows_by_id = {
+        sample_id: row
+        for sample_id, row in existing_trace_rows.items()
+        if sample_id in selected_id_set
+    }
+    tasks = [
+        (index, sample_id)
+        for index, sample_id in enumerate(selected_ids, start=1)
+        if sample_id not in trace_rows_by_id
+    ]
+
     errors: list[dict[str, Any]] = []
-    for index, sample_id in enumerate(selected_ids, start=1):
-        try:
-            sample = load_sample(sample_id)
-            split_hash = split_hash_for(frozen, sample["dataset_key"], args.split)
-            if args.dry_run:
-                teacher_result = {
-                    "prompt_hash": sha256_text("dry-run"),
-                    "request_hash": sha256_text(sample_id),
-                    "response_text": "{}",
-                    "parsed_response": {},
-                    "decision_tuple": {
-                        "object_state": "dry_run",
-                        "event_type": sample["task_type"],
-                        "risk_attr": "low",
-                        "action": "pass",
-                        "confidence": 1.0,
-                        "review_intent": "none",
-                        "short_rationale": "dry run",
-                    },
-                    "evidence_items": ["dry run"],
-                    "parse_errors": [],
-                    "latency_ms": 0.0,
-                }
-            else:
-                teacher_result = call_teacher(args.teacher_url, api_model, sample, args.timeout_sec, args.max_tokens)
-            trace_row = build_trace_row(
-                sample,
-                teacher_result,
-                args.split,
-                split_hash,
-                args.teacher_url,
+    processed_count = 0
+
+    def generate_one(index: int, sample_id: str) -> dict[str, Any]:
+        sample = load_sample(sample_id)
+        split_hash = split_hash_for(frozen, sample["dataset_key"], args.split)
+        endpoint = teacher_endpoints[(index - 1) % len(teacher_endpoints)]
+        teacher_url = str(endpoint["teacher_url"])
+        api_model = str(endpoint["served_model_id"])
+        if args.dry_run:
+            teacher_result = dry_run_teacher_result(sample_id, sample)
+        else:
+            teacher_result = call_teacher_with_retries(
+                teacher_url,
                 api_model,
-                created_ts,
+                sample,
+                args.timeout_sec,
+                args.max_tokens,
+                args.retry_count,
+                args.retry_sleep_sec,
             )
-            trace_rows.append(trace_row)
-            distill_rows.append(build_distill_row(trace_row))
-            print(
-                f"[OK] {index}/{len(selected_ids)} {sample_id} "
-                f"action={trace_row['decision_tuple'].get('action')} "
-                f"parse_ok={trace_row['parse_ok']} latency_ms={trace_row['latency_ms']:.1f}",
-                flush=True,
-            )
-        except Exception as exc:
-            errors.append({"sample_id": sample_id, "error": f"{type(exc).__name__}: {exc}"})
-            print(f"[FAIL] {index}/{len(selected_ids)} {sample_id}: {exc}", flush=True)
+        return build_trace_row(
+            sample,
+            teacher_result,
+            args.split,
+            split_hash,
+            teacher_url,
+            api_model,
+            created_ts,
+        )
+
+    def record_success(index: int, trace_row: dict[str, Any]) -> None:
+        nonlocal processed_count
+        processed_count += 1
+        trace_rows_by_id[str(trace_row["sample_id"])] = trace_row
+        print(
+            f"[OK] {processed_count}/{len(tasks)} selected={index}/{len(selected_ids)} "
+            f"{trace_row['sample_id']} endpoint={trace_row['teacher_url']} "
+            f"action={trace_row['decision_tuple'].get('action')} "
+            f"parse_ok={trace_row['parse_ok']} latency_ms={trace_row['latency_ms']:.1f}",
+            flush=True,
+        )
+
+    def record_error(index: int, sample_id: str, exc: Exception) -> None:
+        errors.append({"sample_id": sample_id, "error": f"{type(exc).__name__}: {exc}"})
+        print(f"[FAIL] selected={index}/{len(selected_ids)} {sample_id}: {exc}", flush=True)
+
+    if tasks and args.workers == 1:
+        for index, sample_id in tasks:
+            try:
+                record_success(index, generate_one(index, sample_id))
+            except Exception as exc:
+                record_error(index, sample_id, exc)
+    elif tasks:
+        with ThreadPoolExecutor(max_workers=args.workers) as executor:
+            futures = {
+                executor.submit(generate_one, index, sample_id): (index, sample_id)
+                for index, sample_id in tasks
+            }
+            for future in as_completed(futures):
+                index, sample_id = futures[future]
+                try:
+                    record_success(index, future.result())
+                except Exception as exc:
+                    record_error(index, sample_id, exc)
+
+    trace_rows = [trace_rows_by_id[sample_id] for sample_id in selected_ids if sample_id in trace_rows_by_id]
+    distill_rows = [build_distill_row(trace_row) for trace_row in trace_rows]
+    if not tasks:
+        print(f"[OK] resume found all {len(trace_rows)} selected trace rows; no teacher calls needed.", flush=True)
 
     write_jsonl(teacher_trace_path, trace_rows)
     write_jsonl(distill_path, distill_rows)
@@ -714,23 +886,39 @@ def main() -> int:
     parse_rate = parse_ok_count / len(trace_rows) if trace_rows else 0.0
     dataset_counts = Counter(row["dataset_key"] for row in trace_rows)
     action_counts = Counter(row["decision_tuple"].get("action", "") for row in trace_rows)
+    endpoint_counts = Counter(row["teacher_url"] for row in trace_rows)
     sample_hash = sha256_text("\n".join(selected_ids) + "\n")
+    first_endpoint = teacher_endpoints[0]
     audit = {
         "gate": "G-KD-TRACE-teacher-smoke" if args.sample_limit else "G-KD-TRACE-teacher",
-        "check_version": "1.0",
+        "check_version": "1.1",
         "created_by": "model_compression/generate_teacher_traces.py",
         "created_ts": created_ts,
-        "teacher_url": args.teacher_url,
+        "teacher_url": first_endpoint["teacher_url"],
+        "teacher_urls": [endpoint["teacher_url"] for endpoint in teacher_endpoints],
         "teacher_model_id": DEFAULT_TEACHER_MODEL_ID,
-        "served_model_id": api_model,
-        "teacher_health_status": health_status,
+        "served_model_id": first_endpoint["served_model_id"],
+        "teacher_endpoints": teacher_endpoints,
+        "teacher_health_status": first_endpoint["health_status"],
+        "teacher_health_statuses": {
+            str(endpoint["teacher_url"]): endpoint["health_status"]
+            for endpoint in teacher_endpoints
+        },
         "split": args.split,
         "global_split_hash": frozen.get("global_split_hash", ""),
         "sample_limit": args.sample_limit,
+        "num_shards": args.num_shards,
+        "shard_index": args.shard_index,
+        "workers": args.workers,
+        "retry_count": args.retry_count,
+        "resume": bool(args.resume),
         "available_dataset_keys": sorted(ids_by_dataset),
         "empty_split_dataset_keys": empty_split_dataset_keys(frozen, args.split),
         "skipped_dataset_keys": skipped_dataset_keys,
         "selected_sample_count": len(selected_ids),
+        "resumed_trace_count": len(trace_rows_by_id) - processed_count,
+        "attempted_trace_count": len(tasks),
+        "processed_trace_count": processed_count,
         "successful_trace_count": len(trace_rows),
         "failed_trace_count": len(errors),
         "parse_ok_count": parse_ok_count,
@@ -739,6 +927,7 @@ def main() -> int:
         "selected_sample_ids_hash": sample_hash,
         "dataset_counts": dict(sorted(dataset_counts.items())),
         "action_counts": dict(sorted(action_counts.items())),
+        "endpoint_counts": dict(sorted(endpoint_counts.items())),
         "teacher_trace_path": display_path(teacher_trace_path),
         "teacher_trace_hash": sha256_file(teacher_trace_path),
         "distill_dataset_path": display_path(distill_path),

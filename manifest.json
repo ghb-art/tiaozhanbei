@@ -25,7 +25,7 @@
       "hash_regeneration_required": true
     }
   ],
-  "timestamp": "2026-07-02T01:52:24.749943+00:00",
+  "timestamp": "2026-07-02T02:20:20.454896+00:00",
   "final_config_hash": "a931021552b4c1d16c8d308af0fccce6c97182a0ca2208b41c4561d874518f02",
   "risk_matrix_hash": "429d7517e85584ab403b757a94d7d1c3d05ab42c81335593b636e7b33f7345f8",
   "fallback_policy_hash": "902918d3f6fdfefb1f94dfbd32e5d72333cf0f18d795c49fe30f022274936f6c",
@@ -66,6 +66,14 @@
   "kd_trace_teacher_smoke_prompt_template_hash": "cc26d1a200cee87fe0c6183115fb5b0f27baac4ccc3fb289470c99bf6efeb9f3",
   "kd_trace_teacher_smoke_sample_count": 32,
   "kd_trace_teacher_smoke_parse_success_rate": 1.0,
+  "kd_trace_teacher_parallel_smoke_audit_hash": "8dd16cfb9d10d73f7110aad892bcffdf9fefab7754ab66965e6ee6dfb14f6079",
+  "kd_trace_teacher_parallel_smoke_report_hash": "022571454ff12d2092efbde2c30cb3e9ece7de72ffd119b55e9d6203acfc651c",
+  "kd_trace_teacher_parallel_smoke_trace_hash": "68251a252c181b911439bf645c9756db9943c88aee95471fc7ae6685041ecd8f",
+  "kd_trace_teacher_parallel_smoke_distill_dataset_hash": "84a62ff947f81b71e22742bd86cc5ec8c27dd1a3f7a31534d586ae1ca7288ad0",
+  "kd_trace_teacher_parallel_smoke_selected_sample_ids_hash": "fe37727239b06f9a7230ab1a9410a7ab692919160522031f14c1bfb6b6f980fd",
+  "kd_trace_teacher_parallel_smoke_sample_count": 8,
+  "kd_trace_teacher_parallel_smoke_workers": 2,
+  "kd_trace_teacher_parallel_smoke_parse_success_rate": 1.0,
   "policy_config_hash": "0d8ffeb4c08961911bc23f11ac5a9415fe1011693f1c84c3d6db94c87b680afc",
   "decision_parser_hash": "e314b60bca3e0664d13e5ddaf000fd8ed7442ea881c2b638dcffd8c7c73c9554",
   "capability_metric_script_hash": "847c35cc700a3c0bd2069a9d3bf151b7861760f7273679186568c040f42a3b9b",

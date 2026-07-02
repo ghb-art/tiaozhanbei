@@ -53,6 +53,8 @@
 - 已新增 `model_compression/generate_teacher_traces.py`，从冻结 split 读取样本，调用 OpenAI-compatible vLLM 接口生成结构化 teacher decision trace 和 distill JSONL。
 - 已通过 32 条 G-KD-TRACE teacher smoke，覆盖 5 个有 train split 的数据集：`teacher_health_status=200`，`successful_trace_count=32`，`failed_trace_count=0`，`parse_success_rate=1.0`。
 - 已生成 `reports/audit/gate_kd_trace_teacher_smoke.json`，并将 smoke 审计 hash、trace hash、distill hash、sample ids hash 和 prompt template hash 写入 `manifest.json` 的 smoke 字段。
+- 已为 `model_compression/generate_teacher_traces.py` 新增多 teacher URL 并发、`--workers`、`--num_shards/--shard_index`、`--resume` 和失败重试能力。
+- 已按当前 GPU 约束仅使用 GPU2/GPU3：GPU2 运行 `http://127.0.0.1:8000`，GPU3 运行 `http://127.0.0.1:8001`，并完成 8 条 parallel smoke，两个端点各处理 4 条，`parse_success_rate=1.0`。
 
 ## 未开始
 
@@ -78,9 +80,11 @@ docker compose -f docker/docker-compose.kwdb.yml up -d
 python3 scripts/verify_gate_db.py
 python3 scripts/download_models.py
 python3 scripts/verify_gate_cloud.py --offline-model-check
-CUDA_VISIBLE_DEVICES=0 VLLM_WORKER_MULTIPROC_METHOD=spawn .venv/bin/vllm serve models/pretrained/Qwen--Qwen2.5-14B-Instruct-AWQ --quantization awq --max-model-len 4096 --gpu-memory-utilization 0.85 --tensor-parallel-size 1 --port 8000
+CUDA_VISIBLE_DEVICES=2 VLLM_WORKER_MULTIPROC_METHOD=spawn .venv/bin/vllm serve models/pretrained/Qwen--Qwen2.5-14B-Instruct-AWQ --quantization awq --max-model-len 4096 --gpu-memory-utilization 0.85 --tensor-parallel-size 1 --host 0.0.0.0 --port 8000 --disable-log-requests
 python3 scripts/verify_gate_cloud.py --base-url http://127.0.0.1:8000
 python3 model_compression/generate_teacher_traces.py --teacher_url http://127.0.0.1:8000 --sample_limit 32 --output_teacher_trace data/distill/teacher_decision_trace.smoke.jsonl --output_distill data/distill/distill_dataset.smoke.jsonl --audit reports/audit/gate_kd_trace_teacher_smoke.json
+systemd-run --user --unit=tiaozhanbei-vllm-gpu3 --working-directory=/workspace/project_tiaozhanbei/tiaozhanbei --setenv=CUDA_VISIBLE_DEVICES=3 --setenv=VLLM_WORKER_MULTIPROC_METHOD=spawn /workspace/project_tiaozhanbei/tiaozhanbei/.venv/bin/python /workspace/project_tiaozhanbei/tiaozhanbei/.venv/bin/vllm serve models/pretrained/Qwen--Qwen2.5-14B-Instruct-AWQ --quantization awq --max-model-len 4096 --gpu-memory-utilization 0.85 --tensor-parallel-size 1 --host 0.0.0.0 --port 8001 --disable-log-requests
+python3 model_compression/generate_teacher_traces.py --teacher_url http://127.0.0.1:8000 --teacher_url http://127.0.0.1:8001 --workers 2 --sample_limit 8 --output_teacher_trace data/distill/teacher_decision_trace.parallel_smoke.jsonl --output_distill data/distill/distill_dataset.parallel_smoke.jsonl --audit reports/audit/gate_kd_trace_teacher_parallel_smoke.json
 ```
 
-第一条命令用于检查当前项目骨架、关键目录、基础配置、文档和 manifest 模板是否齐全。第二条命令用于确认 8 个目标数据集目录都已有 payload。第三条命令用于扫描本地数据集目录并生成 `reports/preflight/data_inventory.json`。第四条命令用于验证 split 文件 hash 与 train/validation/test 泄漏检查。第五条命令用于在 Bash 环境检查本地数据集标准目录。第六条命令用于基于冻结 split 重新生成 conflict ground truth manifest 和 audit 文件。第七条命令用于基于冻结 split 重新生成正式 manifest。第八条命令用于按当前脚本重新生成三个 manifest 模板。第九条命令用于严格验收正式 manifest。第十条命令用于执行当前工程骨架的 runtime smoke，并生成 `reports/preflight/runtime_smoke.json`。第十一条命令用于在没有 KWDB 容器时先检查 G-DB schema 文件完整性。第十二条和第十三条命令用于启动 KWDB/KaiwuDB 并执行 G-DB live gate。倒数四条命令用于执行 G-CLOUD 离线模型审计、启动 14B-AWQ vLLM 服务、运行 live gate，并执行 32 条 G-KD-TRACE teacher smoke。
+第一条命令用于检查当前项目骨架、关键目录、基础配置、文档和 manifest 模板是否齐全。第二条命令用于确认 8 个目标数据集目录都已有 payload。第三条命令用于扫描本地数据集目录并生成 `reports/preflight/data_inventory.json`。第四条命令用于验证 split 文件 hash 与 train/validation/test 泄漏检查。第五条命令用于在 Bash 环境检查本地数据集标准目录。第六条命令用于基于冻结 split 重新生成 conflict ground truth manifest 和 audit 文件。第七条命令用于基于冻结 split 重新生成正式 manifest。第八条命令用于按当前脚本重新生成三个 manifest 模板。第九条命令用于严格验收正式 manifest。第十条命令用于执行当前工程骨架的 runtime smoke，并生成 `reports/preflight/runtime_smoke.json`。第十一条命令用于在没有 KWDB 容器时先检查 G-DB schema 文件完整性。第十二条和第十三条命令用于启动 KWDB/KaiwuDB 并执行 G-DB live gate。最后几条命令用于执行 G-CLOUD 离线模型审计、仅在 GPU2/GPU3 启动 14B-AWQ vLLM teacher 服务、运行 live gate、执行 32 条单端点 teacher smoke，以及执行 8 条双端点 parallel smoke。

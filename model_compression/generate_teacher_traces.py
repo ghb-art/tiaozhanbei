@@ -743,6 +743,19 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--output-distill", "--output_distill", default=str(DEFAULT_DISTILL))
     parser.add_argument("--audit", default=str(DEFAULT_AUDIT))
     parser.add_argument("--min-parse-rate", type=float, default=0.9)
+    parser.add_argument(
+        "--checkpoint-interval",
+        "--checkpoint_interval",
+        type=int,
+        default=25,
+        help="Write checkpoint JSONL files and a partial audit every N completed attempts. Use 0 to disable.",
+    )
+    parser.add_argument(
+        "--partial-audit",
+        "--partial_audit",
+        default=None,
+        help="Path for checkpoint audit JSON. Defaults to <audit stem>.partial.json.",
+    )
     parser.add_argument("--resume", action="store_true", help="Reuse existing trace rows and process only missing sample ids.")
     parser.add_argument("--dry-run", action="store_true", help="Build samples and audit without calling the teacher service.")
     return parser.parse_args()
@@ -751,6 +764,10 @@ def parse_args() -> argparse.Namespace:
 def resolve_output(path_text: str) -> Path:
     path = Path(path_text)
     return path if path.is_absolute() else ROOT / path
+
+
+def default_partial_audit_path(audit_path: Path) -> Path:
+    return audit_path.with_name(f"{audit_path.stem}.partial{audit_path.suffix or '.json'}")
 
 
 def main() -> int:
@@ -767,10 +784,14 @@ def main() -> int:
     if args.retry_count < 0:
         print("--retry-count must be non-negative", file=sys.stderr)
         return 2
+    if args.checkpoint_interval < 0:
+        print("--checkpoint-interval must be non-negative", file=sys.stderr)
+        return 2
 
     teacher_trace_path = resolve_output(args.output_teacher_trace)
     distill_path = resolve_output(args.output_distill)
     audit_path = resolve_output(args.audit)
+    partial_audit_path = resolve_output(args.partial_audit) if args.partial_audit else default_partial_audit_path(audit_path)
     include_datasets = parse_dataset_filter(args.dataset)
     teacher_urls = parse_teacher_urls(args.teacher_url, args.teacher_urls)
 
@@ -803,6 +824,7 @@ def main() -> int:
         for sample_id, row in existing_trace_rows.items()
         if sample_id in selected_id_set
     }
+    initial_resumed_count = len(trace_rows_by_id)
     tasks = [
         (index, sample_id)
         for index, sample_id in enumerate(selected_ids, start=1)
@@ -811,6 +833,7 @@ def main() -> int:
 
     errors: list[dict[str, Any]] = []
     processed_count = 0
+    completed_attempt_count = 0
 
     def generate_one(index: int, sample_id: str) -> dict[str, Any]:
         sample = load_sample(sample_id)
@@ -841,8 +864,9 @@ def main() -> int:
         )
 
     def record_success(index: int, trace_row: dict[str, Any]) -> None:
-        nonlocal processed_count
+        nonlocal completed_attempt_count, processed_count
         processed_count += 1
+        completed_attempt_count += 1
         trace_rows_by_id[str(trace_row["sample_id"])] = trace_row
         print(
             f"[OK] {processed_count}/{len(tasks)} selected={index}/{len(selected_ids)} "
@@ -853,8 +877,103 @@ def main() -> int:
         )
 
     def record_error(index: int, sample_id: str, exc: Exception) -> None:
+        nonlocal completed_attempt_count
+        completed_attempt_count += 1
         errors.append({"sample_id": sample_id, "error": f"{type(exc).__name__}: {exc}"})
         print(f"[FAIL] selected={index}/{len(selected_ids)} {sample_id}: {exc}", flush=True)
+
+    def current_trace_rows() -> list[dict[str, Any]]:
+        return [trace_rows_by_id[sample_id] for sample_id in selected_ids if sample_id in trace_rows_by_id]
+
+    def write_outputs_and_audit(target_audit_path: Path, status: str, is_partial: bool) -> dict[str, Any]:
+        trace_rows = current_trace_rows()
+        distill_rows = [build_distill_row(trace_row) for trace_row in trace_rows]
+        write_jsonl(teacher_trace_path, trace_rows)
+        write_jsonl(distill_path, distill_rows)
+
+        parse_ok_count = sum(1 for row in trace_rows if row.get("parse_ok") is True)
+        parse_rate = parse_ok_count / len(trace_rows) if trace_rows else 0.0
+        dataset_counts = Counter(row["dataset_key"] for row in trace_rows)
+        action_counts = Counter(row["decision_tuple"].get("action", "") for row in trace_rows)
+        endpoint_counts = Counter(row["teacher_url"] for row in trace_rows)
+        sample_hash = sha256_text("\n".join(selected_ids) + "\n")
+        first_endpoint = teacher_endpoints[0]
+        audit = {
+            "gate": "G-KD-TRACE-teacher-smoke" if args.sample_limit else "G-KD-TRACE-teacher",
+            "check_version": "1.2",
+            "created_by": "model_compression/generate_teacher_traces.py",
+            "created_ts": created_ts,
+            "updated_ts": datetime.now(timezone.utc).isoformat(),
+            "status": status,
+            "is_partial": is_partial,
+            "teacher_url": first_endpoint["teacher_url"],
+            "teacher_urls": [endpoint["teacher_url"] for endpoint in teacher_endpoints],
+            "teacher_model_id": DEFAULT_TEACHER_MODEL_ID,
+            "served_model_id": first_endpoint["served_model_id"],
+            "teacher_endpoints": teacher_endpoints,
+            "teacher_health_status": first_endpoint["health_status"],
+            "teacher_health_statuses": {
+                str(endpoint["teacher_url"]): endpoint["health_status"]
+                for endpoint in teacher_endpoints
+            },
+            "split": args.split,
+            "global_split_hash": frozen.get("global_split_hash", ""),
+            "sample_limit": args.sample_limit,
+            "num_shards": args.num_shards,
+            "shard_index": args.shard_index,
+            "workers": args.workers,
+            "retry_count": args.retry_count,
+            "resume": bool(args.resume),
+            "checkpoint_interval": args.checkpoint_interval,
+            "partial_audit_path": display_path(partial_audit_path),
+            "available_dataset_keys": sorted(ids_by_dataset),
+            "empty_split_dataset_keys": empty_split_dataset_keys(frozen, args.split),
+            "skipped_dataset_keys": skipped_dataset_keys,
+            "selected_sample_count": len(selected_ids),
+            "resumed_trace_count": initial_resumed_count,
+            "attempted_trace_count": len(tasks),
+            "completed_attempt_count": completed_attempt_count,
+            "processed_trace_count": processed_count,
+            "successful_trace_count": len(trace_rows),
+            "failed_trace_count": len(errors),
+            "pending_trace_count": len(selected_ids) - len(trace_rows) - len(errors),
+            "parse_ok_count": parse_ok_count,
+            "parse_success_rate": parse_rate,
+            "min_parse_rate": args.min_parse_rate,
+            "selected_sample_ids_hash": sample_hash,
+            "dataset_counts": dict(sorted(dataset_counts.items())),
+            "action_counts": dict(sorted(action_counts.items())),
+            "endpoint_counts": dict(sorted(endpoint_counts.items())),
+            "teacher_trace_path": display_path(teacher_trace_path),
+            "teacher_trace_hash": sha256_file(teacher_trace_path),
+            "distill_dataset_path": display_path(distill_path),
+            "distill_dataset_hash": sha256_file(distill_path),
+            "prompt_template_hash": sha256_text(SYSTEM_PROMPT + "\n" + PROMPT_TEMPLATE),
+            "dry_run": bool(args.dry_run),
+            "errors": errors,
+        }
+        audit["report_hash"] = sha256_text(
+            json.dumps({key: value for key, value in audit.items() if key != "report_hash"}, sort_keys=True)
+        )
+        write_json(target_audit_path, audit)
+        return audit
+
+    def maybe_write_checkpoint() -> None:
+        if args.checkpoint_interval <= 0:
+            return
+        if completed_attempt_count == 0 or completed_attempt_count % args.checkpoint_interval != 0:
+            return
+        if completed_attempt_count == len(tasks):
+            status = "completed_with_errors" if errors else "completed"
+        else:
+            status = "running_with_errors" if errors else "running"
+        audit = write_outputs_and_audit(partial_audit_path, status, is_partial=True)
+        print(
+            f"[CHECKPOINT] completed_attempts={completed_attempt_count}/{len(tasks)} "
+            f"successful={audit['successful_trace_count']} failed={audit['failed_trace_count']} "
+            f"wrote={display_path(partial_audit_path)}",
+            flush=True,
+        )
 
     if tasks and args.workers == 1:
         for index, sample_id in tasks:
@@ -862,6 +981,7 @@ def main() -> int:
                 record_success(index, generate_one(index, sample_id))
             except Exception as exc:
                 record_error(index, sample_id, exc)
+            maybe_write_checkpoint()
     elif tasks:
         with ThreadPoolExecutor(max_workers=args.workers) as executor:
             futures = {
@@ -874,71 +994,17 @@ def main() -> int:
                     record_success(index, future.result())
                 except Exception as exc:
                     record_error(index, sample_id, exc)
+                maybe_write_checkpoint()
 
-    trace_rows = [trace_rows_by_id[sample_id] for sample_id in selected_ids if sample_id in trace_rows_by_id]
-    distill_rows = [build_distill_row(trace_row) for trace_row in trace_rows]
     if not tasks:
-        print(f"[OK] resume found all {len(trace_rows)} selected trace rows; no teacher calls needed.", flush=True)
+        print(f"[OK] resume found all {len(current_trace_rows())} selected trace rows; no teacher calls needed.", flush=True)
 
-    write_jsonl(teacher_trace_path, trace_rows)
-    write_jsonl(distill_path, distill_rows)
-    parse_ok_count = sum(1 for row in trace_rows if row.get("parse_ok") is True)
-    parse_rate = parse_ok_count / len(trace_rows) if trace_rows else 0.0
-    dataset_counts = Counter(row["dataset_key"] for row in trace_rows)
-    action_counts = Counter(row["decision_tuple"].get("action", "") for row in trace_rows)
-    endpoint_counts = Counter(row["teacher_url"] for row in trace_rows)
-    sample_hash = sha256_text("\n".join(selected_ids) + "\n")
-    first_endpoint = teacher_endpoints[0]
-    audit = {
-        "gate": "G-KD-TRACE-teacher-smoke" if args.sample_limit else "G-KD-TRACE-teacher",
-        "check_version": "1.1",
-        "created_by": "model_compression/generate_teacher_traces.py",
-        "created_ts": created_ts,
-        "teacher_url": first_endpoint["teacher_url"],
-        "teacher_urls": [endpoint["teacher_url"] for endpoint in teacher_endpoints],
-        "teacher_model_id": DEFAULT_TEACHER_MODEL_ID,
-        "served_model_id": first_endpoint["served_model_id"],
-        "teacher_endpoints": teacher_endpoints,
-        "teacher_health_status": first_endpoint["health_status"],
-        "teacher_health_statuses": {
-            str(endpoint["teacher_url"]): endpoint["health_status"]
-            for endpoint in teacher_endpoints
-        },
-        "split": args.split,
-        "global_split_hash": frozen.get("global_split_hash", ""),
-        "sample_limit": args.sample_limit,
-        "num_shards": args.num_shards,
-        "shard_index": args.shard_index,
-        "workers": args.workers,
-        "retry_count": args.retry_count,
-        "resume": bool(args.resume),
-        "available_dataset_keys": sorted(ids_by_dataset),
-        "empty_split_dataset_keys": empty_split_dataset_keys(frozen, args.split),
-        "skipped_dataset_keys": skipped_dataset_keys,
-        "selected_sample_count": len(selected_ids),
-        "resumed_trace_count": len(trace_rows_by_id) - processed_count,
-        "attempted_trace_count": len(tasks),
-        "processed_trace_count": processed_count,
-        "successful_trace_count": len(trace_rows),
-        "failed_trace_count": len(errors),
-        "parse_ok_count": parse_ok_count,
-        "parse_success_rate": parse_rate,
-        "min_parse_rate": args.min_parse_rate,
-        "selected_sample_ids_hash": sample_hash,
-        "dataset_counts": dict(sorted(dataset_counts.items())),
-        "action_counts": dict(sorted(action_counts.items())),
-        "endpoint_counts": dict(sorted(endpoint_counts.items())),
-        "teacher_trace_path": display_path(teacher_trace_path),
-        "teacher_trace_hash": sha256_file(teacher_trace_path),
-        "distill_dataset_path": display_path(distill_path),
-        "distill_dataset_hash": sha256_file(distill_path),
-        "prompt_template_hash": sha256_text(SYSTEM_PROMPT + "\n" + PROMPT_TEMPLATE),
-        "dry_run": bool(args.dry_run),
-        "errors": errors,
-    }
-    audit["status"] = "passed" if not errors and parse_rate >= args.min_parse_rate else "failed"
-    audit["report_hash"] = sha256_text(json.dumps({k: v for k, v in audit.items() if k != "report_hash"}, sort_keys=True))
-    write_json(audit_path, audit)
+    final_trace_rows = current_trace_rows()
+    final_parse_ok_count = sum(1 for row in final_trace_rows if row.get("parse_ok") is True)
+    final_parse_rate = final_parse_ok_count / len(final_trace_rows) if final_trace_rows else 0.0
+    missing_count = len(selected_ids) - len(final_trace_rows) - len(errors)
+    final_status = "passed" if not errors and missing_count == 0 and final_parse_rate >= args.min_parse_rate else "failed"
+    audit = write_outputs_and_audit(audit_path, final_status, is_partial=False)
 
     print(f"Wrote {display_path(teacher_trace_path)}")
     print(f"Wrote {display_path(distill_path)}")

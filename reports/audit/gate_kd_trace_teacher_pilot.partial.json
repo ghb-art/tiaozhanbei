@@ -1,0 +1,92 @@
+{
+  "gate": "G-KD-TRACE-teacher-smoke",
+  "check_version": "1.2",
+  "created_by": "model_compression/generate_teacher_traces.py",
+  "created_ts": "2026-07-02T02:35:09.102057+00:00",
+  "updated_ts": "2026-07-02T02:46:48.694542+00:00",
+  "status": "completed",
+  "is_partial": true,
+  "teacher_url": "http://127.0.0.1:8000",
+  "teacher_urls": [
+    "http://127.0.0.1:8000",
+    "http://127.0.0.1:8001"
+  ],
+  "teacher_model_id": "Qwen/Qwen2.5-14B-Instruct-AWQ",
+  "served_model_id": "models/pretrained/Qwen--Qwen2.5-14B-Instruct-AWQ",
+  "teacher_endpoints": [
+    {
+      "teacher_url": "http://127.0.0.1:8000",
+      "health_status": 200,
+      "served_model_id": "models/pretrained/Qwen--Qwen2.5-14B-Instruct-AWQ"
+    },
+    {
+      "teacher_url": "http://127.0.0.1:8001",
+      "health_status": 200,
+      "served_model_id": "models/pretrained/Qwen--Qwen2.5-14B-Instruct-AWQ"
+    }
+  ],
+  "teacher_health_status": 200,
+  "teacher_health_statuses": {
+    "http://127.0.0.1:8000": 200,
+    "http://127.0.0.1:8001": 200
+  },
+  "split": "train",
+  "global_split_hash": "d7f3fac67fd3f235802ed405cdbac46302db513925cdab56d13198b0b871e7cf",
+  "sample_limit": 100,
+  "num_shards": 1,
+  "shard_index": 0,
+  "workers": 2,
+  "retry_count": 2,
+  "resume": true,
+  "checkpoint_interval": 10,
+  "partial_audit_path": "reports/audit/gate_kd_trace_teacher_pilot.partial.json",
+  "available_dataset_keys": [
+    "cityflow",
+    "gsm8k",
+    "mmlu",
+    "mvtec_ad",
+    "neu_det"
+  ],
+  "empty_split_dataset_keys": [
+    "cmmlu",
+    "humaneval",
+    "ua_detrac"
+  ],
+  "skipped_dataset_keys": [],
+  "selected_sample_count": 100,
+  "resumed_trace_count": 0,
+  "attempted_trace_count": 100,
+  "completed_attempt_count": 100,
+  "processed_trace_count": 100,
+  "successful_trace_count": 100,
+  "failed_trace_count": 0,
+  "pending_trace_count": 0,
+  "parse_ok_count": 100,
+  "parse_success_rate": 1.0,
+  "min_parse_rate": 0.9,
+  "selected_sample_ids_hash": "ec54970be509bdbc17ff34f5c463de42c63149b318ecaaac1f0a5806ab12c9d8",
+  "dataset_counts": {
+    "cityflow": 20,
+    "gsm8k": 20,
+    "mmlu": 20,
+    "mvtec_ad": 20,
+    "neu_det": 20
+  },
+  "action_counts": {
+    "alert": 2,
+    "inspect": 14,
+    "pass": 84
+  },
+  "endpoint_counts": {
+    "http://127.0.0.1:8000": 50,
+    "http://127.0.0.1:8001": 50
+  },
+  "teacher_trace_path": "data/distill/teacher_decision_trace.pilot.jsonl",
+  "teacher_trace_hash": "b32075fedaf838232e1b3b144572857a30d11b25e5b59fca3ced3b50c79b3c21",
+  "distill_dataset_path": "data/distill/distill_dataset.pilot.jsonl",
+  "distill_dataset_hash": "c47d0da058505d76db0ddddd9050f1da5c804db6040fa0e83350e6541c43d7ab",
+  "prompt_template_hash": "cc26d1a200cee87fe0c6183115fb5b0f27baac4ccc3fb289470c99bf6efeb9f3",
+  "dry_run": false,
+  "errors": [],
+  "report_hash": "0bcfbcdc11da44d6d49a10da0210a538c1a92a0d633cc493679c55700b72d1d0"
+}

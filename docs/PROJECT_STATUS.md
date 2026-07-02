@@ -2,11 +2,11 @@
 
 更新时间：2026-07-02
 
-当前阶段：G-KD-TRACE 已完成 teacher trace smoke，下一步生成全量 train split 教师 trace 与蒸馏数据。
+当前阶段：G-KD-TRACE 已完成 teacher trace smoke、GPU2/GPU3 parallel smoke 和 100 条 checkpoint pilot，下一步生成全量 train split 教师 trace 与蒸馏数据。
 
 ## 当前结论
 
-项目已经有完整的研究方案、目录规划、本地数据 payload、冻结 split、正式 manifest、conflict audit 文件、可运行的 KWDB/KaiwuDB 单节点验证、通过 live gate 的 14B-AWQ vLLM 云端教师服务验证，以及 32 条 train split 教师结构化决策 trace smoke。下一步应使用同一脚本生成全量 train split 教师 trace 和蒸馏数据集。
+项目已经有完整的研究方案、目录规划、本地数据 payload、冻结 split、正式 manifest、conflict audit 文件、可运行的 KWDB/KaiwuDB 单节点验证、通过 live gate 的 14B-AWQ vLLM 云端教师服务验证，以及具备 checkpoint/resume 的 100 条 train split 教师结构化决策 trace pilot。下一步应使用同一脚本生成全量 train split 教师 trace 和蒸馏数据集。
 
 ## 已完成
 
@@ -55,6 +55,8 @@
 - 已生成 `reports/audit/gate_kd_trace_teacher_smoke.json`，并将 smoke 审计 hash、trace hash、distill hash、sample ids hash 和 prompt template hash 写入 `manifest.json` 的 smoke 字段。
 - 已为 `model_compression/generate_teacher_traces.py` 新增多 teacher URL 并发、`--workers`、`--num_shards/--shard_index`、`--resume` 和失败重试能力。
 - 已按当前 GPU 约束仅使用 GPU2/GPU3：GPU2 运行 `http://127.0.0.1:8000`，GPU3 运行 `http://127.0.0.1:8001`，并完成 8 条 parallel smoke，两个端点各处理 4 条，`parse_success_rate=1.0`。
+- 已为 `model_compression/generate_teacher_traces.py` 新增周期性 checkpoint 和 partial audit：每完成 `--checkpoint_interval` 条就重写当前 trace/distill JSONL 并生成 `.partial.json`，`--resume` 已验证可跳过已完成样本。
+- 已完成 100 条 G-KD-TRACE teacher pilot：GPU2/GPU3 双端点各处理 50 条，`successful_trace_count=100`，`failed_trace_count=0`，`parse_success_rate=1.0`；pilot 产物 hash 已写入 `manifest.json` 的 pilot 字段。
 
 ## 未开始
 
@@ -85,6 +87,7 @@ python3 scripts/verify_gate_cloud.py --base-url http://127.0.0.1:8000
 python3 model_compression/generate_teacher_traces.py --teacher_url http://127.0.0.1:8000 --sample_limit 32 --output_teacher_trace data/distill/teacher_decision_trace.smoke.jsonl --output_distill data/distill/distill_dataset.smoke.jsonl --audit reports/audit/gate_kd_trace_teacher_smoke.json
 systemd-run --user --unit=tiaozhanbei-vllm-gpu3 --working-directory=/workspace/project_tiaozhanbei/tiaozhanbei --setenv=CUDA_VISIBLE_DEVICES=3 --setenv=VLLM_WORKER_MULTIPROC_METHOD=spawn /workspace/project_tiaozhanbei/tiaozhanbei/.venv/bin/python /workspace/project_tiaozhanbei/tiaozhanbei/.venv/bin/vllm serve models/pretrained/Qwen--Qwen2.5-14B-Instruct-AWQ --quantization awq --max-model-len 4096 --gpu-memory-utilization 0.85 --tensor-parallel-size 1 --host 0.0.0.0 --port 8001 --disable-log-requests
 python3 model_compression/generate_teacher_traces.py --teacher_url http://127.0.0.1:8000 --teacher_url http://127.0.0.1:8001 --workers 2 --sample_limit 8 --output_teacher_trace data/distill/teacher_decision_trace.parallel_smoke.jsonl --output_distill data/distill/distill_dataset.parallel_smoke.jsonl --audit reports/audit/gate_kd_trace_teacher_parallel_smoke.json
+python3 model_compression/generate_teacher_traces.py --teacher_url http://127.0.0.1:8000 --teacher_url http://127.0.0.1:8001 --workers 2 --resume --sample_limit 100 --checkpoint_interval 10 --output_teacher_trace data/distill/teacher_decision_trace.pilot.jsonl --output_distill data/distill/distill_dataset.pilot.jsonl --audit reports/audit/gate_kd_trace_teacher_pilot.json
 ```
 
-第一条命令用于检查当前项目骨架、关键目录、基础配置、文档和 manifest 模板是否齐全。第二条命令用于确认 8 个目标数据集目录都已有 payload。第三条命令用于扫描本地数据集目录并生成 `reports/preflight/data_inventory.json`。第四条命令用于验证 split 文件 hash 与 train/validation/test 泄漏检查。第五条命令用于在 Bash 环境检查本地数据集标准目录。第六条命令用于基于冻结 split 重新生成 conflict ground truth manifest 和 audit 文件。第七条命令用于基于冻结 split 重新生成正式 manifest。第八条命令用于按当前脚本重新生成三个 manifest 模板。第九条命令用于严格验收正式 manifest。第十条命令用于执行当前工程骨架的 runtime smoke，并生成 `reports/preflight/runtime_smoke.json`。第十一条命令用于在没有 KWDB 容器时先检查 G-DB schema 文件完整性。第十二条和第十三条命令用于启动 KWDB/KaiwuDB 并执行 G-DB live gate。最后几条命令用于执行 G-CLOUD 离线模型审计、仅在 GPU2/GPU3 启动 14B-AWQ vLLM teacher 服务、运行 live gate、执行 32 条单端点 teacher smoke，以及执行 8 条双端点 parallel smoke。
+第一条命令用于检查当前项目骨架、关键目录、基础配置、文档和 manifest 模板是否齐全。第二条命令用于确认 8 个目标数据集目录都已有 payload。第三条命令用于扫描本地数据集目录并生成 `reports/preflight/data_inventory.json`。第四条命令用于验证 split 文件 hash 与 train/validation/test 泄漏检查。第五条命令用于在 Bash 环境检查本地数据集标准目录。第六条命令用于基于冻结 split 重新生成 conflict ground truth manifest 和 audit 文件。第七条命令用于基于冻结 split 重新生成正式 manifest。第八条命令用于按当前脚本重新生成三个 manifest 模板。第九条命令用于严格验收正式 manifest。第十条命令用于执行当前工程骨架的 runtime smoke，并生成 `reports/preflight/runtime_smoke.json`。第十一条命令用于在没有 KWDB 容器时先检查 G-DB schema 文件完整性。第十二条和第十三条命令用于启动 KWDB/KaiwuDB 并执行 G-DB live gate。最后几条命令用于执行 G-CLOUD 离线模型审计、仅在 GPU2/GPU3 启动 14B-AWQ vLLM teacher 服务、运行 live gate、执行 32 条单端点 teacher smoke、执行 8 条双端点 parallel smoke，以及执行带 checkpoint/resume 的 100 条 pilot。

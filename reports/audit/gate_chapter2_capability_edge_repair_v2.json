@@ -1,0 +1,43 @@
+{
+  "gate": "CH2-CAPABILITY-EVAL-edge-repair_v2",
+  "check_version": "1.0",
+  "created_by": "scripts/merge_jsonl_shards.py",
+  "created_ts": "2026-07-04T06:21:27.920033+00:00",
+  "status": "passed",
+  "input_paths": [
+    "data/eval/chapter2_capability_edge_repair_v2_shard0.jsonl",
+    "data/eval/chapter2_capability_edge_repair_v2_shard1.jsonl",
+    "data/eval/chapter2_capability_edge_repair_v2_shard2.jsonl",
+    "data/eval/chapter2_capability_edge_repair_v2_shard3.jsonl"
+  ],
+  "input_hashes": {
+    "data/eval/chapter2_capability_edge_repair_v2_shard0.jsonl": "f08244f4fb1e3bfdf0b5b47d327c6c72480dd8169132d19849515cc0f6d4a56e",
+    "data/eval/chapter2_capability_edge_repair_v2_shard1.jsonl": "589dfd15db972cfb2bd62a1f6024a90a52c55abca535d66fd100dd794dda5b83",
+    "data/eval/chapter2_capability_edge_repair_v2_shard2.jsonl": "7c9072459e7c25fbc640ddbf0887b6466576f805c7d0fbeb05c6f4b349d4b1b3",
+    "data/eval/chapter2_capability_edge_repair_v2_shard3.jsonl": "cae3534c4ab79b1d92c7dda8160df274a7367f494b08acf5b9b533642c2c43fa"
+  },
+  "output_path": "data/eval/chapter2_capability_edge_repair_v2.jsonl",
+  "output_hash": "e57d93f9af5609b2a2134df4830c1508878c2f6e0defe39fdeec7a380f8c3b60",
+  "row_count": 1664,
+  "dataset_counts": {
+    "cmmlu": 1000,
+    "gsm8k": 500,
+    "humaneval": 164
+  },
+  "key": "sample_id",
+  "duplicate_count": 0,
+  "duplicate_keys_hash": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+  "order_jsonl": "",
+  "errors": [],
+  "correct_counts": {
+    "cmmlu": 595,
+    "gsm8k": 234
+  },
+  "accuracy_by_dataset": {
+    "cmmlu": 0.595,
+    "gsm8k": 0.468,
+    "humaneval": 0.0
+  },
+  "overall_accuracy": 0.49819711538461536,
+  "report_hash": "740c50b7d9287c0abfd3c068adf6c8ca0e3e4a8ee777d393c1097159d52bc5c9"
+}

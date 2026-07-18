@@ -1,0 +1,166 @@
+{
+  "gate": "G-KD-TRACE-cedd_v18_nlp_clean-train",
+  "check_version": "1.1",
+  "created_by": "model_compression/train_cedd_repair.py",
+  "created_ts": "2026-07-14T08:27:44.248778+00:00",
+  "status": "passed",
+  "smoke": false,
+  "student_init": "models/pretrained/Qwen--Qwen2.5-1.5B-Instruct",
+  "init_adapter": "models/adapters/cedd_v11_nlp",
+  "init_adapter_hash": "c3cb56f3661dab368d9ff305463f94ad0c9c01cb6334cc6cb9dd885dd4f5939f",
+  "distill_data_path": "data/distill/distill_dataset.jsonl",
+  "distill_data_hash": "610d23903a5d8d4117c03159268ce068620fee2b97de7ed7ce2dc9fb178c9443",
+  "repair_trace_path": "data/distill/counterfactual_repair_trace.jsonl",
+  "repair_trace_hash": "d27255958eb48a2e53aa38e98110a33dd6d935782cef11633b2e78447ee2cd1d",
+  "capability_rehearsal_paths": [
+    "data/distill/capability_rehearsal_v18_clean_nlp.jsonl"
+  ],
+  "capability_rehearsal_hashes": {
+    "data/distill/capability_rehearsal_v18_clean_nlp.jsonl": "a17765d3aa20be6758b212fbb53eb8d587127126a7ea0bfe5b27f5a979366ab0"
+  },
+  "output_dir": "models/adapters/cedd_v18_nlp_clean",
+  "adapter_hash": "f92095d0e88f85d8199d4653db0b8e9d97fe9a4018b40cac7b02ae1a240405c9",
+  "adapter_config_hash": "ca2c7626325d354d81a943b5bc4084a430be6bd0ee3600a36601c48991ee4246",
+  "adapter_model_hash": "150b863e3504cfa47981773986c4197527ef1e173dcb0cc4cec326622a309c1b",
+  "source_counts": {
+    "cmmlu_validation_choice_variant": 4816,
+    "synthetic_cmmlu_rehearsal": 1920
+  },
+  "dataset_counts": {
+    "cmmlu": 6736
+  },
+  "pre_limit_source_counts": {
+    "cmmlu_validation_choice_variant": 5360,
+    "synthetic_cmmlu_rehearsal": 2048
+  },
+  "pre_limit_dataset_counts": {
+    "cmmlu": 7408
+  },
+  "source_limits": {},
+  "selected_sample_count": 7408,
+  "selected_sample_ids_hash": "e22afe2d25105a3ae225b85c22c5adc8445b1e33578addcd551ae5fd45f113ee",
+  "selected_validation_group_ids_hash": "5402d62d71b466b8c9c664ddb45d0cdddcbdace05c979c30616d40c2c8771822",
+  "training_sample_count": 6736,
+  "training_sample_ids_hash": "e652dddc77d98ac870b1a1f4a81adc25dd9eea73f48b2e1dd67aa32b1c11113d",
+  "training_validation_group_ids_hash": "0c006affa345c12e3f4f8782465bb59cc204938ac0ada212bdb454244fc95011",
+  "validation_sample_count": 672,
+  "validation_sample_ids_hash": "211593b1a04dc8d4c1ae63187744fac5932638f6c19baa54f6dddaffac813f6f",
+  "validation_group_ids_hash": "918d3c3ed8afa9b8b05ee050175a54fb39bd5404f4b45f68c1d7127305032851",
+  "validation_group_overlap_count": 0,
+  "validation_source_counts": {
+    "cmmlu_validation_choice_variant": 544,
+    "synthetic_cmmlu_rehearsal": 128
+  },
+  "validation_dataset_counts": {
+    "cmmlu": 672
+  },
+  "capability_datasets": [
+    "cmmlu",
+    "gsm8k",
+    "humaneval"
+  ],
+  "structured_dataset_filter": [],
+  "repair_dataset_filter": [],
+  "distill_sample_limit": 0,
+  "repair_sample_limit": 0,
+  "capability_sample_limit": 0,
+  "distill_repeat": 0,
+  "repair_repeat": 0,
+  "capability_repeat": 0,
+  "capability_jsonl_repeat": 4,
+  "epochs": 1.0,
+  "max_steps": 192,
+  "batch_size": 1,
+  "grad_accum_steps": 8,
+  "learning_rate": 3e-07,
+  "weight_decay": 0.01,
+  "lr_scheduler": "cosine",
+  "warmup_ratio": 0.05,
+  "validation_fraction": 0.1,
+  "validation_seed": 20260714,
+  "eval_every": 16,
+  "early_stopping_patience": 4,
+  "min_validation_improvement": 5e-05,
+  "restore_best_validation": true,
+  "validation_history": [
+    {
+      "update_step": 0,
+      "loss": 0.29670039307703044
+    },
+    {
+      "update_step": 16,
+      "loss": 0.2957980733772274
+    },
+    {
+      "update_step": 32,
+      "loss": 0.2943566353476074
+    },
+    {
+      "update_step": 48,
+      "loss": 0.2929394676286306
+    },
+    {
+      "update_step": 64,
+      "loss": 0.29236553423799616
+    },
+    {
+      "update_step": 80,
+      "loss": 0.2913489083557146
+    },
+    {
+      "update_step": 96,
+      "loss": 0.2905725529569844
+    },
+    {
+      "update_step": 112,
+      "loss": 0.2901783546978896
+    },
+    {
+      "update_step": 128,
+      "loss": 0.28972359918129986
+    },
+    {
+      "update_step": 144,
+      "loss": 0.2899636648099182
+    },
+    {
+      "update_step": 160,
+      "loss": 0.2894292520567043
+    },
+    {
+      "update_step": 176,
+      "loss": 0.2896259214404771
+    },
+    {
+      "update_step": 192,
+      "loss": 0.2893972412192462
+    }
+  ],
+  "best_validation_loss": 0.2894292520567043,
+  "best_update_step": 160,
+  "stopped_early": false,
+  "max_length": 768,
+  "lora_rank": 8,
+  "lora_alpha": 16.0,
+  "lora_dropout": 0.05,
+  "target_modules": [
+    "q_proj",
+    "v_proj",
+    "o_proj"
+  ],
+  "replaced_module_count": 0,
+  "distributed_world_size": 4,
+  "distributed_backend": "nccl",
+  "effective_batch_size": 32,
+  "trainable_parameters": 1777664,
+  "total_parameters": 1545491968,
+  "trainable_parameter_ratio": 0.001150225324237984,
+  "global_steps": 1536,
+  "optimizer_steps": 192,
+  "mean_loss": 0.40206441283226013,
+  "final_loss": 0.012190787121653557,
+  "final_learning_rate": 0.0,
+  "elapsed_sec": 523.5045955660753,
+  "errors": [],
+  "report_hash": "4027dbb403d811d1231b36798e2d3053ab7caa56a3719102743d2088d64681cd"
+}

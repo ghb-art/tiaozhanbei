@@ -1,0 +1,77 @@
+{
+  "gate": "G-KD-TRACE-cedd_v13_code_clean-train",
+  "check_version": "1.0",
+  "created_by": "model_compression/train_cedd_repair.py",
+  "created_ts": "2026-07-09T12:14:13.317369+00:00",
+  "status": "passed",
+  "smoke": false,
+  "student_init": "models/pretrained/Qwen--Qwen2.5-1.5B-Instruct",
+  "init_adapter": "models/adapters/cedd_v12_code_clean",
+  "init_adapter_hash": "bc68b8355f9b18f9c7a0a46ef2519d67d9d7583c292a836437d890cb77c75a73",
+  "distill_data_path": "data/distill/distill_dataset.jsonl",
+  "distill_data_hash": "610d23903a5d8d4117c03159268ce068620fee2b97de7ed7ce2dc9fb178c9443",
+  "repair_trace_path": "data/distill/counterfactual_repair_trace.jsonl",
+  "repair_trace_hash": "d27255958eb48a2e53aa38e98110a33dd6d935782cef11633b2e78447ee2cd1d",
+  "capability_rehearsal_paths": [
+    "data/distill/capability_rehearsal_v13_clean_code.jsonl"
+  ],
+  "capability_rehearsal_hashes": {
+    "data/distill/capability_rehearsal_v13_clean_code.jsonl": "fce3fabc9c842e16895af8dca9eb2f5af8b04356922b0acb10d254aa592eb079"
+  },
+  "output_dir": "models/adapters/cedd_v13_code_clean",
+  "adapter_hash": "59820968edbfa6fee6294ec99ea31fa87e0400f996a55b5d08a7e9b0c9256658",
+  "adapter_config_hash": "4d9844162c69c6a59dee7e5fa8d6f577c2af7f0eb53c43debf54d20130777e63",
+  "adapter_model_hash": "fab882d8b9491b731176945b572bf672dd8bd9c5037b652fd682450d261774e3",
+  "source_counts": {
+    "synthetic_code_advanced_rehearsal_body": 7680,
+    "synthetic_code_advanced_rehearsal_full_def": 7680,
+    "synthetic_code_rehearsal_body": 21504,
+    "synthetic_code_rehearsal_full_def": 21504
+  },
+  "dataset_counts": {
+    "humaneval": 58368
+  },
+  "selected_sample_count": 58368,
+  "selected_sample_ids_hash": "52946c18b48bc2c3d6be4030cba13f94efcc24ded617c55a31b5d77daa69eb05",
+  "capability_datasets": [
+    "cmmlu",
+    "gsm8k",
+    "humaneval"
+  ],
+  "structured_dataset_filter": [],
+  "repair_dataset_filter": [],
+  "distill_sample_limit": 0,
+  "repair_sample_limit": 0,
+  "capability_sample_limit": 0,
+  "distill_repeat": 0,
+  "repair_repeat": 0,
+  "capability_repeat": 0,
+  "capability_jsonl_repeat": 1,
+  "epochs": 1.0,
+  "max_steps": 220,
+  "batch_size": 1,
+  "grad_accum_steps": 16,
+  "learning_rate": 4e-07,
+  "max_length": 1024,
+  "lora_rank": 8,
+  "lora_alpha": 16.0,
+  "lora_dropout": 0.05,
+  "target_modules": [
+    "q_proj",
+    "v_proj"
+  ],
+  "replaced_module_count": 0,
+  "distributed_world_size": 4,
+  "distributed_backend": "nccl",
+  "effective_batch_size": 64,
+  "trainable_parameters": 544768,
+  "total_parameters": 1544259072,
+  "trainable_parameter_ratio": 0.00035276982332663935,
+  "global_steps": 3520,
+  "optimizer_steps": 220,
+  "mean_loss": 0.2963283061981201,
+  "final_loss": 0.20834897458553314,
+  "elapsed_sec": 870.0544435898773,
+  "errors": [],
+  "report_hash": "63f416d1a9f9433a19bfd2161e67721ab28a7b4ae786e7e1885fcea5c4dd94f4"
+}

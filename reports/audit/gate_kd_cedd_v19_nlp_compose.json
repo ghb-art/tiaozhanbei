@@ -1,0 +1,26 @@
+{
+  "gate": "G-KD-TRACE-cedd_v19_nlp_composed-compose",
+  "check_version": "1.0",
+  "created_by": "model_compression/compose_lora_adapters.py",
+  "created_ts": "2026-07-14T12:39:18.561542+00:00",
+  "status": "passed",
+  "base_adapter": "models/adapters/cedd_v18_nlp_clean",
+  "base_adapter_hash": "f92095d0e88f85d8199d4653db0b8e9d97fe9a4018b40cac7b02ae1a240405c9",
+  "residual_adapter": "models/adapters/cedd_v19_nlp_residual",
+  "residual_adapter_hash": "6674762556e75fe81a9a929a61a4c47f7a5b1bc290773b0ccc45a0c703494d99",
+  "output_dir": "models/adapters/cedd_v19_nlp_composed",
+  "output_dir_hash": "3d5dbbb9fe30a6a3d9cfee69761d3a248f436eda33325ae851667424ae78c49a",
+  "adapter_config_hash": "b4c566cbde36b75b670fa2cbed4c6f57f19202b9d5adac2b25b8348d0b5dbfbe",
+  "adapter_model_hash": "e47f153307d875d2991614a6be090f4858f2a56d64515238a64bc1b0f12f7f63",
+  "composed_rank": 12,
+  "target_modules": [
+    "q_proj",
+    "v_proj",
+    "o_proj"
+  ],
+  "composed_module_count": 84,
+  "composed_modules_hash": "66cfab072be0e6d0c77d973ff507352e856a534eccbf6f9baaaa26484d9143b3",
+  "composition": "parallel_delta_sum",
+  "errors": [],
+  "report_hash": "41e904bcd3ff79ea5629b91c5cf2cd0142f8a33fa6d1710e682070a32996dbdd"
+}

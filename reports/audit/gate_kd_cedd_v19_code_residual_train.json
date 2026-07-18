@@ -1,0 +1,215 @@
+{
+  "gate": "G-KD-TRACE-cedd_v19_code_residual-train",
+  "check_version": "1.2",
+  "created_by": "model_compression/train_cedd_repair.py",
+  "created_ts": "2026-07-14T12:36:49.982925+00:00",
+  "status": "passed",
+  "smoke": false,
+  "student_init": "models/pretrained/Qwen--Qwen2.5-1.5B-Instruct",
+  "init_adapter": "",
+  "init_adapter_hash": "",
+  "frozen_base_adapter": "models/adapters/cedd_v12_code_clean",
+  "frozen_base_adapter_hash": "bc68b8355f9b18f9c7a0a46ef2519d67d9d7583c292a836437d890cb77c75a73",
+  "frozen_parent_module_count": 56,
+  "frozen_parent_modules_hash": "3dd065ab0d791422a1807de96a170d5cb3fbffb381a2e205c796384761f3bcc6",
+  "distill_data_path": "data/distill/distill_dataset.jsonl",
+  "distill_data_hash": "610d23903a5d8d4117c03159268ce068620fee2b97de7ed7ce2dc9fb178c9443",
+  "repair_trace_path": "data/distill/counterfactual_repair_trace.jsonl",
+  "repair_trace_hash": "d27255958eb48a2e53aa38e98110a33dd6d935782cef11633b2e78447ee2cd1d",
+  "capability_rehearsal_paths": [
+    "data/distill/capability_rehearsal_v18_clean_code.jsonl"
+  ],
+  "capability_rehearsal_hashes": {
+    "data/distill/capability_rehearsal_v18_clean_code.jsonl": "152df9affe1590160aa5637d8d71ac624e332fda159fcba2a1a3a0818cda5f04"
+  },
+  "output_dir": "models/adapters/cedd_v19_code_residual",
+  "adapter_hash": "6ea4c897af9b0b6f2016af134495bf8bd975eb8df6639b157225a48d47856af9",
+  "adapter_config_hash": "b202f3c10413fd3a6114538a628b8902cdc6acdbedf4d8b12d92d9707ffba8be",
+  "adapter_model_hash": "735510d223681e9caec9af6a2c79210debd2cf4eb4e1e29444ecad672cd3bc2b",
+  "source_counts": {
+    "synthetic_code_advanced_rehearsal_body": 364,
+    "synthetic_code_advanced_unique_variant_body": 5824,
+    "synthetic_code_rehearsal_body": 504,
+    "synthetic_code_unique_variant_body": 4032
+  },
+  "dataset_counts": {
+    "humaneval": 10724
+  },
+  "pre_limit_source_counts": {
+    "synthetic_code_advanced_rehearsal_body": 392,
+    "synthetic_code_advanced_unique_variant_body": 6272,
+    "synthetic_code_rehearsal_body": 588,
+    "synthetic_code_unique_variant_body": 4704
+  },
+  "pre_limit_dataset_counts": {
+    "humaneval": 11956
+  },
+  "source_limits": {},
+  "selected_sample_count": 11956,
+  "selected_sample_ids_hash": "2f3dde16b953ecf26f04431eaa66f4abc64cde200f2830bc0b740fac42ca8252",
+  "selected_validation_group_ids_hash": "7ad055c206ca742c64bd62ea72f99b87b31b07ea287344d0d7c891e00b537f63",
+  "training_sample_count": 10724,
+  "training_sample_ids_hash": "2f1e87db84d48363a738edba4171c6a048d652fde04ed081f0037b85c8e2e838",
+  "training_validation_group_ids_hash": "036301edcd5e3a9ba2a7531f2583bb5a3ff81fe48f717e49df6d0f47a1dd36cc",
+  "validation_sample_count": 1232,
+  "validation_sample_ids_hash": "cae8f946022d1223e898aa533c0c7d3a04f3e3adbfe89cf7e190bd0d09182130",
+  "validation_group_ids_hash": "ea863e1641166bea6d713c60ba188cd969edfabfc52dee63f62d9cb4e242f18d",
+  "validation_group_overlap_count": 0,
+  "validation_source_counts": {
+    "synthetic_code_advanced_rehearsal_body": 28,
+    "synthetic_code_advanced_unique_variant_body": 448,
+    "synthetic_code_rehearsal_body": 84,
+    "synthetic_code_unique_variant_body": 672
+  },
+  "validation_dataset_counts": {
+    "humaneval": 1232
+  },
+  "capability_datasets": [
+    "cmmlu",
+    "gsm8k",
+    "humaneval"
+  ],
+  "structured_dataset_filter": [],
+  "repair_dataset_filter": [],
+  "distill_sample_limit": 0,
+  "repair_sample_limit": 0,
+  "capability_sample_limit": 0,
+  "distill_repeat": 0,
+  "repair_repeat": 0,
+  "capability_repeat": 0,
+  "capability_jsonl_repeat": 7,
+  "epochs": 1.0,
+  "max_steps": 320,
+  "batch_size": 2,
+  "grad_accum_steps": 4,
+  "learning_rate": 1e-06,
+  "weight_decay": 0.01,
+  "lr_scheduler": "cosine",
+  "warmup_ratio": 0.05,
+  "validation_fraction": 0.12,
+  "validation_seed": 20260714,
+  "eval_every": 16,
+  "early_stopping_patience": 4,
+  "min_validation_improvement": 5e-05,
+  "min_validation_relative_improvement": 0.015,
+  "restore_best_validation": true,
+  "validation_history": [
+    {
+      "update_step": 0,
+      "loss": 0.8391209827228026
+    },
+    {
+      "update_step": 16,
+      "loss": 0.8378118535673077
+    },
+    {
+      "update_step": 32,
+      "loss": 0.8309189277616414
+    },
+    {
+      "update_step": 48,
+      "loss": 0.8230166506360878
+    },
+    {
+      "update_step": 64,
+      "loss": 0.8158498215065761
+    },
+    {
+      "update_step": 80,
+      "loss": 0.8092966242270037
+    },
+    {
+      "update_step": 96,
+      "loss": 0.8035389828411016
+    },
+    {
+      "update_step": 112,
+      "loss": 0.7984177835962989
+    },
+    {
+      "update_step": 128,
+      "loss": 0.7937209651890126
+    },
+    {
+      "update_step": 144,
+      "loss": 0.7896642412313006
+    },
+    {
+      "update_step": 160,
+      "loss": 0.7863339636136185
+    },
+    {
+      "update_step": 176,
+      "loss": 0.7833660981533203
+    },
+    {
+      "update_step": 192,
+      "loss": 0.780748251317577
+    },
+    {
+      "update_step": 208,
+      "loss": 0.7789420011368665
+    },
+    {
+      "update_step": 224,
+      "loss": 0.7772022914141417
+    },
+    {
+      "update_step": 240,
+      "loss": 0.7762891253964468
+    },
+    {
+      "update_step": 256,
+      "loss": 0.7755670635537668
+    },
+    {
+      "update_step": 272,
+      "loss": 0.7750007425519553
+    },
+    {
+      "update_step": 288,
+      "loss": 0.774801920930093
+    },
+    {
+      "update_step": 304,
+      "loss": 0.7747175688432022
+    },
+    {
+      "update_step": 320,
+      "loss": 0.7745518164539879
+    }
+  ],
+  "initial_validation_loss": 0.8391209827228026,
+  "candidate_best_validation_loss": 0.7745518164539879,
+  "candidate_best_update_step": 320,
+  "validation_relative_improvement": 0.07694857785500599,
+  "validation_guard_rejected": false,
+  "best_validation_loss": 0.7745518164539879,
+  "best_update_step": 320,
+  "stopped_early": false,
+  "max_length": 1024,
+  "lora_rank": 16,
+  "lora_alpha": 32.0,
+  "lora_dropout": 0.05,
+  "target_modules": [
+    "q_proj",
+    "k_proj",
+    "v_proj",
+    "o_proj"
+  ],
+  "replaced_module_count": 112,
+  "distributed_world_size": 4,
+  "distributed_backend": "nccl",
+  "effective_batch_size": 32,
+  "trainable_parameters": 4358144,
+  "total_parameters": 1548617216,
+  "trainable_parameter_ratio": 0.002814216421574381,
+  "global_steps": 1280,
+  "optimizer_steps": 320,
+  "mean_loss": 0.8334827423095703,
+  "final_loss": 0.7878192663192749,
+  "final_learning_rate": 0.0,
+  "elapsed_sec": 714.5062399432063,
+  "errors": [],
+  "report_hash": "18651099a41788e7e22722bde519c04313642c192fa6f0dac41728b14c783372"
+}

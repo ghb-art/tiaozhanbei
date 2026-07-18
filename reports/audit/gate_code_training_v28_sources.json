@@ -1,0 +1,33 @@
+{
+  "gate": "G-DATA-v28-real-code-sources",
+  "check_version": "1.0",
+  "created_by": "scripts/setup_code_training_v28.py",
+  "created_ts": "2026-07-17T13:40:00.517833+00:00",
+  "status": "passed",
+  "split_policy": {
+    "apps": "train only",
+    "code_contests": "train only",
+    "humaneval": "formal evaluation only; never downloaded or copied by this script"
+  },
+  "sources": {
+    "apps": {
+      "acquisition": "existing_verified",
+      "sha256": "6ef8e98ecca10b0159df0da4b524ecc1ca782a3b9473c57fc547ebccbbc2d0ca",
+      "size_bytes": 446695050,
+      "train_task_count": 5000,
+      "train_path": "data/datasets/apps/APPS/train",
+      "complete_task_count": 4805,
+      "test_tree_present": false,
+      "metadata_path": "data/datasets/apps/SOURCE.json"
+    },
+    "code_contests": {
+      "acquisition": "downloaded",
+      "train_shard_count": 39,
+      "train_total_size_bytes": 7509753086,
+      "metadata_path": "data/datasets/code_contests/SOURCE.json",
+      "aggregate_sha256": "860bc93540022580a0a1be7a7bd093193f0ae93680d481f4ca6711257fe96d67"
+    }
+  },
+  "errors": [],
+  "report_hash": "eba7e6d825ba2700f98369f3dd1376cc13d648b410543a8189bd68ba0dc22a73"
+}

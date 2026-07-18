@@ -1,0 +1,91 @@
+{
+  "config_version": "2.0-p0a2",
+  "common": {
+    "llama_cpp_dir": "external/llama.cpp",
+    "memory_trace": "data/distill/teacher_decision_trace.jsonl",
+    "cloud_trace": "data/eval/chapter2_capability_cloud_v17.jsonl",
+    "min_capability_ratio": 0.8,
+    "max_memory_mb": 1500,
+    "ctx_size": 512,
+    "threads": 8,
+    "parallel": 1,
+    "batch_size": 64,
+    "ubatch_size": 64,
+    "cache_type_k": "q4_0",
+    "cache_type_v": "q4_0",
+    "flash_attn": "on",
+    "repack": false,
+    "n_gpu_layers": 0,
+    "capability_n_gpu_layers": "all",
+    "warmup_requests": 20,
+    "measure_requests": 100,
+    "memory_max_tokens": 16,
+    "sample_interval_ms": 50,
+    "smoke_samples_per_dataset": 34,
+    "capability_max_tokens": 384,
+    "capability_max_tokens_map": {
+      "cmmlu": 16,
+      "gsm8k": 160,
+      "humaneval": 256
+    },
+    "capability_fail_fast_min_accuracy_map": {
+      "cmmlu": 0.49411764705882355,
+      "gsm8k": 0.7529411764705882,
+      "humaneval": 0.7764705882352941
+    },
+    "capability_timeout_sec": 240,
+    "humaneval_timeout_sec": 5,
+    "memory_port_base": 18200,
+    "capability_port_base": 18300
+  },
+  "candidates": [
+    {
+      "name": "deepseek-r1-1p5b-q2-k-s-baseline",
+      "role": "frozen_memory_safe_recovery_base",
+      "decision_status": "pruned",
+      "prune_reason": "Initial G0 capability smoke failed; retained only as the immutable recovery baseline.",
+      "model_id": "deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B",
+      "hf_model_dir": "models/pretrained/deepseek-ai--DeepSeek-R1-Distill-Qwen-1.5B",
+      "f16_gguf": "models/quantized/deepseek-r1-distill-qwen-1.5b-f16.gguf",
+      "gguf": "models/quantized/deepseek-r1-distill-qwen-1.5b-q2_k_s.gguf",
+      "quant_type": "Q2_K_S",
+      "imatrix": "models/quantized/deepseek-r1-distill-qwen-1.5b-imatrix.gguf",
+      "capability_server_args": [
+        "--reasoning",
+        "off",
+        "--reasoning-format",
+        "none",
+        "--skip-chat-parsing"
+      ],
+      "max_artifact_bytes": 900000000,
+      "prepare_audit": "reports/audit/g0_prepare_deepseek_r1_1p5b_q2_k_s.json",
+      "memory_audit": "reports/audit/g0_memory_deepseek_r1_1p5b_q2_k_s.json",
+      "capability_trace": "data/eval/g0_capability_deepseek_r1_1p5b_q2_k_s.jsonl",
+      "capability_audit": "reports/audit/g0_capability_deepseek_r1_1p5b_q2_k_s.json",
+      "notes": "Frozen baseline: 716.71MB GGUF, 920.23MB peak total memory, failed matched capability."
+    },
+    {
+      "name": "p0a2-deepseek-recovery-q2-k-s",
+      "role": "active_recovery_candidate",
+      "model_id": "DB4AI-Edge-P0A2-DeepSeek-1.5B-Q2_K_S",
+      "hf_model_dir": "models/checkpoints/p0a2-deepseek-recovery-merged",
+      "f16_gguf": "models/quantized/p0a2-deepseek-recovery-f16.gguf",
+      "gguf": "models/quantized/p0a2-deepseek-recovery-q2_k_s.gguf",
+      "quant_type": "Q2_K_S",
+      "imatrix": "models/quantized/p0a2-deepseek-recovery-imatrix.gguf",
+      "capability_server_args": [
+        "--reasoning",
+        "off",
+        "--reasoning-format",
+        "none",
+        "--skip-chat-parsing"
+      ],
+      "max_artifact_bytes": 900000000,
+      "prepare_audit": "reports/audit/gate_p0a2_deepseek_q2_prepare.json",
+      "memory_audit": "reports/audit/g0_memory_p0a2_deepseek_recovery_q2_k_s.json",
+      "capability_trace": "data/eval/g0_capability_p0a2_deepseek_recovery_q2_k_s.jsonl",
+      "capability_audit": "reports/audit/g0_capability_p0a2_deepseek_recovery_q2_k_s.json",
+      "notes": "Only active P0 candidate. It must pass the same matched G1 smoke and 20+100-request G3 gate before promotion."
+    }
+  ]
+}

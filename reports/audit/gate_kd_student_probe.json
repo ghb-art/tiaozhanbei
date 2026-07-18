@@ -1,0 +1,44 @@
+{
+  "gate": "G-KD-TRACE-student-probe",
+  "check_version": "1.0",
+  "created_by": "scripts/merge_jsonl_shards.py",
+  "created_ts": "2026-07-03T07:53:53.225424+00:00",
+  "status": "passed",
+  "input_paths": [
+    "data/distill/student_probe_trace.shard0.jsonl",
+    "data/distill/student_probe_trace.shard1.jsonl",
+    "data/distill/student_probe_trace.shard2.jsonl",
+    "data/distill/student_probe_trace.shard3.jsonl"
+  ],
+  "input_hashes": {
+    "data/distill/student_probe_trace.shard0.jsonl": "e6f86b262ea67ffb55739c852c5833341c742874ff5b1ed8f6dd217ec696e017",
+    "data/distill/student_probe_trace.shard1.jsonl": "51cb0651164d1483b48c9b7c8a544fad3575903147bdb27adb01975bef53c2df",
+    "data/distill/student_probe_trace.shard2.jsonl": "9b63ccfeba8c8f60cae198361c2fb1412a426122398a93bd50c88b2d97c56830",
+    "data/distill/student_probe_trace.shard3.jsonl": "9e88c9bbaab6b17d72fe6df4532305d6c764ad7406abc6136a729cd3fb4e09ad"
+  },
+  "output_path": "data/distill/student_probe_trace.jsonl",
+  "output_hash": "df9e970daad364143956be544fd30ebfb44cab466b45c8d10e5ef2b3377bcc37",
+  "row_count": 8769,
+  "dataset_counts": {
+    "cityflow": 36,
+    "gsm8k": 7473,
+    "neu_det": 1260
+  },
+  "key": "sample_id",
+  "duplicate_count": 0,
+  "duplicate_keys_hash": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+  "order_jsonl": "data/distill/teacher_decision_trace.jsonl",
+  "errors": [],
+  "parse_ok_count": 8766,
+  "parse_success_rate": 0.9996578857338351,
+  "repair_candidate_count": 548,
+  "action_match_rate": 0.9376211654692668,
+  "repair_reason_counts": {
+    "action_mismatch": 547,
+    "confidence_gap": 373,
+    "parse_error": 3,
+    "review_intent_mismatch": 547,
+    "risk_attr_mismatch": 547
+  },
+  "report_hash": "b44b31925fbf6d92c365892dd8b0e94a16fdba146465ed178e2fcb6188564c23"
+}

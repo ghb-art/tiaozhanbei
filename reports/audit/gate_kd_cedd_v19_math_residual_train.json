@@ -1,0 +1,197 @@
+{
+  "gate": "G-KD-TRACE-cedd_v19_math_residual-train",
+  "check_version": "1.2",
+  "created_by": "model_compression/train_cedd_repair.py",
+  "created_ts": "2026-07-14T12:24:38.018306+00:00",
+  "status": "passed",
+  "smoke": false,
+  "student_init": "models/pretrained/Qwen--Qwen2.5-1.5B-Instruct",
+  "init_adapter": "",
+  "init_adapter_hash": "",
+  "frozen_base_adapter": "models/adapters/cedd_v12_math_clean",
+  "frozen_base_adapter_hash": "1dc23da69093266655402dbc9f37c0c5dcbdbe31ab4e770facf48f67937d49be",
+  "frozen_parent_module_count": 56,
+  "frozen_parent_modules_hash": "3dd065ab0d791422a1807de96a170d5cb3fbffb381a2e205c796384761f3bcc6",
+  "distill_data_path": "data/distill/distill_dataset.jsonl",
+  "distill_data_hash": "610d23903a5d8d4117c03159268ce068620fee2b97de7ed7ce2dc9fb178c9443",
+  "repair_trace_path": "data/distill/counterfactual_repair_trace.jsonl",
+  "repair_trace_hash": "d27255958eb48a2e53aa38e98110a33dd6d935782cef11633b2e78447ee2cd1d",
+  "capability_rehearsal_paths": [
+    "data/distill/capability_rehearsal_v18_clean_math.jsonl"
+  ],
+  "capability_rehearsal_hashes": {
+    "data/distill/capability_rehearsal_v18_clean_math.jsonl": "4f5791fa69633c6035f3e0f78ed892d222975d9c82ce86f51ebed8e414497301"
+  },
+  "output_dir": "models/adapters/cedd_v19_math_residual",
+  "adapter_hash": "48b107159830fec7e22dc4cb762662958a42558ef83d1fa5cf0bd88ed158a353",
+  "adapter_config_hash": "4fb025f3cb1300b9291210b766c816ea54af4f638e43a2aa07e972123d859221",
+  "adapter_model_hash": "5a561adb6b3845d4cce4ea8ccadeb8f3d4ededbbb5127c08261e0a3bb53e1c7c",
+  "source_counts": {
+    "gsm8k_train_reference_clean": 6929,
+    "synthetic_gsm8k_challenge_rehearsal": 1280,
+    "synthetic_gsm8k_complex_rehearsal": 1440,
+    "synthetic_gsm8k_rehearsal": 768
+  },
+  "dataset_counts": {
+    "gsm8k": 10417
+  },
+  "pre_limit_source_counts": {
+    "gsm8k_train_reference_clean": 7473,
+    "synthetic_gsm8k_challenge_rehearsal": 1280,
+    "synthetic_gsm8k_complex_rehearsal": 1600,
+    "synthetic_gsm8k_rehearsal": 768
+  },
+  "pre_limit_dataset_counts": {
+    "gsm8k": 11121
+  },
+  "source_limits": {},
+  "selected_sample_count": 11121,
+  "selected_sample_ids_hash": "5c26fa293519910edb1d1d41f33432def8bc4246f4f780b0f9fa00149fbb3a76",
+  "selected_validation_group_ids_hash": "c3d2a3ca486aebba6c8c85dc131354fdf89af7c5ade17c419b4c7394de822918",
+  "training_sample_count": 10417,
+  "training_sample_ids_hash": "7c0c297142dd31ecff3300baedb4faefeaeeda1e5e7f96a7c494ae793bdb7c04",
+  "training_validation_group_ids_hash": "b9d85b03d807822abb6e6dc7bb6490268ac004c05e7181a4dfab01d69f044fa0",
+  "validation_sample_count": 704,
+  "validation_sample_ids_hash": "6180fcf7e4b742b5cbee60e811ff694221f5768af2580478602370ae3c0d9856",
+  "validation_group_ids_hash": "02490b1ba7c951109069837230d3ee56e7a09d6b3b3c7df39801af7124177980",
+  "validation_group_overlap_count": 0,
+  "validation_source_counts": {
+    "gsm8k_train_reference_clean": 544,
+    "synthetic_gsm8k_complex_rehearsal": 160
+  },
+  "validation_dataset_counts": {
+    "gsm8k": 704
+  },
+  "capability_datasets": [
+    "cmmlu",
+    "gsm8k",
+    "humaneval"
+  ],
+  "structured_dataset_filter": [],
+  "repair_dataset_filter": [],
+  "distill_sample_limit": 0,
+  "repair_sample_limit": 0,
+  "capability_sample_limit": 0,
+  "distill_repeat": 0,
+  "repair_repeat": 0,
+  "capability_repeat": 0,
+  "capability_jsonl_repeat": 1,
+  "epochs": 1.0,
+  "max_steps": 256,
+  "batch_size": 2,
+  "grad_accum_steps": 4,
+  "learning_rate": 8e-07,
+  "weight_decay": 0.01,
+  "lr_scheduler": "cosine",
+  "warmup_ratio": 0.05,
+  "validation_fraction": 0.08,
+  "validation_seed": 20260714,
+  "eval_every": 16,
+  "early_stopping_patience": 4,
+  "min_validation_improvement": 5e-05,
+  "min_validation_relative_improvement": 0.01,
+  "restore_best_validation": true,
+  "validation_history": [
+    {
+      "update_step": 0,
+      "loss": 0.5988816982558505
+    },
+    {
+      "update_step": 16,
+      "loss": 0.598611090797931
+    },
+    {
+      "update_step": 32,
+      "loss": 0.5975073120048777
+    },
+    {
+      "update_step": 48,
+      "loss": 0.5956055539321493
+    },
+    {
+      "update_step": 64,
+      "loss": 0.593688004523177
+    },
+    {
+      "update_step": 80,
+      "loss": 0.5917622014795515
+    },
+    {
+      "update_step": 96,
+      "loss": 0.5900311399759217
+    },
+    {
+      "update_step": 112,
+      "loss": 0.5884223848750646
+    },
+    {
+      "update_step": 128,
+      "loss": 0.5870876114138148
+    },
+    {
+      "update_step": 144,
+      "loss": 0.5860917176627978
+    },
+    {
+      "update_step": 160,
+      "loss": 0.5851765491745688
+    },
+    {
+      "update_step": 176,
+      "loss": 0.5845909529704262
+    },
+    {
+      "update_step": 192,
+      "loss": 0.5841668709604577
+    },
+    {
+      "update_step": 208,
+      "loss": 0.5838506764478304
+    },
+    {
+      "update_step": 224,
+      "loss": 0.583743872501972
+    },
+    {
+      "update_step": 240,
+      "loss": 0.5836904579773545
+    },
+    {
+      "update_step": 256,
+      "loss": 0.5836491825228388
+    }
+  ],
+  "initial_validation_loss": 0.5988816982558505,
+  "candidate_best_validation_loss": 0.5836904579773545,
+  "candidate_best_update_step": 240,
+  "validation_relative_improvement": 0.0253660118897239,
+  "validation_guard_rejected": false,
+  "best_validation_loss": 0.5836904579773545,
+  "best_update_step": 240,
+  "stopped_early": false,
+  "max_length": 1024,
+  "lora_rank": 8,
+  "lora_alpha": 16.0,
+  "lora_dropout": 0.05,
+  "target_modules": [
+    "q_proj",
+    "k_proj",
+    "v_proj",
+    "o_proj"
+  ],
+  "replaced_module_count": 112,
+  "distributed_world_size": 4,
+  "distributed_backend": "nccl",
+  "effective_batch_size": 32,
+  "trainable_parameters": 2179072,
+  "total_parameters": 1546438144,
+  "trainable_parameter_ratio": 0.0014090909542386456,
+  "global_steps": 1024,
+  "optimizer_steps": 256,
+  "mean_loss": 0.6086971759796143,
+  "final_loss": 0.9506728053092957,
+  "final_learning_rate": 0.0,
+  "elapsed_sec": 501.2676146114245,
+  "errors": [],
+  "report_hash": "f36d0eba38fdd1c50632c4ddb1901d8491b214a929a94f714c24dece5dba7692"
+}

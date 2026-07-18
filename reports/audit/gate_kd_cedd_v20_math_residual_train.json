@@ -1,0 +1,198 @@
+{
+  "gate": "G-KD-TRACE-cedd_v20_math_residual-train",
+  "check_version": "1.3",
+  "created_by": "model_compression/train_cedd_repair.py",
+  "created_ts": "2026-07-14T14:23:13.057029+00:00",
+  "status": "passed",
+  "smoke": false,
+  "student_init": "models/pretrained/Qwen--Qwen2.5-1.5B-Instruct",
+  "init_adapter": "",
+  "init_adapter_hash": "",
+  "frozen_base_adapter": "models/adapters/cedd_v12_math_clean",
+  "frozen_base_adapter_hash": "1dc23da69093266655402dbc9f37c0c5dcbdbe31ab4e770facf48f67937d49be",
+  "frozen_parent_module_count": 56,
+  "frozen_parent_modules_hash": "3dd065ab0d791422a1807de96a170d5cb3fbffb381a2e205c796384761f3bcc6",
+  "distill_data_path": "data/distill/distill_dataset.jsonl",
+  "distill_data_hash": "610d23903a5d8d4117c03159268ce068620fee2b97de7ed7ce2dc9fb178c9443",
+  "repair_trace_path": "data/distill/counterfactual_repair_trace.jsonl",
+  "repair_trace_hash": "d27255958eb48a2e53aa38e98110a33dd6d935782cef11633b2e78447ee2cd1d",
+  "capability_rehearsal_paths": [
+    "data/distill/capability_rehearsal_v20_math.jsonl"
+  ],
+  "capability_rehearsal_hashes": {
+    "data/distill/capability_rehearsal_v20_math.jsonl": "a3154c7a94763a45196cc26b4a80e218900f0dcdd951049b904fef85076e4f34"
+  },
+  "output_dir": "models/adapters/cedd_v20_math_residual",
+  "adapter_hash": "3748d881daabdce23e563a72e56fc9e16f5d09fef48fca7f7eabdfda13df274e",
+  "adapter_config_hash": "922ebebec8bedfa8b7d2457128bbc5c7b3bb922a3968b8f77b5c637de6a21ad5",
+  "adapter_model_hash": "f8e8260b90c1ea3ce472ef3b9921782f02a851ee3adac6dab3dc1fecc01938e4",
+  "source_counts": {
+    "gsm8k_train_compact": 6779,
+    "gsm8k_train_final_only": 6779,
+    "gsm8k_train_reference": 6779,
+    "synthetic_gsm8k_challenge_rehearsal": 1536,
+    "synthetic_gsm8k_complex_rehearsal": 1728,
+    "synthetic_gsm8k_rehearsal": 1024
+  },
+  "dataset_counts": {
+    "gsm8k": 24625
+  },
+  "pre_limit_source_counts": {
+    "gsm8k_train_compact": 7473,
+    "gsm8k_train_final_only": 7473,
+    "gsm8k_train_reference": 7473,
+    "synthetic_gsm8k_challenge_rehearsal": 1536,
+    "synthetic_gsm8k_complex_rehearsal": 1920,
+    "synthetic_gsm8k_rehearsal": 1024
+  },
+  "pre_limit_dataset_counts": {
+    "gsm8k": 26899
+  },
+  "source_limits": {},
+  "selected_sample_count": 26899,
+  "selected_sample_ids_hash": "929b268ec53de33f638cb1a55d3aa79eab7f59c8a44c20ac867194cfd5d02b76",
+  "selected_validation_group_ids_hash": "c3d2a3ca486aebba6c8c85dc131354fdf89af7c5ade17c419b4c7394de822918",
+  "training_sample_count": 24625,
+  "training_sample_ids_hash": "12d563e402c98797825889a4aa732502afee880704610c4e7d87af651a32a6e7",
+  "training_validation_group_ids_hash": "13f5ee87d2363b93d5c9475a851bf94bde53831d51a9a29f3ba74ccdb71af80d",
+  "validation_sample_count": 2274,
+  "validation_sample_ids_hash": "fed6f3045feec59206a73d0e81fbee25b43064e0512cde6f93472a3c689cfbbd",
+  "validation_group_ids_hash": "3758a66e7812b6e13bf6ec12604cf8a9a4fe72dc5fae9391d21de358c3406668",
+  "validation_group_overlap_count": 0,
+  "validation_source_counts": {
+    "gsm8k_train_compact": 694,
+    "gsm8k_train_final_only": 694,
+    "gsm8k_train_reference": 694,
+    "synthetic_gsm8k_complex_rehearsal": 192
+  },
+  "validation_dataset_counts": {
+    "gsm8k": 2274
+  },
+  "generation_validation_sample_count": 96,
+  "generation_validation_sample_ids_hash": "0f4c797836c88a6793a5ae066b541e1afd9488cd4945c26016edb7b5a08175a3",
+  "generation_validation_group_ids_hash": "a9099e013def30c13461f30212626939192e19ba3b075961347376579c667df5",
+  "generation_validation_dataset_counts": {
+    "gsm8k": 96
+  },
+  "capability_datasets": [
+    "cmmlu",
+    "gsm8k",
+    "humaneval"
+  ],
+  "structured_dataset_filter": [],
+  "repair_dataset_filter": [],
+  "distill_sample_limit": 0,
+  "repair_sample_limit": 0,
+  "capability_sample_limit": 0,
+  "distill_repeat": 0,
+  "repair_repeat": 0,
+  "capability_repeat": 0,
+  "capability_jsonl_repeat": 1,
+  "epochs": 1.0,
+  "max_steps": 192,
+  "batch_size": 2,
+  "grad_accum_steps": 4,
+  "learning_rate": 4e-07,
+  "weight_decay": 0.01,
+  "parent_preservation_weight": 0.5,
+  "lr_scheduler": "cosine",
+  "warmup_ratio": 0.05,
+  "validation_fraction": 0.1,
+  "validation_seed": 20260714,
+  "validation_selection_metric": "generation",
+  "eval_every": 32,
+  "early_stopping_patience": 6,
+  "min_validation_improvement": 5e-05,
+  "min_validation_relative_improvement": 0.0,
+  "restore_best_validation": true,
+  "validation_history": [
+    {
+      "update_step": 0,
+      "loss": 0.9918119416347916,
+      "generation_score": 0.625,
+      "generation_count": 96
+    },
+    {
+      "update_step": 32,
+      "loss": 0.9897219247081577,
+      "generation_score": 0.6145833333333334,
+      "generation_count": 96
+    },
+    {
+      "update_step": 64,
+      "loss": 0.9845382838996097,
+      "generation_score": 0.6354166666666666,
+      "generation_count": 96
+    },
+    {
+      "update_step": 96,
+      "loss": 0.979212886472159,
+      "generation_score": 0.625,
+      "generation_count": 96
+    },
+    {
+      "update_step": 128,
+      "loss": 0.9754336017637345,
+      "generation_score": 0.625,
+      "generation_count": 96
+    },
+    {
+      "update_step": 160,
+      "loss": 0.9742201210403904,
+      "generation_score": 0.625,
+      "generation_count": 96
+    },
+    {
+      "update_step": 192,
+      "loss": 0.9734401721867401,
+      "generation_score": 0.625,
+      "generation_count": 96
+    }
+  ],
+  "initial_validation_loss": 0.9918119416347916,
+  "candidate_best_validation_loss": 0.9845382838996097,
+  "candidate_best_update_step": 64,
+  "validation_relative_improvement": 0.007333706552466758,
+  "validation_guard_rejected": false,
+  "generation_validation_sample_limit": 96,
+  "generation_validation_max_new_tokens": 256,
+  "min_generation_validation_improvement": 0.005,
+  "initial_generation_validation_score": 0.625,
+  "best_generation_validation_score": 0.6354166666666666,
+  "peak_generation_validation_score": 0.6354166666666666,
+  "peak_generation_validation_step": 64,
+  "generation_guard_rejected": false,
+  "best_validation_loss": 0.9845382838996097,
+  "best_update_step": 64,
+  "stopped_early": false,
+  "max_length": 1024,
+  "lora_rank": 8,
+  "lora_alpha": 16.0,
+  "lora_dropout": 0.05,
+  "target_modules": [
+    "q_proj",
+    "v_proj",
+    "o_proj"
+  ],
+  "replaced_module_count": 84,
+  "distributed_world_size": 4,
+  "distributed_backend": "nccl",
+  "effective_batch_size": 32,
+  "trainable_parameters": 1777664,
+  "total_parameters": 1546036736,
+  "trainable_parameter_ratio": 0.0011498200260100417,
+  "global_steps": 768,
+  "optimizer_steps": 192,
+  "mean_loss": 1.0277810096740723,
+  "mean_total_loss": 1.0762055963180803,
+  "mean_parent_preservation_loss": 0.09684919286519289,
+  "parent_correct_token_ratio": 0.8199200275326685,
+  "protected_token_count": 231092,
+  "supervised_token_count": 281847,
+  "final_loss": 0.8354198932647705,
+  "final_total_loss": 0.8663647174835205,
+  "final_learning_rate": 0.0,
+  "elapsed_sec": 2043.5877064466476,
+  "errors": [],
+  "report_hash": "37ecfbc8742cc121b78237fa406802168000b016a64edc5e495921cacdb4d8d8"
+}

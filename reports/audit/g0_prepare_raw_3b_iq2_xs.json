@@ -1,0 +1,48 @@
+{
+  "gate": "G3-gguf-prepare",
+  "check_version": "2.0",
+  "created_by": "scripts/prepare_edge_gguf.py",
+  "created_ts": "2026-07-18T06:17:43.846582+00:00",
+  "status": "passed",
+  "merged_hf_dir": "models/pretrained/Qwen--Qwen2.5-3B-Instruct",
+  "merged_hf_hash": "3e7448ca9a0a1a42121aeb293d0abaf303f8338484dcf1a5e534a4063f37bd1b",
+  "llama_cpp_dir": "external/llama.cpp",
+  "llama_cpp_head": "2d973636e292ee6f75fadcf08d29cb33511f509f",
+  "convert_script": "external/llama.cpp/convert_hf_to_gguf.py",
+  "quantize_bin": "external/llama.cpp/build/bin/llama-quantize",
+  "f16_gguf": "models/quantized/qwen2.5-3b-f16.gguf",
+  "f16_gguf_hash": "5507954178d6ab2580be875b1585ddecba882c49f1d21b1585d7795e9a6bb7ae",
+  "f16_gguf_bytes": 6178317344,
+  "quantized_gguf": "models/quantized/qwen2.5-3b-iq2_xs.gguf",
+  "quantized_gguf_hash": "4f7666d10c866d27d36dba60adb9a59e82e1bcf1f196d40017a003ac8988a12b",
+  "quantized_gguf_bytes": 1031546208,
+  "max_quantized_bytes": 1350000000,
+  "artifact_size_pre_gate_passed": true,
+  "q4_gguf": "models/quantized/qwen2.5-3b-iq2_xs.gguf",
+  "q4_gguf_hash": "4f7666d10c866d27d36dba60adb9a59e82e1bcf1f196d40017a003ac8988a12b",
+  "q4_gguf_bytes": 1031546208,
+  "outtype": "f16",
+  "quant_type": "IQ2_XS",
+  "imatrix": "models/quantized/qwen2.5-3b-imatrix.gguf",
+  "imatrix_hash": "0d4789665a4e4f09c4889e6ead002af66203427466151fa2c8b4905d4afe3489",
+  "commands": [
+    {
+      "command": [
+        "/workspace/project_tiaozhanbei/tiaozhanbei/external/llama.cpp/build/bin/llama-quantize",
+        "--imatrix",
+        "/workspace/project_tiaozhanbei/tiaozhanbei/models/quantized/qwen2.5-3b-imatrix.gguf",
+        "/workspace/project_tiaozhanbei/tiaozhanbei/models/quantized/qwen2.5-3b-f16.gguf",
+        "/workspace/project_tiaozhanbei/tiaozhanbei/models/quantized/qwen2.5-3b-iq2_xs.gguf",
+        "IQ2_XS"
+      ],
+      "cwd": ".",
+      "started_ts": "2026-07-18T06:15:15.432348+00:00",
+      "finished_ts": "2026-07-18T06:17:43.845951+00:00",
+      "returncode": 0,
+      "stdout_tail": "load_imatrix: imatrix datasets=['/workspace/project_tiaozhanbei/tiaozhanbei/data/distill/g0_imatrix_calibration.txt']\nload_imatrix: loaded 252 importance matrix entries from /workspace/project_tiaozhanbei/tiaozhanbei/models/quantized/qwen2.5-3b-imatrix.gguf computed on 64 chunks\nprepare_imatrix: have 252 importance matrix entries\n\nllama_quantize: quantize time = 148387.89 ms\nllama_quantize:    total time = 148387.89 ms",
+      "stderr_tail": "[ 397/ 434] blk.32.ffn_norm.weight               - [  2048,      1,      1,      1], type =    f32, size =    0.008 MiB\n[ 398/ 434] blk.32.ffn_up.weight                 - [  2048,  11008,      1,      1], type =    f16, converting to iq2_xs .. size =    43.00 MiB ->     6.21 MiB\n[ 399/ 434] blk.33.attn_k.bias                   - [   256,      1,      1,      1], type =    f32, size =    0.001 MiB\n[ 400/ 434] blk.33.attn_k.weight                 - [  2048,    256,      1,      1], type =    f16, converting to iq2_xs .. size =     1.00 MiB ->     0.14 MiB\n[ 401/ 434] blk.33.attn_norm.weight              - [  2048,      1,      1,      1], type =    f32, size =    0.008 MiB\n[ 402/ 434] blk.33.attn_output.weight            - [  2048,   2048,      1,      1], type =    f16, converting to iq2_xs .. size =     8.00 MiB ->     1.16 MiB\n[ 403/ 434] blk.33.attn_q.bias                   - [  2048,      1,      1,      1], type =    f32, size =    0.008 MiB\n[ 404/ 434] blk.33.attn_q.weight                 - [  2048,   2048,      1,      1], type =    f16, converting to iq2_xs .. size =     8.00 MiB ->     1.16 MiB\n[ 405/ 434] blk.33.attn_v.bias                   - [   256,      1,      1,      1], type =    f32, size =    0.001 MiB\n[ 406/ 434] blk.33.attn_v.weight                 - [  2048,    256,      1,      1], type =    f16, converting to q4_K .. size =     1.00 MiB ->     0.28 MiB\n[ 407/ 434] blk.33.ffn_down.weight               - [ 11008,   2048,      1,      1], type =    f16, converting to iq2_xs .. size =    43.00 MiB ->     6.21 MiB\n[ 408/ 434] blk.33.ffn_gate.weight               - [  2048,  11008,      1,      1], type =    f16, converting to iq2_xs .. size =    43.00 MiB ->     6.21 MiB\n[ 409/ 434] blk.33.ffn_norm.weight               - [  2048,      1,      1,      1], type =    f32, size =    0.008 MiB\n[ 410/ 434] blk.33.ffn_up.weight                 - [  2048,  11008,      1,      1], type =    f16, converting to iq2_xs .. size =    43.00 MiB ->     6.21 MiB\n[ 411/ 434] blk.34.attn_k.bias                   - [   256,      1,      1,      1], type =    f32, size =    0.001 MiB\n[ 412/ 434] blk.34.attn_k.weight                 - [  2048,    256,      1,      1], type =    f16, converting to iq2_xs .. size =     1.00 MiB ->     0.14 MiB\n[ 413/ 434] blk.34.attn_norm.weight              - [  2048,      1,      1,      1], type =    f32, size =    0.008 MiB\n[ 414/ 434] blk.34.attn_output.weight            - [  2048,   2048,      1,      1], type =    f16, converting to iq2_xs .. size =     8.00 MiB ->     1.16 MiB\n[ 415/ 434] blk.34.attn_q.bias                   - [  2048,      1,      1,      1], type =    f32, size =    0.008 MiB\n[ 416/ 434] blk.34.attn_q.weight                 - [  2048,   2048,      1,      1], type =    f16, converting to iq2_xs .. size =     8.00 MiB ->     1.16 MiB\n[ 417/ 434] blk.34.attn_v.bias                   - [   256,      1,      1,      1], type =    f32, size =    0.001 MiB\n[ 418/ 434] blk.34.attn_v.weight                 - [  2048,    256,      1,      1], type =    f16, converting to q4_K .. size =     1.00 MiB ->     0.28 MiB\n[ 419/ 434] blk.34.ffn_down.weight               - [ 11008,   2048,      1,      1], type =    f16, converting to iq2_xs .. size =    43.00 MiB ->     6.21 MiB\n[ 420/ 434] blk.34.ffn_gate.weight               - [  2048,  11008,      1,      1], type =    f16, converting to iq2_xs .. size =    43.00 MiB ->     6.21 MiB\n[ 421/ 434] blk.34.ffn_norm.weight               - [  2048,      1,      1,      1], type =    f32, size =    0.008 MiB\n[ 422/ 434] blk.34.ffn_up.weight                 - [  2048,  11008,      1,      1], type =    f16, converting to iq2_xs .. size =    43.00 MiB ->     6.21 MiB\n[ 423/ 434] blk.35.attn_k.bias                   - [   256,      1,      1,      1], type =    f32, size =    0.001 MiB\n[ 424/ 434] blk.35.attn_k.weight                 - [  2048,    256,      1,      1], type =    f16, converting to iq2_xs .. size =     1.00 MiB ->     0.14 MiB\n[ 425/ 434] blk.35.attn_norm.weight              - [  2048,      1,      1,      1], type =    f32, size =    0.008 MiB\n[ 426/ 434] blk.35.attn_output.weight            - [  2048,   2048,      1,      1], type =    f16, converting to iq2_xs .. size =     8.00 MiB ->     1.16 MiB\n[ 427/ 434] blk.35.attn_q.bias                   - [  2048,      1,      1,      1], type =    f32, size =    0.008 MiB\n[ 428/ 434] blk.35.attn_q.weight                 - [  2048,   2048,      1,      1], type =    f16, converting to iq2_xs .. size =     8.00 MiB ->     1.16 MiB\n[ 429/ 434] blk.35.attn_v.bias                   - [   256,      1,      1,      1], type =    f32, size =    0.001 MiB\n[ 430/ 434] blk.35.attn_v.weight                 - [  2048,    256,      1,      1], type =    f16, converting to q4_K .. size =     1.00 MiB ->     0.28 MiB\n[ 431/ 434] blk.35.ffn_down.weight               - [ 11008,   2048,      1,      1], type =    f16, converting to iq2_xs .. size =    43.00 MiB ->     6.21 MiB\n[ 432/ 434] blk.35.ffn_gate.weight               - [  2048,  11008,      1,      1], type =    f16, converting to iq2_xs .. size =    43.00 MiB ->     6.21 MiB\n[ 433/ 434] blk.35.ffn_norm.weight               - [  2048,      1,      1,      1], type =    f32, size =    0.008 MiB\n[ 434/ 434] blk.35.ffn_up.weight                 - [  2048,  11008,      1,      1], type =    f16, converting to iq2_xs .. size =    43.00 MiB ->     6.21 MiB\nllama_model_quantize_impl: model size  =  5886.42 MiB (16.00 BPW)\nllama_model_quantize_impl: quant size  =   978.08 MiB (2.66 BPW)"
+    }
+  ],
+  "errors": [],
+  "report_hash": "861efc21ccbe3b7e914ed6821efdc5c4dc27c7897a286e8011f75a935bc10c61"
+}

@@ -1,0 +1,87 @@
+{
+  "gate": "G-KD-v30-verified-hard-pool",
+  "check_version": "1.0",
+  "created_by": "model_compression/build_code_hard_pool_v30.py",
+  "created_ts": "2026-07-18T02:58:56.910979+00:00",
+  "status": "passed",
+  "policy": {
+    "data_revision": "30.2-verified-hard-repair",
+    "sources": "APPS official train and MBPP train only",
+    "dev_usage": "prompt and entry point only for overlap exclusion; labels/tests not accessed",
+    "canonical_execution": "every selected row must pass its complete stored tests",
+    "max_rows_per_validation_group": 1,
+    "overlap_threshold": 0.65,
+    "max_sequence_tokens": 1536,
+    "code_timeout_sec": 5.0,
+    "seed": 20260731
+  },
+  "inputs": {
+    "apps_official_train_call": {
+      "path": "data/distill/code_v28_apps_train.jsonl",
+      "sha256": "7bf5cdf0004c58bb313bb2f534409c2dd5c2a96bf26d9a256f2b21426ad14eb7"
+    },
+    "mbpp_official_train": {
+      "path": "data/distill/mbpp_v23_train_source.jsonl",
+      "sha256": "8e75cdab7f04c6a67bb070a13b97020552c762dc6befaac313ada5f28307e185"
+    }
+  },
+  "dev_exclusion": {
+    "split_counts": {
+      "dev_select": 42,
+      "dev_gate": 42
+    },
+    "entry_point_count": 83,
+    "entry_points_hash": "fec13ad2bd1f426eafc0e556c28c5c3f756d1f950be4ccaaae6586e09d3e25b2",
+    "prompt_hashes_hash": "c56efb6f8fce3d9416460f4760e13dec2657c92cf54526ec7b1ff030daa766fa",
+    "labels_or_tests_accessed": false,
+    "dev_select_path": "data/distill/mbpp_v23_dev_select.jsonl",
+    "dev_select_sha256": "067428947a455e384ea969de45aea9daf2b336edd7ebf0538af694600f1895e0",
+    "dev_gate_path": "data/distill/mbpp_v23_dev_gate.jsonl",
+    "dev_gate_sha256": "a331fa5bff8e442631ff4178e6117055923e805bf102cc519e3d1450828454e5"
+  },
+  "purified_counts": {
+    "apps_official_train_call": 1745,
+    "mbpp_official_train": 346
+  },
+  "filter_rejection_counts": {
+    "apps_official_train_call": {
+      "debug_print": 10,
+      "dev_entry_point_collision": 4,
+      "insufficient_tests": 641
+    },
+    "mbpp_official_train": {
+      "dev_entry_point_collision": 10
+    }
+  },
+  "canonical_verifier_rejection_counts": {
+    "apps_official_train_call": {},
+    "mbpp_official_train": {}
+  },
+  "mining_source_counts": {
+    "mbpp_official_train": 96,
+    "apps_official_train_call": 288
+  },
+  "validation_source_counts": {
+    "mbpp_official_train": 24,
+    "apps_official_train_call": 40
+  },
+  "mining_sample_count": 384,
+  "validation_sample_count": 64,
+  "executable_sample_count": 448,
+  "mining_validation_group_overlap_count": 0,
+  "dev_entry_point_collision_count": 0,
+  "formal_humaneval_training_count": 0,
+  "formal_humaneval_selection_count": 0,
+  "outputs": {
+    "mining_pool": {
+      "path": "data/distill/code_v30_hard_mining_pool.jsonl",
+      "sha256": "28838db361d687f97635a0babf262d2b9490593848c023a191dbb63fb9666474"
+    },
+    "internal_validation": {
+      "path": "data/distill/code_v30_hard_internal_validation.jsonl",
+      "sha256": "76e4ea03e2c2457562378bb1b1142bc5183d092436f9914fd03bddcc2fd32f28"
+    }
+  },
+  "errors": [],
+  "report_hash": "2f1f3e7a1958b6da6d2b8952ad2230117486253e70971e105ada4138ff29f133"
+}

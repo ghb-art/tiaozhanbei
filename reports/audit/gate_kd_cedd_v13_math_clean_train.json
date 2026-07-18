@@ -1,0 +1,85 @@
+{
+  "gate": "G-KD-TRACE-cedd_v13_math_clean-train",
+  "check_version": "1.0",
+  "created_by": "model_compression/train_cedd_repair.py",
+  "created_ts": "2026-07-09T11:59:26.855310+00:00",
+  "status": "passed",
+  "smoke": false,
+  "student_init": "models/pretrained/Qwen--Qwen2.5-1.5B-Instruct",
+  "init_adapter": "models/adapters/cedd_v12_math_clean",
+  "init_adapter_hash": "1dc23da69093266655402dbc9f37c0c5dcbdbe31ab4e770facf48f67937d49be",
+  "distill_data_path": "data/distill/distill_dataset.jsonl",
+  "distill_data_hash": "610d23903a5d8d4117c03159268ce068620fee2b97de7ed7ce2dc9fb178c9443",
+  "repair_trace_path": "data/distill/counterfactual_repair_trace.jsonl",
+  "repair_trace_hash": "d27255958eb48a2e53aa38e98110a33dd6d935782cef11633b2e78447ee2cd1d",
+  "capability_rehearsal_paths": [
+    "data/distill/capability_rehearsal_v13_clean_math.jsonl"
+  ],
+  "capability_rehearsal_hashes": {
+    "data/distill/capability_rehearsal_v13_clean_math.jsonl": "ea25db9618ff5e120b62df2472ab48683ca4136d6398d45cf0f84ebd6eaff63a"
+  },
+  "output_dir": "models/adapters/cedd_v13_math_clean",
+  "adapter_hash": "fd700559785f44b56b68adfb0e540f74e6c0b375360e2e393e7e737552b663ca",
+  "adapter_config_hash": "87046be8e0424d5299350aac72d12f387c7d1580ea17ea4233b2d7808ee7aee3",
+  "adapter_model_hash": "0409658a430bd747988a203e37eae53b15ed4ba6aeb0b360faf517d99d8fe0ab",
+  "source_counts": {
+    "counterfactual_repair": 32,
+    "gsm8k_train_compact": 7473,
+    "gsm8k_train_final_only": 7473,
+    "gsm8k_train_reference": 7473,
+    "gsm8k_train_terse": 7473,
+    "synthetic_gsm8k_challenge_rehearsal": 1536,
+    "synthetic_gsm8k_complex_rehearsal": 1920,
+    "synthetic_gsm8k_rehearsal": 1536
+  },
+  "dataset_counts": {
+    "gsm8k": 34916
+  },
+  "selected_sample_count": 34916,
+  "selected_sample_ids_hash": "cdac9f1c8e12cde2487d67b18d500f8baf3ef4fd5aec570409aa7cb8967c7f80",
+  "capability_datasets": [
+    "cmmlu",
+    "gsm8k",
+    "humaneval"
+  ],
+  "structured_dataset_filter": [
+    "gsm8k"
+  ],
+  "repair_dataset_filter": [
+    "gsm8k"
+  ],
+  "distill_sample_limit": 0,
+  "repair_sample_limit": 0,
+  "capability_sample_limit": 0,
+  "distill_repeat": 0,
+  "repair_repeat": 32,
+  "capability_repeat": 0,
+  "capability_jsonl_repeat": 1,
+  "epochs": 1.0,
+  "max_steps": 160,
+  "batch_size": 1,
+  "grad_accum_steps": 16,
+  "learning_rate": 2e-07,
+  "max_length": 1024,
+  "lora_rank": 8,
+  "lora_alpha": 16.0,
+  "lora_dropout": 0.05,
+  "target_modules": [
+    "q_proj",
+    "v_proj"
+  ],
+  "replaced_module_count": 0,
+  "distributed_world_size": 4,
+  "distributed_backend": "nccl",
+  "effective_batch_size": 64,
+  "trainable_parameters": 544768,
+  "total_parameters": 1544259072,
+  "trainable_parameter_ratio": 0.00035276982332663935,
+  "global_steps": 2560,
+  "optimizer_steps": 160,
+  "mean_loss": 1.476866364479065,
+  "final_loss": 0.4992823004722595,
+  "elapsed_sec": 640.4323402931914,
+  "errors": [],
+  "report_hash": "5f9a5d53405058b549655aff384ff81d3ac297151f1e92ba273307a09ee105b2"
+}

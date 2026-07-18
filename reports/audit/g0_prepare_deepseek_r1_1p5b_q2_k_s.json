@@ -1,0 +1,48 @@
+{
+  "gate": "G3-gguf-prepare",
+  "check_version": "2.0",
+  "created_by": "scripts/prepare_edge_gguf.py",
+  "created_ts": "2026-07-18T07:51:30.648190+00:00",
+  "status": "passed",
+  "merged_hf_dir": "models/pretrained/deepseek-ai--DeepSeek-R1-Distill-Qwen-1.5B",
+  "merged_hf_hash": "563edf3e29b6bfbd32ef5136e07df18dae384311bba03a3de603ea254952b627",
+  "llama_cpp_dir": "external/llama.cpp",
+  "llama_cpp_head": "2d973636e292ee6f75fadcf08d29cb33511f509f",
+  "convert_script": "external/llama.cpp/convert_hf_to_gguf.py",
+  "quantize_bin": "external/llama.cpp/build/bin/llama-quantize",
+  "f16_gguf": "models/quantized/deepseek-r1-distill-qwen-1.5b-f16.gguf",
+  "f16_gguf_hash": "0a6d565ffdf3edd56da5dbaa3fa64401e71bbe441f349ce5cde341db77050ae8",
+  "f16_gguf_bytes": 3560416224,
+  "quantized_gguf": "models/quantized/deepseek-r1-distill-qwen-1.5b-q2_k_s.gguf",
+  "quantized_gguf_hash": "cfb29389dc97b51b0e36870218d0a9ec6ababeeb2c986edbd8a3488716da77b1",
+  "quantized_gguf_bytes": 716710656,
+  "max_quantized_bytes": 900000000,
+  "artifact_size_pre_gate_passed": true,
+  "q4_gguf": "models/quantized/deepseek-r1-distill-qwen-1.5b-q2_k_s.gguf",
+  "q4_gguf_hash": "cfb29389dc97b51b0e36870218d0a9ec6ababeeb2c986edbd8a3488716da77b1",
+  "q4_gguf_bytes": 716710656,
+  "outtype": "f16",
+  "quant_type": "Q2_K_S",
+  "imatrix": "models/quantized/deepseek-r1-distill-qwen-1.5b-imatrix.gguf",
+  "imatrix_hash": "1361f68d2d4be1230246e465bec258aac67ae41d8bb7eca947eb9449d1155670",
+  "commands": [
+    {
+      "command": [
+        "/workspace/project_tiaozhanbei/tiaozhanbei/external/llama.cpp/build/bin/llama-quantize",
+        "--imatrix",
+        "/workspace/project_tiaozhanbei/tiaozhanbei/models/quantized/deepseek-r1-distill-qwen-1.5b-imatrix.gguf",
+        "/workspace/project_tiaozhanbei/tiaozhanbei/models/quantized/deepseek-r1-distill-qwen-1.5b-f16.gguf",
+        "/workspace/project_tiaozhanbei/tiaozhanbei/models/quantized/deepseek-r1-distill-qwen-1.5b-q2_k_s.gguf",
+        "Q2_K_S"
+      ],
+      "cwd": ".",
+      "started_ts": "2026-07-18T07:51:02.912881+00:00",
+      "finished_ts": "2026-07-18T07:51:30.647706+00:00",
+      "returncode": 0,
+      "stdout_tail": "load_imatrix: imatrix datasets=['data/distill/g0_imatrix_calibration.txt']\nload_imatrix: loaded 196 importance matrix entries from /workspace/project_tiaozhanbei/tiaozhanbei/models/quantized/deepseek-r1-distill-qwen-1.5b-imatrix.gguf computed on 64 chunks\nprepare_imatrix: have 196 importance matrix entries\n\nllama_quantize: quantize time = 27707.41 ms\nllama_quantize:    total time = 27707.41 ms",
+      "stderr_tail": "[ 302/ 339] blk.24.ffn_norm.weight               - [  1536,      1,      1,      1], type =    f32, size =    0.006 MiB\n[ 303/ 339] blk.24.ffn_up.weight                 - [  1536,   8960,      1,      1], type =    f16, converting to q2_K .. size =    26.25 MiB ->     4.31 MiB\n[ 304/ 339] blk.25.attn_k.bias                   - [   256,      1,      1,      1], type =    f32, size =    0.001 MiB\n[ 305/ 339] blk.25.attn_k.weight                 - [  1536,    256,      1,      1], type =    f16, converting to q2_K .. size =     0.75 MiB ->     0.12 MiB\n[ 306/ 339] blk.25.attn_norm.weight              - [  1536,      1,      1,      1], type =    f32, size =    0.006 MiB\n[ 307/ 339] blk.25.attn_output.weight            - [  1536,   1536,      1,      1], type =    f16, converting to q2_K .. size =     4.50 MiB ->     0.74 MiB\n[ 308/ 339] blk.25.attn_q.bias                   - [  1536,      1,      1,      1], type =    f32, size =    0.006 MiB\n[ 309/ 339] blk.25.attn_q.weight                 - [  1536,   1536,      1,      1], type =    f16, converting to q2_K .. size =     4.50 MiB ->     0.74 MiB\n[ 310/ 339] blk.25.attn_v.bias                   - [   256,      1,      1,      1], type =    f32, size =    0.001 MiB\n[ 311/ 339] blk.25.attn_v.weight                 - [  1536,    256,      1,      1], type =    f16, converting to q4_K .. size =     0.75 MiB ->     0.21 MiB\n[ 312/ 339] blk.25.ffn_down.weight               - [  8960,   1536,      1,      1], type =    f16, converting to q2_K .. size =    26.25 MiB ->     4.31 MiB\n[ 313/ 339] blk.25.ffn_gate.weight               - [  1536,   8960,      1,      1], type =    f16, converting to q2_K .. size =    26.25 MiB ->     4.31 MiB\n[ 314/ 339] blk.25.ffn_norm.weight               - [  1536,      1,      1,      1], type =    f32, size =    0.006 MiB\n[ 315/ 339] blk.25.ffn_up.weight                 - [  1536,   8960,      1,      1], type =    f16, converting to q2_K .. size =    26.25 MiB ->     4.31 MiB\n[ 316/ 339] blk.26.attn_k.bias                   - [   256,      1,      1,      1], type =    f32, size =    0.001 MiB\n[ 317/ 339] blk.26.attn_k.weight                 - [  1536,    256,      1,      1], type =    f16, converting to q2_K .. size =     0.75 MiB ->     0.12 MiB\n[ 318/ 339] blk.26.attn_norm.weight              - [  1536,      1,      1,      1], type =    f32, size =    0.006 MiB\n[ 319/ 339] blk.26.attn_output.weight            - [  1536,   1536,      1,      1], type =    f16, converting to q2_K .. size =     4.50 MiB ->     0.74 MiB\n[ 320/ 339] blk.26.attn_q.bias                   - [  1536,      1,      1,      1], type =    f32, size =    0.006 MiB\n[ 321/ 339] blk.26.attn_q.weight                 - [  1536,   1536,      1,      1], type =    f16, converting to q2_K .. size =     4.50 MiB ->     0.74 MiB\n[ 322/ 339] blk.26.attn_v.bias                   - [   256,      1,      1,      1], type =    f32, size =    0.001 MiB\n[ 323/ 339] blk.26.attn_v.weight                 - [  1536,    256,      1,      1], type =    f16, converting to q4_K .. size =     0.75 MiB ->     0.21 MiB\n[ 324/ 339] blk.26.ffn_down.weight               - [  8960,   1536,      1,      1], type =    f16, converting to q2_K .. size =    26.25 MiB ->     4.31 MiB\n[ 325/ 339] blk.26.ffn_gate.weight               - [  1536,   8960,      1,      1], type =    f16, converting to q2_K .. size =    26.25 MiB ->     4.31 MiB\n[ 326/ 339] blk.26.ffn_norm.weight               - [  1536,      1,      1,      1], type =    f32, size =    0.006 MiB\n[ 327/ 339] blk.26.ffn_up.weight                 - [  1536,   8960,      1,      1], type =    f16, converting to q2_K .. size =    26.25 MiB ->     4.31 MiB\n[ 328/ 339] blk.27.attn_k.bias                   - [   256,      1,      1,      1], type =    f32, size =    0.001 MiB\n[ 329/ 339] blk.27.attn_k.weight                 - [  1536,    256,      1,      1], type =    f16, converting to q2_K .. size =     0.75 MiB ->     0.12 MiB\n[ 330/ 339] blk.27.attn_norm.weight              - [  1536,      1,      1,      1], type =    f32, size =    0.006 MiB\n[ 331/ 339] blk.27.attn_output.weight            - [  1536,   1536,      1,      1], type =    f16, converting to q2_K .. size =     4.50 MiB ->     0.74 MiB\n[ 332/ 339] blk.27.attn_q.bias                   - [  1536,      1,      1,      1], type =    f32, size =    0.006 MiB\n[ 333/ 339] blk.27.attn_q.weight                 - [  1536,   1536,      1,      1], type =    f16, converting to q2_K .. size =     4.50 MiB ->     0.74 MiB\n[ 334/ 339] blk.27.attn_v.bias                   - [   256,      1,      1,      1], type =    f32, size =    0.001 MiB\n[ 335/ 339] blk.27.attn_v.weight                 - [  1536,    256,      1,      1], type =    f16, converting to q4_K .. size =     0.75 MiB ->     0.21 MiB\n[ 336/ 339] blk.27.ffn_down.weight               - [  8960,   1536,      1,      1], type =    f16, converting to q2_K .. size =    26.25 MiB ->     4.31 MiB\n[ 337/ 339] blk.27.ffn_gate.weight               - [  1536,   8960,      1,      1], type =    f16, converting to q2_K .. size =    26.25 MiB ->     4.31 MiB\n[ 338/ 339] blk.27.ffn_norm.weight               - [  1536,      1,      1,      1], type =    f32, size =    0.006 MiB\n[ 339/ 339] blk.27.ffn_up.weight                 - [  1536,   8960,      1,      1], type =    f16, converting to q2_K .. size =    26.25 MiB ->     4.31 MiB\nllama_model_quantize_impl: model size  =  3389.80 MiB (16.00 BPW)\nllama_model_quantize_impl: quant size  =   677.83 MiB (3.20 BPW)"
+    }
+  ],
+  "errors": [],
+  "report_hash": "eb52692b0c05a1249532056c483426b5fd0e42554be0c590d80d49ed3a23bc56"
+}

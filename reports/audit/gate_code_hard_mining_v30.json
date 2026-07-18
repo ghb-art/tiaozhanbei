@@ -1,0 +1,103 @@
+{
+  "gate": "G-KD-v30-verified-hard-mining",
+  "check_version": "1.0",
+  "created_by": "model_compression/mine_code_hard_examples_v30.py",
+  "created_ts": "2026-07-18T03:18:55.505424+00:00",
+  "status": "passed",
+  "policy": {
+    "parent": "v25 Code adapter",
+    "hard_definition": "parent completion fails executable tests",
+    "repair_target": "source canonical solution that passed complete stored tests",
+    "preservation": "deterministic parent-pass examples",
+    "formal_humaneval_test_used": false,
+    "seed": 20260731
+  },
+  "pool_audit": {
+    "path": "reports/audit/gate_code_hard_pool_v30.json",
+    "sha256": "17a8cf9a8a5ab8c7bdbb31eff3b93bf49a5a6b618bb413ce13421658ed6d5be8"
+  },
+  "pool_jsonl": {
+    "path": "data/distill/code_v30_hard_mining_pool.jsonl",
+    "sha256": "28838db361d687f97635a0babf262d2b9490593848c023a191dbb63fb9666474"
+  },
+  "internal_validation_jsonl": {
+    "path": "data/distill/code_v30_hard_internal_validation.jsonl",
+    "sha256": "76e4ea03e2c2457562378bb1b1142bc5183d092436f9914fd03bddcc2fd32f28"
+  },
+  "format_rehearsal_jsonl": {
+    "path": "data/distill/code_v30_validated_train.jsonl",
+    "sha256": "757ef8babd598af12f58a75c732020e5f8ef2b623c6ca07fb3114b0bf32f6fad"
+  },
+  "input_traces": [
+    {
+      "path": "data/eval/code_v30_hard_mining_shard0.jsonl",
+      "sha256": "41088ab72a5eae6c80090e86e0396875a76ce91bc9c9ce18601325db1e5f566c"
+    },
+    {
+      "path": "data/eval/code_v30_hard_mining_shard1.jsonl",
+      "sha256": "a223ee764f8f10f2da2f3364b8b1ea777da837229900d9e53f6506fc11d55a20"
+    },
+    {
+      "path": "data/eval/code_v30_hard_mining_shard2.jsonl",
+      "sha256": "0bd1e2f21092dc8bcf8c1e49eba988c7d18dfb9db723d0b127f4d164c4a2d83c"
+    },
+    {
+      "path": "data/eval/code_v30_hard_mining_shard3.jsonl",
+      "sha256": "48d78abde6b2d80a626c267f523ca0f683aa19fb0404aa613878d848976afc69"
+    }
+  ],
+  "input_audits": [
+    {
+      "path": "reports/audit/code_v30_hard_mining_shard0.json",
+      "sha256": "f1608253066aa0e085d0171fdddae194c1e02a8b6cb08d138f9f48cd20fea9ab"
+    },
+    {
+      "path": "reports/audit/code_v30_hard_mining_shard1.json",
+      "sha256": "7248196cc446d456823e09dfcdd12ba509287125d729d8ff327031ae0c15031e"
+    },
+    {
+      "path": "reports/audit/code_v30_hard_mining_shard2.json",
+      "sha256": "f11d3e646ba7ba07a8847f69dd443319e868c40a171a38845659dca27a98f4a7"
+    },
+    {
+      "path": "reports/audit/code_v30_hard_mining_shard3.json",
+      "sha256": "a26d368bc392d449e858dcb94424a6066124c88ac9b19ad4ae67c88de2c1a2e9"
+    }
+  ],
+  "parent_adapter_hash": "e8706e6e523af1a5ea0dc54de5ddabccdd0a0141c992f928d0e49f1fc2aa2eb3",
+  "mining_sample_count": 384,
+  "mining_format_pass_count": 379,
+  "parent_failure_count": 233,
+  "parent_pass_count": 151,
+  "selected_hard_failure_count": 233,
+  "selected_preservation_count": 96,
+  "selected_format_count": 42,
+  "training_source_counts": {
+    "synthetic_code_rehearsal_body": 42,
+    "v30_parent_pass_preservation": 96,
+    "v30_verified_hard_failure": 233
+  },
+  "train_internal_validation_group_overlap_count": 0,
+  "thresholds": {
+    "preservation_count": 96,
+    "format_count": 42,
+    "min_hard_failures": 64,
+    "max_hard_failures": 256
+  },
+  "formal_humaneval_training_count": 0,
+  "formal_humaneval_selection_count": 0,
+  "human_eval_test_used": false,
+  "outputs": {
+    "merged_trace": {
+      "path": "data/eval/code_v30_hard_mining.jsonl",
+      "sha256": "e24e7436fcf25f931a2b210e07439e6f3cdd56b1df8fa9df301a55f43c417b92"
+    },
+    "training": {
+      "path": "data/distill/code_v30_hard_repair_train.jsonl",
+      "sha256": "6002c8cbbed41d242f687c4b62c5f4c121c91f6cc3bd179a51731b7cf08496c2",
+      "sample_count": 371
+    }
+  },
+  "errors": [],
+  "report_hash": "00c185be9b5df6de92980f9e8a9fc0b75903318ce117b07d69ba6eddc69dbe46"
+}

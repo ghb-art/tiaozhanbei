@@ -1,0 +1,261 @@
+{
+  "gate": "G-KD-v28-real-code-training-data",
+  "check_version": "1.2",
+  "created_by": "model_compression/build_code_training_v28.py",
+  "created_ts": "2026-07-17T14:12:11.600367+00:00",
+  "status": "passed",
+  "policy": {
+    "formal_evaluation": "HumanEval unchanged; prompt used only as a forbidden-overlap index",
+    "candidate_selection": "existing MBPP dev_select/dev_gate unchanged",
+    "apps_split": "train only; call-based introductory/interview tasks",
+    "code_contests_split": "train only; Python3 standard-IO easy/medium/A/B tasks",
+    "canonical_validation": "every available test executed before acceptance",
+    "token_budget": "exact Qwen2.5-3B tokenizer length <= 1536",
+    "mixture": "40% MBPP, 40% APPS, 10% CodeContests, 10% v11 format protection"
+  },
+  "inputs": {
+    "mbpp_train": {
+      "path": "data/distill/mbpp_v23_train_source.jsonl",
+      "sha256": "8e75cdab7f04c6a67bb070a13b97020552c762dc6befaac313ada5f28307e185"
+    },
+    "mbpp_dev_select": {
+      "path": "data/distill/mbpp_v23_dev_select.jsonl",
+      "sha256": "067428947a455e384ea969de45aea9daf2b336edd7ebf0538af694600f1895e0"
+    },
+    "mbpp_dev_gate": {
+      "path": "data/distill/mbpp_v23_dev_gate.jsonl",
+      "sha256": "a331fa5bff8e442631ff4178e6117055923e805bf102cc519e3d1450828454e5"
+    },
+    "format_rehearsal": {
+      "path": "data/distill/capability_rehearsal_v25_3b_code_v11.jsonl",
+      "sha256": "e637340c62a6233c9f2306d24b8d6467eb6753485c3df7a4b0d605a038860182"
+    },
+    "humaneval_forbidden_prompt_index": {
+      "path": "data/datasets/humaneval/data/HumanEval.jsonl.gz",
+      "sha256": "b796127e635a67f93fb35c04f4cb03cf06f38c8072ee7cee8833d7bee06979ef"
+    },
+    "tokenizer_config": {
+      "path": "models/pretrained/Qwen--Qwen2.5-3B-Instruct/tokenizer_config.json",
+      "sha256": "5b5d4f65d0acd3b2d56a35b56d374a36cbc1c8fa5cf3b3febbbfabf22f359583"
+    }
+  },
+  "apps": {
+    "candidate_count": 2712,
+    "verified_unique_count": 2400,
+    "cache_hit_count": 2712,
+    "execution_rejections": {
+      "canonical_failed:AssertionError": 8,
+      "canonical_failed:ImportError: cannot import name 'gcd' from 'fractions' (/usr/lib/python3.10/fractions.py)": 5,
+      "canonical_failed:IndexError: list index out of range": 4,
+      "canonical_failed:NameError: name 'DS' is not defined": 1,
+      "canonical_failed:NameError: name 'Solution' is not defined": 2,
+      "canonical_failed:NameError: name 'WORD_LIST' is not defined": 1,
+      "canonical_failed:NameError: name 'inf' is not defined. Did you mean: 'int'?": 2,
+      "canonical_failed:NameError: name 'sys' is not defined": 1,
+      "canonical_failed:TypeError: '>' not supported between instances of 'str' and 'int'": 1,
+      "canonical_failed:TypeError: can't multiply sequence by non-int of type 'str'": 1,
+      "canonical_failed:TypeError: sequence item 0: expected str instance, NoneType found": 1,
+      "canonical_failed:ValueError: Exceeds the limit (4300) for integer string conversion; use sys.set_int_max_str_digits() to increase the limit": 2,
+      "entry_point_missing": 7,
+      "forbidden_attribute_remove": 1,
+      "forbidden_call_eval": 2,
+      "forbidden_import": 17,
+      "instance_state_dependency": 11
+    },
+    "overlap_rejections": {
+      "duplicate_code_ast": 6
+    },
+    "overlap_examples": []
+  },
+  "code_contests": {
+    "candidate_pool_count": 2098,
+    "verified_unique_count": 1000,
+    "cache_hit_count": 0,
+    "scan_rejections": {
+      "difficulty_filter": 10271,
+      "invalid_or_excessive_tests": 367,
+      "no_python3_solution": 493,
+      "non_standard_io": 22,
+      "test_payload_too_large": 77
+    },
+    "execution_rejections": {
+      "answer_too_long": 14,
+      "canonical_failed:AssertionError": 199,
+      "canonical_failed:ImportError: cannot import name 'gcd' from 'fractions' (/usr/lib/python3.10/fractions.py)": 1,
+      "canonical_failed:IndexError: string index out of range": 1,
+      "canonical_failed:SyntaxError: import * only allowed at module level": 7,
+      "canonical_failed:UnboundLocalError: local variable 'sys' referenced before assignment": 48,
+      "canonical_failed:ValueError: '&gt;' is not in list": 1,
+      "canonical_failed:ValueError: invalid literal for int() with base 10: '&gt;'": 1,
+      "canonical_failed:ValueError: invalid literal for int() with base 10: '8 19'": 1,
+      "canonical_failed:ValueError: invalid literal for int() with base 10: 'testa'": 1,
+      "canonical_failed:ValueError: not enough values to unpack (expected 2, got 1)": 1,
+      "canonical_failed:ValueError: too many values to unpack (expected 2)": 1,
+      "canonical_failed:ValueError: too many values to unpack (expected 3)": 1,
+      "canonical_failed:timeout": 8,
+      "forbidden_attribute___add__": 1,
+      "forbidden_attribute___getitem__": 1,
+      "forbidden_attribute_remove": 11,
+      "forbidden_call_open": 2,
+      "forbidden_import": 50,
+      "forbidden_node_Global": 12,
+      "worker_error:OSError": 3
+    },
+    "overlap_rejections": {
+      "lexical_overlap": 18
+    },
+    "overlap_examples": [
+      {
+        "sample_id": "code_contests/train/373e6df64b42f6c9",
+        "matched": "code_contests/train/09a6e6a207a316c6",
+        "score": 0.9571734475374732
+      },
+      {
+        "sample_id": "code_contests/train/566bde992c762ce3",
+        "matched": "code_contests/train/015809fc8d7851ca",
+        "score": 1.0
+      },
+      {
+        "sample_id": "code_contests/train/6417a2f4f74462c1",
+        "matched": "code_contests/train/1477977f61ef0283",
+        "score": 1.0
+      },
+      {
+        "sample_id": "code_contests/train/679909f18efe04a2",
+        "matched": "code_contests/train/02f9e9992e3714da",
+        "score": 1.0
+      },
+      {
+        "sample_id": "code_contests/train/85ca3ed22bd8f01b",
+        "matched": "code_contests/train/4b40d8d4b9b1d742",
+        "score": 1.0
+      },
+      {
+        "sample_id": "code_contests/train/92196ea36e2ae3a0",
+        "matched": "code_contests/train/3cc68d28b0d9dcb5",
+        "score": 1.0
+      },
+      {
+        "sample_id": "code_contests/train/a1c2db947a2f5107",
+        "matched": "code_contests/train/61aad7a747046105",
+        "score": 0.9027777777777778
+      },
+      {
+        "sample_id": "code_contests/train/b6f3c22b6a5507df",
+        "matched": "code_contests/train/0e912d62f304e1e1",
+        "score": 1.0
+      },
+      {
+        "sample_id": "code_contests/train/d37961099ea80682",
+        "matched": "code_contests/train/a183270003a3269d",
+        "score": 1.0
+      },
+      {
+        "sample_id": "code_contests/train/d94a85a40d15c1d6",
+        "matched": "code_contests/train/7a705dfffc7eae18",
+        "score": 1.0
+      },
+      {
+        "sample_id": "code_contests/train/dc3344578dcbbe13",
+        "matched": "code_contests/train/95f5c455cf648820",
+        "score": 1.0
+      },
+      {
+        "sample_id": "code_contests/train/dce276c877fcf15c",
+        "matched": "code_contests/train/333b8f6e2864b443",
+        "score": 1.0
+      },
+      {
+        "sample_id": "code_contests/train/ef787cae8d3adc95",
+        "matched": "code_contests/train/62febe8bda60f3d1",
+        "score": 1.0
+      },
+      {
+        "sample_id": "code_contests/train/f026fab5d8c1f6ae",
+        "matched": "code_contests/train/0dc398ec51f74370",
+        "score": 0.9065420560747663
+      },
+      {
+        "sample_id": "code_contests/train/f05c540b5c58df95",
+        "matched": "code_contests/train/015809fc8d7851ca",
+        "score": 1.0
+      },
+      {
+        "sample_id": "code_contests/train/f0ddd405dc403cea",
+        "matched": "code_contests/train/e9fde7b32820f2eb",
+        "score": 1.0
+      },
+      {
+        "sample_id": "code_contests/train/fb4d4243766d2723",
+        "matched": "code_contests/train/44306024260fc82d",
+        "score": 1.0
+      },
+      {
+        "sample_id": "code_contests/train/fff76316d1ec24d2",
+        "matched": "code_contests/train/1ece67ca6f35f818",
+        "score": 1.0
+      }
+    ]
+  },
+  "unique_source_counts": {
+    "mbpp_official_train": 356,
+    "apps_official_train_call": 2400,
+    "code_contests_official_train_io": 1000,
+    "synthetic_code_rehearsal_body": 21504
+  },
+  "token_budget": {
+    "mbpp_official_train": {
+      "input_count": 356,
+      "accepted_count": 356,
+      "rejected_sequence_too_long": 0,
+      "max_tokens": 591,
+      "p95_tokens": 400
+    },
+    "apps_official_train_call": {
+      "input_count": 2639,
+      "accepted_count": 2632,
+      "rejected_sequence_too_long": 7,
+      "max_tokens": 1470,
+      "p95_tokens": 878
+    },
+    "code_contests_official_train_io": {
+      "input_count": 1715,
+      "accepted_count": 1712,
+      "rejected_sequence_too_long": 3,
+      "max_tokens": 1455,
+      "p95_tokens": 1151
+    },
+    "synthetic_code_rehearsal_body": {
+      "input_count": 21504,
+      "accepted_count": 21504,
+      "rejected_sequence_too_long": 0,
+      "max_tokens": 174,
+      "p95_tokens": 140
+    }
+  },
+  "exposure_counts": {
+    "mbpp_official_train": 3277,
+    "apps_official_train_call": 3277,
+    "synthetic_code_rehearsal_body": 819,
+    "code_contests_official_train_io": 819
+  },
+  "total_exposures": 8192,
+  "formal_humaneval_training_count": 0,
+  "formal_humaneval_selection_count": 0,
+  "outputs": {
+    "apps": {
+      "path": "data/distill/code_v28_apps_train.jsonl",
+      "sha256": "7bf5cdf0004c58bb313bb2f534409c2dd5c2a96bf26d9a256f2b21426ad14eb7"
+    },
+    "code_contests": {
+      "path": "data/distill/code_v28_code_contests_train.jsonl",
+      "sha256": "3f98f05fa2f09922c4ebee48e5e7cd5cb90d1d0eb605b9bac8be63371c47f057"
+    },
+    "mixture": {
+      "path": "data/distill/code_v28_real_train_mix.jsonl",
+      "sha256": "57767ed4fc5516604a57bc69ff72c6d44cbc80acd5a437c711b84c56408546df"
+    }
+  },
+  "errors": [],
+  "report_hash": "62a1d69a3fb93390f9bd6cb55deb20890fa12f145addc04add79d67a9ec5a23c"
+}

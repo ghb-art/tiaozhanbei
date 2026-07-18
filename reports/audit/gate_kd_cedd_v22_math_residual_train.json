@@ -1,0 +1,218 @@
+{
+  "gate": "G-KD-TRACE-cedd_v22_math_residual-train",
+  "check_version": "1.5",
+  "created_by": "model_compression/train_cedd_repair.py",
+  "created_ts": "2026-07-16T15:28:11.902221+00:00",
+  "status": "passed",
+  "smoke": false,
+  "student_init": "models/pretrained/Qwen--Qwen2.5-1.5B-Instruct",
+  "init_adapter": "",
+  "init_adapter_hash": "",
+  "frozen_base_adapter": "models/adapters/cedd_v21_math_composed",
+  "frozen_base_adapter_hash": "767729afe5fcedd13fd7dca8636b1eb0f59a4dc38dfa2fa5dee1ec9049e60085",
+  "frozen_parent_module_count": 196,
+  "frozen_parent_modules_hash": "65575a567a9d43b42cfa7f274fc82a44e4b4ea0523bd51e0c2467e03450c09f4",
+  "distill_data_path": "data/distill/distill_dataset.jsonl",
+  "distill_data_hash": "610d23903a5d8d4117c03159268ce068620fee2b97de7ed7ce2dc9fb178c9443",
+  "repair_trace_path": "data/distill/counterfactual_repair_trace.jsonl",
+  "repair_trace_hash": "d27255958eb48a2e53aa38e98110a33dd6d935782cef11633b2e78447ee2cd1d",
+  "capability_rehearsal_paths": [
+    "data/distill/teacher_capability_distill_v21_math.jsonl",
+    "data/distill/teacher_capability_distill_v22_math_aug.jsonl"
+  ],
+  "capability_rehearsal_hashes": {
+    "data/distill/teacher_capability_distill_v21_math.jsonl": "ac2f67f5f428b32c5cf01a35e50de0fb1c8eded7584920bf65cf7fac220eca43",
+    "data/distill/teacher_capability_distill_v22_math_aug.jsonl": "00a879ccb94f98cb95aea42a7f8f31fc8e4104eb2c08ceaeaba4944d880b2324"
+  },
+  "output_dir": "models/adapters/cedd_v22_math_residual",
+  "adapter_hash": "6e125387e2e6dcc4242ebb0a0874b5741cfebb8b74ff9d917ebf0a1d91e87248",
+  "adapter_config_hash": "d168e9a2eb044bbf155eb6a94ec6632f9483560eac7808e80d0e9c86df8fe921",
+  "adapter_model_hash": "5058c04606f47d132625cb20fcf745ced99e274063b52e5b2bb6e14ca0c0c923",
+  "source_counts": {
+    "teacher_capability_distill_gsm8k": 7164
+  },
+  "dataset_counts": {
+    "gsm8k": 7164
+  },
+  "pre_limit_source_counts": {
+    "teacher_capability_distill_gsm8k": 8197
+  },
+  "pre_limit_dataset_counts": {
+    "gsm8k": 8197
+  },
+  "source_limits": {},
+  "selected_sample_count": 8197,
+  "selected_sample_ids_hash": "8f1690ea324f036c72cc29879bd3ecddb76e39e48a28758bf0cdf339c65f2188",
+  "selected_validation_group_ids_hash": "efa9d9896f0c05de214a2ae3847b0e00a300c887e53b3cb7da1e5812c58ddabc",
+  "training_sample_count": 7164,
+  "training_sample_count_before_group_cap": 7164,
+  "max_train_examples_per_validation_group": 0,
+  "training_sample_ids_hash": "ed189c8f4d006dda3b65e7851b9000bce0d9e8a548a345abf7260c9ea5a5e449",
+  "training_validation_group_ids_hash": "a5fd90b12e99aec448197a45412bf09e91c137317fb1fca23c3d630e89683658",
+  "validation_sample_count": 1033,
+  "validation_sample_ids_hash": "e7d77113a671ad88f3993f622a729eb18fd6c0547d04ea9684f6166c0814abb7",
+  "validation_group_ids_hash": "61d267ee8ca550164b7e32b9ac5e3200dfc12da7941450597eed9bf1c1a1e040",
+  "validation_group_overlap_count": 0,
+  "validation_group_count": 845,
+  "min_validation_group_count": 700,
+  "validation_source_counts": {
+    "teacher_capability_distill_gsm8k": 1033
+  },
+  "validation_dataset_counts": {
+    "gsm8k": 1033
+  },
+  "generation_validation_sample_count": 384,
+  "generation_validation_sample_ids_hash": "7bfa946f87a243e50b579e2b8ba3bbebb5afe3141ec406c59da297819dfde0f5",
+  "generation_validation_group_ids_hash": "fd1ed1df65964225e8f2b8224fab6777e85d75ba98c4a9f784b5564549f25aba",
+  "generation_validation_dataset_counts": {
+    "gsm8k": 384
+  },
+  "generation_validation_code_scoring": "differential_execution_v1.2",
+  "generation_validation_code_timeout_sec": 5.0,
+  "capability_datasets": [
+    "cmmlu",
+    "gsm8k",
+    "humaneval"
+  ],
+  "structured_dataset_filter": [],
+  "repair_dataset_filter": [],
+  "distill_sample_limit": 0,
+  "repair_sample_limit": 0,
+  "capability_sample_limit": 0,
+  "distill_repeat": 0,
+  "repair_repeat": 0,
+  "capability_repeat": 0,
+  "capability_jsonl_repeat": 1,
+  "epochs": 1.0,
+  "max_steps": 224,
+  "batch_size": 2,
+  "grad_accum_steps": 2,
+  "learning_rate": 1e-06,
+  "weight_decay": 0.01,
+  "parent_preservation_weight": 0.65,
+  "lr_scheduler": "cosine",
+  "warmup_ratio": 0.05,
+  "validation_fraction": 0.12,
+  "validation_seed": 20260716,
+  "validation_selection_metric": "generation",
+  "eval_every": 24,
+  "early_stopping_patience": 5,
+  "min_validation_improvement": 5e-05,
+  "min_validation_relative_improvement": 0.005,
+  "restore_best_validation": true,
+  "validation_history": [
+    {
+      "update_step": 0,
+      "loss": 0.2693833510032936,
+      "generation_score": 0.7838541666666666,
+      "generation_count": 384
+    },
+    {
+      "update_step": 24,
+      "loss": 0.2681593230747162,
+      "generation_score": 0.7838541666666666,
+      "generation_count": 384
+    },
+    {
+      "update_step": 48,
+      "loss": 0.2647481825296376,
+      "generation_score": 0.796875,
+      "generation_count": 384
+    },
+    {
+      "update_step": 72,
+      "loss": 0.2613092681800143,
+      "generation_score": 0.796875,
+      "generation_count": 384
+    },
+    {
+      "update_step": 96,
+      "loss": 0.25831471080936824,
+      "generation_score": 0.7994791666666666,
+      "generation_count": 384
+    },
+    {
+      "update_step": 120,
+      "loss": 0.25616202555323014,
+      "generation_score": 0.7916666666666666,
+      "generation_count": 384
+    },
+    {
+      "update_step": 144,
+      "loss": 0.2546993001891981,
+      "generation_score": 0.7864583333333334,
+      "generation_count": 384
+    },
+    {
+      "update_step": 168,
+      "loss": 0.25380355520336034,
+      "generation_score": 0.7890625,
+      "generation_count": 384
+    },
+    {
+      "update_step": 192,
+      "loss": 0.2534236871642808,
+      "generation_score": 0.7916666666666666,
+      "generation_count": 384
+    },
+    {
+      "update_step": 216,
+      "loss": 0.2533290816517817,
+      "generation_score": 0.7942708333333334,
+      "generation_count": 384
+    }
+  ],
+  "initial_validation_loss": 0.2693833510032936,
+  "candidate_best_validation_loss": 0.25831471080936824,
+  "candidate_best_update_step": 96,
+  "validation_relative_improvement": 0.041088805795537114,
+  "validation_guard_rejected": false,
+  "generation_validation_sample_limit": 384,
+  "generation_validation_examples_per_group": 1,
+  "generation_validation_max_new_tokens": 384,
+  "min_generation_validation_improvement": 0.002,
+  "initial_generation_validation_score": 0.7838541666666666,
+  "best_generation_validation_score": 0.7994791666666666,
+  "peak_generation_validation_score": 0.7994791666666666,
+  "peak_generation_validation_step": 96,
+  "generation_guard_rejected": false,
+  "best_validation_loss": 0.25831471080936824,
+  "best_update_step": 96,
+  "stopped_early": true,
+  "max_length": 1024,
+  "lora_rank": 16,
+  "lora_alpha": 32.0,
+  "lora_dropout": 0.05,
+  "target_modules": [
+    "q_proj",
+    "k_proj",
+    "v_proj",
+    "o_proj",
+    "gate_proj",
+    "up_proj",
+    "down_proj"
+  ],
+  "replaced_module_count": 196,
+  "distributed_world_size": 4,
+  "distributed_backend": "nccl",
+  "effective_batch_size": 16,
+  "trainable_parameters": 18464768,
+  "total_parameters": 1585260032,
+  "trainable_parameter_ratio": 0.011647784986229943,
+  "global_steps": 432,
+  "optimizer_steps": 216,
+  "scheduled_optimizer_steps": 224,
+  "min_optimizer_steps": 192,
+  "mean_loss": 0.2613082826137543,
+  "mean_total_loss": 0.30267650195121487,
+  "mean_parent_preservation_loss": 0.06364378222712765,
+  "parent_correct_token_ratio": 0.9131180705114782,
+  "protected_token_count": 475288,
+  "supervised_token_count": 520511,
+  "final_loss": 0.17243072390556335,
+  "final_total_loss": 0.20627471804618835,
+  "final_learning_rate": 3.4766197204589843e-09,
+  "elapsed_sec": 14406.592140804045,
+  "errors": [],
+  "report_hash": "3432969246e2da5303a07e8879792b8754b67d77eccb2e86559e73e98202aef7"
+}

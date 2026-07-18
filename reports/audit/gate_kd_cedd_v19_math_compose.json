@@ -1,0 +1,27 @@
+{
+  "gate": "G-KD-TRACE-cedd_v19_math_composed-compose",
+  "check_version": "1.0",
+  "created_by": "model_compression/compose_lora_adapters.py",
+  "created_ts": "2026-07-14T12:24:42.202173+00:00",
+  "status": "passed",
+  "base_adapter": "models/adapters/cedd_v12_math_clean",
+  "base_adapter_hash": "1dc23da69093266655402dbc9f37c0c5dcbdbe31ab4e770facf48f67937d49be",
+  "residual_adapter": "models/adapters/cedd_v19_math_residual",
+  "residual_adapter_hash": "48b107159830fec7e22dc4cb762662958a42558ef83d1fa5cf0bd88ed158a353",
+  "output_dir": "models/adapters/cedd_v19_math_composed",
+  "output_dir_hash": "116638a35af7fc899802ce0973c52d0307a8666daeb1342b34d54d02f8e56071",
+  "adapter_config_hash": "70007a10ba83c0f40726e247ed30e490cdb138b51545e40ef6bf4401f3bbccf1",
+  "adapter_model_hash": "a8c4a60cd09a37011cd5a76978d38df90bb80c143ac84d4aab793a020c363936",
+  "composed_rank": 12,
+  "target_modules": [
+    "q_proj",
+    "v_proj",
+    "k_proj",
+    "o_proj"
+  ],
+  "composed_module_count": 112,
+  "composed_modules_hash": "3f62ba8bd7e90af19f7d64eee367d9ea9acbc99bff83017c2ed13c463212c063",
+  "composition": "parallel_delta_sum",
+  "errors": [],
+  "report_hash": "4f50c667724d59d30c82788cbb8b6fcc0edd32aa9cfc2788ce7e2d69cc3548e5"
+}

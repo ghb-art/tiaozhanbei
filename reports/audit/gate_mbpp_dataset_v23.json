@@ -1,0 +1,20 @@
+{
+  "gate": "G-DATA-MBPP-v23",
+  "check_version": "1.0",
+  "created_by": "scripts/setup_mbpp_v23.py",
+  "created_ts": "2026-07-17T03:22:03.977602+00:00",
+  "status": "passed",
+  "acquisition": "existing_verified",
+  "dataset_path": "data/datasets/mbpp/mbpp.jsonl",
+  "metadata_path": "data/datasets/mbpp/SOURCE.json",
+  "source_url": "https://raw.githubusercontent.com/google-research/google-research/master/mbpp/mbpp.jsonl",
+  "source_revision": "google-research/google-research:master:mbpp/mbpp.jsonl",
+  "source_sha256": "ccf64ceae9c5403bf50a044cb6d505bfd2a2963ee58338ba268fd65beab92a9f",
+  "expected_source_sha256": "ccf64ceae9c5403bf50a044cb6d505bfd2a2963ee58338ba268fd65beab92a9f",
+  "row_count": 974,
+  "task_id_min": 1,
+  "task_id_max": 974,
+  "license": "CC BY 4.0",
+  "errors": [],
+  "report_hash": "8e42ebd5329801ba60b62504747beb6677d8d0c1382be16e42c69cb373a2aaa5"
+}

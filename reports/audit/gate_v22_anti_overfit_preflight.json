@@ -1,0 +1,49 @@
+{
+  "gate": "G-KD-TRACE-v22-anti-overfit-preflight",
+  "check_version": "1.1",
+  "created_by": "scripts/verify_v21_training_data.py",
+  "created_ts": "2026-07-17T01:32:01.831669+00:00",
+  "candidate_version": "v22",
+  "status": "passed",
+  "policy": {
+    "formal_test_labels_allowed": false,
+    "math_provenance": "frozen_gsm8k_train_or_deterministic_synthetic",
+    "code_provenance": "synthetic_task_families_only",
+    "code_verifier_version": "1.2",
+    "checkpoint_selection": "held_out_validation_groups_only"
+  },
+  "artifact_paths": {
+    "math_source_0": "data/distill/capability_rehearsal_v21_math_source.jsonl",
+    "math_source_1": "data/distill/capability_rehearsal_v22_math_aug_source.jsonl",
+    "code_source_0": "data/distill/capability_rehearsal_v22_code_source.jsonl",
+    "math_distill_0": "data/distill/teacher_capability_distill_v21_math.jsonl",
+    "math_distill_1": "data/distill/teacher_capability_distill_v22_math_aug.jsonl",
+    "code_distill_0": "data/distill/teacher_capability_distill_v22_code_repair.jsonl",
+    "math_audit_0": "reports/audit/gate_kd_teacher_capability_distill_v21_math.json",
+    "math_audit_1": "reports/audit/gate_kd_teacher_capability_distill_v22_math_aug.json",
+    "code_audit_0": "reports/audit/gate_kd_teacher_capability_distill_v22_code_repair.json"
+  },
+  "artifact_hashes": {
+    "math_source_0": "c0e26d8d583d8005ea59182a9c41fc5b97a5126b0b5d4e4f8ac977fcb7da8d53",
+    "math_source_1": "a84d67385761803035305aff8196f63ace0857a545de6634173310615a211ca0",
+    "code_source_0": "d50da32c86783749c0eb8006c81b92b82d42710380faad60cf0d7002e0a47879",
+    "math_distill_0": "ac2f67f5f428b32c5cf01a35e50de0fb1c8eded7584920bf65cf7fac220eca43",
+    "math_distill_1": "00a879ccb94f98cb95aea42a7f8f31fc8e4104eb2c08ceaeaba4944d880b2324",
+    "code_distill_0": "bf2dde7db6281811445b9108b1fe76add4063feafafcc855c71159ef52bbed2d",
+    "math_audit_0": "87183b1d0d3d39ead9ddd3bd4c26e36e5acf5a0ff40442d5df06b5af47028ede",
+    "math_audit_1": "c9e7f1a64d83e801f2ae16090f2fdbc519596246d5f50f87d019229ff19c57a2",
+    "code_audit_0": "c917fa58b505059551500db77a1e417aae17d6268e32325e3b098ab3073cc1f4"
+  },
+  "math_source_count": 8721,
+  "math_distill_count": 8197,
+  "math_validation_group_count": 7034,
+  "code_source_count": 1086,
+  "code_distill_count": 977,
+  "code_source_validation_group_count": 118,
+  "code_distill_validation_group_count": 115,
+  "code_distill_group_size_min": 1,
+  "code_distill_group_size_max": 13,
+  "formal_test_overlap_count": 0,
+  "errors": [],
+  "report_hash": "08819f204c01d55bf9643a072ca9fd8b92278c29c12ed0692eb96a5f3e5155d7"
+}

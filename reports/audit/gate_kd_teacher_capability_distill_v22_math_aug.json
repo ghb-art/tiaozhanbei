@@ -1,0 +1,125 @@
+{
+  "gate": "G-KD-TRACE-teacher-capability-distill-v22.0",
+  "check_version": "1.0",
+  "verifier_version": "1.0",
+  "verifier_versions": {
+    "gsm8k": "1.0"
+  },
+  "created_by": "model_compression/generate_teacher_capability_distill.py",
+  "created_ts": "2026-07-16T06:10:25.020225+00:00",
+  "updated_ts": "2026-07-16T06:52:48.025615+00:00",
+  "status": "passed",
+  "is_partial": false,
+  "dry_run": false,
+  "clean_training_policy": true,
+  "allow_final_eval_labels": false,
+  "final_test_overlap_count": 0,
+  "teacher_model_id": "Qwen/Qwen2.5-14B-Instruct-AWQ",
+  "trace_version_override": "22.0",
+  "rehearsal_version_override": "22.0-teacher-math-augmentation-filtered",
+  "teacher_endpoints": [
+    {
+      "teacher_url": "http://127.0.0.1:8000",
+      "health_status": 200,
+      "teacher_model_id": "Qwen/Qwen2.5-14B-Instruct-AWQ",
+      "served_model_id": "/workspace/project_tiaozhanbei/tiaozhanbei/models/pretrained/Qwen--Qwen2.5-14B-Instruct-AWQ"
+    },
+    {
+      "teacher_url": "http://127.0.0.1:8001",
+      "health_status": 200,
+      "teacher_model_id": "Qwen/Qwen2.5-14B-Instruct-AWQ",
+      "served_model_id": "/workspace/project_tiaozhanbei/tiaozhanbei/models/pretrained/Qwen--Qwen2.5-14B-Instruct-AWQ"
+    },
+    {
+      "teacher_url": "http://127.0.0.1:8002",
+      "health_status": 200,
+      "teacher_model_id": "Qwen/Qwen2.5-14B-Instruct-AWQ",
+      "served_model_id": "/workspace/project_tiaozhanbei/tiaozhanbei/models/pretrained/Qwen--Qwen2.5-14B-Instruct-AWQ"
+    },
+    {
+      "teacher_url": "http://127.0.0.1:8003",
+      "health_status": 200,
+      "teacher_model_id": "Qwen/Qwen2.5-14B-Instruct-AWQ",
+      "served_model_id": "/workspace/project_tiaozhanbei/tiaozhanbei/models/pretrained/Qwen--Qwen2.5-14B-Instruct-AWQ"
+    }
+  ],
+  "input_paths": [
+    "data/distill/capability_rehearsal_v22_math_aug_source.jsonl"
+  ],
+  "input_hashes": {
+    "data/distill/capability_rehearsal_v22_math_aug_source.jsonl": "a84d67385761803035305aff8196f63ace0857a545de6634173310615a211ca0"
+  },
+  "selected_dataset_keys": [
+    "gsm8k"
+  ],
+  "selected_unique_prompt_count": 1211,
+  "deduplicated_input_count": 37,
+  "resumed_trace_count": 0,
+  "attempted_trace_count": 1211,
+  "completed_trace_count": 1211,
+  "pending_trace_count": 0,
+  "accepted_training_count": 1189,
+  "rejected_trace_count": 22,
+  "accept_rate": 0.9818331957060281,
+  "min_accept_rate": 0.85,
+  "selected_validation_group_count": 26,
+  "accepted_validation_group_count": 26,
+  "group_coverage_rate": 1.0,
+  "min_group_coverage_rate": 0.9,
+  "fully_rejected_validation_groups": [],
+  "repair_mode": false,
+  "repair_from_trace": null,
+  "repair_from_trace_hash": null,
+  "repair_rounds_per_invocation": 0,
+  "repair_attempt_count": 0,
+  "repaired_accept_count": 0,
+  "parent_revalidated_accept_count": 0,
+  "retry_rejected_on_resume": false,
+  "trace_dataset_counts": {
+    "gsm8k": 1211
+  },
+  "accepted_dataset_counts": {
+    "gsm8k": 1189
+  },
+  "rejection_counts": {
+    "numeric_mismatch expected=101 predicted=5": 1,
+    "numeric_mismatch expected=105 predicted=99": 1,
+    "numeric_mismatch expected=127 predicted=7": 1,
+    "numeric_mismatch expected=129 predicted=18": 1,
+    "numeric_mismatch expected=146 predicted=140": 1,
+    "numeric_mismatch expected=149 predicted=5": 1,
+    "numeric_mismatch expected=152 predicted=14": 1,
+    "numeric_mismatch expected=221 predicted=5": 1,
+    "numeric_mismatch expected=241 predicted=234": 1,
+    "numeric_mismatch expected=250 predicted=2": 1,
+    "numeric_mismatch expected=250 predicted=242": 1,
+    "numeric_mismatch expected=277 predicted=17": 1,
+    "numeric_mismatch expected=28 predicted=38": 1,
+    "numeric_mismatch expected=2801 predicted=2791": 1,
+    "numeric_mismatch expected=307 predicted=17": 1,
+    "numeric_mismatch expected=316 predicted=312": 1,
+    "numeric_mismatch expected=335 predicted=322": 1,
+    "numeric_mismatch expected=381 predicted=374": 1,
+    "numeric_mismatch expected=426 predicted=420": 1,
+    "numeric_mismatch expected=432 predicted=429": 1,
+    "numeric_mismatch expected=67 predicted=57": 1,
+    "numeric_mismatch expected=92 predicted=82": 1
+  },
+  "endpoint_counts": {
+    "http://127.0.0.1:8000": 303,
+    "http://127.0.0.1:8001": 303,
+    "http://127.0.0.1:8002": 303,
+    "http://127.0.0.1:8003": 302
+  },
+  "workers": 8,
+  "max_new_tokens": 384,
+  "retry_count": 2,
+  "resume": true,
+  "checkpoint_interval": 25,
+  "trace_path": "data/distill/teacher_capability_trace_v22_math_aug.jsonl",
+  "trace_hash": "629e93dc452fb8feae940cfa080f6bf50911ca772db5770265018d09e09e2b2e",
+  "distill_path": "data/distill/teacher_capability_distill_v22_math_aug.jsonl",
+  "distill_hash": "00a879ccb94f98cb95aea42a7f8f31fc8e4104eb2c08ceaeaba4944d880b2324",
+  "errors": [],
+  "report_hash": "5f8ccf0ca0f4c8a6567b2afdc0006d1522dd6384970521f9762867b66582f3ae"
+}

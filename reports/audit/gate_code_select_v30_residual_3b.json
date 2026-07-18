@@ -1,0 +1,61 @@
+{
+  "gate": "G-CODE-DEV-30.3-3b-code-residual-dev_select-parent-candidate",
+  "check_version": "1.0",
+  "created_by": "scripts/evaluate_code_dev_gate.py",
+  "created_ts": "2026-07-18T04:20:40.967841+00:00",
+  "status": "failed",
+  "dev_jsonl": "data/distill/mbpp_v23_dev_select.jsonl",
+  "dev_jsonl_hash": "067428947a455e384ea969de45aea9daf2b336edd7ebf0538af694600f1895e0",
+  "split_role": "dev_select",
+  "data_audit": "reports/audit/gate_mbpp_v23_code_data.json",
+  "data_audit_hash": "c36053fbfd2fd71107524a93bbba55f7d025206a6937cddd7d834623b459ae7b",
+  "train_audit": "reports/audit/gate_kd_cedd_v30_3b_code_residual_train.json",
+  "train_audit_hash": "7e9321cabed228be34ed2ac894a71d37afe86562852e7d94985590a62e9e8656",
+  "input_traces": [
+    "data/eval/code_select_v30_residual_3b_shard0.jsonl",
+    "data/eval/code_select_v30_residual_3b_shard1.jsonl",
+    "data/eval/code_select_v30_residual_3b_shard2.jsonl",
+    "data/eval/code_select_v30_residual_3b_shard3.jsonl"
+  ],
+  "output_trace": "data/eval/code_select_v30_residual_3b.jsonl",
+  "output_trace_hash": "7c31339650cc2b26bb182d99b4819cdc48e9487d73a08b3b20b9a721d0304b51",
+  "sample_count": 42,
+  "expected_sample_count": 42,
+  "prompt_style": "v11",
+  "completion_protocol": "formal_humaneval_v11_body_or_full_function",
+  "scoring_protocol": "formal_humaneval_v11_mbpp_assert_execution_v1",
+  "parent_adapter_hash": "e8706e6e523af1a5ea0dc54de5ddabccdd0a0141c992f928d0e49f1fc2aa2eb3",
+  "parent_reference_kind": "adapter",
+  "parent_reference_hash": "e8706e6e523af1a5ea0dc54de5ddabccdd0a0141c992f928d0e49f1fc2aa2eb3",
+  "candidate_adapter_hash": "07cc1205cdb3eb16d9ff3b76f1b41017b6d4b23c1d4ac152b44848d36092e977",
+  "parent_format_count": 42,
+  "candidate_format_count": 42,
+  "parent_format_rate": 1.0,
+  "candidate_format_rate": 1.0,
+  "parent_semantic_pass_count": 25,
+  "candidate_semantic_pass_count": 25,
+  "parent_semantic_accuracy": 0.5952380952380952,
+  "candidate_semantic_accuracy": 0.5952380952380952,
+  "semantic_gain_count": 0,
+  "gained_sample_ids": [],
+  "regressed_sample_ids": [],
+  "parent_correct_preservation_rate": 1.0,
+  "thresholds": {
+    "min_format_rate": 0.98,
+    "min_semantic_gain": 1,
+    "min_parent_preservation_rate": 0.95,
+    "max_parent_regressions": 1
+  },
+  "gates": {
+    "format": true,
+    "semantic": false,
+    "regression": false
+  },
+  "formal_test_overlap_count": 0,
+  "human_eval_test_used": false,
+  "errors": [
+    "semantic_gate_failed",
+    "regression_gate_failed"
+  ],
+  "report_hash": "bee86ad83359d4d41502861e66cb40cc8d1685391ee3ed1e6aef08b4ad45afb1"
+}

@@ -407,9 +407,9 @@ def validate_run_manifest(data: dict[str, Any]) -> list[str]:
 
     if data.get("teacher_model_id") != "Qwen/Qwen2.5-14B-Instruct-AWQ":
         errors.append("$.teacher_model_id must match the implementation plan")
-    if data.get("student_init_model_id") != "Qwen/Qwen2.5-1.5B-Instruct":
+    if data.get("student_init_model_id") != "deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B":
         errors.append("$.student_init_model_id must match the implementation plan")
-    if data.get("edge_model_name") != "DB4AI-Edge-1.5B-KD-INT4":
+    if data.get("edge_model_name") != "DB4AI-Edge-P0A2-DeepSeek-1.5B-Q2_K_S":
         errors.append("$.edge_model_name must match the implementation plan")
 
     fallback_events = data.get("fallback_events")

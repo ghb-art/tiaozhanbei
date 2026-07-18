@@ -1,0 +1,74 @@
+{
+  "gate": "CH2-CAPABILITY-EVAL-smoke",
+  "check_version": "1.3",
+  "created_by": "scripts/evaluate_chapter2_capability.py",
+  "created_ts": "2026-07-18T07:43:08.093604+00:00",
+  "status": "failed",
+  "probe_backend": "openai_compatible",
+  "student_url": "http://127.0.0.1:18300",
+  "student_endpoint_health_status": 200,
+  "student_model_id": "qwen3-1p7b-iq2-xs",
+  "served_model_id": "/workspace/project_tiaozhanbei/tiaozhanbei/models/quantized/qwen3-1.7b-iq2_xs.gguf",
+  "local_model_dir": "models/pretrained/Qwen--Qwen2.5-3B-Instruct",
+  "adapter_path": "",
+  "adapter_map": {},
+  "endpoint_lora_map": {},
+  "adapter_config": {},
+  "adapter_config_by_dataset": {},
+  "dtype": "float16",
+  "device": "cuda",
+  "output_trace_path": "data/eval/g0_capability_qwen3_1p7b_iq2_xs.jsonl",
+  "capability_eval_trace_hash": "09f2864ed889a5fa057a9b084e6d6ad289a65fac4c43fc915558fbb39b847d20",
+  "selected_dataset_keys": [
+    "cmmlu",
+    "gsm8k",
+    "humaneval"
+  ],
+  "use_frozen_final": false,
+  "sample_limit_per_dataset": 34,
+  "num_shards": 1,
+  "shard_index": 0,
+  "unsharded_sample_count": 34,
+  "unsharded_sample_ids_hash": "3ba9e8335cd0e6f37d6f438aa169533549dd2864d9188cdfe21ab4ce9d199077",
+  "sample_count": 34,
+  "dataset_counts": {
+    "cmmlu": 34
+  },
+  "correct_counts": {
+    "cmmlu": 1
+  },
+  "accuracy_by_dataset": {
+    "cmmlu": 0.029411764705882353
+  },
+  "overall_accuracy": 0.029411764705882353,
+  "min_accuracy": 0.0,
+  "peak_memory_mb": 0.0,
+  "max_new_tokens": 384,
+  "max_new_tokens_map": {
+    "cmmlu": 16,
+    "gsm8k": 160,
+    "humaneval": 256
+  },
+  "fail_fast_min_accuracy_map": {
+    "cmmlu": 0.49411764705882355,
+    "gsm8k": 0.7529411764705882,
+    "humaneval": 0.7764705882352941
+  },
+  "fail_fast_reason": "dataset_accuracy_below_threshold: cmmlu 0.029412 < 0.494118",
+  "humaneval_timeout_sec": 5.0,
+  "generation_config": {
+    "do_sample": false,
+    "temperature": 0.0,
+    "num_candidates": 1
+  },
+  "prompt_style": "default",
+  "prompt_style_map": {
+    "cmmlu": "v11",
+    "gsm8k": "v11",
+    "humaneval": "v11"
+  },
+  "prompt_template_hash": "d1019473f72612c1bef19c930b0518203cb5aa86549790d0ab40766e11621a76",
+  "humaneval_exec_preamble_hash": "45574eb37eb1cc75cd0dc9f4eca05b2f430f8cc89eac47361e31e55090876417",
+  "errors": [],
+  "report_hash": "ff5c629397ed0575ebe8278a021c9d8022683396f608832742a78a76b612d772"
+}

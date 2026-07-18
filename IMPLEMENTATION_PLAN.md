@@ -1,1232 +1,645 @@
-# DB4AI-EdgeServe v4.1.0-research-final
+# DB4AI-EdgeServe v5.0
 
-## 基于 KWDB/KaiwuDB 的云边端协同轻量大模型推理与一致性决策系统
+## 面向云边协同场景的分布式人工智能感知与决策系统——指标驱动实施计划
 
-### 面向"挑战杯"揭榜挂帅 XH-202606 最终实施方案
-
----
-
-**方案版本:** v4.1.0-research-final（研究机制升级版；数据下载后由 dataset_manifest.json 冻结实际 split 与统计）
-**最后更新:** 2026-06-24
-**发榜单位:** 山东浪潮数据库技术有限公司
-**竞赛题目:** XH-202606
+**题目编号：** XH-202606
+**发榜单位：** 山东浪潮数据库技术有限公司
+**文档状态：** 当前唯一有效的实施总纲
+**重构日期：** 2026-07-18
+**历史路线：** v1-v31 的实验过程、失败原因和产物索引保留在 `docs/REVISION_LOG.md`，不再作为当前实施约束。
 
 ---
 
-## 0. 方案总览
+## 0. 文档原则
 
-### 0.1 定位
+### 0.1 最高约束
 
-DB4AI-EdgeServe 以 KWDB/KaiwuDB 为云边端数据底座，围绕 14B→1.5B 云边闭环语义蒸馏、信息瓶颈证据规划、多源运行状态建模、约束策略路由、时空异构图冲突推理与节点可信度校准闭环，在工业缺陷检测和交通监控两个场景中实现七项核心指标全部达标。
+本项目以赛题原文和最终提交要求为最高约束。本计划、模型规模、算法名称、数据集、训练路线和软件结构均可在 Final Freeze 前调整，但调整必须服务于以下目标：
 
-### 0.2 静态实施方案与动态执行边界
+1. 达到赛题七项核心指标；
+2. 形成可运行、可复现、可演示的完整云边协同系统；
+3. 至少覆盖两个差异明显的应用场景；
+4. 形成作品报告、运行视频、代码、数据和量化实验结果；
+5. 不使用测试集标签训练、逐题修复或选择候选，不以不完整内存口径、缩小统计分母等方式制造达标结果。
 
-本实验 plan 是预先定义的静态实施方案，用于固定项目的研究结构、实验边界、数据隔离规则、指标计算口径、gate 条件、日志输出和复现要求。它不是对每一个脚本实现细节、数据字段可得性和运行时异常处理的不可变约束。正式实验和 Codex 实施过程中，如遇到数据集字段缺失、公开数据版本差异、本地下载结构不同、模型服务异常、脚本不可运行等具体问题，必须基于实际数据目录、`dataset_manifest.json`、`manifest.json`、trace CSV、运行日志和错误信息进行具体分析，并在不改变核心研究目标的前提下修正实现方案。
+实施优先级固定为：
 
-**允许动态调整：** 数据集本地目录解析方式、数据字段 fallback 构造方式、脚本参数/文件路径/批大小/运行命令、预处理实现细节、日志字段补充、CityFlow 子集扩展、运行时异常恢复策略、不影响指标口径的工程优化。
-
-**不得随意改变：** 三大研究内容和六项关键技术成果、G1-G7 hard gate、train/validation/test 隔离规则、Final Gate 前冻结原则、Final Gate 失败后不得调参重跑、test split 不得进入蒸馏/planner/policy/graph/calibration 训练或 validation 调参、五方案对比边界、六项成果核心消融关系、dataset_manifest/manifest/conflict_gt_manifest 必须记录最终实际执行状态。
-
-所有动态调整必须记录到 `docs/REVISION_LOG.md` 和 `manifest.json`。若调整影响 hash，必须重新生成并在最终报告中说明属于工程实现修正，不属于测试结果后调参。
-
-### 0.3 三大研究内容、六项关键技术成果与论文链路
-
-```
-研究内容一: 面向边缘资源约束的边侧轻量决策能力构建
-  ├── 成果1: 面向边缘自治决策的云边闭环语义蒸馏技术 (CEDD)
-  ├── 成果2: 信息瓶颈驱动的语义证据规划与风险校准复核技术 (IBEP)
-  └── 论文产出: 边缘自治决策轻量大模型构建方法
-研究内容二: 面向动态云边环境的状态就绪编排与协同推理调度
-  ├── 成果3: 多源运行状态空间建模的云边就绪预测技术 (TARS-SSM)
-  ├── 成果4: 约束策略学习驱动的云边路径路由与弱网自治技术 (CPR)
-  └── 论文产出: 弱网云边协同推理调度方法
-研究内容三: 面向多节点关联任务的全局一致决策技术
-  ├── 成果5: 时空异构图驱动的多节点冲突语义推理技术 (ST-HGCI)
-  ├── 成果6: 节点可信度后验校准与闭环反馈的一致性优化技术 (BTCF)
-  └── 论文产出: 多边缘节点一致性决策方法
+```text
+指标可达性 > 完整闭环 > 实验可信度 > 演示效果 > 算法复杂度
 ```
 
-三篇论文共享数据、模型、KWDB 状态底座和 Final Gate，但研究对象逐级递进: 研究内容一产出可自治边侧模型与证据规划器，研究内容二基于其结构化决策与校准风险进行云边路径选择，研究内容三利用多节点决策 trace 构建时空图并将一致性反馈回流到蒸馏与调度数据池。
+### 0.2 当前真实状态
 
-### 0.4 自适应机制约束
+| 项目 | 当前状态 | 结论 |
+|---|---|---|
+| G-DATA | 已完成 | 八个数据集、split 和 manifest 已建立，重构后需复核场景最终子集 |
+| G-DB | 已完成 | KWDB 建表、写入、查询和导出已有 live gate |
+| G-CLOUD | 已完成 | Qwen2.5-14B-AWQ 云端服务已有 live gate |
+| G1 能力 | 部分完成 | v25 3B 为 Math 87.53%、Code 75.00%、NLP 88.68%，Code 未达标 |
+| G0 联合门禁 | 已完成、未通过 | 9 个候选中 0 个联合可行；转入内存安全基座上的能力恢复，不进入系统主线 |
+| G3 内存 | 已形成 Dev 证据 | Qwen3-1.7B IQ2 峰值 1306.14MB、DeepSeek-R1-1.5B Q2 峰值 920.23MB，均完成 20+100 请求 |
+| G2/G4/G5 | 未形成正式系统结果 | 云边调度、弱网和时延实验待实现 |
+| G6/G7 | 未形成正式系统结果 | 多节点冲突仲裁与一致性实验待实现 |
+| 两场景闭环 | 未完成 | 工业检测与交通监控需先完成最小闭环再扩展 |
 
-申报书硬性指标、SLA deadline、网络 profile、workload profile、split 隔离和 Final Gate 规则属于验收与实验条件，可以固定。完整方案的在线机制不得使用人工设定的特征权重、人工相似度加权、人工冲突强度公式、人工复核阈值或人工可信度更新率；这些固定规则只允许作为 baseline/ablation。
+任何报告、README 或答辩材料不得把开发结果写成 Final Gate 已通过。
 
-完整方案必须采用数据驱动的模型化机制: 蒸馏模型、证据规划器、运行状态模型、路径策略、时空图模型与可信度校准模型由 train trace、教师输出、标注数据和运行反馈训练得到，validation trace 仅用于校准、模型选择和消融评估。Final Gate 前冻结模型结构、训练产物、校准集、策略快照、图模型快照、可信度初始后验和所有 hash；Final Gate 中不再调参，但允许基于真实运行日志更新状态缓存、outbox 和节点可信度后验。
+### 0.3 本次重构的关键决策
 
-### 0.5 两级 gate 与核心 gate 总表
-
-| Gate | 通过条件 (Final) | 通过条件 (Dev) | 阶段 |
-|------|-----------------|---------------|------|
-| G1 | Math_ratio≥80%, Code_ratio≥80%, NLP_ratio≥80%, Overall_R_cap≥80% | ≥82% | P0-A-dev → P2-final |
-| G2 | high_delay≥75%, low_bandwidth≥75%, high_loss≥75%, weak_avg≥75% | ≥78% | P0-B-dev → P1-Reg → P2-final |
-| G3 | P95_RSS ≤1500 MB(decimal); 同时报告 MiB | ≤1450 MB(decimal) | P0-A-dev → P2-final |
-| G4 | 4 profile+combined ≥90%; 存在provisional的: correction≥90% | ≥92% | P0-B-dev → P1-Reg → P2-final |
-| G5 | P95_E2E industrial≤0.2s, traffic≤0.2s, combined≤0.2s | ≤0.18s | P0-B-dev → P1-Reg → P2-final |
-| G6 | post_correction_conflict_ratio ≤5% | ≤4% | P1-dev → P2-final |
-| G7 | gt_conflict_resolution_success_rate ≥90% | ≥92% | P1-dev → P2-final |
-
-功能 gate: G-DATA, G-DB, G-CLOUD, G-KD-TRACE, G-Support-Perception
-
-### 0.6 指标层级
-
-| 层级 | 内容 | 性质 |
-|------|------|------|
-| 第一层 | G1-G7 hard gate | 申报书验收，必须达标 |
-| 第二层 | 六项成果支撑指标 + SCU_support | 证明每项机制有效，只报告不设 gate |
-| 第三层 | 消融对照指标 | 证明完整机制优于退化版本，只报告不设 gate |
-
-SCU_support (300题结构化理解) 仅写入 support_metrics.csv，不进入 G1 hard gate。
-
-### 0.7 风险与早期验证矩阵
-
-| Gate | 风险等级 | 最早验证阶段 | 早期通过条件 | 失败处理 |
-|------|---------|-------------|-------------|---------|
-| G1 | 高 | P0-A0/P0-A | 100题 smoke 与正式 dev 子集趋势接近 G1-dev | 优先补 CEDD repair/反事实边界蒸馏, 不进入 P0-B final 路线 |
-| G2 | 中 | P0-B | weak profile 下 DB4AI 相对 cloud-only-summary 有稳定 TTFT 差距 | 检查 evidence planning、云端请求率和网络 profile 注入 |
-| G3 | 中低 | P0-A0 | base 1.5B INT4 稳态 RSS 明显低于 1500 MB(decimal) | 更换推理后端、收紧 context/KV cache/service wrapper |
-| G4 | 高 | P0-B smoke | 200ms 内可解析 action header 成功率接近 G4-dev | 优先启用短字段 constrained decoding 和 provisional decision |
-| G5 | 高 | P0-B smoke | P95 business_e2e_ms 接近 0.18s dev 线 | 拆分 explanation/correction 异步路径, 压缩证据与输出 token |
-| G6 | 中高 | G-DATA dry-run/P1 | relation_group_count、conflict_group_count 和类型分布满足数据门槛 | 先修 conflict_gt 构造与数据子集, 不训练图模型 |
-| G7 | 中高 | P1 | correction + sync + ack 全链路 smoke 通过 | 检查 outbox、trust posterior 初始化和云端校正接口 |
-
-P0-A0/P0-B smoke 是早期风险隔离，不替代 Final Gate。若早期验证未通过，必须在 `docs/REVISION_LOG.md` 记录失败原因、修复动作和重新生成的 hash。
-
-### 0.8 fallback 与动态调整边界
-
-允许的工程 fallback:
-- 数据目录解析、文件名映射、公开数据版本差异记录。
-- 字段格式转换、时间戳单位转换、缺失非标签字段写入空值或 unknown。
-- 日志字段补充、batch size/路径/脚本参数修正、进程异常恢复。
-- 不改变标签、profile、metric 口径的 CityFlow 子集扩展。CityFlow 子集扩展只允许在 G-DATA 阶段、Final Gate 前完成，并重新冻结 split_hash；P2 后不得扩展或替换 final test 子集。
-
-禁止的结果影响型 fallback:
-- 改变 final test split、final sample_ids 或 split_hash。
-- 改变 final label、global_decision_gt、conflict_gt 或 relation_group 难度来适配模型结果。
-- 改变 frozen network/workload profile、business deadline、correction/sync deadline 或 gate 统计口径。
-- 使用 final test 结果训练、校准或选择蒸馏/planner/policy/graph/trust 模型。
-- Final Gate algorithm_failure 后调参重跑。
-
-所有 fallback 必须写入 `manifest.json` 的 `fallback_events` 与 `docs/REVISION_LOG.md`。影响数据 hash、模型 hash 或 metric script hash 的 fallback 必须重新生成对应 hash。
+- 不再把 3B、INT4、v31 或六个独立学习模型视为必须保留的路线。
+- 边缘模型必须同时通过 G1 能力和 G3 内存，单项通过不能进入系统主线。
+- v31 已在内部执行验证中失败并终止，不继续编号式 Code 微调。
+- 原六项技术成果收敛为三个核心模块：轻量边缘智能、状态感知协同调度、图可信一致性决策。
+- 业务决策与自然语言解释解耦：先输出可执行短决策，解释和云端校正异步完成。
+- 两场景共用统一事件协议、路由器、数据库和一致性组件，避免建设两套系统。
+- KWDB 不仅保存日志，还承担事件状态、断网 outbox、模型版本、策略快照和可信度状态管理。
 
 ---
 
-## 1. 硬件环境、模型角色、基线边界
+## 1. 赛题指标与验收 Gate
 
-设备: Dell T640 (4×RTX 3090, 24GB) @ 192.168.4.178 + Blade (CPU-only, ≥16GB RAM) @ 192.168.4.174
+### 1.1 核心 Gate 总表
 
-| GPU | 服务 | 模型 |
-|-----|------|------|
-| 0 | Cloud LLM | Qwen2.5-14B-AWQ (vLLM, TP=1) |
-| 1 | High-Edge LLM | Qwen2.5-7B-AWQ (vLLM, TP=1) |
-| 2 | SFT + planner/policy/graph 训练 / BCC Arbitrator | 按需 |
-| 3 | Teacher data gen / Quant | 按需 |
+| Gate | 赛题目标 | 本项目正式通过条件 | 主要证据 |
+|---|---|---|---|
+| G1 边缘能力 | 满血模型能力的 80%–90% | Math、Code、NLP 三项保持率均 ≥80%，宏平均 ≥80% | `capability_results.csv`、逐样本 trace |
+| G2 TTFT | TTFT 减少 75% | 相对公平 Cloud-only 基线，综合及三个弱网 profile 的 TTFT 降低率均 ≥75% | `ttft_results.csv` |
+| G3 内存 | 单次推理内存 ≤1.5GB | 边缘完整推理进程在正式推理窗口内的总内存峰值 ≤1500 MB；同时报告 P95、PSS/RSS 和设备内存 | `memory_results.csv`、采样日志 |
+| G4 弱网保持 | 基本业务功能保持率 ≥90% | 四个弱网 profile 及综合保持率均 ≥90% | `weak_network_results.csv` |
+| G5 端到端时延 | 两类场景平均时延 ≤0.2s | 工业、交通、综合三项 mean E2E 均 ≤200ms；额外报告 P50/P95 | `e2e_results.csv` |
+| G6 决策冲突 | 冲突比例 ≤5% | 校正与同步截止后，关联任务组冲突比例 ≤5% | `conflict_results.csv` |
+| G7 冲突解决 | 解决成功率 ≥90% | 真实冲突组中形成正确唯一全局决策的比例 ≥90% | `resolution_results.csv` |
 
-| 角色 | 模型 | G1/G3 | G2/G4/G5 | G6/G7 |
-|------|------|-------|-----------|-------|
-| 云端全量教师 | Qwen2.5-14B-AWQ | G1分母 | cloud 路径 | 全局校正 |
-| 高算力边缘 | Qwen2.5-7B-AWQ | 不参与 | 异构节点 | 可选 |
-| 低算力边侧 | **DB4AI-Edge-1.5B-KD-INT4** | **唯一对象** | edge/coop 路径 | 本地决策 |
+Dev Gate 应留出余量：G1 各单项及宏平均 ≥82%、G2 ≥78%、G3 峰值 ≤1400MB、G4 ≥92%、G5 mean ≤180ms、G6 ≤4%、G7 ≥92%。Dev Gate 用于降低正式运行受随机波动影响的风险，不改变赛题正式阈值。
 
-已复用: 14B FP16 `/home/qhq/serverless_llm_experiment/models/Qwen--Qwen2.5-14B-Instruct/`, 7B FP16 同上。学生初始化权重: Qwen2.5-1.5B-Instruct (~3GB)。
+### 1.2 G1：能力保持率
 
-Cloud-only-summary 基线: 共享 evidence candidates + summary_generation + 相同时延统计。不使用 IBEP 证据规划、TARS-SSM 状态建模、CPR 路由、弱网自治补偿、ST-HGCI 冲突推理、BTCF 节点可信度校准反馈。成果2贡献由消融证明。
+固定使用同一 prompt、输出约束、采样参数和评分器比较边缘模型与云端 14B：
 
----
-
-## 2. 指标计算口径
-
-### 2.1 G1: 能力保持率
-
-```
-Math_ratio = Edge_GSM8K_Accuracy / Cloud_GSM8K_Accuracy
+```text
+Math_ratio = Edge_GSM8K_accuracy / Cloud_GSM8K_accuracy
 Code_ratio = Edge_HumanEval_pass@1 / Cloud_HumanEval_pass@1
-NLP_ratio  = Edge_NLPScore / Cloud_NLPScore
-  NLPScore = CMMLU_accuracy
-
-用于 Overall_R_cap 时使用 capped ratio (截断不超过 1.0):
-  Math_ratio_cap = min(Math_ratio, 1.0)
-  Code_ratio_cap = min(Code_ratio, 1.0)
-  NLP_ratio_cap  = min(NLP_ratio, 1.0)
-  Overall_R_cap = (Math_ratio_cap + Code_ratio_cap + NLP_ratio_cap) / 3
-
-G1 hard gate (四项全部通过):
-  Math_ratio ≥ 80%, Code_ratio ≥ 80%, NLP_ratio ≥ 80%, Overall_R_cap ≥ 80%
-
-原始未截断 ratio 单独报告。
-
-HumanEval: 统一 Python sandbox, timeout=10s/test, 禁止网络访问, pass@1 单候选。
-CMMLU: 统一 multiple-choice parser, 无法解析为 A/B/C/D 记为错误,
-       Edge 与 Cloud 使用相同 prompt/parser/采样参数。
-MMLU 不进入第 2 章主实验，仅保留为支持/备份数据资产。
+NLP_ratio  = Edge_CMMLU_accuracy / Cloud_CMMLU_accuracy
+Overall    = mean(min(Math_ratio, 1), min(Code_ratio, 1), min(NLP_ratio, 1))
 ```
 
-### 2.2 G2: TTFT 降低比例
+正式集沿用已冻结、可审计的 GSM8K 500 题、HumanEval 164 题和 CMMLU 分层 1000 题。HumanEval 使用隔离 Python sandbox，单候选 pass@1，禁止网络，逐测试超时 10 秒。无法解析的数学答案、代码或选择题均记为错误。
 
-```
-P95_TTFT_reduction(profile) = 1 - P95_TTFT_DB4AI(profile) / P95_TTFT_CloudOnlySummary(profile)
+边缘侧允许使用量化模型及其固定 tokenizer/parser，但不得通过云端调用完成 G1。若使用本地工具增强，必须额外分别报告“纯模型结果”和“工具增强结果”；G1 主结果采用赛前与发榜单位确认后更保守的口径。
 
-通过条件: high_delay≥75%, low_bandwidth≥75%, high_loss≥75%, weak_avg≥75%
-同时报告 mean_TTFT_reduction 作为支撑指标。
+### 1.3 G2：TTFT
 
-decision_ttft_ms: 请求进入系统 → 第一个可解析业务决策字段输出的时间
-  (JSON: label/action 字段可解析时计入)。所有方案使用统一 decision parser。
-```
-
-### 2.3 G3: 推理内存
-
-```
-P95_RSS_MB_decimal: 边侧 1.5B INT4 模型的稳态推理 RSS P95 (decimal MB)
-P95_RSS_MiB_binary: 同一窗口下的 binary MiB 口径，仅用于辅助报告
-
-测量条件:
-  warmup_requests = 20, measure_requests ≥ 100, batch_size = 1
-  采样周期 100ms, 只统计模型加载完成后的稳定推理窗口(不含冷启动)
-  peak_RSS_MB 记录但不作为 hard gate
-
-G3-final: P95_RSS_MB_decimal ≤ 1500 MB
-           同时报告 P95_RSS_MiB_binary, 参考线 ≤1431 MiB
-G3-dev:   P95_RSS_MB_decimal ≤ 1450 MB
-测量: cgroup memory.stat + psutil.Process.memory_info().rss
+```text
+TTFT = task_received_ts 到首个可解析、可执行 action 字段输出的时间
+TTFT_reduction = 1 - TTFT_DB4AI / TTFT_CloudOnly
 ```
 
-### 2.4 G4: 弱网保持率
+公平性要求：
 
-```
-business_deadline_ms = 200ms
+- 两方案接收完全相同的结构化感知摘要；
+- 使用相同 action schema、解析器、任务顺序和网络 profile；
+- Cloud-only 也允许只输出短 action，不强制生成长解释；
+- DB4AI 的 provisional action 只有满足业务有效性条件才能计入 TTFT；
+- 同时报告 mean、P50、P95 和置信区间，主 Gate 使用预先冻结的聚合口径。
 
-valid_business_decision: 在 business_deadline_ms 内输出可解析、可执行、非空 action 的决策
+### 1.4 G3：内存
 
-business_retention(profile) = valid_business_decisions(profile) / total_tasks(profile)
+G3 是模型选择的前置 Gate，不得留到项目末期。
 
-通过条件 (每个 profile 独立):
-  high_delay/low_bandwidth/high_loss/short_disconnect ≥ 90%, combined ≥ 90%
+测量对象包括边缘业务完成一次推理所需的完整常驻组件：模型权重映射、KV cache、tokenizer、运行时 buffer、LoRA/adapter 和决策头。若使用 GPU/NPU，还必须计入设备显存，不得只报告 Python 或 llama.cpp 的 CPU RSS。
 
-coop: provisional 在 200ms 内输出→计入保持; correction_deadline=1000ms; sync_deadline=2000ms
-存在 provisional 的 profile: provisional_correction_rate ≥ 90%
-```
+固定条件：
 
-### 2.5 G5: 端到端时延
-
-```
-E2E_latency = business_decision_output_ts - task_received_ts
-包含: edge_preprocess, evidence planning, summary_generation, LLM inference, path routing, correction_waiting
-
-G5-final: P95_E2E industrial≤0.2s, traffic≤0.2s, combined≤0.2s
-G5-dev:   P95_E2E ≤0.18s
-
-无效业务决策在 G4 中计为失败;
-在 G5 中计为 timeout_ms = max_observation_timeout_ms (固定为 1000ms),
-按 1000ms 计入 P95_E2E 计算。
-
-coop: business_e2e_ms + correction_latency_ms 分开记录。
+```text
+batch_size = 1
+context_length = 正式业务配置，默认不低于 512
+warmup_requests >= 20
+measure_requests >= 100
+sample_interval_ms <= 100
+primary_metric = steady_state_total_memory_peak_mb_decimal
 ```
 
-### 2.6 G6: 后校正决策冲突比例
+同时报告：模型文件大小、RSS、PSS、cgroup memory.current、设备内存、P95 和观测最大值。正式 Gate 以完整推理窗口内的总内存峰值为准。若采用 mmap，应明确文件页统计方式。任何模型只有 G1 与 G3 同时通过，才可命名为正式边缘模型。
 
-```
-post_correction_conflict_ratio =
-  unresolved_or_inconsistent_relation_groups / total_evaluated_relation_groups
+### 1.5 G4：弱网业务保持率
 
-total_evaluated_relation_groups:
-  final test split 中所有重叠感知区域或关联任务组, 不仅限于 conflict_gt=true 的真实冲突组
+弱网业务成功不能只按“JSON 可解析”判断：
 
-unresolved_or_inconsistent_relation_groups:
-  在 correction_deadline 与 sync_deadline 后仍存在 event_type/risk_attr/action 不一致,
-  或未能形成唯一全局决策的关联任务组
+```text
+valid_business_task =
+  在 200ms 内产生非空、可执行 action
+  AND action 满足任务安全约束
+  AND action 与 ground truth 一致或落在允许动作集合
 
-G6-final: ≤5% | G6-dev: ≤4%
-
-支撑指标:
-  gt_unresolved_conflict_ratio = unresolved_gt_conflict_groups / total_gt_conflict_groups
-  false_positive_conflict_ratio = false_positive_conflicts / total_evaluated_relation_groups
-  若 final test 中 total_gt_conflict_groups < 50 或 total_evaluated_relation_groups < 200 → G-DATA 不通过
-  写入 conflict_semantics_metrics.csv 和 support_metrics.csv
+business_retention = valid_business_tasks / all_tasks
 ```
 
-### 2.7 G7: 冲突解决成功率
+四类弱网环境为 `high_delay`、`low_bandwidth`、`high_loss`、`short_disconnect`，另报告 combined。断网期间系统必须走本地自治路径，网络恢复后通过 outbox 补传，不得阻塞当前业务等待云端。
 
-```
-gt_conflict_resolution_success_rate = successfully_resolved_gt_conflict_groups / total_gt_conflict_groups
+### 1.6 G5：端到端时延
 
-successfully_resolved: correction_deadline(1000ms)内校正 + sync_deadline(2000ms)内ack
-  + final_decision 与 conflict_gt_manifest.global_decision_gt 一致
-  (比较 event_type, risk_attr, action; confidence 不作为一致性硬条件)
-  + 反馈已写入 trust_posterior 或 outbox
-
-G7-final: ≥90% | G7-dev: ≥92%
-漏检的真实冲突计入分母、不计入分子
+```text
+E2E = business_action_output_ts - raw_event_received_ts
 ```
 
-### 2.8 功能 gate 定义
+包含预处理、感知推理、事件编码、状态读取、路由和业务 action 生成。异步解释与 1 秒内的云端校正单独统计，不并入首个业务动作时延。未在 1 秒观测窗内产生有效动作的请求按 1000ms 计入，避免只统计成功样本。
 
-**G-DATA:** 所有数据集下载 + 版本识别 + split 文件生成 + `dataset_manifest.json`/`manifest.json`/`conflict_gt_manifest.json` 中不存在占位符(`"actual"`, `"实际值"`, `"..."`, `TBD`, `TODO`, `placeholder`, null hash, empty split_hash, empty final_gate_sample_ids_hash) + split_hash 生成 + global_leakage_check 全部通过 + `conflict_gt_manifest.json` 已生成 + hash 已写入 + `conflict_gt_audit.csv`/`conflict_gt_sample_audit.json` 已生成 + validation 与 final test 分别满足 `conflict_group_count≥50`, `relation_edge_count≥200`, `relation_group_count≥200` + manifest 中不存在空 conflict_group_id/event_id/global_decision_gt
+赛题 Gate 使用各场景 mean ≤200ms；同时以 P95 ≤250ms 作为项目 stretch target，以展示尾延迟稳定性。
 
-**G-DB:** KWDB Docker 启动 + schema 创建 + 写入/查询/CSV 导出成功 + outbox 表创建
+### 1.7 G6/G7：一致性
 
-**G-CLOUD:** 14B-AWQ serving `/health` 200 + smoke test 首 token <2s + model_hash/prompt_hash 记录
+```text
+post_conflict_ratio =
+  截止时间后仍未形成唯一一致决策的关联任务组数
+  / 全部关联任务组数
 
-**G-KD-TRACE:** Student-Base → CEDD-Structured → CEDD-Repair → DB4AI-Edge-1.5B-KD-INT4 完整链路 + teacher_trace/student_probe/counterfactual_repair/calibration/quant_behavior hash 全部生成
-
-**G-Support-Perception:** 工业视觉与交通感知支撑指标生成成功。工业场景至少报告 image-level AUROC、F1、Recall、False Alarm Rate；若存在像素标注则报告 pixel-level AUROC/IoU。交通场景至少报告 mAP、MOTA/IDF1 或 event F1、duplicate alert rate。结果写入 perception_results.csv, 并与五方案对比。
-
-### 2.9 200ms 业务决策输出协议
-
-```
-business_action_header:
-  required fields = task_id, event_type, risk_attr, action, confidence, is_provisional, selected_path
-
-200ms 内的 hard requirement:
-  输出可解析 business_action_header, 不要求输出完整自然语言解释或长 rationale
-
-decision_ttft_ms:
-  task_received_ts → business_action_header 首次被统一 parser 成功解析的时间
-
-business_e2e_ms:
-  task_received_ts → business_action_header 被确认可执行的时间
-
-async fields:
-  explanation, long_rationale, cloud_correction, cross_node_consistency_update
-  与 business_action_header 分开记录, 不用于 200ms 首响应判定
+resolution_success_rate =
+  被正确识别、仲裁并同步到相关节点的真实冲突组数
+  / conflict_gt = true 的任务组数
 ```
 
-实现约束:
-- G4/G5 hard path 仅统计 business_action_header 的生成、解析与确认时延；自然语言解释、长理由、云端校正和跨节点一致性更新不计入 200ms 首响应路径。
-- 边侧模型必须优先生成 JSON/grammar constrained 的短字段 action header。
-- `max_new_tokens`、stop token、schema parser 和 decision parser 在 Final Gate 前冻结并写入 manifest。
-- weak_autonomy 路径允许先输出 provisional decision；云端 correction、trust posterior 更新和 outbox sync 按 G4/G7 口径异步统计。
-- 若采用 replay/precomputed perception feature，必须在 latency_breakdown.csv 中标注 `feature_mode=replay|precomputed|online`，不得把离线特征时延伪装成在线端到端时延。
-- Final Gate 主结果采用 `feature_mode=replay` 的任务重放口径，online_smoke 用于证明感知模块可运行；若报告在线端到端结果，必须单独列出，不与 replay 主结果混合。
-
-### 2.10 baseline 公平性协议
-
-五方案对比必须使用相同 task set、split、network profile、workload profile、decision parser、business deadline 和 metric scripts:
-
-| 方案 | 允许能力 | 禁止能力 |
-|------|---------|---------|
-| cloud_only_summary | 云端 14B + 共享 evidence candidates + summary_generation | IBEP, TARS-SSM, CPR, weak_autonomy, ST-HGCI, BTCF |
-| edge_only | 边侧 1.5B INT4 + 同一 decision parser | 云端复核、云端校正、图一致性校正 |
-| static_split | 固定路径划分 | 状态预测、约束策略路由 |
-| load_based | 负载/队列驱动路径选择 | TARS-SSM 后果预测、CPR 约束策略 |
-| db4ai_edgeserve | 完整 CEDD+IBEP+TARS-SSM+CPR+ST-HGCI+BTCF | Final Gate 中调参 |
-
-为避免 strawman 质疑，Final 报告额外提供 `cloud_only_full_context` 支撑结果: 使用云端 14B 和完整可用证据，但不进入五方案 hard comparison，仅用于说明 cloud-only-summary 不是人为削弱基线。所有 baseline 均报告 accuracy/latency/communication/resource 四类指标。
+冲突至少覆盖：同一区域重复感知、跨摄像头关联目标、事件类型冲突、风险等级冲突、动作冲突和过期决策冲突。Ground truth 的构造规则、人工抽样审计和 hash 必须在 Final Freeze 前完成。
 
 ---
 
-## 3. 数据集来源、观测量与 profile
+## 2. 总体技术方案
 
-### 3.1 数据集矩阵
+### 2.1 三个核心模块
 
-| 数据集 | 公开规模 | Final test 规模 | seed | 进入蒸馏 | 主实验/Final Gate |
-|--------|---------|--------------|------|---------|-----------|
-| GSM8K | train 7473 / test 1319 | 500 | 42 | train | 是 |
-| HumanEval | 164 全量 | 164 | — | 不进入 | 是 |
-| MMLU | 57 科目 | 1000 (科目分层) | 42 | 不进入主实验 | 否，支持/备份 |
-| CMMLU | 67 科目 | 1000 (科目分层) | 42 | 非final train/synthetic | 是 |
-| MVTec AD | 15类, train 3629(仅正常) / test 1725 | 1725 (官方test全量) | — | 不进入主实验 | 否，支持/备份 |
-| NEU-DET | 6类×300=1800 | 360 (类别分层) | 42 | train(70%) | 是 |
-| CityFlow | CityFlow-Original: 3.25h, 40摄像头, 10路口, 5场景(3train+2test), 666 vehicle ID | 构造脚本统计 | 42 | train场景 | 是 |
-| UA-DETRAC | 100视频, >140k帧, 含车辆框/类别/遮挡/截断 | 构造脚本统计 | 42 | 不进入主实验 | 否，支持/备份 |
+#### 模块 A：EdgeLite——资源约束下的边缘感知与轻量决策
 
-第 2 章主实验数据集固定为 GSM8K、HumanEval、CMMLU、NEU-DET、CityFlow。GSM8K、HumanEval、CMMLU 用于能力保持率；NEU-DET、CityFlow 用于工业检测与交通监控任务表征压缩。teacher trace 训练数据只使用有 train split 且属于主实验的 GSM8K、NEU-DET、CityFlow；HumanEval 和 CMMLU 仅用于后续能力评测，不进入蒸馏训练。
+职责：
 
-MVTec AD validation 方案 A: 官方 test 不进 validation。validation 使用 train 正常样本固定子集 + NEU-DET val 缺陷样本 + 派生非 final 异常样本。
+- 在边缘节点完成视频/图像预处理和轻量视觉感知；
+- 将视觉、传感器和数据库状态统一编码为 `EdgeEvent`；
+- 使用轻量决策头输出毫秒级 `action header`；
+- 使用量化轻量大模型完成本地语义理解、异常归因和离线自治；
+- 通过蒸馏、结构化输出训练和量化满足 G1/G3。
 
-CMMLU: final sample_ids 写入 manifest。不允许 final evaluation 子集进入蒸馏。synthetic 记录 prompt_hash/generation_seed/teacher_model/sample_hash。
+模块 A 保留原 CEDD 的有效部分，但不再维护多条无限迭代的专项 adapter 路线。
 
-#### CityFlow 子集构造配置
+#### 模块 B：SafeRoute——状态感知的云边协同调度
 
+职责：
+
+- 读取网络 RTT/抖动/丢包/带宽、队列、CPU/内存、模型置信度和任务风险；
+- 在 `edge_fast`、`edge_llm`、`cloud`、`edge_then_cloud` 四条路径中选择；
+- 高风险或低置信任务异步提交云端，简单任务留在边缘；
+- 弱网时强制本地自治，恢复后补传和校正；
+- 以时延、准确率、带宽和 SLA 违约组成约束优化目标。
+
+首版采用小型 GBDT/MLP 或上下文 bandit，只有在数据确实充足时才升级复杂状态空间模型。规则路由仅作为 baseline 和安全兜底。
+
+#### 模块 C：GraphTrust——时空图冲突仲裁与可信反馈
+
+职责：
+
+- 将节点、事件、区域、目标和决策构造成时空关系图；
+- 识别多个边缘节点的关联事件与语义冲突；
+- 综合时间新鲜度、模型置信度、节点历史可靠度和云端复核结果形成唯一决策；
+- 将校正结果与可信度后验写回 KWDB，并同步到相关边缘节点；
+- 通过 outbox/ack 保障弱网恢复后的最终一致性。
+
+首版使用轻量图特征模型加贝叶斯可信度更新；GNN 只在 validation 明确优于轻量模型时进入完整方案。
+
+### 2.2 分层实时路径
+
+```text
+原始视频/传感器
+      │
+      ▼
+边缘感知器 ──> EdgeEvent ──> 毫秒级决策头 ──> provisional action
+                             │
+                             ▼
+                        SafeRoute
+                      ┌──────┼────────┐
+                      ▼      ▼        ▼
+                  edge LLM  cloud   edge→cloud
+                      └──────┼────────┘
+                             ▼
+                    GraphTrust 全局仲裁
+                             │
+             ┌───────────────┼───────────────┐
+             ▼               ▼               ▼
+          最终动作        KWDB 状态       模型/策略更新
 ```
-preferred_dataset_version: CityFlow-Original
-若实际下载为 CityFlowV2 → dataset_manifest.json 记录 dataset_version = CityFlowV2
-camera_count: 6
-intersection_count: 2
-replay_duration_s: 300
-replay_tick_s: 1 (annotation-driven replay)
-relation_sources: [vehicle_id, camera_id, region_id, timestamp, derived_event]
 
-split: 若官方 test 标签不可用 → 按 scene/camera/time_window 冻结划分 train/val/test
-       split_hash 写入 dataset_manifest.json
-       validation 与 final test 的 relation_edge_count, relation_group_count 和 conflict_group_count 分别统计
+`provisional action` 必须安全、可执行且可独立完成基本业务；云端响应只允许提升结果或在截止时间内校正，不能成为弱网环境下业务可用的必要条件。
+
+### 2.3 两个应用场景
+
+| 项目 | 场景一：工业质量检测 | 场景二：城市交通监控 |
+|---|---|---|
+| 数据 | NEU-DET 为主，MVTec AD 支撑 | CityFlow 为主，UA-DETRAC 支撑 |
+| 边缘节点 | 产线相机/工位 | 路口摄像头/区域节点 |
+| 实时动作 | pass、hold、recheck、stop_line | allow、warn、track、dispatch |
+| 云端作用 | 跨批次缺陷分析、复杂归因、模型更新 | 跨摄像头关联、拥堵与事件全局判断 |
+| 关联冲突 | 相邻工位对同一工件判断不一致 | 重叠视野/跨摄像头对目标和事件判断不一致 |
+| 业务价值 | 降低漏检、停线和上传带宽 | 提升联动效率、弱网连续性和全局一致性 |
+
+两个场景使用同一 `EdgeEvent`、`DecisionTuple`、调度器、冲突协议和指标脚本，只替换感知插件及场景动作表。
+
+### 2.4 KWDB 的不可替代作用
+
+KWDB/KaiwuDB 统一承载：
+
+- 边缘感知事件与设备时序状态；
+- 网络、负载和推理性能 trace；
+- 未上传事件 outbox、重试和 ack；
+- 全局决策、冲突关系和校正历史；
+- 节点可信度后验；
+- 模型、adapter、策略和 schema 版本；
+- 审计日志和实验结果导出。
+
+必须增加 `file/cache-only` 消融，量化 KWDB 在状态查询时延、断网补传成功率、跨节点关联查询和可追溯性方面的作用，避免数据库仅作为项目名称或普通日志容器。
+
+---
+
+## 3. 边缘模型联合可行性路线
+
+### 3.1 先做 G0，不再串行等待
+
+正式训练前先执行 `G0-CAPMEM`：在相同硬件、context 和评分器下并行比较候选的能力、内存和 action header 时延。
+
+| 候选 | 目的 | 进入主线条件 |
+|---|---|---|
+| A：现有 v25 3B + 低于 4-bit 的 GGUF | 已关闭；raw IQ2 峰值 1737.83MB，v25 Code 全精度也只有 75% | G0 failed/pruned |
+| B：Qwen2.5-1.5B Q4_K_M | 历史能力与启动内存均未通过 | G0 failed |
+| C：Qwen3-1.7B IQ2_XS | G3 为 1306.14MB，但 CMMLU matched smoke 保持率仅 4.76% | G0 failed |
+| D：DeepSeek-R1-Distill-Qwen-1.5B Q2_K_S | G3 为 920.23MB，但 CMMLU matched smoke 保持率仅 14.29%，16-token CPU 均值 2.58s | G0 failed；作为能力恢复研究基座 |
+
+不得先决定模型名称再解释指标。联合得分只用于 Dev 排序：
+
+```text
+feasible = G1_dev_pass AND G3_dev_pass
+rank = capability_margin + latency_margin + memory_margin
 ```
 
-### 3.2 dataset_manifest.json
+### 3.2 止损规则
+
+- v31 内部验证为 `30/64→30/64`，未超过历史门槛 `32/64`，已终止且不得重跑、合成或进入 HumanEval。
+- 不再以 HumanEval 正式错题创建 v32、v33 等修复数据。
+- 3B 的任意量化格式若模型文件、最小运行 RSS 或设备内存已经超过 1500MB，不再投入正式 G1 评测。
+- 1.5B 若两轮独立 validation 后 Math/Code 仍明显低于 80%，停止继续微调，转向候选 C。
+- G0 必须在完整系统开发前 3 个工作日内给出主候选和备用候选。
+- 2026-07-18 的 G0 结果为 `failed, feasible=0/9`；在能力恢复候选重新通过 G0 前，不得宣称主边缘模型已冻结。
+- 当前 CPU llama.cpp 短输出均值仍为 Qwen3 IQ2 `4.08s`、DeepSeek Q2 `2.58s`；这不是两场景正式 G5，但已排除“CPU 大模型同步路径直接达到 0.2s”的假设，必须使用加速设备或结构化 fast path。
+
+### 3.3 量化与能力保护
+
+执行顺序：
+
+1. 合并或固定 adapter；
+2. 导出多个低位候选；
+3. 运行 100 题能力 smoke 与真实 G3；
+4. 淘汰明显失败格式；
+5. 在 validation 上运行完整能力对比；
+6. 冻结唯一主候选和一个只读备用候选；
+7. 正式 test 只运行冻结主候选。
+
+量化前后必须记录逐样本行为差异、模型 hash、量化参数、runtime 版本和 context 配置。
+
+---
+
+## 4. 数据、协议与版本管理
+
+### 4.1 数据隔离
+
+每个数据源按任务组而不是按单帧划分：
+
+- `train`：模型、路由器、图模型和可信度先验训练；
+- `validation`：阈值校准、候选选择、消融与 Dev Gate；
+- `test`：Final Freeze 后一次正式评测，不参与训练和选择。
+
+跨摄像头同一目标、同一工件序列、增强样本及近重复文本必须落入同一个 split。所有最终 sample id、来源、license、hash、划分规则和统计写入 `dataset_manifest.json`。
+
+### 4.2 核心协议
+
+`EdgeEvent` 最少包含：
 
 ```json
 {
-  "manifest_version": "1.0",
-  "created_by": "scripts/setup_datasets.sh",
-  "created_ts": "float",
-  "sampling_seed": 42,
-  "datasets": [
-    {
-      "dataset_name": "GSM8K",
-      "dataset_version": "实际值",
-      "official_scale": "train 7473 / test 1319",
-      "used_train_count": "实际值",
-      "used_validation_count": "实际值",
-      "used_test_count": 500,
-      "final_gate_sample_ids_hash": "实际值",
-      "split_hash": "实际值",
-      "teacher_generated_train_count": "实际值",
-      "leakage_check_pass": true
-    }
-  ],
-  "scu_support": {
-    "scu_sample_count": 300,
-    "scu_sample_hash": "实际值",
-    "scu_source": "independent_support_sources",
-    "used_for_training": false,
-    "used_for_validation": false,
-    "used_for_final_support": true
-  },
-  "global_leakage_check": {
-    "test_in_distill": false,
-    "test_in_planner_train": false,
-    "test_in_policy_train": false,
-    "test_in_graph_train": false,
-    "test_in_calibration": false,
-    "test_in_validation": false
-  }
+  "event_id": "...",
+  "scene": "industrial|traffic",
+  "node_id": "...",
+  "region_id": "...",
+  "object_id": "...",
+  "event_ts": 0,
+  "event_type": "...",
+  "risk": 0.0,
+  "perception_confidence": 0.0,
+  "features_ref": "...",
+  "model_version": "..."
 }
 ```
 
-每个数据集均含 `used_train_count`, `used_validation_count`, `used_test_count`, `split_hash`, `final_gate_sample_ids_hash`, `leakage_check_pass`。CityFlow 额外含 `relation_node_count`, `relation_edge_count`, `relation_group_count`, `conflict_group_count`, `vehicle_id_count`。MVTec AD 额外标注官方 test 是否全量进入 Final Gate。NEU-DET 额外标注每类 train/val/test 数量。
-
-G-DATA 通过后: `dataset_manifest.json`, `manifest.json`, `conflict_gt_manifest.json` 中不得存在 `"actual"`, `"实际值"`, `"..."`, `TBD`, `TODO`, `placeholder`, null hash, empty split_hash, empty final_gate_sample_ids_hash。
-
-### 3.3 观测量、学习状态与日志来源表
-
-| # | 状态/表示 | 关联成果 | 来源 | 产物/用途 | 写入日志 |
-|---|----------|---------|------|-----------|---------|
-| 1 | teacher_decision_trace | 1 | 14B 教师 + 标注 | 结构化决策蒸馏标签 | semantic_distill_trace.csv |
-| 2 | student_probe_trace | 1 | 1.5B 学生在 train replay 上的输出 | 学生在环修复样本挖掘; validation probe 只用于诊断不进入训练 | student_probe_trace.csv |
-| 3 | counterfactual_boundary_trace | 1 | 错误样本、低置信样本、冲突样本自动派生 | 工业缺陷边界/交通重复告警/风险等级临界样本 | counterfactual_trace.csv |
-| 4 | quant_behavior_trace | 1 | FP16/INT4 学生模型对同一任务的输出对齐 | 量化行为保持与 G3 复核 | quant_behavior_trace.csv |
-| 5 | evidence_candidate_set | 2 | 感知模块、标注、教师 trace、历史决策 | IBEP 候选证据集合 | evidence_planner_trace.csv |
-| 6 | evidence_plan | 2 | IBEP 证据规划器 | selected_evidence_ids, summary, evidence_sufficiency, review_intent | evidence_planner_trace.csv |
-| 7 | calibrated_risk_state | 2,4,6 | 校准集 + 运行反馈 | 边侧自决/协同/云端复核风险估计 | calibration_trace.csv |
-| 8 | runtime_observation | 3,4 | StateCache fast/slow + network_snapshot | 网络、队列、模型健康、上下文完整性、outbox、任务风险 | runtime_state_trace.csv |
-| 9 | runtime_latent_state | 3 | TARS-SSM | h_t 运行状态表示与路径后果预测 | readiness_metrics.csv |
-| 10 | policy_action_trace | 4 | CPR 路由器 | edge/cloud/coop/weak_autonomy 路径选择与预测后果 | policy_router_trace.csv |
-| 11 | perception_metrics | 1,2,4 | 工业视觉、交通检测/跟踪模块 | AUROC/F1/mAP/MOTA/IDF1/event F1 | perception_results.csv |
-| 12 | decision_tuple | 1,4,5,6 | 边侧/云端/协同路径输出 | event_type, risk_attr, action, confidence, review_intent | decision_tuple_trace.csv |
-| 13 | spatiotemporal_graph_state | 5 | 决策元组、对象轨迹、区域、事件、时间窗口 | ST-HGCI 图输入 | relation_graph_trace.csv |
-| 14 | conflict_inference | 5 | ST-HGCI 图模型 | 关联组、冲突类型、全局决策分布 | conflict_semantics_metrics.csv |
-| 15 | trust_posterior_state | 6 | 冲突校正、ack、复发记录、节点历史 | 节点可信度后验与复核优先级 | trust_calibration_trace.csv |
-| 16 | communication_resource_state | 2,4,6 | runtime + DB + network + LLM serving | 上传字节、云端请求率、token、RSS、CPU、KWDB 写入吞吐 | communication_results.csv, resource_results.csv |
-
-#### 3.3.1 观测量构造细则
-
-**对象与轨迹表示:**
-- CityFlow 优先使用官方 vehicle_id/camera_id/timestamp 作为轨迹监督信号。
-- 缺少 vehicle_id 或跨摄像头 identity 不可靠时，不使用人工加权 fallback。系统从检测框序列、局部图像 crop、事件文本、时间间隔和区域上下文学习 tracklet embedding，由 ST-HGCI 在图中推断潜在关联。
-- UA-DETRAC 仅声明同视频内 track_id 或 derived_tracklet；不把同视频轨迹人工外推为跨摄像头 identity。
-
-**事件链与上下文表示:**
-- 同一 object/region/time window 内的事件按时间构成 event sequence，由轻量序列编码器生成 event_context_embedding。
-- 交通 event_type 包含 normal/slow/congestion/stop/lane_change/abnormal_queue/duplicate_alert_candidate。
-- 工业 event_type 包含 normal/defect_candidate/defect_confirmed/uncertain_inspect/reject/pass。
-
-**证据与风险表示:**
-- evidence_candidate_set 保留证据来源、时间、模态、内容和解析状态，但完整方案不使用人工特征权重。
-- calibrated_risk_state 由 validation calibration set 和运行反馈生成，用于选择性自决/协同/复核；固定人工复核阈值仅出现在 baseline。
-
-### 3.4 研究机制建模
-
-**成果1: CEDD 云边闭环语义蒸馏**
-```
-z_s, y_s = EdgeStudent_theta(x, S)
-z_t, y_t = CloudTeacher(x, S_full)
-y = {event_type, risk_attr, action, confidence, review_intent}
-
-theta* 位于多目标 Pareto 前沿:
-  minimize (D_decision(y_s,y_t), D_state(z_s,z_t), calibration_error, quantized_behavior_drift)
-subject to:
-  Math_ratio/Code_ratio/NLP_ratio/Overall_R_cap 满足 G1
-  P95_RSS_MB_decimal 满足 G3
-  structured_parse_success 与 decision_tuple 完整性通过功能检查
-```
-
-CEDD 包含四类训练 trace: 结构化决策蒸馏、过程压缩蒸馏、学生在环修复、反事实边界蒸馏。学生在环修复只从 train split 的 student_probe_trace 自动挖掘错误、低置信、冲突和量化漂移样本，再由 14B 教师复核生成 repair trace；validation probe 仅用于诊断和模型选择，不进入训练数据。Final Gate 前冻结 teacher prompt、student adapter、repair 数据 hash、calibration snapshot 与 INT4 量化行为报告。
-
-**成果2: IBEP 信息瓶颈证据规划**
-```
-S* = EvidencePlanner_phi(x, E_candidates, runtime_latent_state)
-
-目标: 在候选证据中生成最小充分证据子集, 使边侧结构化决策风险受控
-  minimize Pareto tuple: (decision_risk(Y|x,S), evidence_cost(S), communication_bytes(S))
-subject to:
-  sufficiency(Y|x,S) 通过教师/标注一致性校验
-  runtime budget 来自当前 StateCache 与业务 SLA
-  calibrated_risk 满足 G4/G5 相关业务要求
-```
-
-IBEP 输出 selected_evidence_ids、summary_text、evidence_sufficiency、review_intent。固定摘要、固定 token budget、人工 review threshold 与无风险校准只作为消融。
-
-**成果3: TARS-SSM 多源运行状态空间模型**
-```
-h_t = F_theta(h_{t-1}, o_t)
-p(latency, failure, accuracy_loss, sync_delay | h_t, action) = G_theta(h_t, action)
-```
-
-o_t 来自 network_snapshot、queue_depth、model_health、context_completeness、outbox_backlog、task_risk、recent_success/failure feedback。TARS-SSM 不输出人工 readiness 分数，而是预测不同路径在当前状态下的时延、失败、准确率损失和同步延迟分布，供 CPR 路由器使用。
-
-**成果4: CPR 约束策略路由与弱网自治**
-```
-action_t = pi_theta(h_t), action_t ∈ {edge_only, cloud_only, coop, weak_autonomy}
-
-pi* 选择满足约束的 Pareto 最优路径:
-  minimize (P95_TTFT, P95_E2E, communication_bytes, cloud_request_rate)
-subject to:
-  business_retention 满足 G4
-  P95_E2E 满足 G5
-  error_rate 不劣于校准集允许风险
-  P95_RSS_MB_decimal 满足 G3
-```
-
-CPR 使用离线 trace 训练 + validation 校准。弱网自治路径在 200ms SLA 内输出 provisional decision，网络恢复后由云端校正并通过 outbox 同步。人工 static split、load-based、network-only、boolean readiness 只作为 baseline。
-
-**成果5: ST-HGCI 时空异构图冲突推理**
-```
-G_t = (V_decision, V_object, V_region, V_event,
-       E_spatial, E_temporal, E_tracklet, E_semantic, E_feedback)
-p(C, Y_global | G_t, D_t) = GraphModel_theta(G_t, D_t)
-Y_global* = MAP_Y p(Y_global | G_t, D_t)
-```
-
-ST-HGCI 联合推断关联任务组、冲突类型和全局一致决策。图边由轨迹、区域、时间、事件语义和反馈 trace 学习得到，不使用人工 relation_strength、conflict_strength 或相似度阈值。simple vote、text match、manual similarity、no graph 只作为消融。
-
-**成果6: BTCF 节点可信度后验校准与闭环反馈**
-```
-p(Theta_node | H_t) ∝ p(H_t | Theta_node) p(Theta_node)
-p(Y_global | D_t, G_t, Theta_node) = calibrated_graph_decision
-```
-
-Theta_node 表示节点在任务类型、区域、网络状态、模型版本下的可靠性和偏差状态；H_t 包含历史决策、冲突、云端校正、ack、复发和同步结果。BTCF 不使用人工学习率更新可信度，而是用后验校准影响复核优先级、全局决策和模型/策略反馈。每次 Final Gate 从 frozen initial_trust_posterior_snapshot 开始，在线只依据真实运行日志更新后验状态。
-
-### 3.5 网络 profile、workload profile、train/val/test 隔离
-
-```yaml
-# configs/network_profiles.yaml — 冻结
-normal:         {delay_ms:0, jitter_ms:0, loss_pct:0, bandwidth_mbps:null, disconnect:false}
-high_delay:     {delay_ms:100, jitter_ms:20, loss_pct:0, bandwidth_mbps:null, disconnect:false}
-low_bandwidth:  {delay_ms:0, jitter_ms:0, loss_pct:0, bandwidth_mbps:1, disconnect:false}
-high_loss:      {delay_ms:0, jitter_ms:0, loss_pct:5, bandwidth_mbps:null, disconnect:false}
-short_disconnect: {delay_ms:0, jitter_ms:0, loss_pct:0, bandwidth_mbps:null, disconnect:true, down_s:5, period_s:60}
-
-# configs/workload_profiles.yaml — 冻结
-stable:   {arrival:fixed_rate, rates:[1,2,5,10], duration_s:300}
-burst:    {arrival:burst, base_rate:2, burst_factor:3, burst_duration_s:30, total_duration_s:300}
-replay:   {arrival:dataset_timestamp, preserve_order:true, duration_s:300}
-scale:    {edge_nodes:[2,4,8], relation_ratio:[0.10,0.25,0.40], duration_s:300}
-```
-
-上述 profile 仅用于实验复现和压力测试，不作为在线路径策略、证据规划或冲突推理模型的人工规则输入。
-
-train/val/test 隔离硬规则:
-- train trace/distill: GSM8K train · NEU-DET train(70%) · CityFlow train
-- validation: NEU-DET val · CityFlow val；CMMLU dev 仅用于评测 parser/格式检查，不进入蒸馏训练
-- test (主实验 Final Gate, seed=42): GSM8K 500 · HumanEval 164 · CMMLU 1000 · NEU-DET test 360 · CityFlow test
-- support-only: MMLU · MVTec AD · UA-DETRAC 不进入第 2 章主实验
-- test 不进入蒸馏/SFT/planner/policy/graph/calibration 训练或 validation 调参
-
----
-
-## 4. Schema 与冲突 ground truth 协议
-
-### 4.1 八个 Schema
-
-所有 schema 统一含: `schema_version`, `created_by`, `split`, `source_dataset`, `sample_hash`, `created_ts`
-
-**semantic_distill_schema.json:** evidence_items[] + decision_tuple (object_state, event_type, risk_attr, action, confidence, review_intent, short_rationale) + teacher_trace + student_probe_trace + repair_trace + quant_behavior_trace
-
-**evidence_planner_schema.json:** evidence_candidates[] + evidence_plan (selected_evidence_ids, summary_text, evidence_sufficiency, review_intent) + planner_model_hash + calibration_snapshot_hash
-
-**runtime_state_schema.json:** task_id, edge_node_id, network_snapshot, queue_state, model_health, context_state, outbox_state, task_risk, runtime_latent_state_hash, predicted_path_outcomes
-
-**policy_action_schema.json:** task_id, runtime_state_hash, selected_path(edge_only|cloud_only|coop|weak_autonomy), predicted_outcome_distribution, actual_outcome, policy_snapshot_hash
-
-**decision_tuple_schema.json:** decision_tuple_id, task_id, scene, dataset, edge_node_id, decision_ts, object_id, region_id, event_id, relation_group_id, conflict_group_id, network_profile, workload_profile, object_state, event_type, risk_attr, action, confidence, review_intent, is_provisional, selected_path, source
-
-**relation_graph_schema.json:** graph_id, nodes[] (decision/object/region/event), edges[] (spatial/temporal/tracklet/semantic/feedback), graph_model_hash, graph_input_hash, source_split
-
-**conflict_inference_schema.json:** relation_group_id, conflict_group_id, conflict_type_distribution, global_decision_distribution, final_global_decision, conflict_gt, label_source, conflict_gt_manifest_hash, graph_model_hash, event_id
-
-**trust_posterior_schema.json:** edge_node_id, task_type (industrial_defect|traffic_event), posterior_state, posterior_snapshot_hash, correction_history_hash, ack_state, recurrence_state, network_profile, workload_profile
-
-### 4.2 conflict_gt_manifest.json
+`DecisionTuple` 最少包含：
 
 ```json
 {
-  "manifest_version": "1.0",
-  "created_by": "scripts/build_conflict_gt.py",
-  "created_ts": "float",
-  "datasets": ["CityFlow", "MVTec AD", "NEU-DET"],
-  "split": "train|validation|test|all",
-  "conflict_groups": [{
-    "conflict_group_id": "str",
-    "event_id": "str",
-    "node_ids": ["str"],
-    "conflict_type_gt": "class_conflict|risk_conflict|action_conflict|duplicate_alert|none",
-    "global_decision_gt": {
-      "event_type": "str",
-      "risk_attr": "low|medium|high",
-      "action": "pass|reject|inspect|alert|ignore|upload"
-    },
-    "label_source": "cityflow_annotation|derived_rule|manual_review|industrial_label",
-    "source_dataset": "str",
-    "time_window_id": "str"
-  }],
-  "conflict_group_count": "int",
-  "conflict_type_distribution": "dict",
-  "manifest_hash": "str"
+  "decision_id": "...",
+  "event_id": "...",
+  "action": "...",
+  "risk": 0.0,
+  "confidence": 0.0,
+  "path": "edge_fast|edge_llm|cloud|edge_then_cloud",
+  "provisional": true,
+  "reason_code": "...",
+  "deadline_ms": 200,
+  "policy_version": "..."
 }
 ```
 
-### 4.3 冲突 ground truth 构造协议
+### 4.3 模型和策略分发
 
-1. conflict_gt 在系统推理前由构造脚本生成
-2. 不由 DB4AI-EdgeServe 的冲突检测结果反推
-3. 不由被评估的边侧模型输出决定
-4. traffic conflict_gt 优先由 CityFlow vehicle_id/camera_id/timestamp/derived_event 派生
-5. industrial conflict_gt 由标签、区域、时间窗口和构造事件组派生
-6. 每个 conflict_group_id 记录 label_source
-7. 构造脚本输出 conflict_gt_manifest.json
-8. conflict_gt_manifest.json hash 写入 dataset_manifest.json
-9. G6 final 以 final test 中所有重叠感知区域或关联任务组为分母；G7 final 以 conflict_gt=true 的真实冲突组为分母
-10. CityFlow traffic/combined 是 G6/G7 主评测来源；industrial conflict_gt 进入 combined 和支撑分析，若 final relation_group_count 足够可单独报告
+云端模型更新闭环必须进入原型，而不是只写在报告中：
 
----
+1. 云端根据 train/运行反馈生成候选 adapter 或策略；
+2. validation 通过后写入 model registry；
+3. 产物分块、SHA256 校验并使用签名元数据；
+4. 边缘节点断点续传到 staging；
+5. 完整性、兼容性和 smoke 验证通过后原子激活；
+6. 失败自动回滚上一版本；
+7. 节点 ack 和当前版本写回 KWDB；
+8. 灰度发布期间不同版本的决策进入 GraphTrust 版本一致性检查。
 
-## 5. 研究机制与实验验证映射
+正式演示至少包含一次弱网中断、恢复续传、成功激活或失败回滚。
 
-| 成果 | 阶段 | 核心消融（正文） | 附录消融 | 核心指标 | 支撑指标 | 关键日志 |
-|------|------|----------------|---------|---------|---------|---------|
-| 成果1 CEDD | P0-A | Plain SFT/KD vs 云边闭环语义蒸馏 | 无学生在环修复, 无反事实边界蒸馏, 无量化行为保持 | G1,G3 | 结构化解析成功率, 风险/动作一致率, 量化漂移, 复核意图校准误差 | semantic_distill_trace.csv, student_probe_trace.csv, counterfactual_trace.csv, quant_behavior_trace.csv |
-| 成果2 IBEP | P0-B | 固定摘要 vs 信息瓶颈证据规划 | 固定 token budget, 人工 review threshold, 无风险校准 | G2,G5 | 证据充分性, 字段保留完整率, 风险证据保留率, 云端复核有效率 | evidence_planner_trace.csv, calibration_trace.csv |
-| 成果3 TARS-SSM | P0-B→P1 | 固定布尔检查 vs 多源运行状态空间模型 | 仅网络状态, 仅负载状态, 无历史反馈 | G2,G5 | 路径后果预测误差, 状态缺失识别准确率, 调度失败比例 | runtime_state_trace.csv, readiness_metrics.csv |
-| 成果4 CPR | P0-B,P1-Reg | Load-based vs 约束策略路由+弱网自治 | Static-Split, Network-only, 无弱网自治 | G2,G4,G5 | 路径选择比例, 云端请求率, 上传字节数, provisional 校正率 | policy_router_trace.csv, weak_autonomy_trace.csv, communication_results.csv |
-| 成果5 ST-HGCI | P1 | 简单投票 vs 时空异构图冲突推理 | 文本匹配, 人工相似度, 无图结构 | G6 | 关联识别 F1, 冲突检测召回率, 冲突类型识别准确率, 全局决策一致率 | relation_graph_trace.csv, conflict_semantics_metrics.csv |
-| 成果6 BTCF | P1 | 云端单次校正 vs 节点可信度后验校准+反馈 | 云端投票, 无反馈, 固定节点可信度 | G7,G6 | 重复冲突下降比例, 校准后复发率, ack 成功率, 边缘反馈生效率 | trust_calibration_trace.csv, feedback_effect_metrics.csv |
+### 4.4 冻结与审计
 
-消融仅在 validation split 执行。正文 1组核心消融/成果。成果1-2: normal; 成果3: normal+high_delay; 成果4: 四类网络; 成果5-6: traffic+combined。
+Final Freeze 前必须冻结：
 
-SCU_support: 300题, independent_support_sources 生成, 不与 distill_dataset.jsonl 重合, `used_for_training=false, used_for_validation=false, used_for_final_support=true`。scu_sample_hash 写入 dataset_manifest.json。
+- git commit；
+- train/validation/test split hash；
+- 模型、adapter、量化产物和 runtime；
+- 感知器、路由器、图模型和可信度快照；
+- 网络与负载 profile；
+- prompt、parser、schema 和动作安全约束；
+- 所有指标脚本；
+- baseline 配置；
+- 随机种子和重复次数。
 
----
-
-## 6. 数据库、StateCache 与语义证据规划器
-
-### 6.1 StateCache 分层
-
-```
-fast (20-50ms刷新):  network_status, queue_depth, edge_service_health, outbox_backlog
-  → TARS-SSM runtime_observation 来源
-  字段: RTT, bandwidth, loss_rate, disconnect_flag, pending_task_count, server_healthy
-
-slow (500-1000ms刷新): model_version, policy_version, conflict_history, trust_posterior
-  → TARS-SSM context/trust observation 来源
-  字段: active_model_version, active_policy_version, related_task_status,
-        conflict_risk_state, posterior_snapshot_hash
-```
-
-CPR 调度关键路径只读 StateCache 与 TARS-SSM cached prediction，不执行 DB I/O。调度延迟目标 <1ms。异步写回不计入。
-
-### 6.2 KWDB Docker 部署
-
-```bash
-docker pull kwdb/kwdb:2.2.0
-docker run -d --name kwdb-cloud --privileged --ulimit memlock=-1 \
-  -p 26257:26257 -p 8080:8080 \
-  -v /home/qhq/DB4AI-EdgeServe/data/kwdb:/kaiwudb/deploy/kaiwudb-container \
-  -w /kaiwudb/bin kwdb/kwdb:2.2.0 \
-  ./kwbase start-single-node --insecure --listen-addr=0.0.0.0:26257 \
-    --http-addr=0.0.0.0:8080 --store=/kaiwudb/deploy/kaiwudb-container
-docker exec -i kwdb-cloud ./kwbase sql --insecure --host=127.0.0.1 < sql/cloud_schema.sql
-```
-
-边缘侧: PostgreSQL Docker 或 SQLite（outbox 表），sync agent 自实现。
-
-### 6.3 IBEP 语义证据规划器
-
-```
-文件: models/ibep_evidence_planner.pt
-输入: evidence_candidate_set + task_context + runtime_latent_state + calibrated_risk_state
-输出: selected_evidence_ids, summary_text, evidence_sufficiency, review_intent
-训练: 14B 教师、标注数据和 student_probe_trace 在 train split 生成 planner_train.jsonl
-      validation split 仅用于校准与模型选择; 运行时不调用 14B 教师
-manifest: planner_model_path, planner_model_hash, planner_train_split_hash,
-          planner_validation_metric, calibration_snapshot_hash, planner_freeze_ts
-```
+工程路径修复可以重新运行，但必须记录原因和 hash。正式 test 结果不得用于修改模型、阈值或数据。
 
 ---
 
-## 7. P0-A：基础设施与成果1实验
+## 5. 实验设计
 
-### 7.0 P0-A0 Preflight
+### 5.1 公平基线
 
-```bash
-# 1. 基础 INT4 内存与短字段输出烟测
-python3 scripts/preflight_edge_runtime.py \
-    --student_init Qwen/Qwen2.5-1.5B-Instruct \
-    --quant_format Q4_K_M \
-    --measure_requests 100 \
-    --output reports/preflight_edge_runtime.json
+| 方案 | 描述 |
+|---|---|
+| Cloud-only | 感知摘要全部上传云端 14B，云端直接给出短决策 |
+| Edge-only | 所有任务只在边缘运行，不使用云端校正和全局仲裁 |
+| Static-split | 按固定任务类型决定云或边 |
+| Load-only | 只根据当前网络/负载阈值动态路由 |
+| DB4AI-EdgeServe | EdgeLite + SafeRoute + GraphTrust + KWDB 闭环 |
 
-# 2. 100题能力与结构化 action header smoke
-python3 scripts/preflight_capability_smoke.py \
-    --teacher_url http://localhost:8000 \
-    --student_init Qwen/Qwen2.5-1.5B-Instruct \
-    --sample_count 100 \
-    --output reports/preflight_capability_smoke.json
+所有方案共享原始数据顺序、感知结果、动作 schema、硬件资源上限、并发负载、网络 profile 和观测窗口。对不适用组件不得偷偷提供额外缓存或 ground truth。
 
-# 3. 推理后端对比: RSS、TTFT、business_action_header parse success
-python3 scripts/preflight_backend_compare.py \
-    --backends llama_cpp,vllm,transformers \
-    --output reports/preflight_backend_compare.csv
-```
+### 5.2 网络与负载
 
-P0-A0 通过条件:
-- base/student INT4 稳态 RSS 明显低于 G3-final 1500 MB(decimal), 且记录 KV cache/context 设置。
-- business_action_header parse success ≥95% (smoke), P95 action_header_latency ≤250ms 且 P50 ≤200ms；未达到时不得进入 P0-B 完整系统调试。
-- G1 smoke 不作为 hard gate, 但若 Math/Code/NLP 任一维度明显低于预期, 必须先补 CEDD 数据与训练策略再进入 P0-A 完整训练。
-- 输出 `preflight_report_hash` 写入 manifest.json。
+开发阶段沿用 `configs/network_profiles.yaml` 和 `configs/workload_profiles.yaml`，在 Final Freeze 前根据实测确认并冻结。至少包含：
 
-### 7.1 G-DATA
+- 正常网络；
+- 100ms 延迟 + 20ms 抖动；
+- 1Mbps 低带宽；
+- 5% 丢包；
+- 每 60 秒断网 5 秒；
+- stable、burst、dataset replay；
+- 2、4、8 个逻辑边缘节点扩展实验。
 
-```bash
-bash scripts/setup_datasets.sh
-python3 scripts/validate_splits.py --check_leakage
-python3 scripts/build_conflict_gt.py \
-    --dataset_manifest dataset_manifest.json \
-    --output conflict_gt_manifest.json \
-    --audit_csv reports/conflict_gt_audit.csv \
-    --sample_audit_json reports/conflict_gt_sample_audit.json
-# G-DATA 通过条件: manifest 无占位符(actual/实际值/TBD/TODO/placeholder/null hash/empty hash);
-#   validation 与 final test 分别满足 conflict_group_count>=50, relation_edge_count>=200, relation_group_count>=200;
-#   conflict_gt_manifest 无空字段; conflict_gt_audit.csv 记录 label_source/type/group 分布;
-#   sample_audit_json 随机抽样检查 conflict groups, hash 写入 manifest
-```
+网络使用 `tc/netem` 或等价的可审计注入方式，保存实际采样而不是只保存配置值。
 
-### 7.2 G-DB
+### 5.3 重复与统计
 
-```bash
-docker pull kwdb/kwdb:2.2.0
-docker run -d --name kwdb-cloud --privileged --ulimit memlock=-1 \
-  -p 26257:26257 -p 8080:8080 \
-  -v /home/qhq/DB4AI-EdgeServe/data/kwdb:/kaiwudb/deploy/kaiwudb-container \
-  -w /kaiwudb/bin kwdb/kwdb:2.2.0 \
-  ./kwbase start-single-node --insecure --listen-addr=0.0.0.0:26257 --http-addr=0.0.0.0:8080
-docker exec -i kwdb-cloud ./kwbase sql --insecure --host=127.0.0.1 < sql/cloud_schema.sql
-python3 scripts/verify_gate_db.py
-```
+- 能力评测：确定性解码，冻结测试集运行一次，保留逐样本结果；
+- 系统性能：每个方案×场景×网络 profile 至少 3 次独立重复；
+- 每次预热后正式观测不少于 300 秒或不少于 500 个任务；
+- 报告 mean、P50、P95、标准差及 95% bootstrap 置信区间；
+- 正式结果聚合全部预定重复，不选择最佳轮次；
+- 机器时间同步，所有 trace 使用单调时钟计算持续时间。
 
-### 7.3 G-CLOUD
+### 5.4 感知和决策支撑指标
 
-```bash
-vllm serve Qwen/Qwen2.5-14B-Instruct-AWQ --quantization awq \
-  --max-model-len 4096 --gpu-memory-utilization 0.85 --tensor-parallel-size 1 --port 8000 &
-python3 scripts/verify_gate_cloud.py
-```
+除 G1-G7 外，必须报告：
 
-### 7.4 成果1: CEDD 云边闭环语义蒸馏
+- 工业：precision、recall、F1、漏检率；
+- 交通：事件准确率、目标关联准确率/IDF1（按最终任务定义选取）；
+- 云端请求率、上传字节数、带宽峰值；
+- 边缘 CPU/内存、云端 GPU 利用率；
+- 模型更新成功率、断点续传和回滚时间；
+- KWDB 查询延迟、outbox 补传率和冲突追溯耗时。
 
-```bash
-# 教师结构化决策与短证据链生成
-python3 model_compression/generate_teacher_traces.py \
-    --teacher_url http://localhost:8000 \
-    --gsm8k_split train --mmlu_split train --cmmlu_split non_final_train_or_synthetic \
-    --mvtec_train_only --neu_split train --cityflow_split train \
-    --output_distill data/distill/distill_dataset.jsonl \
-    --output_teacher_trace data/distill/teacher_decision_trace.jsonl
+### 5.5 核心消融
 
-# 普通 KD 消融
-python3 model_compression/train_sft_plain_kd.py \
-    --config configs/models.yaml \
-    --student_init Qwen/Qwen2.5-1.5B-Instruct \
-    --distill_data data/distill/distill_dataset.jsonl \
-    --output_dir models/adapters/plain_kd
+只保留能够回答明确问题的消融：
 
-# CEDD 第一阶段: 结构化决策蒸馏
-CUDA_VISIBLE_DEVICES=2 python3 model_compression/train_cedd_structured.py \
-    --config configs/models.yaml \
-    --student_init Qwen/Qwen2.5-1.5B-Instruct \
-    --teacher_trace data/distill/teacher_decision_trace.jsonl \
-    --output_dir models/adapters/cedd_structured
+1. 无蒸馏/量化能力保护：证明 EdgeLite；
+2. 固定路由与仅负载路由：证明 SafeRoute；
+3. 无弱网自治：证明 G4 的来源；
+4. 无关系图与固定多数投票：证明 GraphTrust；
+5. 固定节点可信度：证明反馈校准；
+6. 无 KWDB outbox/model registry：证明数据底座价值。
 
-# 学生在环探测与反事实边界样本挖掘
-python3 model_compression/run_student_probe.py \
-    --adapter_path models/adapters/cedd_structured \
-    --dataset_manifest dataset_manifest.json \
-    --split train \
-    --output_probe data/distill/student_probe_trace.jsonl
-python3 model_compression/mine_counterfactual_repairs.py \
-    --teacher_url http://localhost:8000 \
-    --probe_trace data/distill/student_probe_trace.jsonl \
-    --output_repair data/distill/counterfactual_repair_trace.jsonl
-
-# CEDD 第二阶段: 修复蒸馏 + 校准蒸馏
-CUDA_VISIBLE_DEVICES=2 python3 model_compression/train_cedd_repair.py \
-    --config configs/models.yaml \
-    --student_init Qwen/Qwen2.5-1.5B-Instruct \
-    --teacher_trace data/distill/teacher_decision_trace.jsonl \
-    --repair_trace data/distill/counterfactual_repair_trace.jsonl \
-    --output_dir models/adapters/cedd_repair
-
-# INT4 GGUF + 量化行为保持验证
-python3 model_compression/merge_quantize_and_verify.py \
-    --student_init Qwen/Qwen2.5-1.5B-Instruct \
-    --adapter_path models/adapters/cedd_repair \
-    --output_gguf models/db4ai-edge-1.5b-kd-int4-Q4_K_M.gguf \
-    --output_quant_trace data/distill/quant_behavior_trace.jsonl
-```
-
-### 7.5 P0-A 通过条件
-
-```
-G-DATA ✅  G-DB ✅  G-CLOUD ✅  G-KD-TRACE ✅  G1-dev ✅  G3-dev ✅  →  P0-B
-```
+不再为每个模块设计大量名称不同但结论重复的变体。
 
 ---
 
-## 8. P0-B：最小系统与成果2/3/4实验
+## 6. 分阶段实施
 
-### 8.1 启动边侧服务 + 最小系统
+### P0：联合可行性与路线冻结（3 个工作日）
 
-```bash
-bash scripts/start_edge_llm.sh
-python3 experiments/run_minimal_system.py \
-    --config final_config_dev.yaml \
-    --dataset_manifest dataset_manifest.json \
-    --split train \
-    --network_profiles configs/network_profiles.yaml \
-    --workload_profiles configs/workload_profiles.yaml \
-    --output_dir results/dev_train
-python3 experiments/run_minimal_system.py \
-    --config final_config_dev.yaml \
-    --dataset_manifest dataset_manifest.json \
-    --split validation \
-    --network_profiles configs/network_profiles.yaml \
-    --workload_profiles configs/workload_profiles.yaml \
-    --output_dir results/dev
-# 输出: runtime_state_trace.csv, decision_tuple_trace.csv, ttft/e2e preliminary metrics
-```
+任务：
 
-### 8.2 成果2: IBEP 语义证据规划与风险校准复核
+- 完成 3B 低位量化、1.5B INT4 与 Qwen3-1.7B Q4 的最小真实内存测试；
+- 完成 100 题能力 smoke、短 action 输出和业务 context 测试；
+- 按止损规则完成或终止 v31；
+- 冻结主边缘候选、备用候选和 G1/G3 完整评测计划。
 
-```bash
-python3 model_compression/build_planner_training_data.py \
-    --teacher_trace data/distill/teacher_decision_trace.jsonl \
-    --student_probe data/distill/student_probe_trace.jsonl \
-    --dataset_manifest dataset_manifest.json \
-    --output data/distill/planner_train.jsonl
-python3 model_compression/train_evidence_planner.py \
-    --train_data data/distill/planner_train.jsonl \
-    --output models/ibep_evidence_planner.pt
+退出条件：至少一个候选在 G1/G3 Dev 上具有明确可达路径。当前 0/9，P0 不退出；下一循环只允许在 920.23MB 的 DeepSeek Q2 基座上做量化感知蒸馏、格式恢复或结构化工具头，不再继续枚举模型。
 
-python3 experiments/run_ablation_evidence.py \
-    --config final_config_dev.yaml \
-    --dataset_manifest dataset_manifest.json \
-    --planner_model models/ibep_evidence_planner.pt \
-    --split validation \
-    --network_profile normal \
-    --workload_profile replay \
-    --variant fixed_summary \
-    --output_dir results/ablation/evidence_fixed
-python3 experiments/run_ablation_evidence.py \
-    --config final_config_dev.yaml \
-    --dataset_manifest dataset_manifest.json \
-    --planner_model models/ibep_evidence_planner.pt \
-    --split validation \
-    --network_profile normal \
-    --workload_profile replay \
-    --variant ibep_evidence_planner \
-    --output_dir results/ablation/evidence_ibep
-# 附录: --variant fixed_token_budget, --variant manual_review_threshold, --variant no_risk_calibration
-```
+### P1：两场景最小完整闭环（第 1–2 周）
 
-### 8.3 成果3: TARS-SSM 运行状态建模
+任务：
 
-```bash
-python3 experiments/train_runtime_state_model.py \
-    --config final_config_dev.yaml \
-    --dataset_manifest dataset_manifest.json \
-    --runtime_trace results/dev_train/runtime_state_trace.csv \
-    --output models/tars_ssm_state_model.pt
+- 建立工业、交通两个感知插件；
+- 落地 `EdgeEvent`、`DecisionTuple` 和动作安全约束；
+- 跑通边缘决策、云端复核、KWDB 写入和最终动作返回；
+- 建立 2 个边缘节点 + 1 个云节点的可演示部署；
+- 先用规则路由/多数仲裁跑通全链路，形成 baseline。
 
-python3 experiments/run_ablation_runtime_state.py \
-    --config final_config_dev.yaml \
-    --dataset_manifest dataset_manifest.json \
-    --runtime_model models/tars_ssm_state_model.pt \
-    --split validation \
-    --network_profile normal \
-    --workload_profile replay \
-    --variant boolean_readiness \
-    --output_dir results/ablation/state_boolean
-python3 experiments/run_ablation_runtime_state.py \
-    --config final_config_dev.yaml \
-    --dataset_manifest dataset_manifest.json \
-    --runtime_model models/tars_ssm_state_model.pt \
-    --split validation \
-    --network_profile normal \
-    --workload_profile replay \
-    --variant tars_ssm \
-    --output_dir results/ablation/state_tars_ssm
-# 附录: --variant only_network, --variant only_load, --variant no_feedback_history (high_delay 网络)
-```
+退出条件：两个场景均能离线运行，断云后仍产生有效动作；端到端 trace 字段完整。
 
-### 8.4 成果4: CPR 约束策略路由与弱网自治
+### P2：EdgeLite 正式冻结（第 2–3 周）
 
-```bash
-python3 experiments/train_policy_router.py \
-    --config final_config_dev.yaml \
-    --dataset_manifest dataset_manifest.json \
-    --runtime_model models/tars_ssm_state_model.pt \
-    --runtime_trace results/dev_train/runtime_state_trace.csv \
-    --output models/cpr_policy_router.pt
+任务：
 
-for net in high_delay low_bandwidth high_loss short_disconnect; do
-  python3 experiments/run_ablation_policy_router.py \
-    --config final_config_dev.yaml \
-    --dataset_manifest dataset_manifest.json \
-    --runtime_model models/tars_ssm_state_model.pt \
-    --policy_model models/cpr_policy_router.pt \
-    --split validation \
-    --network_profile "$net" \
-    --workload_profile replay \
-    --variant load_based \
-    --output_dir "results/ablation/path_load_${net}"
-  python3 experiments/run_ablation_policy_router.py \
-    --config final_config_dev.yaml \
-    --dataset_manifest dataset_manifest.json \
-    --runtime_model models/tars_ssm_state_model.pt \
-    --policy_model models/cpr_policy_router.pt \
-    --split validation \
-    --network_profile "$net" \
-    --workload_profile replay \
-    --variant constrained_policy_router \
-    --output_dir "results/ablation/path_cpr_${net}"
-done
-# 附录: --variant static_split, --variant network_only, --variant no_weak_autonomy
-```
+- 完成边缘模型蒸馏/量化候选选择；
+- 运行 validation G1/G3；
+- 冻结模型、parser、context 和运行时；
+- 完成正式 G1/G3 与量化前后对比。
 
-### 8.5 G-Support-Perception
+退出条件：G1、G3 达标。若只能通过其中一项，模型不得进入最终方案。
 
-```bash
-python3 experiments/run_perception_support.py \
-    --config final_config_dev.yaml \
-    --dataset_manifest dataset_manifest.json \
-    --feature_mode replay \
-    --output_dir results/perception
-python3 experiments/run_perception_support.py \
-    --config final_config_dev.yaml \
-    --dataset_manifest dataset_manifest.json \
-    --feature_mode online_smoke \
-    --output_dir results/perception_online_smoke
-# 输出: perception_results.csv, decision_quality_results.csv,
-#       perception_latency_breakdown.csv, online_smoke_report.json
-```
+### P3：SafeRoute 与弱网实验（第 3–4 周）
 
-### 8.6 P0-B 通过条件
+任务：
 
-```
-成果2消融 ✅  成果3消融 ✅  成果4消融 ✅
-G2-dev ✅  G4-dev ✅  G5-dev ✅  G-Support-Perception ✅  →  P1
-```
+- 采集网络、资源、置信度、风险和路径收益训练 trace；
+- 训练小型约束路由器并加入规则安全兜底；
+- 实现 provisional action、异步 cloud correction 和 outbox；
+- 完成 G2/G4/G5 Dev Gate 与基线对比。
+
+退出条件：两个场景 G2/G4/G5 全部达到 Dev Gate，弱网失败样本可以从 trace 复盘。
+
+### P4：GraphTrust 与模型分发（第 4–5 周）
+
+任务：
+
+- 冻结 relation group 和 conflict ground truth；
+- 实现关系图、冲突检测、唯一仲裁、可信度更新和 ack；
+- 实现模型 registry、断点续传、原子切换及回滚；
+- 完成 G6/G7 Dev Gate 与核心消融。
+
+退出条件：G6/G7 达到 Dev Gate；弱网恢复后决策和模型版本最终一致。
+
+### P5：集成回归与扩展实验（第 5–6 周）
+
+任务：
+
+- 运行五方案公平对比；
+- 运行两个场景、五种网络、三种负载和 2/4/8 节点实验；
+- 完成通信、资源、稳定性、扩展性与 KWDB 消融；
+- 修复工程问题并冻结最终配置。
+
+退出条件：G1-G7 均达到 Dev Gate；没有 placeholder、缺失 trace 或无法复现的指标。
+
+### P6：Final Gate 与交付（第 7 周）
+
+任务：
+
+- 执行 Final Freeze 和 hash 审计；
+- 按预定重复次数运行正式集；
+- 自动生成 G1-G7 summary 和评分项对照表；
+- 形成报告、视频、部署包和答辩材料。
+
+退出条件：交付包可在干净环境按 README 复现核心演示和主要表格。
 
 ---
 
-## 9. P1：完整系统与成果5/6实验
+## 7. 工程交付结构
 
-### 9.1 P1 多节点决策重放
+下列为目标结构；当前不存在的文件是待实现交付物，不视为已经完成：
 
-```bash
-python3 experiments/run_multinode_decision_replay.py \
-    --config integrated_dev_config.yaml \
-    --dataset_manifest dataset_manifest.json \
-    --split train \
-    --scenario traffic,combined \
-    --network_profile normal \
-    --workload_profile replay \
-    --output_dir results/p1_multinode_train
-python3 experiments/run_multinode_decision_replay.py \
-    --config integrated_dev_config.yaml \
-    --dataset_manifest dataset_manifest.json \
-    --split validation \
-    --scenario traffic,combined \
-    --network_profile normal \
-    --workload_profile replay \
-    --output_dir results/p1_multinode
-# 输出: p1_multinode_train/decision_tuple_trace.csv 和 p1_multinode/decision_tuple_trace.csv
+```text
+edge/
+  perception/                 两场景感知插件
+  decision/                   action header、边缘 LLM 和安全约束
+cloud/
+  inference/                  云端全量模型复核
+  model_registry/             模型/策略分发与回滚
+scheduler/
+  saferoute.py                状态感知路径选择
+consistency/
+  graphtrust.py               关系图、仲裁、可信反馈
+storage/
+  kwdb_repository.py          事件、状态、outbox、版本和审计访问层
+experiments/
+  run_capability_gate.py
+  run_memory_gate.py
+  run_system_benchmark.py
+  run_conflict_benchmark.py
+  run_final_gate.py
+configs/
+  network_profiles.yaml
+  workload_profiles.yaml
+  actions_industrial.yaml
+  actions_traffic.yaml
+results/final/
+reports/final/
 ```
 
-### 9.2 构造 ST-HGCI 时空异构图
-
-```bash
-python3 experiments/build_sthgci_graph.py \
-    --decision_trace results/p1_multinode_train/decision_tuple_trace.csv \
-    --dataset_manifest dataset_manifest.json \
-    --conflict_gt_manifest conflict_gt_manifest.json \
-    --output_dir results/relation_graph_train
-python3 experiments/train_sthgci_graph_model.py \
-    --graph_dir results/relation_graph_train \
-    --dataset_manifest dataset_manifest.json \
-    --conflict_gt_manifest conflict_gt_manifest.json \
-    --output models/sthgci_graph_model.pt
-python3 experiments/build_sthgci_graph.py \
-    --decision_trace results/p1_multinode/decision_tuple_trace.csv \
-    --dataset_manifest dataset_manifest.json \
-    --conflict_gt_manifest conflict_gt_manifest.json \
-    --output_dir results/relation_graph
-```
-
-### 9.3 成果5: ST-HGCI 多节点冲突语义推理
-
-```bash
-python3 experiments/run_ablation_conflict_semantics.py \
-    --config integrated_dev_config.yaml \
-    --dataset_manifest dataset_manifest.json \
-    --conflict_gt_manifest conflict_gt_manifest.json \
-    --split validation \
-    --network_profile normal \
-    --workload_profile replay \
-    --graph_model models/sthgci_graph_model.pt \
-    --variant simple_vote \
-    --output_dir results/ablation/conflict_vote
-python3 experiments/run_ablation_conflict_semantics.py \
-    --config integrated_dev_config.yaml \
-    --dataset_manifest dataset_manifest.json \
-    --conflict_gt_manifest conflict_gt_manifest.json \
-    --split validation \
-    --network_profile normal \
-    --workload_profile replay \
-    --graph_model models/sthgci_graph_model.pt \
-    --variant sthgci_graph_conflict \
-    --output_dir results/ablation/conflict_sthgci
-# 附录: --variant text_match, --variant manual_similarity, --variant no_relation_graph
-```
-
-### 9.4 构造校正历史
-
-```bash
-python3 experiments/build_correction_history.py \
-    --decision_trace results/p1_multinode_train/decision_tuple_trace.csv \
-    --conflict_gt_manifest conflict_gt_manifest.json \
-    --split train \
-    --output results/p1_multinode_train/correction_history.jsonl
-python3 experiments/build_correction_history.py \
-    --decision_trace results/p1_multinode/decision_tuple_trace.csv \
-    --conflict_gt_manifest conflict_gt_manifest.json \
-    --split validation \
-    --output results/p1_multinode/correction_history.jsonl
-```
-
-### 9.5 初始化节点可信度后验
-
-```bash
-python3 experiments/init_trust_posterior.py \
-    --dataset_manifest dataset_manifest.json \
-    --correction_history results/p1_multinode_train/correction_history.jsonl \
-    --output initial_trust_posterior_snapshot.json
-```
-
-若 correction_history 不足以估计节点级后验，使用 train split 的标注先验与运行日志初始化，并在 manifest.json 记录 `initial_trust_posterior_source = train_prior_or_default_init`。该 fallback 只用于初始化，不允许在 Final Gate 后人工调整。
-
-### 9.6 成果6: BTCF 节点可信度校准与闭环反馈
-
-```bash
-python3 experiments/run_ablation_trust_calibration.py \
-    --config integrated_dev_config.yaml \
-    --dataset_manifest dataset_manifest.json \
-    --conflict_gt_manifest conflict_gt_manifest.json \
-    --graph_model models/sthgci_graph_model.pt \
-    --trust_snapshot initial_trust_posterior_snapshot.json \
-    --split validation \
-    --network_profile normal \
-    --workload_profile replay \
-    --variant cloud_single_correction \
-    --output_dir results/ablation/trust_single
-python3 experiments/run_ablation_trust_calibration.py \
-    --config integrated_dev_config.yaml \
-    --dataset_manifest dataset_manifest.json \
-    --conflict_gt_manifest conflict_gt_manifest.json \
-    --graph_model models/sthgci_graph_model.pt \
-    --trust_snapshot initial_trust_posterior_snapshot.json \
-    --split validation \
-    --network_profile normal \
-    --workload_profile replay \
-    --variant bayesian_trust_calibration_feedback \
-    --output_dir results/ablation/trust_feedback
-# 附录: --variant cloud_vote, --variant no_feedback, --variant fixed_node_trust
-```
-
-### 9.7 P1 集成运行
-
-```bash
-python3 experiments/run_integrated_dev.py \
-    --config integrated_dev_config.yaml \
-    --dataset_manifest dataset_manifest.json \
-    --conflict_gt_manifest conflict_gt_manifest.json \
-    --planner_model models/ibep_evidence_planner.pt \
-    --runtime_model models/tars_ssm_state_model.pt \
-    --policy_model models/cpr_policy_router.pt \
-    --graph_model models/sthgci_graph_model.pt \
-    --trust_snapshot initial_trust_posterior_snapshot.json \
-    --network_profiles configs/network_profiles.yaml \
-    --workload_profiles configs/workload_profiles.yaml \
-    --output_dir results/integrated_dev
-```
+所有正式实验入口支持：固定 seed、配置文件、manifest、输出目录、resume 仅限基础设施失败，以及 `--dry-run`。
 
 ---
 
-## 10. P1-Regression
+## 8. 风险、触发条件与替代方案
 
-```bash
-python3 experiments/run_regression_dev.py \
-    --config integrated_dev_config.yaml \
-    --dataset_manifest dataset_manifest.json \
-    --planner_model models/ibep_evidence_planner.pt \
-    --runtime_model models/tars_ssm_state_model.pt \
-    --policy_model models/cpr_policy_router.pt \
-    --graph_model models/sthgci_graph_model.pt \
-    --network_profiles configs/network_profiles.yaml \
-    --workload_profiles configs/workload_profiles.yaml \
-    --trust_snapshot initial_trust_posterior_snapshot.json \
-    --manifest manifest.json \
-    --output_dir results/regression_dev
-# 输出: ttft_results_regression.csv, weak_network_results_regression.csv,
-#        e2e_results_regression.csv, communication_results_regression.csv,
-#        resource_results_regression.csv, regression_gate_summary.json
-```
-
-通过条件: G2-reg(high_delay≥78%, low_bw≥78%, high_loss≥78%, weak_avg≥78%) + G4-reg(4 profile+combined ≥92%) + G5-reg(≤0.18s)
+| 风险 | 早期信号 | 立即动作 | 禁止动作 |
+|---|---|---|---|
+| 3B 无法满足 1.5GB | 文件或最小 RSS 已超限 | 切换 sub-3bit、1.5B 或 2B 候选 | 等 G1 完成后才测内存 |
+| 1.5B 能力不足 | 两轮 validation 后 Math/Code <80% | 转向 2B/3B sub-3bit，保留 1.5B 为 fast path | 用正式错题持续修复 |
+| 200ms 无法生成 LLM 文本 | action header P95 超限 | 决策头先输出，解释异步 | 缩短统计区间或排除失败请求 |
+| 弱网保持率虚高 | action 可解析但质量低 | 把正确性/安全性纳入有效任务 | 只统计 JSON 成功率 |
+| 冲突数据不足 | validation conflict group <50 | Final Freeze 前扩展真实/可审计关联组 | 根据模型结果改 ground truth |
+| 三个学习模块集成过慢 | 两周后仍无双场景闭环 | 先用轻量模型/规则 baseline 完成系统 | 同时新增更多研究模型 |
+| KWDB 价值不明显 | 仅作为日志表 | 增加 outbox、registry、关系查询和消融 | 只在标题中强调数据库 |
+| 正式实验波动大 | Dev margin 小于 2% | 增加 Dev 余量和预定重复 | 只挑最好一次 |
 
 ---
 
-## 11. P2：Final Integrated Run
+## 9. 评分项—证据映射
 
-```bash
-python3 experiments/run_final_integrated.py \
-    --config final_config.yaml \
-    --dataset_manifest dataset_manifest.json \
-    --conflict_gt_manifest conflict_gt_manifest.json \
-    --planner_model models/ibep_evidence_planner.pt \
-    --runtime_model models/tars_ssm_state_model.pt \
-    --policy_model models/cpr_policy_router.pt \
-    --graph_model models/sthgci_graph_model.pt \
-    --trust_snapshot initial_trust_posterior_snapshot.json \
-    --network_profiles configs/network_profiles.yaml \
-    --workload_profiles configs/workload_profiles.yaml \
-    --manifest manifest.json \
-    --schemes cloud_only_summary,edge_only,static_split,load_based,db4ai_edgeserve \
-    --output_dir results/final
-```
+| 评分项 | 分值 | 项目证据 |
+|---|---:|---|
+| 实时性改进 | 15 | 五方案 TTFT/E2E 表、分布图、弱网 trace |
+| 感知与决策效果 | 15 | 两场景 F1/任务准确率、G1、G6/G7 |
+| 资源与通信效率 | 10 | G3、上传量、带宽、云端负载、请求率 |
+| 方案完整性 | 15 | 两场景可运行原型、云边路径、KWDB、模型分发闭环 |
+| 可扩展性与适应性 | 10 | 2/4/8 节点和三种负载结果、插件化场景协议 |
+| 稳定性 | 10 | 四类弱网 G4、恢复同步、回滚、重复实验波动 |
+| 决策一致性 | 10 | G6/G7、关系图消融、冲突案例回放 |
+| 创新性 | 10 | EdgeLite、SafeRoute、GraphTrust 三模块及消融 |
+| 应用价值 | 5 | 工业和交通业务收益、部署成本与推广路径 |
 
-| 失败类型 | 处理方式 |
-|---------|---------|
-| **algorithm_failure** (指标未达标/结果错误/冲突未解决) | 不允许改参数重跑 |
-| **infrastructure_failure** (断电/磁盘满/容器崩溃/进程被杀) | 记录 restart_reason, 从 frozen snapshot 重启 |
-| **data_failure** (split泄漏/数据损坏/占位符未替换) | 废弃本次 run, 重新生成 dataset_manifest, 重启 P2 |
-
-Final Gate: G1-G7 全部 Final 标准通过 → 五方案对比 → 报告生成
-
-**final_gate_summary.json:**
-```json
-{
-  "schemes": ["cloud_only_summary","edge_only","static_split","load_based","db4ai_edgeserve"],
-  "gate_results": {
-    "db4ai_edgeserve": {
-      "G1":"pass|fail","G2":"pass|fail","G3":"pass|fail",
-      "G4":"pass|fail","G5":"pass|fail","G6":"pass|fail","G7":"pass|fail"
-    }
-  },
-  "comparison_tables": {
-    "ttft":"ttft_results.csv","e2e":"e2e_results.csv",
-    "weak_network":"weak_network_results.csv",
-    "conflict":"conflict_results.csv","resolution":"resolution_results.csv",
-    "perception":"perception_results.csv",
-    "latency_breakdown":"latency_breakdown.csv",
-    "decision_quality":"decision_quality_results.csv",
-    "communication":"communication_results.csv",
-    "resource":"resource_results.csv",
-    "baseline_fairness":"baseline_fairness_report.json",
-    "risk_audit":"risk_gate_audit.json",
-    "conflict_gt_audit":"conflict_gt_audit.csv"
-  }
-}
-```
-
-### manifest.json 字段模板（扩展字段）
-
-下列 `"..."` 仅表示模板占位，正式 Final Gate 产物必须替换为实际 hash 或实际取值，不得保留 `"..."`、空字符串、null hash 或其他占位符。
-
-```json
-{
-  "git_commit": "...",
-  "final_config_hash": "...",
-  "risk_matrix_hash": "...",
-  "fallback_policy_hash": "...",
-  "preflight_report_hash": "...",
-  "baseline_fairness_hash": "...",
-  "teacher_model_id": "Qwen/Qwen2.5-14B-Instruct-AWQ",
-  "student_init_model_id": "Qwen/Qwen2.5-1.5B-Instruct",
-  "edge_model_name": "DB4AI-Edge-1.5B-KD-INT4",
-  "edge_model_sha256": "...",
-  "distill_dataset_hash": "...",
-  "teacher_trace_hash": "...",
-  "student_probe_trace_hash": "...",
-  "counterfactual_repair_trace_hash": "...",
-  "quant_behavior_trace_hash": "...",
-  "sft_config_hash": "...",
-  "lora_adapter_sha256": "...",
-  "quant_config_hash": "...",
-  "planner_model_hash": "...",
-  "calibration_snapshot_hash": "...",
-  "runtime_state_model_hash": "...",
-  "policy_snapshot_hash": "...",
-  "graph_model_hash": "...",
-  "trust_posterior_snapshot_hash": "...",
-  "conflict_gt_audit_hash": "...",
-  "conflict_gt_sample_audit_hash": "...",
-  "latency_breakdown_hash": "...",
-  "online_perception_smoke_hash": "...",
-  "data_split_hash": "...",
-  "network_profile_hash": "...",
-  "prompt_template_hash": "...",
-  "policy_config_hash": "...",
-  "decision_parser_hash": "...",
-  "capability_metric_script_hash": "...",
-  "ttft_metric_script_hash": "...",
-  "e2e_metric_script_hash": "...",
-  "conflict_metric_script_hash": "...",
-  "resolution_metric_script_hash": "...",
-  "perception_metric_script_hash": "...",
-  "communication_metric_script_hash": "...",
-  "resource_metric_script_hash": "...",
-  "frozen_scu_hash": "...",
-  "synthetic_chinese_nlp_hash": "...",
-  "fallback_events": [],
-  "timestamp": "..."
-}
-```
+报告必须围绕评分项组织主表，不以算法名称数量代替量化提升。
 
 ---
 
-## 12. 实施阶段与交付
+## 10. Final Gate 清单
 
-```
-P0-A0 (第1周前置): Preflight + conflict_gt dry-run/audit + G1/G3/G4/G5 smoke
-P0-A (第1-3周):  G-DATA/DB/CLOUD + G-KD-TRACE + 成果1 + G1/G3
-P0-B (第4-6周):  成果2/3/4 + G2/G4/G5 + G-Support-Perception + 200ms action header smoke
-P1 (第7-9周):    成果5/6 + G6/G7 + P1-Regression
-P2 (第10-12周):  Final Gate + 五方案 + 报告 + 视频 + 打包
-```
+### 10.1 数据与模型
 
-交付: 作品报告 PDF + 视频 MP4 + 源码 + Docker + 脚本 + 日志 + perception/decision/communication/resource/latency CSV + preflight/risk/baseline/conflict_gt audit + manifest.json + dataset_manifest.json + conflict_gt_manifest.json + README + 报名表
+- [ ] 数据来源、license、split 和 hash 完整；
+- [ ] train/validation/test 组级隔离通过；
+- [ ] 边缘模型同时通过 G1/G3；
+- [ ] 量化前后行为差异有逐样本审计；
+- [ ] 模型、策略、图模型和可信度快照已冻结；
+- [ ] 模型分发、签名校验、激活和回滚演示通过。
+
+### 10.2 系统与实验
+
+- [ ] 工业和交通场景均可独立运行；
+- [ ] 五方案使用相同输入、硬件、profile 和评分器；
+- [ ] G2/G4/G5 覆盖所有冻结弱网 profile；
+- [ ] G6/G7 ground truth 经过脚本检查和人工抽样；
+- [ ] 所有失败请求进入统计；
+- [ ] 正式重复次数、seed 和聚合方式已冻结；
+- [ ] G1-G7 可由一个汇总脚本重算。
+
+### 10.3 交付物
+
+- [ ] 作品报告 PDF；
+- [ ] 运行效果视频 MP4；
+- [ ] 源代码与可执行部署方式；
+- [ ] Docker/环境依赖和一键演示脚本；
+- [ ] 数据说明、模型说明和第三方 license；
+- [ ] 全部核心 CSV、trace、配置、hash 和 manifest；
+- [ ] README、部署手册、实验复现手册和答辩 FAQ；
+- [ ] 压缩包按“单位-姓名-作品名称-联系电话”命名。
 
 ---
 
-*DB4AI-EdgeServe v4.1.0-research-final — 研究机制升级版 — 2026-06-24*
-*所有压缩引用已展开。全文档自包含。修改历史见 docs/REVISION_LOG.md*
+## 11. 完成定义
+
+本项目只有同时满足以下条件才视为完成：
+
+1. G1-G7 按本文固定口径全部达到赛题阈值；
+2. 工业和交通两个场景在正常、弱网和短时断网下均有可演示闭环；
+3. 云端复核、边缘自治、冲突仲裁、模型更新和 KWDB 状态底座均有真实运行证据；
+4. 五方案对比、核心消融、稳定性和扩展性实验完整；
+5. 结果能够由冻结代码、配置、模型和 manifest 复算；
+6. 报告、视频、源码、数据说明和部署材料完整可提交。
+
+任何单项模型实验成功、smoke 通过或开发集达到阈值，都不能替代上述完成定义。

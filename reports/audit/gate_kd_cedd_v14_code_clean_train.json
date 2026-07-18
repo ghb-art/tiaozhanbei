@@ -1,0 +1,92 @@
+{
+  "gate": "G-KD-TRACE-cedd_v14_code_clean-train",
+  "check_version": "1.0",
+  "created_by": "model_compression/train_cedd_repair.py",
+  "created_ts": "2026-07-10T02:31:04.031396+00:00",
+  "status": "passed",
+  "smoke": false,
+  "student_init": "models/pretrained/Qwen--Qwen2.5-1.5B-Instruct",
+  "init_adapter": "models/adapters/cedd_v12_code_clean",
+  "init_adapter_hash": "bc68b8355f9b18f9c7a0a46ef2519d67d9d7583c292a836437d890cb77c75a73",
+  "distill_data_path": "data/distill/distill_dataset.jsonl",
+  "distill_data_hash": "610d23903a5d8d4117c03159268ce068620fee2b97de7ed7ce2dc9fb178c9443",
+  "repair_trace_path": "data/distill/counterfactual_repair_trace.jsonl",
+  "repair_trace_hash": "d27255958eb48a2e53aa38e98110a33dd6d935782cef11633b2e78447ee2cd1d",
+  "capability_rehearsal_paths": [
+    "data/distill/capability_rehearsal_v14_clean_code.jsonl"
+  ],
+  "capability_rehearsal_hashes": {
+    "data/distill/capability_rehearsal_v14_clean_code.jsonl": "5af104b48cd3b1d2d97ed225e02efb9ff39f41f2fa0bf7ea54b1a48d35c04e99"
+  },
+  "output_dir": "models/adapters/cedd_v14_code_clean",
+  "adapter_hash": "5fdc3ddcb86907d4c6470eeeb9c46e4ff6cb6c963c009424a8237290344de3d4",
+  "adapter_config_hash": "1cf46fddfbe5877b7d90cad4d87ab20963aae8166a010c5c8c40fd66bcd3c019",
+  "adapter_model_hash": "ed3f46fb96550f915ad2e46a0c2c43523bb82f3d813e6e04e85545ddf5c20e18",
+  "source_counts": {
+    "synthetic_code_advanced_rehearsal_body": 1024,
+    "synthetic_code_advanced_rehearsal_full_def": 1024,
+    "synthetic_code_rehearsal_body": 4096,
+    "synthetic_code_rehearsal_full_def": 4096
+  },
+  "dataset_counts": {
+    "humaneval": 10240
+  },
+  "pre_limit_source_counts": {
+    "synthetic_code_advanced_rehearsal_body": 1536,
+    "synthetic_code_advanced_rehearsal_full_def": 1536,
+    "synthetic_code_rehearsal_body": 10752,
+    "synthetic_code_rehearsal_full_def": 10752
+  },
+  "pre_limit_dataset_counts": {
+    "humaneval": 24576
+  },
+  "source_limits": {
+    "synthetic_code_advanced_rehearsal_body": 1024,
+    "synthetic_code_advanced_rehearsal_full_def": 1024,
+    "synthetic_code_rehearsal_body": 4096,
+    "synthetic_code_rehearsal_full_def": 4096
+  },
+  "selected_sample_count": 10240,
+  "selected_sample_ids_hash": "5ff7a83add7550280f711d1b2a39165e6a886bfaee581d0e015a0d65b8c6de22",
+  "capability_datasets": [
+    "cmmlu",
+    "gsm8k",
+    "humaneval"
+  ],
+  "structured_dataset_filter": [],
+  "repair_dataset_filter": [],
+  "distill_sample_limit": 0,
+  "repair_sample_limit": 0,
+  "capability_sample_limit": 0,
+  "distill_repeat": 0,
+  "repair_repeat": 0,
+  "capability_repeat": 0,
+  "capability_jsonl_repeat": 1,
+  "epochs": 1.0,
+  "max_steps": 96,
+  "batch_size": 1,
+  "grad_accum_steps": 16,
+  "learning_rate": 2e-07,
+  "max_length": 1024,
+  "lora_rank": 8,
+  "lora_alpha": 16.0,
+  "lora_dropout": 0.05,
+  "target_modules": [
+    "q_proj",
+    "v_proj"
+  ],
+  "replaced_module_count": 0,
+  "distributed_world_size": 4,
+  "distributed_backend": "nccl",
+  "effective_batch_size": 64,
+  "trainable_parameters": 544768,
+  "total_parameters": 1544259072,
+  "trainable_parameter_ratio": 0.00035276982332663935,
+  "global_steps": 1536,
+  "optimizer_steps": 96,
+  "mean_loss": 0.2969481945037842,
+  "final_loss": 0.4259416162967682,
+  "elapsed_sec": 432.9241477968171,
+  "errors": [],
+  "report_hash": "642edffc3ba4395e231c18f151de0be392203e5fd94dc704d3a68c63d9525f78"
+}

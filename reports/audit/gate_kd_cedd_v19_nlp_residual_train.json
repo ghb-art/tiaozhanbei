@@ -1,0 +1,144 @@
+{
+  "gate": "G-KD-TRACE-cedd_v19_nlp_residual-train",
+  "check_version": "1.2",
+  "created_by": "model_compression/train_cedd_repair.py",
+  "created_ts": "2026-07-14T12:39:14.448194+00:00",
+  "status": "passed",
+  "smoke": false,
+  "student_init": "models/pretrained/Qwen--Qwen2.5-1.5B-Instruct",
+  "init_adapter": "",
+  "init_adapter_hash": "",
+  "frozen_base_adapter": "models/adapters/cedd_v18_nlp_clean",
+  "frozen_base_adapter_hash": "f92095d0e88f85d8199d4653db0b8e9d97fe9a4018b40cac7b02ae1a240405c9",
+  "frozen_parent_module_count": 84,
+  "frozen_parent_modules_hash": "89467d3b3727dd8a8d8b39d6dbefcea821de4649dd46693ee79f310a80e07002",
+  "distill_data_path": "data/distill/distill_dataset.jsonl",
+  "distill_data_hash": "610d23903a5d8d4117c03159268ce068620fee2b97de7ed7ce2dc9fb178c9443",
+  "repair_trace_path": "data/distill/counterfactual_repair_trace.jsonl",
+  "repair_trace_hash": "d27255958eb48a2e53aa38e98110a33dd6d935782cef11633b2e78447ee2cd1d",
+  "capability_rehearsal_paths": [
+    "data/distill/capability_rehearsal_v18_clean_nlp.jsonl"
+  ],
+  "capability_rehearsal_hashes": {
+    "data/distill/capability_rehearsal_v18_clean_nlp.jsonl": "a17765d3aa20be6758b212fbb53eb8d587127126a7ea0bfe5b27f5a979366ab0"
+  },
+  "output_dir": "models/adapters/cedd_v19_nlp_residual",
+  "adapter_hash": "6674762556e75fe81a9a929a61a4c47f7a5b1bc290773b0ccc45a0c703494d99",
+  "adapter_config_hash": "cdb47e485d0ea61ae2e84b16aae450cc9b578092aa8c3a8b25f5a69765d9899f",
+  "adapter_model_hash": "c8205c80e4efe77da5a4d500430b459e0a40a0321b7d6f146ce868ed0b36d77f",
+  "source_counts": {
+    "cmmlu_validation_choice_variant": 4816,
+    "synthetic_cmmlu_rehearsal": 1920
+  },
+  "dataset_counts": {
+    "cmmlu": 6736
+  },
+  "pre_limit_source_counts": {
+    "cmmlu_validation_choice_variant": 5360,
+    "synthetic_cmmlu_rehearsal": 2048
+  },
+  "pre_limit_dataset_counts": {
+    "cmmlu": 7408
+  },
+  "source_limits": {},
+  "selected_sample_count": 7408,
+  "selected_sample_ids_hash": "e22afe2d25105a3ae225b85c22c5adc8445b1e33578addcd551ae5fd45f113ee",
+  "selected_validation_group_ids_hash": "5402d62d71b466b8c9c664ddb45d0cdddcbdace05c979c30616d40c2c8771822",
+  "training_sample_count": 6736,
+  "training_sample_ids_hash": "e652dddc77d98ac870b1a1f4a81adc25dd9eea73f48b2e1dd67aa32b1c11113d",
+  "training_validation_group_ids_hash": "0c006affa345c12e3f4f8782465bb59cc204938ac0ada212bdb454244fc95011",
+  "validation_sample_count": 672,
+  "validation_sample_ids_hash": "211593b1a04dc8d4c1ae63187744fac5932638f6c19baa54f6dddaffac813f6f",
+  "validation_group_ids_hash": "918d3c3ed8afa9b8b05ee050175a54fb39bd5404f4b45f68c1d7127305032851",
+  "validation_group_overlap_count": 0,
+  "validation_source_counts": {
+    "cmmlu_validation_choice_variant": 544,
+    "synthetic_cmmlu_rehearsal": 128
+  },
+  "validation_dataset_counts": {
+    "cmmlu": 672
+  },
+  "capability_datasets": [
+    "cmmlu",
+    "gsm8k",
+    "humaneval"
+  ],
+  "structured_dataset_filter": [],
+  "repair_dataset_filter": [],
+  "distill_sample_limit": 0,
+  "repair_sample_limit": 0,
+  "capability_sample_limit": 0,
+  "distill_repeat": 0,
+  "repair_repeat": 0,
+  "capability_repeat": 0,
+  "capability_jsonl_repeat": 4,
+  "epochs": 1.0,
+  "max_steps": 160,
+  "batch_size": 2,
+  "grad_accum_steps": 4,
+  "learning_rate": 4e-07,
+  "weight_decay": 0.01,
+  "lr_scheduler": "cosine",
+  "warmup_ratio": 0.05,
+  "validation_fraction": 0.1,
+  "validation_seed": 20260714,
+  "eval_every": 16,
+  "early_stopping_patience": 4,
+  "min_validation_improvement": 5e-05,
+  "min_validation_relative_improvement": 0.005,
+  "restore_best_validation": true,
+  "validation_history": [
+    {
+      "update_step": 0,
+      "loss": 0.2894336861929679
+    },
+    {
+      "update_step": 16,
+      "loss": 0.2896158868347162
+    },
+    {
+      "update_step": 32,
+      "loss": 0.2894724602533859
+    },
+    {
+      "update_step": 48,
+      "loss": 0.2894598092673169
+    },
+    {
+      "update_step": 64,
+      "loss": 0.2894126726979656
+    }
+  ],
+  "initial_validation_loss": 0.2894336861929679,
+  "candidate_best_validation_loss": 0.2894336861929679,
+  "candidate_best_update_step": 0,
+  "validation_relative_improvement": 0.0,
+  "validation_guard_rejected": true,
+  "best_validation_loss": 0.2894336861929679,
+  "best_update_step": 0,
+  "stopped_early": true,
+  "max_length": 768,
+  "lora_rank": 4,
+  "lora_alpha": 8.0,
+  "lora_dropout": 0.05,
+  "target_modules": [
+    "q_proj",
+    "v_proj",
+    "o_proj"
+  ],
+  "replaced_module_count": 84,
+  "distributed_world_size": 4,
+  "distributed_backend": "nccl",
+  "effective_batch_size": 32,
+  "trainable_parameters": 888832,
+  "total_parameters": 1546380800,
+  "trainable_parameter_ratio": 0.0005747820976566703,
+  "global_steps": 256,
+  "optimizer_steps": 64,
+  "mean_loss": 0.41119664907455444,
+  "final_loss": 0.46533575654029846,
+  "final_learning_rate": 2.8033908605575563e-07,
+  "elapsed_sec": 126.37029884103686,
+  "errors": [],
+  "report_hash": "2c0557c9dbb15843186f0dc1085435edad935d5d7bf19e614c9dc67885df8370"
+}

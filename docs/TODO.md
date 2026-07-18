@@ -1,80 +1,41 @@
 # TODO
 
-本文件用于把 `IMPLEMENTATION_PLAN.md` 中的大阶段拆成可执行任务。
+更新时间：2026-07-18
 
-## P0-A0 工程骨架
+历史实验与失败原因见 `docs/REVISION_LOG.md`；本页只保留当前可执行项。
 
-- [x] 初始化 Git 仓库。
-- [x] 建立基础 `.gitignore`。
-- [x] 创建 `docs/REVISION_LOG.md`。
-- [x] 创建 `docs/PROJECT_STATUS.md`。
-- [x] 创建 `docs/TODO.md`。
-- [x] 创建网络与工作负载 profile 配置。
-- [x] 创建模型与 dev 配置。
-- [x] 创建项目结构校验脚本。
-- [x] 创建 manifest 模板生成脚本。
-- [x] 生成 `dataset_manifest.template.json`、`manifest.template.json`、`conflict_gt_manifest.template.json`。
-- [x] 更新结构校验脚本，检查 manifest 模板是否存在且 JSON 可解析。
-- [x] 创建正式 manifest 验收脚本 `scripts/validate_manifest_files.py`。
-- [x] 创建数据集目录盘点脚本 `scripts/inspect_datasets.py`。
-- [x] 生成 `reports/preflight/data_inventory.json`。
-- [x] 创建 `docs/DATASET_SOURCES.md`。
-- [x] 创建数据集 payload 存在性校验脚本 `scripts/validate_dataset_presence.py`。
-- [x] 创建 preflight runtime smoke 脚本。
+## 已完成
 
-## G-DATA
+- [x] G-DATA：数据接入、冻结 split、泄漏检查和 manifest。
+- [x] G-DB：KWDB schema、写入、查询和导出 live gate。
+- [x] G-CLOUD：14B-AWQ 服务与 Cloud gate。
+- [x] 首轮 G0：9 个候选的能力-峰值内存联合审计，结论 `feasible=0/9`。
+- [x] DeepSeek Q2 基座 G3：716.71MB GGUF、920.23MB 峰值总内存。
+- [x] P0-A2 数据冻结：train 7212、Dev 170、组重叠和正式集泄漏均为 0。
+- [x] P0-A2 代码：全精度 Dev、受控 LoRA、合并、模型专用 imatrix、Q2 量化和 G0 回归入口。
+- [x] 清理已否决 Qwen 权重、历史 adapter 与 v24-v31 启动代码，保留小型审计证据。
 
-- [x] 核验并补充 `docs/DATASET_SOURCES.md` 中每个数据集的正式下载来源、license 和账号要求。
-- [x] 记录 MVTec AD、NEU-DET、CityFlow、UA-DETRAC 的 license/数据协议或 mirror fallback 状态。
-- [x] 下载或挂载 8 个目标数据集到 `data/datasets/`。
-- [x] 使用 `scripts/validate_dataset_presence.py` 验收数据集 payload 存在性。
-- [x] 重新运行 `scripts/inspect_datasets.py`，确认数据目录不再为空。
-- [x] 展开 MVTec AD、CityFlow、UA-DETRAC 大型归档包到标准数据目录。
-- [x] 实现 `scripts/validate_splits.py` 并冻结 8 个数据集 split。
-- [x] 基于模板生成正式 `dataset_manifest.json`、`manifest.json`、`conflict_gt_manifest.json`。
-- [x] 使用 `scripts/validate_manifest_files.py --strict-gdata` 验收正式 manifest。
-- [x] 实现 `scripts/setup_datasets.sh`。
-- [x] 实现 `scripts/validate_splits.py`。
-- [x] 实现 `scripts/build_conflict_gt.py`。
-- [x] 生成 `dataset_manifest.json`。
-- [x] 生成 `conflict_gt_manifest.json`。
-- [x] 生成 conflict ground truth audit 文件。
+## 当前执行顺序
 
-## G-DB
+- [x] 运行 `upper-bound-smoke`，验证 DeepSeek HF 输出与评测协议；三任务各 1 条无运行错误，宏准确率 `1/3`，不代表能力达标。
+- [ ] 运行完整 `upper-bound`，记录三任务全精度能力上限。
+- [ ] 若上限有可达路径，运行一次 `train` 和 `evaluate-adapter`。
+- [ ] 只有 frozen Dev 宏准确率至少提升 1 个百分点才合并候选。
+- [ ] 为合并模型重新生成 imatrix 并量化 Q2_K_S。
+- [ ] 执行 `g0-reentry`；G1/G3 任一失败即停止 P0-A2 晋级。
+- [ ] 并行设计确定性结构化 fast path，但分数与纯 LLM G1 分开报告。
+- [ ] 在可复现实验硬件上建立 TTFT/E2E 基线。
 
-- [x] 创建 `sql/cloud_schema.sql`。
-- [x] 创建 `docker/docker-compose.kwdb.yml`。
-- [x] 实现 `scripts/verify_gate_db.py`。
-- [x] 启动 KWDB Docker 并运行 `scripts/verify_gate_db.py` 完成 live gate。
+## G0 通过后
 
-## G-CLOUD
+- [ ] P1：工业检测和交通监控的两个边缘节点 + 一个云节点最小闭环。
+- [ ] P2：弱网自治、路由、通信与 0.2s 端到端实验。
+- [ ] P3：多边缘关系组、冲突检测、唯一仲裁和一致性指标。
+- [ ] Final Freeze 后一次性运行正式 G1-G7，生成报告、视频和部署包。
 
-- [x] 下载 `Qwen/Qwen2.5-14B-Instruct-AWQ`、`Qwen/Qwen2.5-7B-Instruct-AWQ`、`Qwen/Qwen2.5-1.5B-Instruct` 到本地 `models/pretrained/`。
-- [x] 确认 14B-AWQ 服务启动方式。
-- [x] 新增前台 vLLM teacher 启动器，统一用 Ctrl+C 停止多 endpoint 服务。
-- [x] 实现 `scripts/verify_gate_cloud.py`。
-- [x] 记录 model hash 和 prompt hash。
-- [x] 通过 14B-AWQ vLLM live gate：`/health` 200，首 token 0.581s。
+## 不可变约束
 
-## G-KD-TRACE
-
-- [x] 实现教师结构化决策 trace 生成脚本。
-- [x] 使用 14B-AWQ vLLM 服务完成 32 条 train split teacher trace smoke，并生成 `reports/audit/gate_kd_trace_teacher_smoke.json`。
-- [x] 为 teacher trace 生成脚本加入多 teacher URL 并发、分片、断点续跑和重试能力，并用 GPU2/GPU3 完成 8 条 parallel smoke。
-- [x] 为 teacher trace 生成脚本加入周期性 checkpoint/partial audit，并用 GPU2/GPU3 完成 100 条 pilot。
-- [x] 将第 2 章主实验数据口径固定为 `GSM8K`、`HumanEval`、`CMMLU`、`NEU-DET`、`CityFlow`，并将 `MMLU`、`MVTec AD`、`UA-DETRAC` 标记为支持/备份资产。
-- [x] 按第 2 章主实验口径完成 108 条 teacher trace pilot，并生成 `reports/audit/gate_kd_trace_teacher_chapter2_main_pilot.json`。
-- [x] 基于第 2 章主实验 train split 生成 `data/distill/teacher_decision_trace.jsonl`。
-- [x] 生成 `data/distill/distill_dataset.jsonl` 并记录 hash。
-- [x] 实现 Student-Base probe trace 脚本，并完成 96 条三数据集轮转 smoke。
-- [x] 实现 counterfactual repair mining 脚本，并完成 repair trace smoke。
-- [x] 实现本地 LoRA 工具和 CEDD-Structured 训练入口，并完成 12 条样本真实训练 smoke。
-- [x] 为 Student probe 增加本地 `Qwen2.5-1.5B-Instruct + LoRA adapter` backend，并完成 6 条真实 student probe smoke。
-- [x] 基于真实本地 student probe 完成 counterfactual repair mining smoke。
-- [x] 实现 fake INT4 LoRA adapter 行为验证脚本，并完成 3 条量化行为 smoke。
-- [x] 实现 GSM8K、HumanEval、CMMLU 的第 2 章能力评测脚本，并完成 1 条/数据集本地 smoke。
-- [ ] 使用正式 CEDD-Structured 训练配置训练 adapter，并运行正式 train split student probe。
-- [ ] 生成正式 `data/distill/student_probe_trace.jsonl` 并记录 hash。
-- [ ] 生成正式 `data/distill/counterfactual_repair_trace.jsonl` 并记录 hash。
-- [ ] 训练 CEDD-Repair adapter，生成正式 INT4 量化行为 trace。
-- [ ] 跑 GSM8K、HumanEval、CMMLU 的 Cloud/Edge 正式能力评测并汇总能力保持率。
+- 不使用 GSM8K test、HumanEval 或 CMMLU test 错题训练/选模。
+- 不恢复 v24-v31 编号式调参链。
+- G1 四项均须 ≥80%；G3 峰值总内存须 ≤1500MB（decimal）。
+- CPU 2.58s 短输出不是 0.2s 达标结果。

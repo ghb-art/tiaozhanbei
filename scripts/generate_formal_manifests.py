@@ -62,7 +62,6 @@ KD_REPAIR_MINING_SMOKE_AUDIT = ROOT / "reports" / "audit" / "gate_kd_repair_mini
 KD_CEDD_STRUCTURED_TRAIN_SMOKE_AUDIT = ROOT / "reports" / "audit" / "gate_kd_cedd_structured_train_smoke.json"
 KD_STUDENT_PROBE_LOCAL_SMOKE_AUDIT = ROOT / "reports" / "audit" / "gate_kd_student_probe_local_smoke.json"
 KD_REPAIR_MINING_LOCAL_SMOKE_AUDIT = ROOT / "reports" / "audit" / "gate_kd_repair_mining_local_smoke.json"
-KD_QUANT_BEHAVIOR_LOCAL_SMOKE_AUDIT = ROOT / "reports" / "audit" / "gate_kd_quant_behavior_local_smoke.json"
 CH2_CAPABILITY_EVAL_LOCAL_SMOKE_AUDIT = (
     ROOT / "reports" / "audit" / "gate_chapter2_capability_eval_local_smoke.json"
 )
@@ -466,45 +465,6 @@ def add_repair_mining_local_smoke_fields(
     )
 
 
-def add_quant_behavior_local_smoke_fields(
-    manifest: dict[str, Any],
-    explicit_hashes: dict[str, str],
-) -> None:
-    if not KD_QUANT_BEHAVIOR_LOCAL_SMOKE_AUDIT.is_file():
-        return
-    quant = load_json(KD_QUANT_BEHAVIOR_LOCAL_SMOKE_AUDIT)
-    explicit_hashes.update(
-        {
-            "quant_behavior_trace_hash": quant.get(
-                "quant_behavior_trace_hash",
-                derived_hash("quant_behavior_trace_hash"),
-            ),
-            "quant_config_hash": quant.get("report_hash", derived_hash("quant_config_hash")),
-        }
-    )
-    manifest.update(
-        {
-            "kd_quant_behavior_local_smoke_audit_hash": sha256_file(KD_QUANT_BEHAVIOR_LOCAL_SMOKE_AUDIT),
-            "kd_quant_behavior_local_smoke_report_hash": quant.get(
-                "report_hash",
-                derived_hash("kd_quant_behavior_local_smoke_report_hash"),
-            ),
-            "kd_quant_behavior_local_smoke_trace_hash": quant.get(
-                "quant_behavior_trace_hash",
-                derived_hash("kd_quant_behavior_local_smoke_trace_hash"),
-            ),
-            "kd_quant_behavior_local_smoke_status": quant.get("status", "unknown"),
-            "kd_quant_behavior_local_smoke_sample_count": quant.get("selected_sample_count", 0),
-            "kd_quant_behavior_local_smoke_quant_parse_rate": quant.get("quant_parse_rate", 0.0),
-            "kd_quant_behavior_local_smoke_behavior_divergence_rate": quant.get(
-                "behavior_divergence_rate",
-                0.0,
-            ),
-            "kd_quant_behavior_local_smoke_dataset_counts": quant.get("dataset_counts", {}),
-        }
-    )
-
-
 def add_ch2_capability_eval_local_smoke_fields(manifest: dict[str, Any]) -> None:
     if not CH2_CAPABILITY_EVAL_LOCAL_SMOKE_AUDIT.is_file():
         return
@@ -534,8 +494,8 @@ def build_run_manifest(frozen: dict[str, Any], conflict_manifest: dict[str, Any]
     manifest: dict[str, Any] = {
         "git_commit": git_commit(),
         "teacher_model_id": "Qwen/Qwen2.5-14B-Instruct-AWQ",
-        "student_init_model_id": "Qwen/Qwen2.5-1.5B-Instruct",
-        "edge_model_name": "DB4AI-Edge-1.5B-KD-INT4",
+        "student_init_model_id": "deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B",
+        "edge_model_name": "DB4AI-Edge-P0A2-DeepSeek-1.5B-Q2_K_S",
         "chapter2_main_capability_dataset_keys": list(MAIN_CAPABILITY_DATASETS),
         "chapter2_main_application_dataset_keys": list(MAIN_APPLICATION_DATASETS),
         "chapter2_main_experiment_dataset_keys": list(MAIN_EXPERIMENT_DATASETS),
@@ -604,7 +564,6 @@ def build_run_manifest(frozen: dict[str, Any], conflict_manifest: dict[str, Any]
     add_cedd_structured_train_smoke_fields(manifest, explicit_hashes)
     add_student_probe_local_smoke_fields(manifest, explicit_hashes)
     add_repair_mining_local_smoke_fields(manifest, explicit_hashes)
-    add_quant_behavior_local_smoke_fields(manifest, explicit_hashes)
     add_ch2_capability_eval_local_smoke_fields(manifest)
 
     for key in RUN_HASH_KEYS:

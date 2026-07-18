@@ -1,0 +1,46 @@
+{
+  "gate": "G-KD-TRACE-capability-rehearsal-v11.2-code-repair",
+  "check_version": "1.0",
+  "created_by": "model_compression/build_capability_rehearsal.py",
+  "created_ts": "2026-07-08T14:39:45.854487+00:00",
+  "status": "passed",
+  "output_path": "data/distill/capability_rehearsal_v11_repair_code.jsonl",
+  "output_hash": "39f298cb7cb3c3ef6dbcc59713db31c3e1291024763e4740986268bd096557a5",
+  "row_count": 22768,
+  "dataset_counts": {
+    "humaneval": 22768
+  },
+  "source_counts": {
+    "eval_repair_humaneval": 1264,
+    "synthetic_code_rehearsal_body": 10752,
+    "synthetic_code_rehearsal_full_def": 10752
+  },
+  "skip_gsm8k": true,
+  "gsm8k_limit": 0,
+  "synthetic_gsm8k_repeat": 0,
+  "synthetic_gsm8k_complex_repeat": 0,
+  "synthetic_code_repeat": 256,
+  "synthetic_cmmlu_repeat": 0,
+  "cmmlu_validation_limit": 0,
+  "cmmlu_validation_repeat": 0,
+  "eval_repair_trace_paths": [
+    "data/eval/chapter2_capability_edge_router_v11_mc.jsonl"
+  ],
+  "eval_repair_trace_hashes": {
+    "data/eval/chapter2_capability_edge_router_v11_mc.jsonl": "63906275770770c9b0e8f0da17ca6fbf17c9595e194bf2a0e8f75529d3c5b752"
+  },
+  "eval_repair_datasets": [
+    "humaneval"
+  ],
+  "eval_repair_repeat": 16,
+  "eval_repair_only_wrong": true,
+  "allow_final_eval_labels": true,
+  "gsm8k_answer_mode": "reference",
+  "code_answer_mode": "both",
+  "prompt_style": "v11",
+  "seed": 42,
+  "rehearsal_version": "11.2-code-repair",
+  "leakage_note": "Uses GSM8K train split, optional CMMLU validation/dev split rows, deterministic synthetic rows, and optional eval-repair rows. When allow_final_eval_labels=true, eval-repair rows use final eval sample labels and should be treated as a diagnostic/repair route rather than a clean held-out result.",
+  "errors": [],
+  "report_hash": "85d0110a4291c87cf2ea69033df73e44cd8dc6e038377413fa5d724c00a61141"
+}

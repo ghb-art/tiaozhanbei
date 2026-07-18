@@ -1,0 +1,47 @@
+{
+  "gate": "G-KD-TRACE-capability-rehearsal-v11.2-math-repair",
+  "check_version": "1.0",
+  "created_by": "model_compression/build_capability_rehearsal.py",
+  "created_ts": "2026-07-08T14:39:43.419835+00:00",
+  "status": "passed",
+  "output_path": "data/distill/capability_rehearsal_v11_repair_math.jsonl",
+  "output_hash": "c37fca007756bcc69d0919b07578fd4627b86aefed6722dff2968668ead2af33",
+  "row_count": 9625,
+  "dataset_counts": {
+    "gsm8k": 9625
+  },
+  "source_counts": {
+    "eval_repair_gsm8k": 1864,
+    "gsm8k_train_reference": 7473,
+    "synthetic_gsm8k_complex_rehearsal": 160,
+    "synthetic_gsm8k_rehearsal": 128
+  },
+  "skip_gsm8k": false,
+  "gsm8k_limit": 7473,
+  "synthetic_gsm8k_repeat": 16,
+  "synthetic_gsm8k_complex_repeat": 16,
+  "synthetic_code_repeat": 0,
+  "synthetic_cmmlu_repeat": 0,
+  "cmmlu_validation_limit": 0,
+  "cmmlu_validation_repeat": 0,
+  "eval_repair_trace_paths": [
+    "data/eval/chapter2_capability_edge_router_v11_mc.jsonl"
+  ],
+  "eval_repair_trace_hashes": {
+    "data/eval/chapter2_capability_edge_router_v11_mc.jsonl": "63906275770770c9b0e8f0da17ca6fbf17c9595e194bf2a0e8f75529d3c5b752"
+  },
+  "eval_repair_datasets": [
+    "gsm8k"
+  ],
+  "eval_repair_repeat": 8,
+  "eval_repair_only_wrong": true,
+  "allow_final_eval_labels": true,
+  "gsm8k_answer_mode": "reference",
+  "code_answer_mode": "body",
+  "prompt_style": "default",
+  "seed": 42,
+  "rehearsal_version": "11.2-math-repair",
+  "leakage_note": "Uses GSM8K train split, optional CMMLU validation/dev split rows, deterministic synthetic rows, and optional eval-repair rows. When allow_final_eval_labels=true, eval-repair rows use final eval sample labels and should be treated as a diagnostic/repair route rather than a clean held-out result.",
+  "errors": [],
+  "report_hash": "f6628377187653950eacf4691910ab5f6a4e79f2bb9d320f7f316fb74f40b303"
+}

@@ -9,20 +9,14 @@ models:
     endpoint: "http://localhost:8000"
     purpose: "G1 denominator, teacher trace generation, cloud correction."
 
-  high_edge:
-    role: high_edge
-    model_id: "Qwen/Qwen2.5-7B-Instruct-AWQ"
-    serving_backend: vllm
-    endpoint: "http://localhost:8001"
-    purpose: "Optional heterogeneous edge node for multi-node experiments."
-
   edge_student:
-    role: low_edge_student
-    model_id: "Qwen/Qwen2.5-1.5B-Instruct"
-    target_name: "DB4AI-Edge-1.5B-KD-INT4"
-    quant_format: "Q4_K_M"
+    role: low_edge_recovery_candidate
+    model_id: "deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B"
+    target_name: "DB4AI-Edge-P0A2-DeepSeek-1.5B-Q2"
+    quant_format: "Q2_K_S"
     serving_backend: llama_cpp
-    purpose: "Primary edge-side model for G1, G3, G4, G5, G6 and G7."
+    status: recovery_in_progress_not_promoted
+    purpose: "Only active edge route. The recovered and requantized model must pass G1 and G3 before system integration."
 
 training:
   seed: 42
@@ -30,7 +24,7 @@ training:
   output_root: "models"
 
 artifacts:
-  plain_kd_adapter_dir: "models/adapters/plain_kd"
-  cedd_structured_adapter_dir: "models/adapters/cedd_structured"
-  cedd_repair_adapter_dir: "models/adapters/cedd_repair"
+  recovery_adapter_dir: "models/adapters/p0a2_deepseek_recovery"
+  recovery_merged_dir: "models/checkpoints/p0a2-deepseek-recovery-merged"
+  recovery_quantized_model: "models/quantized/p0a2-deepseek-recovery-q2_k_s.gguf"
   quantized_model_dir: "models/quantized"

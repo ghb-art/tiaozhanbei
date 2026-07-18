@@ -1,0 +1,68 @@
+{
+  "gate": "G-CODE-DEV-24.1-3b-simple-parent-candidate",
+  "check_version": "1.0",
+  "created_by": "scripts/evaluate_code_dev_gate.py",
+  "created_ts": "2026-07-17T09:03:10.654694+00:00",
+  "status": "failed",
+  "dev_jsonl": "data/distill/mbpp_v23_dev_gate.jsonl",
+  "dev_jsonl_hash": "a331fa5bff8e442631ff4178e6117055923e805bf102cc519e3d1450828454e5",
+  "data_audit": "reports/audit/gate_mbpp_v23_code_data.json",
+  "data_audit_hash": "c36053fbfd2fd71107524a93bbba55f7d025206a6937cddd7d834623b459ae7b",
+  "train_audit": "reports/audit/gate_kd_cedd_v24_3b_train.json",
+  "train_audit_hash": "5a7704e1f54db5732c18586c57cede211b25426ff7ac2d5f48230cfd16fd7593",
+  "input_traces": [
+    "data/eval/code_dev_gate_v24_3b_shard0.jsonl",
+    "data/eval/code_dev_gate_v24_3b_shard1.jsonl",
+    "data/eval/code_dev_gate_v24_3b_shard2.jsonl",
+    "data/eval/code_dev_gate_v24_3b_shard3.jsonl"
+  ],
+  "output_trace": "data/eval/code_dev_gate_v24_3b.jsonl",
+  "output_trace_hash": "56284ddd44810f10603a9c081a18552e52c4fbcaae300d76e83dbc86a49a413a",
+  "sample_count": 42,
+  "expected_sample_count": 42,
+  "prompt_style": "v11",
+  "completion_protocol": "formal_humaneval_v11_body_or_full_function",
+  "scoring_protocol": "formal_humaneval_v11_mbpp_assert_execution_v1",
+  "parent_adapter_hash": "b688a38a69fa1dd6605d4e3c250dc366312f1135bf4af814cab01b652a1dcb10",
+  "parent_reference_kind": "base_model",
+  "parent_reference_hash": "b688a38a69fa1dd6605d4e3c250dc366312f1135bf4af814cab01b652a1dcb10",
+  "candidate_adapter_hash": "e5fbe2d4b9a7a22ee9e3756519e744f72a7676724559ab1795593c866e25ddbb",
+  "parent_format_count": 42,
+  "candidate_format_count": 42,
+  "parent_format_rate": 1.0,
+  "candidate_format_rate": 1.0,
+  "parent_semantic_pass_count": 25,
+  "candidate_semantic_pass_count": 28,
+  "parent_semantic_accuracy": 0.5952380952380952,
+  "candidate_semantic_accuracy": 0.6666666666666666,
+  "semantic_gain_count": 3,
+  "gained_sample_ids": [
+    "mbpp/dev_gate/0564",
+    "mbpp/dev_gate/0578",
+    "mbpp/dev_gate/0583",
+    "mbpp/dev_gate/0591",
+    "mbpp/dev_gate/0598"
+  ],
+  "regressed_sample_ids": [
+    "mbpp/dev_gate/0515",
+    "mbpp/dev_gate/0581"
+  ],
+  "parent_correct_preservation_rate": 0.92,
+  "thresholds": {
+    "min_format_rate": 0.98,
+    "min_semantic_gain": 1,
+    "min_parent_preservation_rate": 0.95,
+    "max_parent_regressions": 2
+  },
+  "gates": {
+    "format": true,
+    "semantic": true,
+    "regression": false
+  },
+  "formal_test_overlap_count": 0,
+  "human_eval_test_used": false,
+  "errors": [
+    "regression_gate_failed"
+  ],
+  "report_hash": "2f3b00b0762cde3473625c0fba9c07dab5334f1cd250eefe6080f2b9f2e4193b"
+}

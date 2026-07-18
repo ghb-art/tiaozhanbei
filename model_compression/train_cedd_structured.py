@@ -14,17 +14,39 @@ from typing import Any
 
 import torch
 from torch.utils.data import DataLoader, Dataset
+from torch.utils.data.distributed import DistributedSampler
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
 from lora_utils import apply_lora_to_model, save_lora_adapter, trainable_parameters
 
 
 ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_MODEL_DIR = ROOT / "models" / "pretrained" / "Qwen--Qwen2.5-1.5B-Instruct"
+DEFAULT_MODEL_DIR = ROOT / "models" / "pretrained" / "deepseek-ai--DeepSeek-R1-Distill-Qwen-1.5B"
 DEFAULT_DISTILL = ROOT / "data" / "distill" / "distill_dataset.jsonl"
 DEFAULT_OUTPUT_DIR = ROOT / "models" / "adapters" / "cedd_structured"
 DEFAULT_AUDIT = ROOT / "reports" / "audit" / "gate_kd_cedd_structured_train.json"
-SYSTEM_PROMPT = "You are DB4AI-EdgeServe. Return exactly one compact JSON object for edge decision distillation."
+SYSTEM_PROMPT = (
+    "You are DB4AI-EdgeServe. Return exactly one compact JSON object for edge decision distillation. "
+    "No markdown, no prose outside JSON."
+)
+USER_PROMPT_TEMPLATE = """Create a compact structured edge decision.
+
+Return this exact JSON schema:
+{
+  "object_state": "short observable state",
+  "event_type": "math_reasoning|knowledge_choice|industrial_normal|surface_defect|traffic_camera",
+  "risk_attr": "low|medium|high",
+  "action": "pass|inspect|alert|upload",
+  "confidence": 0.0,
+  "review_intent": "none|verify_reasoning|inspect_quality|sync_tracking",
+  "short_rationale": "one short sentence",
+  "evidence_items": ["1-3 short evidence strings"]
+}
+
+Task context:
+task_type: __TASK_TYPE__
+input: __INPUT_TEXT__
+"""
 
 
 def sha256_text(text: str) -> str:
@@ -73,6 +95,28 @@ def load_jsonl(path: Path) -> list[dict[str, Any]]:
 def write_json(path: Path, data: dict[str, Any]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+
+
+def setup_distributed(args: argparse.Namespace) -> tuple[int, int, int, str]:
+    world_size = int(os.environ.get("WORLD_SIZE", "1"))
+    rank = int(os.environ.get("RANK", "0"))
+    local_rank = int(os.environ.get("LOCAL_RANK", "0"))
+    if world_size <= 1:
+        return 0, 0, 1, args.device
+    if not torch.cuda.is_available():
+        raise RuntimeError("DDP training requires CUDA")
+    torch.cuda.set_device(local_rank)
+    torch.distributed.init_process_group(backend="nccl")
+    return rank, local_rank, world_size, f"cuda:{local_rank}"
+
+
+def cleanup_distributed(world_size: int) -> None:
+    if world_size > 1 and torch.distributed.is_initialized():
+        torch.distributed.destroy_process_group()
+
+
+def is_rank_zero(rank: int) -> bool:
+    return rank == 0
 
 
 def parse_csv_values(values: list[str]) -> list[str]:
@@ -126,14 +170,17 @@ def select_rows(
 
 def target_text(row: dict[str, Any]) -> str:
     target = row.get("target_json", {})
-    return json.dumps(target, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
+    decision = dict(target.get("decision_tuple", {}))
+    if "short_rationale" not in decision and target.get("short_rationale"):
+        decision["short_rationale"] = target["short_rationale"]
+    decision["evidence_items"] = [str(item) for item in target.get("evidence_items", [])[:5]]
+    return json.dumps(decision, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
 
 
 def user_prompt(row: dict[str, Any]) -> str:
     return (
-        "Create the structured edge decision JSON for this task.\n"
-        f"task_type: {row.get('task_type')}\n"
-        f"input: {row.get('input_text')}"
+        USER_PROMPT_TEMPLATE.replace("__TASK_TYPE__", str(row.get("task_type")))
+        .replace("__INPUT_TEXT__", str(row.get("input_text")))
     )
 
 
@@ -221,6 +268,7 @@ def main() -> int:
         print("--batch-size and --grad-accum-steps must be positive", file=sys.stderr)
         return 2
 
+    rank, local_rank, world_size, device = setup_distributed(args)
     random.seed(args.seed)
     torch.manual_seed(args.seed)
     if torch.cuda.is_available():
@@ -249,7 +297,10 @@ def main() -> int:
     )
     model.config.use_cache = False
     if args.gradient_checkpointing:
-        model.gradient_checkpointing_enable()
+        try:
+            model.gradient_checkpointing_enable(gradient_checkpointing_kwargs={"use_reentrant": False})
+        except TypeError:
+            model.gradient_checkpointing_enable()
         if hasattr(model, "enable_input_require_grads"):
             model.enable_input_require_grads()
         else:
@@ -270,19 +321,40 @@ def main() -> int:
         args.lora_alpha,
         args.lora_dropout,
     )
-    model.to(args.device)
+    model.to(device)
     model.train()
     trainable_count, total_count = trainable_parameters(model)
+    train_model: torch.nn.Module = model
+    if world_size > 1:
+        train_model = torch.nn.parallel.DistributedDataParallel(
+            model,
+            device_ids=[local_rank],
+            output_device=local_rank,
+            find_unused_parameters=False,
+        )
 
     train_dataset = DistillDataset(rows, tokenizer, args.max_length)
+    sampler = (
+        DistributedSampler(
+            train_dataset,
+            num_replicas=world_size,
+            rank=rank,
+            shuffle=True,
+            seed=args.seed,
+            drop_last=False,
+        )
+        if world_size > 1
+        else None
+    )
     loader = DataLoader(
         train_dataset,
         batch_size=args.batch_size,
-        shuffle=True,
+        shuffle=sampler is None,
+        sampler=sampler,
         collate_fn=lambda batch: collate_batch(batch, tokenizer.pad_token_id),
     )
     optimizer = torch.optim.AdamW(
-        [param for param in model.parameters() if param.requires_grad],
+        [param for param in train_model.parameters() if param.requires_grad],
         lr=args.learning_rate,
     )
 
@@ -295,38 +367,49 @@ def main() -> int:
     losses: list[float] = []
     global_step = 0
     update_step = 0
+    epoch_index = 0
     optimizer.zero_grad(set_to_none=True)
     while update_step < total_update_steps:
+        if sampler is not None:
+            sampler.set_epoch(epoch_index)
         for batch in loader:
             global_step += 1
-            batch = {key: value.to(args.device) for key, value in batch.items()}
-            output = model(**batch)
+            batch = {key: value.to(device) for key, value in batch.items()}
+            output = train_model(**batch)
             loss = output.loss / args.grad_accum_steps
             loss.backward()
             losses.append(float(output.loss.detach().cpu()))
             if global_step % args.grad_accum_steps == 0:
                 torch.nn.utils.clip_grad_norm_(
-                    [param for param in model.parameters() if param.requires_grad],
+                    [param for param in train_model.parameters() if param.requires_grad],
                     max_norm=1.0,
                 )
                 optimizer.step()
                 optimizer.zero_grad(set_to_none=True)
                 update_step += 1
-                if update_step % args.log_every == 0 or update_step == 1:
+                if is_rank_zero(rank) and (update_step % args.log_every == 0 or update_step == 1):
                     mean_loss = sum(losses[-args.log_every :]) / min(len(losses), args.log_every)
                     print(
                         f"[TRAIN] update={update_step}/{total_update_steps} "
-                        f"global_step={global_step} loss={mean_loss:.4f}",
+                        f"global_step={global_step} world_size={world_size} loss={mean_loss:.4f}",
                         flush=True,
                     )
                 if update_step >= total_update_steps:
                     break
+        epoch_index += 1
 
     elapsed = time.perf_counter() - started
+    loss_stats = torch.tensor([sum(losses), float(len(losses))], device=device)
+    if world_size > 1:
+        torch.distributed.all_reduce(loss_stats, op=torch.distributed.ReduceOp.SUM)
+        torch.distributed.barrier()
+    global_mean_loss = float((loss_stats[0] / loss_stats[1]).detach().cpu()) if loss_stats[1].item() else None
+    base_model = train_model.module if hasattr(train_model, "module") else train_model
     adapter_config = {
         "adapter_type": "manual_lora",
         "stage": "cedd_structured",
         "base_model": display_path(model_dir),
+        "distributed_world_size": world_size,
         "target_modules": list(target_modules),
         "rank": args.lora_rank,
         "alpha": args.lora_alpha,
@@ -337,8 +420,14 @@ def main() -> int:
         "selected_sample_count": len(rows),
         "selected_sample_ids_hash": selected_ids_hash,
         "distill_data_hash": sha256_file(distill_path),
+        "prompt_template_hash": sha256_text(SYSTEM_PROMPT + "\n" + USER_PROMPT_TEMPLATE),
+        "target_schema": "direct_decision_tuple_with_evidence_items",
     }
-    save_lora_adapter(model, output_dir, adapter_config)
+    if not is_rank_zero(rank):
+        cleanup_distributed(world_size)
+        return 0
+
+    save_lora_adapter(base_model, output_dir, adapter_config)
     adapter_hash = sha256_dir(output_dir)
     status = "passed" if losses and adapter_hash else "failed"
     audit = {
@@ -358,6 +447,8 @@ def main() -> int:
         "dataset_counts": dict(sorted(dataset_counts.items())),
         "selected_sample_count": len(rows),
         "selected_sample_ids_hash": selected_ids_hash,
+        "prompt_template_hash": sha256_text(SYSTEM_PROMPT + "\n" + USER_PROMPT_TEMPLATE),
+        "target_schema": "direct_decision_tuple_with_evidence_items",
         "epochs": args.epochs,
         "max_steps": args.max_steps,
         "batch_size": args.batch_size,
@@ -369,12 +460,16 @@ def main() -> int:
         "lora_dropout": args.lora_dropout,
         "target_modules": list(target_modules),
         "replaced_module_count": len(replaced),
+        "distributed_world_size": world_size,
+        "distributed_backend": "nccl" if world_size > 1 else "none",
+        "per_device_batch_size": args.batch_size,
+        "effective_batch_size": args.batch_size * args.grad_accum_steps * world_size,
         "trainable_parameters": trainable_count,
         "total_parameters": total_count,
         "trainable_parameter_ratio": trainable_count / total_count if total_count else 0.0,
         "global_steps": global_step,
         "optimizer_steps": update_step,
-        "mean_loss": sum(losses) / len(losses) if losses else None,
+        "mean_loss": global_mean_loss,
         "final_loss": losses[-1] if losses else None,
         "elapsed_sec": elapsed,
         "errors": [],
@@ -388,8 +483,10 @@ def main() -> int:
     print(f"Wrote {display_path(audit_path)}")
     print(f"adapter_hash={adapter_hash}")
     if status != "passed":
+        cleanup_distributed(world_size)
         return 1
     print("CEDD-Structured training passed.")
+    cleanup_distributed(world_size)
     return 0
 
 

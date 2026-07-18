@@ -1,0 +1,130 @@
+{
+  "gate": "G-KD-TRACE-teacher-capability-distill-v22.1",
+  "check_version": "1.2",
+  "verifier_version": "1.2",
+  "verifier_versions": {
+    "humaneval": "1.2"
+  },
+  "created_by": "model_compression/generate_teacher_capability_distill.py",
+  "created_ts": "2026-07-16T11:25:45.516012+00:00",
+  "updated_ts": "2026-07-16T11:25:45.675859+00:00",
+  "status": "passed",
+  "is_partial": false,
+  "dry_run": false,
+  "clean_training_policy": true,
+  "allow_final_eval_labels": false,
+  "final_test_overlap_count": 0,
+  "teacher_model_id": "Qwen/Qwen2.5-14B-Instruct-AWQ",
+  "trace_version_override": "22.1",
+  "rehearsal_version_override": "22.1-teacher-code-repaired",
+  "teacher_endpoints": [
+    {
+      "teacher_url": "http://127.0.0.1:8000",
+      "health_status": null,
+      "teacher_model_id": "Qwen/Qwen2.5-14B-Instruct-AWQ",
+      "served_model_id": "/workspace/project_tiaozhanbei/tiaozhanbei/models/pretrained/Qwen--Qwen2.5-14B-Instruct-AWQ"
+    },
+    {
+      "teacher_url": "http://127.0.0.1:8001",
+      "health_status": null,
+      "teacher_model_id": "Qwen/Qwen2.5-14B-Instruct-AWQ",
+      "served_model_id": "/workspace/project_tiaozhanbei/tiaozhanbei/models/pretrained/Qwen--Qwen2.5-14B-Instruct-AWQ"
+    },
+    {
+      "teacher_url": "http://127.0.0.1:8002",
+      "health_status": null,
+      "teacher_model_id": "Qwen/Qwen2.5-14B-Instruct-AWQ",
+      "served_model_id": "/workspace/project_tiaozhanbei/tiaozhanbei/models/pretrained/Qwen--Qwen2.5-14B-Instruct-AWQ"
+    },
+    {
+      "teacher_url": "http://127.0.0.1:8003",
+      "health_status": null,
+      "teacher_model_id": "Qwen/Qwen2.5-14B-Instruct-AWQ",
+      "served_model_id": "/workspace/project_tiaozhanbei/tiaozhanbei/models/pretrained/Qwen--Qwen2.5-14B-Instruct-AWQ"
+    }
+  ],
+  "input_paths": [
+    "data/distill/capability_rehearsal_v22_code_source.jsonl"
+  ],
+  "input_hashes": {
+    "data/distill/capability_rehearsal_v22_code_source.jsonl": "d50da32c86783749c0eb8006c81b92b82d42710380faad60cf0d7002e0a47879"
+  },
+  "selected_dataset_keys": [
+    "humaneval"
+  ],
+  "selected_unique_prompt_count": 1086,
+  "deduplicated_input_count": 0,
+  "resumed_trace_count": 1086,
+  "attempted_trace_count": 0,
+  "completed_trace_count": 1086,
+  "pending_trace_count": 0,
+  "accepted_training_count": 977,
+  "rejected_trace_count": 109,
+  "accept_rate": 0.8996316758747698,
+  "min_accept_rate": 0.8,
+  "selected_validation_group_count": 118,
+  "accepted_validation_group_count": 115,
+  "group_coverage_rate": 0.9745762711864406,
+  "min_group_coverage_rate": 0.97,
+  "fully_rejected_validation_groups": [
+    "synthetic_code_v22/balanced_split_index",
+    "synthetic_code_v22/moving_sum",
+    "synthetic_code_v22/reshape_rows"
+  ],
+  "repair_mode": true,
+  "repair_from_trace": "data/distill/teacher_capability_trace_v22_code.jsonl",
+  "repair_from_trace_hash": "dd01dbed271dfc0f5bb459729c5cea57179280018b5c87496d2146a7a5088bc6",
+  "repair_rounds_per_invocation": 3,
+  "repair_attempt_count": 1019,
+  "repaired_accept_count": 225,
+  "parent_revalidated_accept_count": 752,
+  "retry_rejected_on_resume": false,
+  "audit_only": true,
+  "trace_dataset_counts": {
+    "humaneval": 1086
+  },
+  "accepted_dataset_counts": {
+    "humaneval": 977
+  },
+  "rejection_counts": {
+    "AssertionError: candidate raised IndexError for args=([],)": 8,
+    "AssertionError: candidate raised NameError for args=([],)": 6,
+    "AssertionError: candidate raised ValueError for args=(['4', '2', '/'],)": 1,
+    "AssertionError: candidate raised ValueError for args=([], 0)": 12,
+    "AssertionError: mismatch for args=('a', 'a'): expected='a' actual=''": 1,
+    "AssertionError: mismatch for args=('a', ['a', 'bb', 'a']): expected=[] actual=['bb']": 8,
+    "AssertionError: mismatch for args=('a', []): expected=[['a']] actual=[['']]": 1,
+    "AssertionError: mismatch for args=(0, 1): expected=0 actual=1": 10,
+    "AssertionError: mismatch for args=([-1, 1, 2, 4],): expected=['-1', '1-2', '4'] actual=['-1', '1->2', '4']": 2,
+    "AssertionError: mismatch for args=([0.0], 2): expected=[] actual=[0.0]": 1,
+    "AssertionError: mismatch for args=([1, 2, 2, -1], -1): expected=[2, 2, -1, 1] actual=[-1, 1, 2, 2]": 5,
+    "AssertionError: mismatch for args=([1], 0): expected=[] actual=[[1]]": 12,
+    "AssertionError: mismatch for args=([1], [1]): expected=[1, 1] actual=[1]": 4,
+    "AssertionError: mismatch for args=([1],): expected=['1'] actual=['1', '1']": 3,
+    "AssertionError: mismatch for args=([1],): expected=[] actual=[1]": 10,
+    "AssertionError: mismatch for args=([[-1, 0, 2], [3, 5, 8]],): expected=1 actual=-3": 1,
+    "AssertionError: mismatch for args=([[1, 2], [3, 4]],): expected=10 actual=3": 1,
+    "AssertionError: mismatch for args=([], '', ''): expected=0 actual=-1": 4,
+    "AssertionError: mismatch for args=([], 0): expected=0 actual=-1": 4,
+    "AssertionError: mismatch for args=([], 0): expected=[] actual=[[]]": 1,
+    "AssertionError: mismatch for args=([], 1): expected=[] actual=[0]": 1,
+    "AssertionError: mismatch for args=([],): expected=0 actual=-1": 13
+  },
+  "endpoint_counts": {
+    "http://127.0.0.1:8000": 277,
+    "http://127.0.0.1:8001": 269,
+    "http://127.0.0.1:8002": 277,
+    "http://127.0.0.1:8003": 263
+  },
+  "workers": 1,
+  "max_new_tokens": 512,
+  "retry_count": 2,
+  "resume": true,
+  "checkpoint_interval": 25,
+  "trace_path": "data/distill/teacher_capability_trace_v22_code_repair.jsonl",
+  "trace_hash": "0b33630c7167b202f815687825c998b5404401e5ad7240a01ec1194cfe3ddfa4",
+  "distill_path": "data/distill/teacher_capability_distill_v22_code_repair.jsonl",
+  "distill_hash": "bf2dde7db6281811445b9108b1fe76add4063feafafcc855c71159ef52bbed2d",
+  "errors": [],
+  "report_hash": "6184f048c3170bd2e01a430fbc3835aebd489fa78d64401a068d1dbbaa7e71f0"
+}

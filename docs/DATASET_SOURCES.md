@@ -2,7 +2,7 @@
 
 本文件记录 DB4AI-EdgeServe 的目标数据集、用途、放置目录、官方或主来源、访问方式和接入检查规则。
 
-数据源核验日期：2026-06-30。
+数据源核验日期：2026-07-17。
 
 当前状态：已完成来源核验，8 个目标数据集的本地下载包已齐备。其中 NEU-DET 和 UA-DETRAC 官方下载入口不可用或未提供直接下载，当前采用 Kaggle mirror fallback；正式 manifest 中必须保留 fallback 说明、镜像 URL、下载包 SHA256 和本地结构校验结果。真实数据不得提交进 Git。
 
@@ -38,6 +38,8 @@
 | NEU-DET | `neu_det` | `data/datasets/neu_det` | 工业缺陷检测辅助数据 | train 70% | yes, 360 stratified samples | [NEU faculty page][neu-source] / [Kaggle mirror][neu-kaggle] | official page unreachable in current environment; Kaggle mirror fallback verified locally | `mirror-fallback-verified` |
 | CityFlow | `cityflow` | `data/datasets/cityflow` | 交通多摄像头关联、冲突构造和 G6/G7 主评测 | train scenes | yes, script-counted final test | [AI City 2022 Track 1][cityflow-source] | download link accepts AI City data license agreement; manual download required | `verified-primary-manual-download` |
 | UA-DETRAC | `ua_detrac` | `data/datasets/ua_detrac` | 支持/备份交通检测数据资产，不进入第 2 章主实验 | no main experiment | support-only | [UAlbany/CVML project page][uadetrac-source] / [UBMDFL downloads][uadetrac-downloads] / [Kaggle mirror][uadetrac-kaggle] | official project page no longer exposes direct file links; Kaggle mirror fallback verified locally | `mirror-fallback-verified-support` |
+| APPS | `apps` | `data/datasets/apps` | v28 Code train 辅助数据 | official train only | no | [APPS author repository][apps-source] / [author archive][apps-archive] | author archive; source metadata and SHA256 locally frozen | `verified-primary-auxiliary` |
+| CodeContests | `code_contests` | `data/datasets/code_contests` | v28 Code train 算法与边界条件辅助数据 | official train only | no | [DeepMind repository][code-contests-source] / [official HF distribution][code-contests-hf] | dataset CC BY 4.0; train-only parquet revision frozen | `verified-primary-auxiliary` |
 
 ## 逐项接入记录
 
@@ -65,6 +67,14 @@
 - 本地接入记录：2026-07-01 已接入官方 `data.tar`，SHA256 为 `BEC563BA4BAC1D6AAF04141CD7D1605D7A5CA833E38F994051E818489592989B`；已展开到 `data/datasets/mmlu/data/`，包含 `dev`、`test`、`val` 和 `auxiliary_train`。
 - 需要记录：commit hash 或下载日期、dataset version、科目分层策略、final 1000 sample ids hash、split hash。
 - 注意：MMLU 不进入第 2 章主实验；若作为支持/备份评测使用，Edge 与 Cloud 必须使用相同 prompt、parser 和采样参数。
+
+### MBPP（v23 Code 辅助数据）
+
+- 目录：`data/datasets/mbpp`
+- 主来源：Google Research [`google-research/mbpp/mbpp.jsonl`][mbpp-source]。
+- 本地接入记录：2026-07-17 已由 `scripts/setup_mbpp_v23.py` 下载并校验，SHA256 为 `CCF64CEAE9C5403BF50A044CB6D505BFD2A2963EE58338BA268FD65BEAB92A9F`，共 974 条，license 记录为 CC BY 4.0。
+- 使用边界：仅使用官方 train task `601-974` 作为 Code Teacher 监督源，官方 validation task `511-600` 冻结为 checkpoint-select dev 与 untouched gate dev；task `1-510` 全部排除。
+- 注意：MBPP 是 CEDD Code 能力迁移的辅助数据，不替代 HumanEval 主评测。HumanEval 164 道 test 不进入 MBPP 构建、Student 训练、checkpoint 选择或候选开发门禁。
 
 ### CMMLU
 
@@ -132,6 +142,11 @@ python scripts/validate_dataset_presence.py --allow-empty
 [gsm8k-source]: https://github.com/openai/grade-school-math
 [humaneval-source]: https://github.com/openai/human-eval
 [mmlu-source]: https://github.com/hendrycks/test
+[mbpp-source]: https://github.com/google-research/google-research/tree/master/mbpp
+[apps-source]: https://github.com/hendrycks/apps
+[apps-archive]: https://people.eecs.berkeley.edu/~hendrycks/APPS.tar.gz
+[code-contests-source]: https://github.com/google-deepmind/code_contests
+[code-contests-hf]: https://huggingface.co/datasets/deepmind/code_contests
 [cmmlu-source]: https://github.com/haonan-li/CMMLU
 [cmmlu-hf]: https://huggingface.co/datasets/haonan-li/cmmlu
 [mvtec-source]: https://www.mvtec.com/research-teaching/datasets/mvtec-ad

@@ -1,0 +1,201 @@
+{
+  "gate": "G-KD-TRACE-cedd_v21_math_residual-train",
+  "check_version": "1.4",
+  "created_by": "model_compression/train_cedd_repair.py",
+  "created_ts": "2026-07-16T04:42:43.142708+00:00",
+  "status": "passed",
+  "smoke": false,
+  "student_init": "models/pretrained/Qwen--Qwen2.5-1.5B-Instruct",
+  "init_adapter": "",
+  "init_adapter_hash": "",
+  "frozen_base_adapter": "models/adapters/cedd_v12_math_clean",
+  "frozen_base_adapter_hash": "1dc23da69093266655402dbc9f37c0c5dcbdbe31ab4e770facf48f67937d49be",
+  "frozen_parent_module_count": 56,
+  "frozen_parent_modules_hash": "3dd065ab0d791422a1807de96a170d5cb3fbffb381a2e205c796384761f3bcc6",
+  "distill_data_path": "data/distill/distill_dataset.jsonl",
+  "distill_data_hash": "610d23903a5d8d4117c03159268ce068620fee2b97de7ed7ce2dc9fb178c9443",
+  "repair_trace_path": "data/distill/counterfactual_repair_trace.jsonl",
+  "repair_trace_hash": "d27255958eb48a2e53aa38e98110a33dd6d935782cef11633b2e78447ee2cd1d",
+  "capability_rehearsal_paths": [
+    "data/distill/teacher_capability_distill_v21_math.jsonl"
+  ],
+  "capability_rehearsal_hashes": {
+    "data/distill/teacher_capability_distill_v21_math.jsonl": "ac2f67f5f428b32c5cf01a35e50de0fb1c8eded7584920bf65cf7fac220eca43"
+  },
+  "output_dir": "models/adapters/cedd_v21_math_residual",
+  "adapter_hash": "e953ade8b845332b34a852b7eaaa96f41c5c83a599fca7773bcc1c19c197b4b4",
+  "adapter_config_hash": "e1c4e5eaee36d713eac40ea0f99b717b5eb8aee98be2b6045b56a8576f890677",
+  "adapter_model_hash": "c9b2d20485d6e1eeb7e55d0a2b532579d5ba332fff9ad2b0e0b4473adef33c34",
+  "source_counts": {
+    "teacher_capability_distill_gsm8k": 6358
+  },
+  "dataset_counts": {
+    "gsm8k": 6358
+  },
+  "pre_limit_source_counts": {
+    "teacher_capability_distill_gsm8k": 7008
+  },
+  "pre_limit_dataset_counts": {
+    "gsm8k": 7008
+  },
+  "source_limits": {},
+  "selected_sample_count": 7008,
+  "selected_sample_ids_hash": "f494f96fe7e70b996cc09f662356dd8d78e674d8de696fd518aedfad13053bcd",
+  "selected_validation_group_ids_hash": "276773bd1142df322493cabc8896951486533f5efce6397a442e7726e1d10dc1",
+  "training_sample_count": 6358,
+  "training_sample_count_before_group_cap": 6358,
+  "max_train_examples_per_validation_group": 0,
+  "training_sample_ids_hash": "8f8aa28e47f3879ec75be440d8eba2221c2efdc958c5854735f86d2326cf2700",
+  "training_validation_group_ids_hash": "4d2bf436a708bb24946e33cf2a2921f449d87e86b712c55e4db8015fbdb96eef",
+  "validation_sample_count": 650,
+  "validation_sample_ids_hash": "8aeafb5590d402e7a67e429ca2142ffca07b150a1880e46c5333990217c83487",
+  "validation_group_ids_hash": "f273d309a1669c9cd1da7d8c7ccd7a964f78eb1b4cae9c9d63a7d064c785e27a",
+  "validation_group_overlap_count": 0,
+  "validation_group_count": 650,
+  "min_validation_group_count": 500,
+  "validation_source_counts": {
+    "teacher_capability_distill_gsm8k": 650
+  },
+  "validation_dataset_counts": {
+    "gsm8k": 650
+  },
+  "generation_validation_sample_count": 192,
+  "generation_validation_sample_ids_hash": "3f00edc49f252e29f356c67b1c19d7e27a337a5a8bd38b867325d47dace03b08",
+  "generation_validation_group_ids_hash": "1e272b582e9e28575a00761f62747102b5c0f300eb0fb8e199111f471ebe0e68",
+  "generation_validation_dataset_counts": {
+    "gsm8k": 192
+  },
+  "generation_validation_code_scoring": "differential_execution_v1.2",
+  "generation_validation_code_timeout_sec": 5.0,
+  "capability_datasets": [
+    "cmmlu",
+    "gsm8k",
+    "humaneval"
+  ],
+  "structured_dataset_filter": [],
+  "repair_dataset_filter": [],
+  "distill_sample_limit": 0,
+  "repair_sample_limit": 0,
+  "capability_sample_limit": 0,
+  "distill_repeat": 0,
+  "repair_repeat": 0,
+  "capability_repeat": 0,
+  "capability_jsonl_repeat": 1,
+  "epochs": 1.0,
+  "max_steps": 384,
+  "batch_size": 2,
+  "grad_accum_steps": 4,
+  "learning_rate": 2e-06,
+  "weight_decay": 0.01,
+  "parent_preservation_weight": 1.0,
+  "lr_scheduler": "cosine",
+  "warmup_ratio": 0.05,
+  "validation_fraction": 0.1,
+  "validation_seed": 20260715,
+  "validation_selection_metric": "generation",
+  "eval_every": 32,
+  "early_stopping_patience": 5,
+  "min_validation_improvement": 5e-05,
+  "min_validation_relative_improvement": 0.0,
+  "restore_best_validation": true,
+  "validation_history": [
+    {
+      "update_step": 0,
+      "loss": 0.30825073427400707,
+      "generation_score": 0.796875,
+      "generation_count": 192
+    },
+    {
+      "update_step": 32,
+      "loss": 0.2912060904996527,
+      "generation_score": 0.796875,
+      "generation_count": 192
+    },
+    {
+      "update_step": 64,
+      "loss": 0.2788071796023773,
+      "generation_score": 0.8385416666666666,
+      "generation_count": 192
+    },
+    {
+      "update_step": 96,
+      "loss": 0.27093265203336264,
+      "generation_score": 0.84375,
+      "generation_count": 192
+    },
+    {
+      "update_step": 128,
+      "loss": 0.2665127843069884,
+      "generation_score": 0.8333333333333334,
+      "generation_count": 192
+    },
+    {
+      "update_step": 160,
+      "loss": 0.26464960440719054,
+      "generation_score": 0.828125,
+      "generation_count": 192
+    },
+    {
+      "update_step": 192,
+      "loss": 0.2642448858295116,
+      "generation_score": 0.828125,
+      "generation_count": 192
+    },
+    {
+      "update_step": 198,
+      "loss": 0.26426086067422033,
+      "generation_score": 0.828125,
+      "generation_count": 192
+    }
+  ],
+  "initial_validation_loss": 0.30825073427400707,
+  "candidate_best_validation_loss": 0.27093265203336264,
+  "candidate_best_update_step": 96,
+  "validation_relative_improvement": 0.1210640497857566,
+  "validation_guard_rejected": false,
+  "generation_validation_sample_limit": 192,
+  "generation_validation_max_new_tokens": 384,
+  "min_generation_validation_improvement": 0.002,
+  "initial_generation_validation_score": 0.796875,
+  "best_generation_validation_score": 0.84375,
+  "peak_generation_validation_score": 0.84375,
+  "peak_generation_validation_step": 96,
+  "generation_guard_rejected": false,
+  "best_validation_loss": 0.27093265203336264,
+  "best_update_step": 96,
+  "stopped_early": false,
+  "max_length": 1024,
+  "lora_rank": 16,
+  "lora_alpha": 32.0,
+  "lora_dropout": 0.05,
+  "target_modules": [
+    "q_proj",
+    "k_proj",
+    "v_proj",
+    "o_proj",
+    "gate_proj",
+    "up_proj",
+    "down_proj"
+  ],
+  "replaced_module_count": 196,
+  "distributed_world_size": 4,
+  "distributed_backend": "nccl",
+  "effective_batch_size": 32,
+  "trainable_parameters": 18464768,
+  "total_parameters": 1562723840,
+  "trainable_parameter_ratio": 0.011815758822748873,
+  "global_steps": 792,
+  "optimizer_steps": 198,
+  "mean_loss": 0.2747918367385864,
+  "mean_total_loss": 0.34074972854042895,
+  "mean_parent_preservation_loss": 0.06595789302479137,
+  "parent_correct_token_ratio": 0.9019525634287542,
+  "protected_token_count": 907836,
+  "supervised_token_count": 1006523,
+  "final_loss": 0.4056195914745331,
+  "final_total_loss": 0.4736127555370331,
+  "final_learning_rate": 0.0,
+  "elapsed_sec": 5210.026002468076,
+  "errors": [],
+  "report_hash": "1bd33b3a767e148d799ffe052aa79518d80ee461087951389f8482cde8ca0d25"
+}

@@ -1,0 +1,64 @@
+{
+  "config_version": "1.0",
+  "route": "P0-A2 DeepSeek capability recovery",
+  "seed": 202606,
+  "base_model": {
+    "model_id": "deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B",
+    "local_dir": "models/pretrained/deepseek-ai--DeepSeek-R1-Distill-Qwen-1.5B",
+    "baseline_gguf": "models/quantized/deepseek-r1-distill-qwen-1.5b-q2_k_s.gguf",
+    "baseline_memory_audit": "reports/audit/g0_memory_deepseek_r1_1p5b_q2_k_s.json",
+    "baseline_peak_memory_mb_decimal": 920.22784
+  },
+  "sources": {
+    "math_train": "data/distill/teacher_capability_distill_v21_math.jsonl",
+    "code_train": "data/distill/mbpp_v23_train_source.jsonl",
+    "code_validation": "data/distill/mbpp_v23_dev_select.jsonl",
+    "nlp_train": "data/distill/capability_rehearsal_v25_3b_nlp_repair_v3.jsonl",
+    "cmmlu_validation_ids": "data/splits/cmmlu_validation.txt"
+  },
+  "selection": {
+    "math_validation_groups": 64,
+    "math_train_groups": 2048,
+    "code_train_repeats": 3,
+    "cmmlu_validation_samples": 64
+  },
+  "outputs": {
+    "train": "data/distill/p0a2_recovery_train.jsonl",
+    "validation": "data/distill/p0a2_recovery_validation.jsonl",
+    "audit": "reports/audit/gate_p0a2_recovery_data.json"
+  },
+  "training": {
+    "adapter_dir": "models/adapters/p0a2_deepseek_recovery",
+    "audit": "reports/audit/gate_p0a2_deepseek_recovery_train.json",
+    "max_steps": 128,
+    "eval_every": 16,
+    "learning_rate": 0.00002,
+    "lora_rank": 16,
+    "lora_alpha": 32,
+    "max_length": 1024,
+    "min_generation_improvement": 0.01,
+    "target_modules": [
+      "q_proj",
+      "k_proj",
+      "v_proj",
+      "o_proj",
+      "gate_proj",
+      "up_proj",
+      "down_proj"
+    ]
+  },
+  "quantization": {
+    "merged_hf_dir": "models/checkpoints/p0a2-deepseek-recovery-merged",
+    "f16_gguf": "models/quantized/p0a2-deepseek-recovery-f16.gguf",
+    "imatrix": "models/quantized/p0a2-deepseek-recovery-imatrix.gguf",
+    "q2_gguf": "models/quantized/p0a2-deepseek-recovery-q2_k_s.gguf",
+    "quant_type": "Q2_K_S",
+    "max_artifact_bytes": 900000000
+  },
+  "data_policy": {
+    "formal_test_labels_allowed": false,
+    "validation_used_for_training": false,
+    "selection_metric": "macro_accuracy",
+    "notes": "GSM8K train holdout, MBPP dev_select and CMMLU official dev are selection-only. Formal GSM8K test, HumanEval and CMMLU test remain untouched."
+  }
+}

@@ -7,12 +7,14 @@ __pycache__/
 # Logs and runtime
 logs/
 runtime/
+external/
 
 # Data and large outputs
 data/raw/
 data/processed/
 data/kwdb/
 data/distill/
+data/eval/
 data/datasets/**
 !data/datasets/
 !data/datasets/**/
@@ -26,6 +28,7 @@ models/checkpoints/
 models/quantized/
 models/adapters/*/*
 !models/adapters/*/.gitkeep
+models/adapters_gguf/
 *.pt
 *.pth
 *.bin

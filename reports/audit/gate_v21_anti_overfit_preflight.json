@@ -1,0 +1,42 @@
+{
+  "gate": "G-KD-TRACE-v21-anti-overfit-preflight",
+  "check_version": "1.0",
+  "created_by": "scripts/verify_v21_training_data.py",
+  "created_ts": "2026-07-16T04:42:48.608979+00:00",
+  "status": "passed",
+  "policy": {
+    "formal_test_labels_allowed": false,
+    "math_provenance": "frozen_gsm8k_train_only",
+    "code_provenance": "synthetic_task_families_only",
+    "code_verifier_version": "1.2",
+    "checkpoint_selection": "held_out_validation_groups_only"
+  },
+  "artifact_paths": {
+    "math_source": "data/distill/capability_rehearsal_v21_math_source.jsonl",
+    "code_source": "data/distill/capability_rehearsal_v21_code_source.jsonl",
+    "math_distill": "data/distill/teacher_capability_distill_v21_math.jsonl",
+    "code_distill": "data/distill/teacher_capability_distill_v21_code_repair_v12.jsonl",
+    "math_audit": "reports/audit/gate_kd_teacher_capability_distill_v21_math.json",
+    "code_audit": "reports/audit/gate_kd_teacher_capability_distill_v21_code_repair_v12.json"
+  },
+  "artifact_hashes": {
+    "math_source": "c0e26d8d583d8005ea59182a9c41fc5b97a5126b0b5d4e4f8ac977fcb7da8d53",
+    "code_source": "9a42ce3a3642f7a5bb54c4e2aab5c6e581fc7cfe99b822f40e5f9819bb330e75",
+    "math_distill": "ac2f67f5f428b32c5cf01a35e50de0fb1c8eded7584920bf65cf7fac220eca43",
+    "code_distill": "92f8e4b4529e4166f00f335221427fc096ad37cd30bf21e7b6d8482fc6b18631",
+    "math_audit": "87183b1d0d3d39ead9ddd3bd4c26e36e5acf5a0ff40442d5df06b5af47028ede",
+    "code_audit": "b49e810fefd314da9a1ad43e4b30f552f762752a9b7ab89765322d9623596f79"
+  },
+  "math_source_count": 7473,
+  "math_distill_count": 7008,
+  "math_validation_group_count": 7008,
+  "code_source_count": 854,
+  "code_distill_count": 707,
+  "code_source_validation_group_count": 70,
+  "code_distill_validation_group_count": 70,
+  "code_distill_group_size_min": 4,
+  "code_distill_group_size_max": 17,
+  "formal_test_overlap_count": 0,
+  "errors": [],
+  "report_hash": "037a3bd0689e8e3b9a703b07d2a359ff7bb19439c77adbd9bc4704cf331201f6"
+}

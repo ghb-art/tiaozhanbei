@@ -3,6 +3,7 @@
     "role": "cloud_teacher",
     "repo_id": "Qwen/Qwen2.5-14B-Instruct-AWQ",
     "local_dir": "models/pretrained/Qwen--Qwen2.5-14B-Instruct-AWQ",
+    "local_status": "audited_existing",
     "file_count": 13,
     "bytes": 9991785925,
     "key_files": [
@@ -46,74 +47,34 @@
     ]
   },
   {
-    "role": "high_edge",
-    "repo_id": "Qwen/Qwen2.5-7B-Instruct-AWQ",
-    "local_dir": "models/pretrained/Qwen--Qwen2.5-7B-Instruct-AWQ",
-    "file_count": 12,
-    "bytes": 5582400357,
-    "key_files": [
-      {
-        "path": "config.json",
-        "bytes": 841,
-        "sha256": "ec0c1f5f875ad8bc1f78c5140c22dbdde1b55478442ad358e7a4d9ecf947a327"
-      },
-      {
-        "path": "generation_config.json",
-        "bytes": 243,
-        "sha256": "9df8ac8558514924f3481a609f1e5590ab4416efc600b12ad805155d79581c59"
-      },
-      {
-        "path": "model.safetensors.index.json",
-        "bytes": 62662,
-        "sha256": "559b6859f37625080bf49eea80806ecc2f859a13b316b7fae2ff4432b6308e36"
-      },
-      {
-        "path": "tokenizer_config.json",
-        "bytes": 7305,
-        "sha256": "5b5d4f65d0acd3b2d56a35b56d374a36cbc1c8fa5cf3b3febbbfabf22f359583"
-      }
-    ],
-    "weight_files": [
-      {
-        "path": "model-00001-of-00002.safetensors",
-        "bytes": 3996422976,
-        "sha256": "4ad6e70f93823a9228931615e04b5e9293854c236fb4bd5f85e27f3b600605ad"
-      },
-      {
-        "path": "model-00002-of-00002.safetensors",
-        "bytes": 1574406784,
-        "sha256": "920a8cc9d3c81668f18014a69bb041ab8bab22a31640a713f90f5e7580e2f126"
-      }
-    ]
-  },
-  {
     "role": "edge_student",
-    "repo_id": "Qwen/Qwen2.5-1.5B-Instruct",
-    "local_dir": "models/pretrained/Qwen--Qwen2.5-1.5B-Instruct",
-    "file_count": 10,
-    "bytes": 3098973447,
+    "repo_id": "deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B",
+    "local_dir": "models/pretrained/deepseek-ai--DeepSeek-R1-Distill-Qwen-1.5B",
+    "local_status": "audited_existing",
+    "file_count": 9,
+    "bytes": 3562046103,
     "key_files": [
       {
         "path": "config.json",
-        "bytes": 660,
-        "sha256": "98d2ff8cc47488d08a2b0b3acf4eb99ef210779b42bd48605f6b8e36acdbf670"
+        "bytes": 679,
+        "sha256": "37bd455e9679d2959536270fed49d25cc7c290a64f6e52abb97c71345a9cee41"
       },
       {
         "path": "generation_config.json",
-        "bytes": 242,
-        "sha256": "e558847a8b4402616f1273797b015104dc266fe4b520056fca88823ba8f8ebe6"
+        "bytes": 181,
+        "sha256": "72cbec1015da9ed03ad025483005cbf6481403abf947adfd54e504d1a66a2126"
       },
       {
         "path": "tokenizer_config.json",
-        "bytes": 7305,
-        "sha256": "5b5d4f65d0acd3b2d56a35b56d374a36cbc1c8fa5cf3b3febbbfabf22f359583"
+        "bytes": 3071,
+        "sha256": "8ac8c85fb242563c2260baec0909debd69d718af6a0b3d90e6cab62b4d341cd5"
       }
     ],
     "weight_files": [
       {
         "path": "model.safetensors",
-        "bytes": 3087467144,
-        "sha256": "dd924a11b4c220f385b51ffa522daea7c9f3d850e31b162bb5661df483c6d3ee"
+        "bytes": 3554214621,
+        "sha256": "58858233513d76b8703e72eed6ce16807b523328188e13329257fb9594462945"
       }
     ]
   }

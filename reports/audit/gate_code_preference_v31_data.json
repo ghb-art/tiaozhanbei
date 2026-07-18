@@ -1,0 +1,28 @@
+{
+  "gate": "G-KD-v31-code-preference-data",
+  "check_version": "1.0",
+  "created_by": "model_compression/build_code_preference_v31.py",
+  "created_ts": "2026-07-18T05:01:53.471811+00:00",
+  "status": "passed",
+  "protocol": "verified_parent_failure_dpo_v1",
+  "pool": "data/distill/code_v30_hard_mining_pool.jsonl",
+  "pool_hash": "28838db361d687f97635a0babf262d2b9490593848c023a191dbb63fb9666474",
+  "pool_audit_hash": "17a8cf9a8a5ab8c7bdbb31eff3b93bf49a5a6b618bb413ce13421658ed6d5be8",
+  "mining_trace": "data/eval/code_v30_hard_mining.jsonl",
+  "mining_trace_hash": "e24e7436fcf25f931a2b210e07439e6f3cdd56b1df8fa9df301a55f43c417b92",
+  "mining_audit_hash": "faf9fecb478606ad8f328b2f4eeae0cc16b025f34ccfb8893be31a011cb632c2",
+  "trigger_audit_hash": "0c51eeba5fdd507f33c07d31c449906a48653ee9dbb752728bc31cf04ba77963",
+  "parent_adapter_hash": "e8706e6e523af1a5ea0dc54de5ddabccdd0a0141c992f928d0e49f1fc2aa2eb3",
+  "pair_count": 233,
+  "validation_group_count": 233,
+  "source_counts": {
+    "apps": 198,
+    "mbpp": 35
+  },
+  "formal_test_overlap_count": 0,
+  "human_eval_test_used": false,
+  "output": "data/distill/code_v31_execution_preference.jsonl",
+  "output_hash": "7094182f50bde1345634faad5115f28fde6044558c954a7c540a5be6a51b27f5",
+  "errors": [],
+  "report_hash": "1e286bacb1e1e45aaf9ebbd224db747d22ec58d15b157d405ee5e993642c8854"
+}

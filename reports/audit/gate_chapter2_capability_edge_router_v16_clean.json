@@ -1,0 +1,44 @@
+{
+  "gate": "CH2-CAPABILITY-EVAL-edge-router_v16_clean",
+  "check_version": "1.0",
+  "created_by": "scripts/merge_jsonl_shards.py",
+  "created_ts": "2026-07-13T13:53:36.044131+00:00",
+  "status": "passed",
+  "input_paths": [
+    "data/eval/chapter2_capability_edge_router_v16_clean_shard0.jsonl",
+    "data/eval/chapter2_capability_edge_router_v16_clean_shard1.jsonl",
+    "data/eval/chapter2_capability_edge_router_v16_clean_shard2.jsonl",
+    "data/eval/chapter2_capability_edge_router_v16_clean_shard3.jsonl"
+  ],
+  "input_hashes": {
+    "data/eval/chapter2_capability_edge_router_v16_clean_shard0.jsonl": "35bfba5fe6acd6597a5fcfd568724b4123a3753cd486692805aa5dc2fc663348",
+    "data/eval/chapter2_capability_edge_router_v16_clean_shard1.jsonl": "48ec41ffd8e3d855f6576b57ae2e4ad36b888276ad6663c343839329721966b1",
+    "data/eval/chapter2_capability_edge_router_v16_clean_shard2.jsonl": "8c47a55d8a50315f224c1f4ee60b3e976cba56bc0e5d45a971b7fb1b31059e23",
+    "data/eval/chapter2_capability_edge_router_v16_clean_shard3.jsonl": "758bf53f5f489b34e5db8a1ceeefb54a637a77f1c2ec137ee8db86fee62714e5"
+  },
+  "output_path": "data/eval/chapter2_capability_edge_router_v16_clean.jsonl",
+  "output_hash": "d80281b50f977174ae0bbcb670ef5575e48b2a0e5143cb0840c9f88063bdadb9",
+  "row_count": 1664,
+  "dataset_counts": {
+    "cmmlu": 1000,
+    "gsm8k": 500,
+    "humaneval": 164
+  },
+  "key": "sample_id",
+  "duplicate_count": 0,
+  "duplicate_keys_hash": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+  "order_jsonl": "",
+  "errors": [],
+  "correct_counts": {
+    "cmmlu": 607,
+    "gsm8k": 195,
+    "humaneval": 82
+  },
+  "accuracy_by_dataset": {
+    "cmmlu": 0.607,
+    "gsm8k": 0.39,
+    "humaneval": 0.5
+  },
+  "overall_accuracy": 0.53125,
+  "report_hash": "298b5eb759a1d7692542529b95c3eee45a01eef6c0729ac6c3e8f13ee302fbd7"
+}

@@ -1,0 +1,27 @@
+{
+  "gate": "G-KD-TRACE-capability-rehearsal-v2",
+  "check_version": "1.0",
+  "created_by": "model_compression/build_capability_rehearsal.py",
+  "created_ts": "2026-07-04T05:15:45.768394+00:00",
+  "status": "passed",
+  "output_path": "data/distill/capability_rehearsal_v2.jsonl",
+  "output_hash": "8594343edf279b932cf0bf214012380b3a582d61116eba31d3517d055b6cec64",
+  "row_count": 10545,
+  "dataset_counts": {
+    "cmmlu": 1536,
+    "gsm8k": 7473,
+    "humaneval": 1536
+  },
+  "source_counts": {
+    "gsm8k_train_reference": 7473,
+    "synthetic_cmmlu_rehearsal": 1536,
+    "synthetic_code_rehearsal": 1536
+  },
+  "gsm8k_limit": 7473,
+  "synthetic_code_repeat": 192,
+  "synthetic_cmmlu_repeat": 192,
+  "seed": 42,
+  "leakage_note": "Uses GSM8K train split plus deterministic synthetic code/CMMLU-style rows; does not read HumanEval or CMMLU final test.",
+  "errors": [],
+  "report_hash": "19f49a7948095c56335329dc352dec78fe2378702cd817e81a3bbeaa9106f6fc"
+}

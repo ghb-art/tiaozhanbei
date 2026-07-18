@@ -1,0 +1,35 @@
+{
+  "gate": "G-KD-TRACE-capability-rehearsal-v9.0-math",
+  "check_version": "1.0",
+  "created_by": "model_compression/build_capability_rehearsal.py",
+  "created_ts": "2026-07-07T08:38:49.857364+00:00",
+  "status": "passed",
+  "output_path": "data/distill/capability_rehearsal_v9_math.jsonl",
+  "output_hash": "5db0f33c10f14274bb9396366451a45fef7a3037b68c0fa5310d34f9a2312760",
+  "row_count": 27027,
+  "dataset_counts": {
+    "gsm8k": 27027
+  },
+  "source_counts": {
+    "gsm8k_train_compact": 7473,
+    "gsm8k_train_final_only": 7473,
+    "gsm8k_train_reference": 7473,
+    "synthetic_gsm8k_complex_rehearsal": 2560,
+    "synthetic_gsm8k_rehearsal": 2048
+  },
+  "skip_gsm8k": false,
+  "gsm8k_limit": 7473,
+  "synthetic_gsm8k_repeat": 256,
+  "synthetic_gsm8k_complex_repeat": 256,
+  "synthetic_code_repeat": 0,
+  "synthetic_cmmlu_repeat": 0,
+  "cmmlu_validation_limit": 0,
+  "cmmlu_validation_repeat": 0,
+  "gsm8k_answer_mode": "mixed",
+  "code_answer_mode": "body",
+  "seed": 42,
+  "rehearsal_version": "9.0-math",
+  "leakage_note": "Uses GSM8K train split, optional CMMLU validation/dev split rows, and deterministic synthetic GSM8K/code/CMMLU-style rows; does not read HumanEval or CMMLU final test.",
+  "errors": [],
+  "report_hash": "2afe72f459770c9a420c07097fa9b87ab822b21f7f98083c1c70ef919caf7064"
+}

@@ -1,0 +1,216 @@
+{
+  "gate": "G-KD-TRACE-cedd_v22_code_residual-train",
+  "check_version": "1.5",
+  "created_by": "model_compression/train_cedd_repair.py",
+  "created_ts": "2026-07-17T01:57:05.001908+00:00",
+  "status": "passed",
+  "smoke": false,
+  "student_init": "models/pretrained/Qwen--Qwen2.5-1.5B-Instruct",
+  "init_adapter": "",
+  "init_adapter_hash": "",
+  "frozen_base_adapter": "models/adapters/cedd_v12_code_clean",
+  "frozen_base_adapter_hash": "bc68b8355f9b18f9c7a0a46ef2519d67d9d7583c292a836437d890cb77c75a73",
+  "frozen_parent_module_count": 56,
+  "frozen_parent_modules_hash": "3dd065ab0d791422a1807de96a170d5cb3fbffb381a2e205c796384761f3bcc6",
+  "distill_data_path": "data/distill/distill_dataset.jsonl",
+  "distill_data_hash": "610d23903a5d8d4117c03159268ce068620fee2b97de7ed7ce2dc9fb178c9443",
+  "repair_trace_path": "data/distill/counterfactual_repair_trace.jsonl",
+  "repair_trace_hash": "d27255958eb48a2e53aa38e98110a33dd6d935782cef11633b2e78447ee2cd1d",
+  "capability_rehearsal_paths": [
+    "data/distill/teacher_capability_distill_v22_code_repair.jsonl"
+  ],
+  "capability_rehearsal_hashes": {
+    "data/distill/teacher_capability_distill_v22_code_repair.jsonl": "bf2dde7db6281811445b9108b1fe76add4063feafafcc855c71159ef52bbed2d"
+  },
+  "output_dir": "models/adapters/cedd_v22_code_residual",
+  "adapter_hash": "aeda5c38fd128cc08b8863f0c67f646f8681ccd3b39f0ca3110e618497d9105f",
+  "adapter_config_hash": "3f039cc2936840702c798c10e684f7dac541d8bba75860c99d6e9d0cc2e93efb",
+  "adapter_model_hash": "fef7f197a500a655f44449bd50cc8971a8e847c0974186b3e212230d18ed1beb",
+  "source_counts": {
+    "teacher_capability_repair_humaneval": 543
+  },
+  "dataset_counts": {
+    "humaneval": 543
+  },
+  "pre_limit_source_counts": {
+    "teacher_capability_repair_humaneval": 977
+  },
+  "pre_limit_dataset_counts": {
+    "humaneval": 977
+  },
+  "source_limits": {},
+  "selected_sample_count": 977,
+  "selected_sample_ids_hash": "cc87f83243586afa8d52db405bd548c9e4cd1c7f8e100f55bfb779baba2a11d4",
+  "selected_validation_group_ids_hash": "7a5b60d5a71876d2567263ca5378455821863068309d077170716b722aa9b028",
+  "training_sample_count": 543,
+  "training_sample_count_before_group_cap": 711,
+  "max_train_examples_per_validation_group": 8,
+  "training_sample_ids_hash": "a35a6b00faf007d7adc12ad73575edfaa4331955875eef2c90bbdcc4c9a31038",
+  "training_validation_group_ids_hash": "eb81fba2dd57496d7698e82cccd85feb143179c0d32db1fa0c827f830ecc8165",
+  "validation_sample_count": 266,
+  "validation_sample_ids_hash": "bc169740a10b721a2c02230276e00206dcd56d51c35763ad0499d75bc602b333",
+  "validation_group_ids_hash": "7f0a6da9b11c21944295cbd9eeec173f851fcf0c2046b82961b780f65b0d08a0",
+  "validation_group_overlap_count": 0,
+  "validation_group_count": 33,
+  "min_validation_group_count": 24,
+  "validation_source_counts": {
+    "teacher_capability_repair_humaneval": 266
+  },
+  "validation_dataset_counts": {
+    "humaneval": 266
+  },
+  "generation_validation_sample_count": 97,
+  "generation_validation_sample_ids_hash": "7054bcc8bb3e5b8b74266502b7acddb4cbb60e5544fbc809d495ae7c33426e50",
+  "generation_validation_group_ids_hash": "7f0a6da9b11c21944295cbd9eeec173f851fcf0c2046b82961b780f65b0d08a0",
+  "generation_validation_dataset_counts": {
+    "humaneval": 97
+  },
+  "generation_validation_code_scoring": "differential_execution_v1.2",
+  "generation_validation_code_timeout_sec": 5.0,
+  "capability_datasets": [
+    "cmmlu",
+    "gsm8k",
+    "humaneval"
+  ],
+  "structured_dataset_filter": [],
+  "repair_dataset_filter": [],
+  "distill_sample_limit": 0,
+  "repair_sample_limit": 0,
+  "capability_sample_limit": 0,
+  "distill_repeat": 0,
+  "repair_repeat": 0,
+  "capability_repeat": 0,
+  "capability_jsonl_repeat": 1,
+  "epochs": 6.0,
+  "max_steps": 320,
+  "batch_size": 2,
+  "grad_accum_steps": 2,
+  "learning_rate": 3e-06,
+  "weight_decay": 0.01,
+  "parent_preservation_weight": 0.35,
+  "lr_scheduler": "cosine",
+  "warmup_ratio": 0.08,
+  "validation_fraction": 0.25,
+  "validation_seed": 20260716,
+  "validation_selection_metric": "generation",
+  "eval_every": 24,
+  "early_stopping_patience": 0,
+  "min_validation_improvement": 5e-05,
+  "min_validation_relative_improvement": 0.005,
+  "restore_best_validation": true,
+  "validation_history": [
+    {
+      "update_step": 0,
+      "loss": 0.29811734080648244,
+      "generation_score": 0.7319587628865979,
+      "generation_count": 97
+    },
+    {
+      "update_step": 24,
+      "loss": 0.2761041698560341,
+      "generation_score": 0.7628865979381443,
+      "generation_count": 97
+    },
+    {
+      "update_step": 48,
+      "loss": 0.26292925703325376,
+      "generation_score": 0.7938144329896907,
+      "generation_count": 97
+    },
+    {
+      "update_step": 72,
+      "loss": 0.25583432000408424,
+      "generation_score": 0.7731958762886598,
+      "generation_count": 97
+    },
+    {
+      "update_step": 96,
+      "loss": 0.25134090036709805,
+      "generation_score": 0.7422680412371134,
+      "generation_count": 97
+    },
+    {
+      "update_step": 120,
+      "loss": 0.24872421751271434,
+      "generation_score": 0.7319587628865979,
+      "generation_count": 97
+    },
+    {
+      "update_step": 144,
+      "loss": 0.24735955468643067,
+      "generation_score": 0.7216494845360825,
+      "generation_count": 97
+    },
+    {
+      "update_step": 168,
+      "loss": 0.2466184861624419,
+      "generation_score": 0.7216494845360825,
+      "generation_count": 97
+    },
+    {
+      "update_step": 192,
+      "loss": 0.24641179424057255,
+      "generation_score": 0.7216494845360825,
+      "generation_count": 97
+    },
+    {
+      "update_step": 204,
+      "loss": 0.24640048095094624,
+      "generation_score": 0.7216494845360825,
+      "generation_count": 97
+    }
+  ],
+  "initial_validation_loss": 0.29811734080648244,
+  "candidate_best_validation_loss": 0.26292925703325376,
+  "candidate_best_update_step": 48,
+  "validation_relative_improvement": 0.11803434069965893,
+  "validation_guard_rejected": false,
+  "generation_validation_sample_limit": 192,
+  "generation_validation_examples_per_group": 3,
+  "generation_validation_max_new_tokens": 384,
+  "min_generation_validation_improvement": 0.005,
+  "initial_generation_validation_score": 0.7319587628865979,
+  "best_generation_validation_score": 0.7938144329896907,
+  "peak_generation_validation_score": 0.7938144329896907,
+  "peak_generation_validation_step": 48,
+  "generation_guard_rejected": false,
+  "best_validation_loss": 0.26292925703325376,
+  "best_update_step": 48,
+  "stopped_early": false,
+  "max_length": 1024,
+  "lora_rank": 16,
+  "lora_alpha": 32.0,
+  "lora_dropout": 0.05,
+  "target_modules": [
+    "q_proj",
+    "k_proj",
+    "v_proj",
+    "o_proj",
+    "gate_proj",
+    "up_proj",
+    "down_proj"
+  ],
+  "replaced_module_count": 196,
+  "distributed_world_size": 4,
+  "distributed_backend": "nccl",
+  "effective_batch_size": 16,
+  "trainable_parameters": 18464768,
+  "total_parameters": 1562723840,
+  "trainable_parameter_ratio": 0.011815758822748873,
+  "global_steps": 408,
+  "optimizer_steps": 204,
+  "scheduled_optimizer_steps": 204,
+  "min_optimizer_steps": 192,
+  "mean_loss": 0.22717396914958954,
+  "mean_total_loss": 0.2428625630027633,
+  "mean_parent_preservation_loss": 0.044824705404393816,
+  "parent_correct_token_ratio": 0.9150328106997946,
+  "protected_token_count": 182668,
+  "supervised_token_count": 199630,
+  "final_loss": 0.19871675968170166,
+  "final_total_loss": 0.20730745792388916,
+  "final_learning_rate": 0.0,
+  "elapsed_sec": 1488.8476413162425,
+  "errors": [],
+  "report_hash": "7f594c9d4b81f7b07e863ccc93c5a8175bcec4a37fd67213c17606bdd8ab5afd"
+}

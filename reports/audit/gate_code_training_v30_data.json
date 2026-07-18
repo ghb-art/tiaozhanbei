@@ -1,0 +1,109 @@
+{
+  "gate": "G-KD-v30-validated-code-data",
+  "check_version": "1.1",
+  "created_by": "model_compression/build_code_training_v30.py",
+  "created_ts": "2026-07-18T02:01:49.996729+00:00",
+  "status": "passed",
+  "policy": {
+    "data_revision": "30.1-function-call-focused",
+    "parent": "v25 Code adapter; v30 does not inherit v29",
+    "dev_usage": "prompt and entry point only for overlap exclusion; labels/tests not accessed",
+    "repetition": "training and validation use at most one row per task group",
+    "validation": "official-train rows isolated by task group and retained with executable tests",
+    "apps_min_tests": 3,
+    "code_contests_min_tests": 10,
+    "overlap_threshold": 0.65,
+    "max_sequence_tokens": 1536,
+    "validation_code_timeout_sec": 5.0,
+    "seed": 20260730
+  },
+  "inputs": {
+    "apps_official_train_call": {
+      "path": "data/distill/code_v28_apps_train.jsonl",
+      "sha256": "7bf5cdf0004c58bb313bb2f534409c2dd5c2a96bf26d9a256f2b21426ad14eb7"
+    },
+    "code_contests_official_train_io": {
+      "path": "data/distill/code_v28_code_contests_train.jsonl",
+      "sha256": "3f98f05fa2f09922c4ebee48e5e7cd5cb90d1d0eb605b9bac8be63371c47f057"
+    },
+    "mbpp_official_train": {
+      "path": "data/distill/mbpp_v23_train_source.jsonl",
+      "sha256": "8e75cdab7f04c6a67bb070a13b97020552c762dc6befaac313ada5f28307e185"
+    },
+    "synthetic_code_rehearsal_body": {
+      "path": "data/distill/capability_rehearsal_v25_3b_code_v11.jsonl",
+      "sha256": "e637340c62a6233c9f2306d24b8d6467eb6753485c3df7a4b0d605a038860182"
+    }
+  },
+  "dev_exclusion": {
+    "split_counts": {
+      "dev_select": 42,
+      "dev_gate": 42
+    },
+    "entry_point_count": 83,
+    "entry_points_hash": "fec13ad2bd1f426eafc0e556c28c5c3f756d1f950be4ccaaae6586e09d3e25b2",
+    "prompt_hashes_hash": "c56efb6f8fce3d9416460f4760e13dec2657c92cf54526ec7b1ff030daa766fa",
+    "labels_or_tests_accessed": false,
+    "dev_select_path": "data/distill/mbpp_v23_dev_select.jsonl",
+    "dev_select_sha256": "067428947a455e384ea969de45aea9daf2b336edd7ebf0538af694600f1895e0",
+    "dev_gate_path": "data/distill/mbpp_v23_dev_gate.jsonl",
+    "dev_gate_sha256": "a331fa5bff8e442631ff4178e6117055923e805bf102cc519e3d1450828454e5"
+  },
+  "purified_counts": {
+    "apps_official_train_call": 1745,
+    "code_contests_official_train_io": 991,
+    "mbpp_official_train": 346,
+    "synthetic_code_rehearsal_body": 42
+  },
+  "rejection_counts": {
+    "apps_official_train_call": {
+      "debug_print": 10,
+      "dev_entry_point_collision": 4,
+      "insufficient_tests": 641
+    },
+    "code_contests_official_train_io": {
+      "insufficient_tests": 9
+    },
+    "mbpp_official_train": {
+      "dev_entry_point_collision": 10
+    },
+    "synthetic_code_rehearsal_body": {
+      "duplicate_row": 21462
+    }
+  },
+  "internal_validation_verifier_rejection_counts": {
+    "apps_official_train_call": 0,
+    "mbpp_official_train": 0,
+    "code_contests_official_train_io": 0,
+    "synthetic_code_rehearsal_body": 0
+  },
+  "training_source_counts": {
+    "code_contests_official_train_io": 226,
+    "apps_official_train_call": 1500,
+    "mbpp_official_train": 280,
+    "synthetic_code_rehearsal_body": 42
+  },
+  "internal_validation_source_counts": {
+    "apps_official_train_call": 64,
+    "mbpp_official_train": 64
+  },
+  "training_sample_count": 2048,
+  "internal_validation_sample_count": 128,
+  "internal_validation_executable_count": 128,
+  "train_internal_validation_group_overlap_count": 0,
+  "dev_entry_point_collision_count": 0,
+  "formal_humaneval_training_count": 0,
+  "formal_humaneval_selection_count": 0,
+  "outputs": {
+    "training": {
+      "path": "data/distill/code_v30_validated_train.jsonl",
+      "sha256": "757ef8babd598af12f58a75c732020e5f8ef2b623c6ca07fb3114b0bf32f6fad"
+    },
+    "internal_generation_validation": {
+      "path": "data/distill/code_v30_internal_generation_validation.jsonl",
+      "sha256": "11afa9a6987dfe317628b04b2fc9e921ad2389fd73628c7ed7a7cde2d1c696d5"
+    }
+  },
+  "errors": [],
+  "report_hash": "26443f8f4e10f02bb8b3a41555d4a509315c1d43c6438362f85f2384feb11f60"
+}

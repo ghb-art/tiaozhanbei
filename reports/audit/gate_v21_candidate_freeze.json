@@ -1,0 +1,43 @@
+{
+  "gate": "G-FREEZE-v21-formal-candidate",
+  "check_version": "1.0",
+  "created_by": "scripts/freeze_v21_candidate.py",
+  "created_ts": "2026-07-16T04:44:09.010312+00:00",
+  "status": "passed",
+  "candidate_id": "504f5f6be8dd86705774f46ddf1448cc93d5b9c292c22334b3270dc317ebd786",
+  "protocol": "v21-single-formal-candidate-v1",
+  "artifact_paths": {
+    "anti_overfit_audit": "reports/audit/gate_v21_anti_overfit_preflight.json",
+    "math_train_audit": "reports/audit/gate_kd_cedd_v21_math_residual_train.json",
+    "code_train_audit": "reports/audit/gate_kd_cedd_v21_code_residual_train.json",
+    "math_adapter_config": "models/adapters/cedd_v21_math_composed/adapter_config.json",
+    "math_adapter_model": "models/adapters/cedd_v21_math_composed/adapter_model.pt",
+    "code_adapter_config": "models/adapters/cedd_v21_code_composed/adapter_config.json",
+    "code_adapter_model": "models/adapters/cedd_v21_code_composed/adapter_model.pt",
+    "nlp_adapter_config": "models/adapters/cedd_v18_nlp_clean/adapter_config.json",
+    "nlp_adapter_model": "models/adapters/cedd_v18_nlp_clean/adapter_model.pt",
+    "cloud_audit": "reports/audit/gate_chapter2_capability_cloud_v17.json"
+  },
+  "artifact_hashes": {
+    "anti_overfit_audit": "b0d0a1ab5a5186d61eb63ec3ae5054ad53cca3d70d0c7ec2096c23023beb1660",
+    "math_train_audit": "1faf2b64e0f485c55e48ba8a16695db97babbd00c2108816a82a206c0124519e",
+    "code_train_audit": "2f7b85f63f69fc2912de1478746bab758389422d375041c2d490809790d85cc1",
+    "math_adapter_config": "cef5a2b83340340eebf4d4b34ef436ff3be7756ca47f32b1fad32547f34caba8",
+    "math_adapter_model": "7161ac37b28671ed74741ea3f3431a9519b009fb620e8a161f6c4fada66f1b3f",
+    "code_adapter_config": "a92aaac18bfba7b80fbf7f42a400ee85f6318bf36e74bc090e1227d093fcd2b9",
+    "code_adapter_model": "3f4434d4e5016c76334971596c9864d3a1943283fc78cde1f7cb1952207836f4",
+    "nlp_adapter_config": "ca2c7626325d354d81a943b5bc4084a430be6bd0ee3600a36601c48991ee4246",
+    "nlp_adapter_model": "150b863e3504cfa47981773986c4197527ef1e173dcb0cc4cec326622a309c1b",
+    "cloud_audit": "8f2ace716456e08d5234a8dd6bc5a45709ec03d089480672c073506518dedd89"
+  },
+  "formal_prompt_policy": {
+    "gsm8k": "default",
+    "humaneval": "v11",
+    "cmmlu": "v11",
+    "frozen_final": true,
+    "max_new_tokens": 384
+  },
+  "policy_note": "This candidate must be frozen before formal Edge/G1 evaluation. After a formal result exists, changing model, data, prompt, scorer, or selection settings creates an exploratory result rather than another final candidate.",
+  "errors": [],
+  "report_hash": "14ed1a34c30dec0ad3cc90edfe502a6604ea12c3f58ca37f29141f56aa4d75ba"
+}

@@ -1,0 +1,70 @@
+{
+  "gate": "P0-A2-recovery-data",
+  "check_version": "1.0",
+  "created_by": "model_compression/build_p0a2_recovery_data.py",
+  "created_ts": "2026-07-18T08:57:00.118127+00:00",
+  "status": "passed",
+  "config": "configs/p0a2_recovery.json",
+  "config_sha256": "7329f5715edcaf8c371cd4fdaad0820b1340d55079a02a8d4ce696f238ea0cd2",
+  "seed": 202606,
+  "sources": {
+    "cmmlu_validation_ids": {
+      "path": "data/splits/cmmlu_validation.txt",
+      "sha256": "c157b30f218bcaada5a85a229348f8a88244876c246e4d2a45667e525ecfb067"
+    },
+    "code_train": {
+      "path": "data/distill/mbpp_v23_train_source.jsonl",
+      "sha256": "8e75cdab7f04c6a67bb070a13b97020552c762dc6befaac313ada5f28307e185"
+    },
+    "code_validation": {
+      "path": "data/distill/mbpp_v23_dev_select.jsonl",
+      "sha256": "067428947a455e384ea969de45aea9daf2b336edd7ebf0538af694600f1895e0"
+    },
+    "math_train": {
+      "path": "data/distill/teacher_capability_distill_v21_math.jsonl",
+      "sha256": "ac2f67f5f428b32c5cf01a35e50de0fb1c8eded7584920bf65cf7fac220eca43"
+    },
+    "nlp_train": {
+      "path": "data/distill/capability_rehearsal_v25_3b_nlp_repair_v3.jsonl",
+      "sha256": "50dc6f95f991418016d08b86ca74c0150770a76eb11562852eafb7781b33d7d0"
+    }
+  },
+  "outputs": {
+    "train": {
+      "path": "data/distill/p0a2_recovery_train.jsonl",
+      "sha256": "4c29b5051bd51a07ca6a3509c0a632a06017b51ac6fdb87bf04e830ad3bc9c6b",
+      "rows": 7212
+    },
+    "validation": {
+      "path": "data/distill/p0a2_recovery_validation.jsonl",
+      "sha256": "e5fd483e537173f7a2ddafc71a49310799d71f5bdcf37406499d8862d0c4b8c0",
+      "rows": 170
+    }
+  },
+  "train_dataset_counts": {
+    "cmmlu": 4096,
+    "gsm8k": 2048,
+    "humaneval": 1068
+  },
+  "validation_dataset_counts": {
+    "cmmlu": 64,
+    "gsm8k": 64,
+    "humaneval": 42
+  },
+  "train_group_count": 2420,
+  "validation_group_count": 170,
+  "train_validation_group_overlap_count": 0,
+  "duplicate_train_sample_count": 0,
+  "duplicate_validation_sample_count": 0,
+  "formal_test_reference_count": 0,
+  "formal_humaneval_prompt_overlap_count": 0,
+  "formal_split_hashes": {
+    "cmmlu": "f84da51304686b6de295a2b576d2d7d2fb54bcd0eca4c50f9fa6673f68b5defe",
+    "gsm8k": "1fca4def286a0c6bf7ce323ded81841b077e5dda6075aab8c793eadfdb5674ab",
+    "humaneval": "bfc33611e5bb7005d501015a11d3b9f2d9924f06ff260e3b22b8763b5e3476de"
+  },
+  "validation_used_for_training": false,
+  "formal_test_labels_used_for_training": false,
+  "errors": [],
+  "report_hash": "956bdc0164423d13f6397f7468a7ff34cd3aedb9c61855b0445b066f29bf4f89"
+}

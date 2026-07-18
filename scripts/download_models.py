@@ -14,6 +14,7 @@ from huggingface_hub import snapshot_download
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_OUTPUT_DIR = ROOT / "models" / "pretrained"
 DEFAULT_SUMMARY_PATH = DEFAULT_OUTPUT_DIR / "MODEL_DOWNLOADS.json"
+DEFAULT_AUDIT_COPY_PATH = ROOT / "reports" / "audit" / "model_downloads.json"
 
 MODEL_SPECS = [
     {
@@ -22,14 +23,9 @@ MODEL_SPECS = [
         "local_name": "Qwen--Qwen2.5-14B-Instruct-AWQ",
     },
     {
-        "role": "high_edge",
-        "repo_id": "Qwen/Qwen2.5-7B-Instruct-AWQ",
-        "local_name": "Qwen--Qwen2.5-7B-Instruct-AWQ",
-    },
-    {
         "role": "edge_student",
-        "repo_id": "Qwen/Qwen2.5-1.5B-Instruct",
-        "local_name": "Qwen--Qwen2.5-1.5B-Instruct",
+        "repo_id": "deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B",
+        "local_name": "deepseek-ai--DeepSeek-R1-Distill-Qwen-1.5B",
     },
 ]
 
@@ -92,6 +88,35 @@ def selected_models(names: list[str]) -> list[dict[str, str]]:
     return selected
 
 
+def load_existing_summary(path: Path) -> list[dict[str, Any]]:
+    if not path.is_file():
+        return []
+    try:
+        value = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return []
+    if not isinstance(value, list):
+        return []
+    rows = [dict(row) for row in value if isinstance(row, dict)]
+    return rows
+
+
+def merge_summary(existing: list[dict[str, Any]], downloaded: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    configured_repos = {spec["repo_id"] for spec in MODEL_SPECS}
+    merged = {
+        str(row.get("repo_id", "")): row
+        for row in existing
+        if str(row.get("repo_id", "")) in configured_repos
+    }
+    for row in downloaded:
+        merged[str(row["repo_id"])] = row
+    role_order = {spec["role"]: index for index, spec in enumerate(MODEL_SPECS)}
+    return sorted(
+        merged.values(),
+        key=lambda row: (role_order.get(str(row.get("role", "")), len(role_order)), str(row.get("repo_id", ""))),
+    )
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Download project model snapshots from Hugging Face.")
     parser.add_argument(
@@ -102,7 +127,17 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--output-dir", default=str(DEFAULT_OUTPUT_DIR), help="Directory for local model snapshots.")
     parser.add_argument("--summary", default=str(DEFAULT_SUMMARY_PATH), help="Download summary JSON path.")
+    parser.add_argument(
+        "--audit-copy",
+        default=str(DEFAULT_AUDIT_COPY_PATH),
+        help="Second copy of the merged model audit. Use an empty value to disable.",
+    )
     parser.add_argument("--max-workers", type=int, default=1, help="Concurrent Hugging Face download workers.")
+    parser.add_argument(
+        "--local-only",
+        action="store_true",
+        help="Audit already-present configured snapshots without contacting Hugging Face.",
+    )
     return parser.parse_args()
 
 
@@ -116,6 +151,10 @@ def main() -> int:
     if not summary_path.is_absolute():
         summary_path = ROOT / summary_path
 
+    audit_copy_path = Path(args.audit_copy) if args.audit_copy else None
+    if audit_copy_path is not None and not audit_copy_path.is_absolute():
+        audit_copy_path = ROOT / audit_copy_path
+
     try:
         specs = selected_models(args.model)
     except ValueError as exc:
@@ -123,34 +162,48 @@ def main() -> int:
         return 2
 
     output_dir.mkdir(parents=True, exist_ok=True)
-    summary: list[dict[str, Any]] = []
+    downloaded: list[dict[str, Any]] = []
     print(f"Model download started at {time.strftime('%Y-%m-%d %H:%M:%S')}", flush=True)
 
     for spec in specs:
         local_dir = output_dir / spec["local_name"]
-        local_dir.mkdir(parents=True, exist_ok=True)
-        print(f"START {spec['role']} {spec['repo_id']} -> {local_dir}", flush=True)
-        snapshot_download(
-            repo_id=spec["repo_id"],
-            local_dir=str(local_dir),
-            max_workers=args.max_workers,
-        )
+        if args.local_only:
+            if not local_dir.is_dir():
+                print(f"Missing configured local snapshot: {local_dir}", file=sys.stderr)
+                return 1
+            print(f"AUDIT {spec['role']} {spec['repo_id']} -> {local_dir}", flush=True)
+        else:
+            local_dir.mkdir(parents=True, exist_ok=True)
+            print(f"START {spec['role']} {spec['repo_id']} -> {local_dir}", flush=True)
+            snapshot_download(
+                repo_id=spec["repo_id"],
+                local_dir=str(local_dir),
+                max_workers=args.max_workers,
+            )
         stats = directory_stats(local_dir)
         item = {
             "role": spec["role"],
             "repo_id": spec["repo_id"],
             "local_dir": local_dir.relative_to(ROOT).as_posix(),
+            "local_status": "audited_existing" if args.local_only else "downloaded",
             **stats,
         }
-        summary.append(item)
+        downloaded.append(item)
         print(
             f"DONE {spec['role']} files={stats['file_count']} bytes={stats['bytes']}",
             flush=True,
         )
 
+    summary = merge_summary(load_existing_summary(summary_path), downloaded)
+    summary_text = json.dumps(summary, indent=2, ensure_ascii=False) + "\n"
     summary_path.parent.mkdir(parents=True, exist_ok=True)
-    summary_path.write_text(json.dumps(summary, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    summary_path.write_text(summary_text, encoding="utf-8")
+    if audit_copy_path is not None:
+        audit_copy_path.parent.mkdir(parents=True, exist_ok=True)
+        audit_copy_path.write_text(summary_text, encoding="utf-8")
     print(f"SUMMARY {summary_path.relative_to(ROOT).as_posix()}", flush=True)
+    if audit_copy_path is not None:
+        print(f"AUDIT {audit_copy_path.relative_to(ROOT).as_posix()}", flush=True)
     print(f"Model download finished at {time.strftime('%Y-%m-%d %H:%M:%S')}", flush=True)
     return 0
 

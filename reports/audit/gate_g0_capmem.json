@@ -1,0 +1,350 @@
+{
+  "gate": "G0-CAPMEM",
+  "check_version": "1.1",
+  "created_by": "scripts/run_g0_capmem.py",
+  "created_ts": "2026-07-18T08:06:38.731049+00:00",
+  "status": "failed",
+  "config": "configs/g0_capmem_candidates.json",
+  "config_hash": "7cfd5a7ce1cd8cb5c24ed225edf2646051f18308146bc2763cc34f2e0562f4c5",
+  "thresholds": {
+    "min_capability_ratio": 0.8,
+    "max_peak_total_memory_mb_decimal": 1500.0
+  },
+  "candidate_count": 9,
+  "feasible_candidate_count": 0,
+  "feasible_candidates": [],
+  "recommended_action": "close_g0_and_start_capability_recovery_on_a_memory_safe_base_or_structured_tool_head",
+  "candidates": [
+    {
+      "name": "raw-3b-iq2-xs",
+      "role": "3b_memory_feasibility",
+      "model_id": "Qwen/Qwen2.5-3B-Instruct",
+      "quant_type": "IQ2_XS",
+      "gguf": "models/quantized/qwen2.5-3b-iq2_xs.gguf",
+      "artifact_exists": true,
+      "artifact_bytes": 1031546208,
+      "artifact_mb_decimal": 1031.546208,
+      "base_gguf_bytes": 1031546208,
+      "resident_lora_paths": [],
+      "resident_lora_bytes": 0,
+      "capability": {
+        "source": "missing",
+        "passed": null
+      },
+      "memory": {
+        "source": "memory_audit",
+        "audit": "reports/audit/g0_memory_raw_3b_iq2_xs.json",
+        "audit_hash": "4812db76959e90c72c37dfef8928e39f337775d73cd2e3c08043f7ff534948df",
+        "audit_status": "failed",
+        "metric": "peak_process_tree_rss_plus_device_memory_mb_decimal",
+        "complete_metric": true,
+        "peak_total_memory_mb_decimal": 1737.834496,
+        "p95_total_memory_mb_decimal": 1721.126912,
+        "passed": false
+      },
+      "joint_feasible": false,
+      "status": "failed",
+      "prune_reason": "",
+      "notes": "Initial 3B lower-bit floor; v25 specialists are tested only if this base size and memory floor is feasible."
+    },
+    {
+      "name": "raw-3b-q2-k-s",
+      "role": "3b_memory_feasibility",
+      "model_id": "Qwen/Qwen2.5-3B-Instruct",
+      "quant_type": "Q2_K_S",
+      "gguf": "models/quantized/qwen2.5-3b-q2_k_s.gguf",
+      "artifact_exists": true,
+      "artifact_bytes": 1198128480,
+      "artifact_mb_decimal": 1198.12848,
+      "base_gguf_bytes": 1198128480,
+      "resident_lora_paths": [],
+      "resident_lora_bytes": 0,
+      "capability": {
+        "source": "missing",
+        "passed": null
+      },
+      "memory": {
+        "source": "missing",
+        "passed": null
+      },
+      "joint_feasible": false,
+      "status": "pruned",
+      "prune_reason": "Dominated by the smaller 3B IQ2 artifact; raw 3B already misses the Code capability gate before quantization.",
+      "notes": "Conventional low-bit 3B comparison without specialist adapters."
+    },
+    {
+      "name": "v25-router-3b-iq2-xs",
+      "role": "deployable_3b_specialist_router",
+      "model_id": "DB4AI-Edge-v25-3B-IQ2_XS",
+      "quant_type": "IQ2_XS",
+      "gguf": "models/quantized/qwen2.5-3b-iq2_xs.gguf",
+      "artifact_exists": true,
+      "artifact_bytes": 1155045888,
+      "artifact_mb_decimal": 1155.045888,
+      "base_gguf_bytes": 1031546208,
+      "resident_lora_paths": [
+        "models/adapters_gguf/v25_math_f16.gguf",
+        "models/adapters_gguf/v25_code_f16.gguf",
+        "models/adapters_gguf/v25_nlp_f16.gguf"
+      ],
+      "resident_lora_bytes": 123499680,
+      "capability": {
+        "source": "missing",
+        "passed": null
+      },
+      "memory": {
+        "source": "missing",
+        "passed": null
+      },
+      "joint_feasible": false,
+      "status": "pruned",
+      "prune_reason": "v25 Code is only 75% before low-bit quantization, while three resident LoRAs add 123.5MB to an already memory-failing 3B base.",
+      "notes": "Actual deployable v25 router: one low-bit base with all three resident GGUF LoRAs selected per request."
+    },
+    {
+      "name": "v25-router-3b-q2-k-s",
+      "role": "deployable_3b_specialist_router",
+      "model_id": "DB4AI-Edge-v25-3B-Q2_K_S",
+      "quant_type": "Q2_K_S",
+      "gguf": "models/quantized/qwen2.5-3b-q2_k_s.gguf",
+      "artifact_exists": true,
+      "artifact_bytes": 1321628160,
+      "artifact_mb_decimal": 1321.62816,
+      "base_gguf_bytes": 1198128480,
+      "resident_lora_paths": [
+        "models/adapters_gguf/v25_math_f16.gguf",
+        "models/adapters_gguf/v25_code_f16.gguf",
+        "models/adapters_gguf/v25_nlp_f16.gguf"
+      ],
+      "resident_lora_bytes": 123499680,
+      "capability": {
+        "source": "missing",
+        "passed": null
+      },
+      "memory": {
+        "source": "missing",
+        "passed": null
+      },
+      "joint_feasible": false,
+      "status": "pruned",
+      "prune_reason": "Dominated by the IQ2 router in both artifact size and expected peak memory; the full-precision Code ceiling is still below 80%.",
+      "notes": "Higher-quality low-bit deployable v25 router; likely tighter against the 1.5GB peak limit."
+    },
+    {
+      "name": "raw-1p5b-q4-k-m",
+      "role": "memory_safe_baseline",
+      "model_id": "Qwen/Qwen2.5-1.5B-Instruct",
+      "quant_type": "Q4_K_M",
+      "gguf": "models/quantized/qwen2.5-1.5b-q4_k_m.gguf",
+      "artifact_exists": true,
+      "artifact_bytes": 986048608,
+      "artifact_mb_decimal": 986.048608,
+      "base_gguf_bytes": 986048608,
+      "resident_lora_paths": [],
+      "resident_lora_bytes": 0,
+      "capability": {
+        "source": "existing_capability_audit",
+        "audit": "reports/audit/gate_g1_capability_retention_router_v21.json",
+        "audit_hash": "b771d7ed2db814f2d81c6bb9740886e2603c320ec4dec0ad6ce798ef1de30f3e",
+        "ratios": {
+          "math_ratio": 0.7308533916849016,
+          "code_ratio": 0.6515151515151515,
+          "nlp_ratio": 0.8149134487350199
+        },
+        "overall_r_cap": 0.7324273306450243,
+        "passed": false
+      },
+      "memory": {
+        "source": "memory_audit",
+        "audit": "reports/audit/g0_memory_raw_1p5b_q4_k_m.json",
+        "audit_hash": "a30c8e93646f8d3bf9016760bd350aae6144ee40c5563f596353f155a406b68a",
+        "audit_status": "failed",
+        "metric": "peak_process_tree_rss_plus_device_memory_mb_decimal",
+        "complete_metric": true,
+        "peak_total_memory_mb_decimal": 1688.244224,
+        "p95_total_memory_mb_decimal": 1688.244224,
+        "passed": false
+      },
+      "joint_feasible": false,
+      "status": "failed",
+      "prune_reason": "",
+      "notes": "Known capability-failing historical baseline, retained to establish the memory and latency floor."
+    },
+    {
+      "name": "qwen3-1p7b-q4-k-m",
+      "role": "replacement_candidate",
+      "model_id": "Qwen/Qwen3-1.7B",
+      "quant_type": "Q4_K_M",
+      "gguf": "models/quantized/qwen3-1.7b-q4_k_m.gguf",
+      "artifact_exists": true,
+      "artifact_bytes": 1282439456,
+      "artifact_mb_decimal": 1282.439456,
+      "base_gguf_bytes": 1282439456,
+      "resident_lora_paths": [],
+      "resident_lora_bytes": 0,
+      "capability": {
+        "source": "missing",
+        "passed": null
+      },
+      "memory": {
+        "source": "memory_audit",
+        "audit": "reports/audit/g0_memory_qwen3_1p7b_q4_k_m.json",
+        "audit_hash": "4f3e6715e3b60ca2afe34290b143507608d2de576dc0b93c63533c85b82c2744",
+        "audit_status": "failed",
+        "metric": "peak_process_tree_rss_plus_device_memory_mb_decimal",
+        "complete_metric": true,
+        "peak_total_memory_mb_decimal": 2080.956416,
+        "p95_total_memory_mb_decimal": 2080.956416,
+        "passed": false
+      },
+      "joint_feasible": false,
+      "status": "failed",
+      "prune_reason": "",
+      "notes": "Primary G0 replacement candidate: newer 1.7B post-trained model with Q4 deployment, no resident specialist adapters, and non-thinking fast-path evaluation."
+    },
+    {
+      "name": "qwen3-1p7b-q3-k-m",
+      "role": "replacement_candidate_memory_safe",
+      "model_id": "Qwen/Qwen3-1.7B",
+      "quant_type": "Q3_K_M",
+      "gguf": "models/quantized/qwen3-1.7b-q3_k_m.gguf",
+      "artifact_exists": true,
+      "artifact_bytes": 1073242400,
+      "artifact_mb_decimal": 1073.2424,
+      "base_gguf_bytes": 1073242400,
+      "resident_lora_paths": [],
+      "resident_lora_bytes": 0,
+      "capability": {
+        "source": "missing",
+        "passed": null
+      },
+      "memory": {
+        "source": "memory_audit",
+        "audit": "reports/audit/g0_memory_qwen3_1p7b_q3_k_m.json",
+        "audit_hash": "9d9f240e89eaea2603bbbe9b0606866f49f6d03568221ad9d8ef16c40b388bdc",
+        "audit_status": "failed",
+        "metric": "peak_process_tree_rss_plus_device_memory_mb_decimal",
+        "complete_metric": true,
+        "peak_total_memory_mb_decimal": 1502.666752,
+        "p95_total_memory_mb_decimal": 1502.666752,
+        "passed": false
+      },
+      "joint_feasible": false,
+      "status": "failed",
+      "prune_reason": "",
+      "notes": "Memory-safe sibling of the Q4 candidate; evaluated only if Q4 peak memory is over the hard limit or leaves inadequate operational margin."
+    },
+    {
+      "name": "qwen3-1p7b-iq2-xs",
+      "role": "replacement_candidate_low_bit",
+      "model_id": "Qwen/Qwen3-1.7B",
+      "quant_type": "IQ2_XS",
+      "gguf": "models/quantized/qwen3-1.7b-iq2_xs.gguf",
+      "artifact_exists": true,
+      "artifact_bytes": 733614656,
+      "artifact_mb_decimal": 733.614656,
+      "base_gguf_bytes": 733614656,
+      "resident_lora_paths": [],
+      "resident_lora_bytes": 0,
+      "capability": {
+        "source": "matched_smoke_trace",
+        "edge_trace": "data/eval/g0_capability_qwen3_1p7b_iq2_xs.jsonl",
+        "edge_trace_hash": "09f2864ed889a5fa057a9b084e6d6ad289a65fac4c43fc915558fbb39b847d20",
+        "cloud_trace": "data/eval/chapter2_capability_cloud_v17.jsonl",
+        "cloud_trace_hash": "8ddeefcae7ea6c34c7d3dbc1cd4f254f212a1a52b96468b7422b2994ac40aa23",
+        "sample_count": 34,
+        "missing_cloud_sample_count": 0,
+        "missing_cloud_sample_ids_hash": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+        "edge_accuracy_by_dataset": {
+          "gsm8k": 0.0,
+          "humaneval": 0.0,
+          "cmmlu": 0.029411764705882353
+        },
+        "cloud_accuracy_by_dataset": {
+          "gsm8k": 0.0,
+          "humaneval": 0.0,
+          "cmmlu": 0.6176470588235294
+        },
+        "ratios": {
+          "math_ratio": 0.0,
+          "code_ratio": 0.0,
+          "nlp_ratio": 0.047619047619047616
+        },
+        "overall_r_cap": 0.015873015873015872,
+        "passed": false
+      },
+      "memory": {
+        "source": "memory_audit",
+        "audit": "reports/audit/g0_memory_qwen3_1p7b_iq2_xs.json",
+        "audit_hash": "9eb1c92f8db789dec228776acf2f100dac93f91d94a27f36de24a0f5142a0939",
+        "audit_status": "passed",
+        "metric": "peak_process_tree_rss_plus_device_memory_mb_decimal",
+        "complete_metric": true,
+        "peak_total_memory_mb_decimal": 1306.144768,
+        "p95_total_memory_mb_decimal": 1291.526144,
+        "passed": true
+      },
+      "joint_feasible": false,
+      "status": "failed",
+      "prune_reason": "",
+      "notes": "Last Qwen3-1.7B memory rescue candidate; uses train-only importance calibration and must still pass the matched capability smoke after sub-3-bit quantization."
+    },
+    {
+      "name": "deepseek-r1-1p5b-q2-k-s",
+      "role": "reasoning_fallback_candidate",
+      "model_id": "deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B",
+      "quant_type": "Q2_K_S",
+      "gguf": "models/quantized/deepseek-r1-distill-qwen-1.5b-q2_k_s.gguf",
+      "artifact_exists": true,
+      "artifact_bytes": 716710656,
+      "artifact_mb_decimal": 716.710656,
+      "base_gguf_bytes": 716710656,
+      "resident_lora_paths": [],
+      "resident_lora_bytes": 0,
+      "capability": {
+        "source": "matched_smoke_trace",
+        "edge_trace": "data/eval/g0_capability_deepseek_r1_1p5b_q2_k_s.jsonl",
+        "edge_trace_hash": "941bf94faea90239fd470cffd107adae2aa26ec444f984b4007ad107cd6e23c5",
+        "cloud_trace": "data/eval/chapter2_capability_cloud_v17.jsonl",
+        "cloud_trace_hash": "8ddeefcae7ea6c34c7d3dbc1cd4f254f212a1a52b96468b7422b2994ac40aa23",
+        "sample_count": 34,
+        "missing_cloud_sample_count": 0,
+        "missing_cloud_sample_ids_hash": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+        "edge_accuracy_by_dataset": {
+          "gsm8k": 0.0,
+          "humaneval": 0.0,
+          "cmmlu": 0.08823529411764706
+        },
+        "cloud_accuracy_by_dataset": {
+          "gsm8k": 0.0,
+          "humaneval": 0.0,
+          "cmmlu": 0.6176470588235294
+        },
+        "ratios": {
+          "math_ratio": 0.0,
+          "code_ratio": 0.0,
+          "nlp_ratio": 0.14285714285714285
+        },
+        "overall_r_cap": 0.047619047619047616,
+        "passed": false
+      },
+      "memory": {
+        "source": "memory_audit",
+        "audit": "reports/audit/g0_memory_deepseek_r1_1p5b_q2_k_s.json",
+        "audit_hash": "02c906fc0f97302beb6e3fe46072c6e19bbda98c02c2ca7480ae14a9f120c685",
+        "audit_status": "passed",
+        "metric": "peak_process_tree_rss_plus_device_memory_mb_decimal",
+        "complete_metric": true,
+        "peak_total_memory_mb_decimal": 920.22784,
+        "p95_total_memory_mb_decimal": 916.525056,
+        "passed": true
+      },
+      "joint_feasible": false,
+      "status": "failed",
+      "prune_reason": "",
+      "notes": "Reasoning-distilled fallback evaluated in non-thinking fast-path mode; train-only importance calibration is required for Q2_K_S."
+    }
+  ],
+  "commands": [],
+  "report_hash": "78217bd73d219927ffacf9eb1864ceb57402be5e921748560b250b33d945aaa0"
+}

@@ -1,0 +1,42 @@
+{
+  "gate": "CH2-CAPABILITY-EVAL-cloud-v11",
+  "check_version": "1.0",
+  "created_by": "scripts/merge_jsonl_shards.py",
+  "created_ts": "2026-07-08T08:49:20.269955+00:00",
+  "status": "passed",
+  "input_paths": [
+    "data/eval/chapter2_capability_cloud_v11_shard0.jsonl",
+    "data/eval/chapter2_capability_cloud_v11_shard1.jsonl",
+    "data/eval/chapter2_capability_cloud_v11_shard2.jsonl"
+  ],
+  "input_hashes": {
+    "data/eval/chapter2_capability_cloud_v11_shard0.jsonl": "53d654c3ef1864d53806d3ba74468d60a0c6b526defecf47af59bd1dc3f93f1a",
+    "data/eval/chapter2_capability_cloud_v11_shard1.jsonl": "dc0d51a5391341a693c77b1aed01c4e33066f262462f96e4e619d2fba32fbd73",
+    "data/eval/chapter2_capability_cloud_v11_shard2.jsonl": "1def931095df59a81568843451b4391e93a6663ef5a9e71f5aa190a2c8d9f330"
+  },
+  "output_path": "data/eval/chapter2_capability_cloud_v11.jsonl",
+  "output_hash": "a96cde3aa3c4e7c31c65d1a34f8a52568a2c3809b5429e9d352b4964c39976fc",
+  "row_count": 1664,
+  "dataset_counts": {
+    "cmmlu": 1000,
+    "gsm8k": 500,
+    "humaneval": 164
+  },
+  "key": "sample_id",
+  "duplicate_count": 0,
+  "duplicate_keys_hash": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+  "order_jsonl": "",
+  "errors": [],
+  "correct_counts": {
+    "cmmlu": 751,
+    "gsm8k": 426,
+    "humaneval": 131
+  },
+  "accuracy_by_dataset": {
+    "cmmlu": 0.751,
+    "gsm8k": 0.852,
+    "humaneval": 0.7987804878048781
+  },
+  "overall_accuracy": 0.7860576923076923,
+  "report_hash": "08cf8c52b901c92200bea5174de75d1eb883f560a75e09cac682c853b7f02ef3"
+}

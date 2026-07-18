@@ -1,0 +1,218 @@
+{
+  "gate": "G-KD-TRACE-cedd_v30_3b_code_residual-train",
+  "check_version": "1.5",
+  "created_by": "model_compression/train_cedd_repair.py",
+  "created_ts": "2026-07-18T04:18:47.953981+00:00",
+  "status": "passed",
+  "smoke": false,
+  "student_init": "models/pretrained/Qwen--Qwen2.5-3B-Instruct",
+  "init_adapter": "",
+  "init_adapter_hash": "",
+  "frozen_base_adapter": "models/adapters/cedd_v25_3b_code_v11",
+  "frozen_base_adapter_hash": "e8706e6e523af1a5ea0dc54de5ddabccdd0a0141c992f928d0e49f1fc2aa2eb3",
+  "frozen_parent_module_count": 72,
+  "frozen_parent_modules_hash": "b2c65036f12509a8d27e74d4dc89c6c2db96e1d84d82d07d6d589df5f7ef930d",
+  "distill_data_path": "data/distill/distill_dataset.jsonl",
+  "distill_data_hash": "610d23903a5d8d4117c03159268ce068620fee2b97de7ed7ce2dc9fb178c9443",
+  "repair_trace_path": "data/distill/counterfactual_repair_trace.jsonl",
+  "repair_trace_hash": "",
+  "capability_rehearsal_paths": [
+    "data/distill/code_v30_hard_repair_train.jsonl"
+  ],
+  "capability_rehearsal_hashes": {
+    "data/distill/code_v30_hard_repair_train.jsonl": "6002c8cbbed41d242f687c4b62c5f4c121c91f6cc3bd179a51731b7cf08496c2"
+  },
+  "output_dir": "models/adapters/cedd_v30_3b_code_residual",
+  "adapter_hash": "3567680e1fae6ecd299b0f544d90ac3ab573cde775527fc00b348388644d53b9",
+  "adapter_config_hash": "0334b5594caa63edd5e283099f69e642c5d05ad75ae8c11a3ffb73eecbed95c2",
+  "adapter_model_hash": "1a75fda6c1a37b2b248d48132c6b7375f362cde775d0705eccd5a4566ba749fc",
+  "source_counts": {
+    "synthetic_code_rehearsal_body": 36,
+    "v30_parent_pass_preservation": 86,
+    "v30_verified_hard_failure": 214
+  },
+  "dataset_counts": {
+    "humaneval": 336
+  },
+  "pre_limit_source_counts": {
+    "synthetic_code_rehearsal_body": 42,
+    "v30_parent_pass_preservation": 96,
+    "v30_verified_hard_failure": 233
+  },
+  "pre_limit_dataset_counts": {
+    "humaneval": 371
+  },
+  "source_limits": {},
+  "selected_sample_count": 371,
+  "selected_sample_ids_hash": "8df0f9e17701cfd5a96c60e6d6cecc058352403152d55d2c83ab478b1a6a9300",
+  "selected_validation_group_ids_hash": "8483f9d7b6fa89ca64bfd8182d16f32217622dd030cc75d1ccc60269a6cd2c0f",
+  "training_sample_count": 336,
+  "training_sample_count_before_group_cap": 336,
+  "max_train_examples_per_validation_group": 1,
+  "training_sample_ids_hash": "d5bf685ff54099af4e15168a564b5390592a10ad4cf034f043d678fdee7215fe",
+  "training_validation_group_ids_hash": "2a671f9ebe986ce697655e3e68fdd97d0578ebf38b7e40d78a333254e9799bd0",
+  "validation_sample_count": 35,
+  "validation_sample_ids_hash": "941bc86b4806e52acf31d3a22237648fc86706321b96a53339aab0bb1e6984fe",
+  "validation_group_ids_hash": "f6ff2c2b80889d5268549fb026caf39b34e88cb44743174aa2d0c8b3924323d2",
+  "validation_group_overlap_count": 0,
+  "validation_group_count": 35,
+  "min_validation_group_count": 16,
+  "validation_source_counts": {
+    "synthetic_code_rehearsal_body": 6,
+    "v30_parent_pass_preservation": 10,
+    "v30_verified_hard_failure": 19
+  },
+  "validation_dataset_counts": {
+    "humaneval": 35
+  },
+  "generation_validation_sample_count": 64,
+  "generation_validation_sample_ids_hash": "4500756e2486f5874056afb93273270af869dcc940ace3a2486b95bc064ea068",
+  "generation_validation_group_ids_hash": "4e6177276e6d407fbd569b4a26d6bbffb5b1975940043273f996716d7d3b9b4c",
+  "generation_validation_dataset_counts": {
+    "humaneval": 64
+  },
+  "generation_validation_source_counts": {
+    "apps_official_train_call": 40,
+    "mbpp_official_train": 24
+  },
+  "generation_validation_paths": [
+    "data/distill/code_v30_hard_internal_validation.jsonl"
+  ],
+  "generation_validation_hashes": {
+    "data/distill/code_v30_hard_internal_validation.jsonl": "76e4ea03e2c2457562378bb1b1142bc5183d092436f9914fd03bddcc2fd32f28"
+  },
+  "generation_validation_external": true,
+  "generation_validation_external_duplicate_sample_count": 0,
+  "generation_validation_external_group_overlap_count": 0,
+  "generation_validation_code_scoring": "differential_execution_v1.2",
+  "generation_validation_code_timeout_sec": 5.0,
+  "capability_datasets": [
+    "cmmlu",
+    "gsm8k",
+    "humaneval"
+  ],
+  "structured_dataset_filter": [],
+  "repair_dataset_filter": [],
+  "distill_sample_limit": 0,
+  "repair_sample_limit": 0,
+  "capability_sample_limit": 0,
+  "distill_repeat": 0,
+  "repair_repeat": 0,
+  "capability_repeat": 0,
+  "capability_jsonl_repeat": 1,
+  "epochs": 6.0,
+  "max_steps": 48,
+  "batch_size": 1,
+  "grad_accum_steps": 8,
+  "learning_rate": 2e-06,
+  "weight_decay": 0.0,
+  "parent_preservation_weight": 0.2,
+  "parent_reference_kind": "frozen_adapter",
+  "lr_scheduler": "cosine",
+  "warmup_ratio": 0.05,
+  "validation_fraction": 0.1,
+  "validation_seed": 20260801,
+  "validation_selection_metric": "generation",
+  "eval_every": 8,
+  "early_stopping_patience": 0,
+  "min_validation_improvement": 0.0001,
+  "min_validation_relative_improvement": 0.0,
+  "restore_best_validation": true,
+  "validation_history": [
+    {
+      "update_step": 0,
+      "loss": 0.957002212313403,
+      "generation_score": 0.46875,
+      "generation_count": 64
+    },
+    {
+      "update_step": 8,
+      "loss": 0.9398986501020512,
+      "generation_score": 0.46875,
+      "generation_count": 64
+    },
+    {
+      "update_step": 16,
+      "loss": 0.9057955255665417,
+      "generation_score": 0.5,
+      "generation_count": 64
+    },
+    {
+      "update_step": 24,
+      "loss": 0.8765370092421237,
+      "generation_score": 0.5,
+      "generation_count": 64
+    },
+    {
+      "update_step": 32,
+      "loss": 0.8582506870385259,
+      "generation_score": 0.5,
+      "generation_count": 64
+    },
+    {
+      "update_step": 40,
+      "loss": 0.8510907399268555,
+      "generation_score": 0.484375,
+      "generation_count": 64
+    },
+    {
+      "update_step": 48,
+      "loss": 0.8504001260335956,
+      "generation_score": 0.5,
+      "generation_count": 64
+    }
+  ],
+  "initial_validation_loss": 0.957002212313403,
+  "candidate_best_validation_loss": 0.9057955255665417,
+  "candidate_best_update_step": 16,
+  "validation_relative_improvement": 0.05350738596839509,
+  "validation_guard_rejected": false,
+  "generation_validation_sample_limit": 64,
+  "generation_validation_examples_per_group": 1,
+  "generation_validation_max_new_tokens": 384,
+  "min_generation_validation_improvement": 0.0,
+  "initial_generation_validation_score": 0.46875,
+  "best_generation_validation_score": 0.5,
+  "peak_generation_validation_score": 0.5,
+  "peak_generation_validation_step": 16,
+  "generation_guard_rejected": false,
+  "best_validation_loss": 0.9057955255665417,
+  "best_update_step": 16,
+  "stopped_early": false,
+  "max_length": 1536,
+  "lora_rank": 16,
+  "lora_alpha": 32.0,
+  "lora_dropout": 0.05,
+  "target_modules": [
+    "q_proj",
+    "k_proj",
+    "v_proj",
+    "o_proj",
+    "gate_proj",
+    "up_proj",
+    "down_proj"
+  ],
+  "replaced_module_count": 252,
+  "distributed_world_size": 4,
+  "distributed_backend": "nccl",
+  "effective_batch_size": 32,
+  "trainable_parameters": 29933568,
+  "total_parameters": 3117715456,
+  "trainable_parameter_ratio": 0.009601122495766336,
+  "global_steps": 384,
+  "optimizer_steps": 48,
+  "scheduled_optimizer_steps": 48,
+  "min_optimizer_steps": 48,
+  "mean_loss": 0.8377520442008972,
+  "mean_total_loss": 0.8485976100741937,
+  "mean_parent_preservation_loss": 0.054228336084634066,
+  "parent_correct_token_ratio": 0.8293341055374935,
+  "protected_token_count": 63007,
+  "supervised_token_count": 75973,
+  "final_loss": 1.7051697969436646,
+  "final_total_loss": 1.7123337984085083,
+  "final_learning_rate": 0.0,
+  "elapsed_sec": 889.1757218800485,
+  "errors": [],
+  "report_hash": "13f77dd245ef7eb483dd2b888d24086714bdb178eb955a61681929949dd4425d"
+}

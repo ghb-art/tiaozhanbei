@@ -1,0 +1,51 @@
+{
+  "gate": "G-KD-v23-independent-code-data",
+  "check_version": "1.0",
+  "created_by": "model_compression/build_mbpp_v23.py",
+  "created_ts": "2026-07-17T03:24:15.695917+00:00",
+  "status": "passed",
+  "input_path": "data/datasets/mbpp/mbpp.jsonl",
+  "input_sha256": "ccf64ceae9c5403bf50a044cb6d505bfd2a2963ee58338ba268fd65beab92a9f",
+  "official_split_policy": {
+    "train_task_ids": "601-974",
+    "development_task_ids": "511-600",
+    "excluded_prompt_and_test_task_ids": "1-510",
+    "development_partition": "valid single-function rows sorted by task_id, alternating select/gate"
+  },
+  "prompt_style": "v11",
+  "completion_protocol": "formal_humaneval_v11_body_or_full_function",
+  "scoring_protocol": "formal_humaneval_response_plus_mbpp_assert_execution_v1",
+  "train_count": 356,
+  "dev_select_count": 42,
+  "dev_gate_count": 42,
+  "excluded_mbpp_task_count": 510,
+  "rejection_counts": {
+    "development:not_single_top_level_function": 6,
+    "train:canonical_assertions_failed": 2,
+    "train:not_single_top_level_function": 16
+  },
+  "duplicate_sample_count": 0,
+  "split_overlap_count": 0,
+  "formal_prompt_overlap_count": 0,
+  "formal_id_overlap_count": 0,
+  "formal_test_overlap_count": 0,
+  "human_eval_test_used_for_training": false,
+  "human_eval_test_used_for_selection": false,
+  "human_eval_test_used_for_gate": false,
+  "outputs": {
+    "train": {
+      "path": "data/distill/mbpp_v23_train_source.jsonl",
+      "sha256": "8e75cdab7f04c6a67bb070a13b97020552c762dc6befaac313ada5f28307e185"
+    },
+    "dev_select": {
+      "path": "data/distill/mbpp_v23_dev_select.jsonl",
+      "sha256": "067428947a455e384ea969de45aea9daf2b336edd7ebf0538af694600f1895e0"
+    },
+    "dev_gate": {
+      "path": "data/distill/mbpp_v23_dev_gate.jsonl",
+      "sha256": "a331fa5bff8e442631ff4178e6117055923e805bf102cc519e3d1450828454e5"
+    }
+  },
+  "errors": [],
+  "report_hash": "b6f381845e3bc1b90f95c942303800df118123ad1b369543ec97de3d3e530215"
+}

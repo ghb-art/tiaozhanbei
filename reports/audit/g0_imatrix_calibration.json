@@ -1,0 +1,24 @@
+{
+  "gate": "G0-imatrix-calibration",
+  "check_version": "1.0",
+  "created_by": "scripts/build_imatrix_calibration.py",
+  "created_ts": "2026-07-18T06:07:11.209305+00:00",
+  "status": "passed",
+  "sources": {
+    "data/distill/teacher_capability_distill_v21_math.jsonl": "ac2f67f5f428b32c5cf01a35e50de0fb1c8eded7584920bf65cf7fac220eca43",
+    "data/distill/capability_rehearsal_v25_3b_code_v11.jsonl": "e637340c62a6233c9f2306d24b8d6467eb6753485c3df7a4b0d605a038860182",
+    "data/distill/capability_rehearsal_v25_3b_nlp_repair_v3.jsonl": "50dc6f95f991418016d08b86ca74c0150770a76eb11562852eafb7781b33d7d0"
+  },
+  "source_counts": {
+    "data/distill/teacher_capability_distill_v21_math.jsonl": 256,
+    "data/distill/capability_rehearsal_v25_3b_code_v11.jsonl": 256,
+    "data/distill/capability_rehearsal_v25_3b_nlp_repair_v3.jsonl": 256
+  },
+  "selected_text_count": 768,
+  "formal_test_reference_count": 0,
+  "seed": 202606,
+  "output": "data/distill/g0_imatrix_calibration.txt",
+  "output_hash": "efc3664ce47dd5166ac8efb20de71e09eb8d04172faa5d32e42d2aaa35c72c26",
+  "output_bytes": 480445,
+  "errors": []
+}

@@ -1,0 +1,49 @@
+{
+  "gate": "G1-capability-retention",
+  "check_version": "1.1",
+  "created_by": "scripts/summarize_chapter2_capability.py",
+  "created_ts": "2026-07-16T05:15:11.350768+00:00",
+  "status": "failed",
+  "min_ratio": 0.8,
+  "gate_policy": "implementation_plan_strict_math_code_nlp_overall",
+  "hard_gate_metrics": [
+    "math_ratio",
+    "code_ratio",
+    "nlp_ratio",
+    "overall_r_cap"
+  ],
+  "auxiliary_metrics": [],
+  "cloud_audit_path": "reports/audit/gate_chapter2_capability_cloud_v17.json",
+  "cloud_audit_hash": "8f2ace716456e08d5234a8dd6bc5a45709ec03d089480672c073506518dedd89",
+  "edge_audit_path": "reports/audit/gate_chapter2_capability_edge_router_v21.json",
+  "edge_audit_hash": "999a285918102b5049fad48577b0fd5cbf539342478eb89ea125cca977a214df",
+  "cloud_accuracy_by_dataset": {
+    "cmmlu": 0.751,
+    "gsm8k": 0.914,
+    "humaneval": 0.8048780487804879
+  },
+  "edge_accuracy_by_dataset": {
+    "cmmlu": 0.612,
+    "gsm8k": 0.668,
+    "humaneval": 0.524390243902439
+  },
+  "ratios": {
+    "math_ratio": 0.7308533916849016,
+    "code_ratio": 0.6515151515151515,
+    "nlp_ratio": 0.8149134487350199
+  },
+  "capped_ratios": {
+    "math_ratio_cap": 0.7308533916849016,
+    "code_ratio_cap": 0.6515151515151515,
+    "nlp_ratio_cap": 0.8149134487350199
+  },
+  "overall_r_cap": 0.7324273306450243,
+  "overall_r_cap_note": "Hard gate metric together with the three independent ratios, per IMPLEMENTATION_PLAN.md.",
+  "dataset_mapping": {
+    "gsm8k": "math_ratio",
+    "humaneval": "code_ratio",
+    "cmmlu": "nlp_ratio"
+  },
+  "errors": [],
+  "report_hash": "010fe493799a13ace85ced0904e527d585b4afe47d7699a6e0862ffbf489b499"
+}

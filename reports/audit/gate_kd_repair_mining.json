@@ -1,0 +1,36 @@
+{
+  "gate": "G-KD-TRACE-repair-mining",
+  "check_version": "1.0",
+  "created_by": "model_compression/mine_counterfactual_repairs.py",
+  "created_ts": "2026-07-03T07:54:00.961599+00:00",
+  "status": "passed",
+  "probe_trace_path": "data/distill/student_probe_trace.jsonl",
+  "student_probe_trace_hash": "df9e970daad364143956be544fd30ebfb44cab466b45c8d10e5ef2b3377bcc37",
+  "output_repair_path": "data/distill/counterfactual_repair_trace.jsonl",
+  "counterfactual_repair_trace_hash": "d27255958eb48a2e53aa38e98110a33dd6d935782cef11633b2e78447ee2cd1d",
+  "input_probe_count": 8769,
+  "repair_candidate_input_count": 548,
+  "repair_trace_count": 548,
+  "min_repairs": 1,
+  "sample_limit": null,
+  "include_non_candidates": false,
+  "selected_sample_ids_hash": "968962acb128989236f5e102525b5466c137b3cc6bd0a73cd14e4c0730f7d78f",
+  "dataset_counts": {
+    "cityflow": 9,
+    "gsm8k": 1,
+    "neu_det": 538
+  },
+  "counterfactual_type_counts": {
+    "action_boundary": 545,
+    "parse_recovery": 3
+  },
+  "repair_reason_counts": {
+    "action_mismatch": 547,
+    "confidence_gap": 373,
+    "parse_error": 3,
+    "review_intent_mismatch": 547,
+    "risk_attr_mismatch": 547
+  },
+  "errors": [],
+  "report_hash": "a176766b95ae6863aca78efc6e5a5b90a74fb266fce1d747cb8468de7a8cd01f"
+}

@@ -1,0 +1,42 @@
+{
+  "gate": "CH2-CAPABILITY-EVAL-edge-repair_v6",
+  "check_version": "1.0",
+  "created_by": "scripts/merge_jsonl_shards.py",
+  "created_ts": "2026-07-06T07:46:05.785781+00:00",
+  "status": "passed",
+  "input_paths": [
+    "data/eval/chapter2_capability_edge_repair_v6_shard0.jsonl",
+    "data/eval/chapter2_capability_edge_repair_v6_shard1.jsonl",
+    "data/eval/chapter2_capability_edge_repair_v6_shard2.jsonl"
+  ],
+  "input_hashes": {
+    "data/eval/chapter2_capability_edge_repair_v6_shard0.jsonl": "9b53f4ec88c202a92aa10d9cc3a8af4b8e8a91903119ef2587581951372bbc27",
+    "data/eval/chapter2_capability_edge_repair_v6_shard1.jsonl": "1ccc861c33fc41a4599f71f13370951ba00cfd9d4316d8bcde817991058cc919",
+    "data/eval/chapter2_capability_edge_repair_v6_shard2.jsonl": "53b59a75a44b9de543980fb3840173458ca249aa10e634feae0ff9bb3e859d92"
+  },
+  "output_path": "data/eval/chapter2_capability_edge_repair_v6.jsonl",
+  "output_hash": "5499e8be78741e9bd321f61ff08829d4695ef3e320fa4af2eb6d4214ab855999",
+  "row_count": 1664,
+  "dataset_counts": {
+    "cmmlu": 1000,
+    "gsm8k": 500,
+    "humaneval": 164
+  },
+  "key": "sample_id",
+  "duplicate_count": 0,
+  "duplicate_keys_hash": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+  "order_jsonl": "",
+  "errors": [],
+  "correct_counts": {
+    "cmmlu": 599,
+    "gsm8k": 239,
+    "humaneval": 73
+  },
+  "accuracy_by_dataset": {
+    "cmmlu": 0.599,
+    "gsm8k": 0.478,
+    "humaneval": 0.4451219512195122
+  },
+  "overall_accuracy": 0.5474759615384616,
+  "report_hash": "d543fa2fff496259d387d0960a5710b9ab2e89d8004b8e2ecd1e143a1a7740b6"
+}

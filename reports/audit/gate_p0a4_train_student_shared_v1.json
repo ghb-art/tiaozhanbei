@@ -1,0 +1,96 @@
+{
+  "gate": "P0-A4-LORA-TRAIN",
+  "check_version": "1.0",
+  "created_by": "model_compression/train_p0a4_lora.py",
+  "created_ts": "2026-07-22T05:40:53.232745+00:00",
+  "status": "passed",
+  "role": "student_shared",
+  "task": "shared",
+  "candidate_index": 1,
+  "model_dir": "models/pretrained/Qwen--Qwen3-1.7B",
+  "train_data": "data/distill/p0a4_teacher_verified.jsonl",
+  "train_data_hash": "52268ae1365b9292d93e1e1e93764c880a16c5a8cec1574080db25a10995a892",
+  "validation_data": "data/distill/p0a4_teacher_validation.jsonl",
+  "validation_data_hash": "e925350a9d04f02cba1e9b43dcf925213469fa49de84badb51fb8a4025d60406",
+  "train_rows": 1398,
+  "source_train_counts": {
+    "cmmlu": 440,
+    "gsm8k": 1952,
+    "humaneval": 233
+  },
+  "source_unique_prompt_counts": {
+    "gsm8k": 1952,
+    "humaneval": 233,
+    "cmmlu": 440
+  },
+  "validation_rows": 96,
+  "train_counts": {
+    "humaneval": 466,
+    "gsm8k": 466,
+    "cmmlu": 466
+  },
+  "output_dir": "models/checkpoints/p0a4/student-shared-v1",
+  "lora": {
+    "rank": 16,
+    "alpha": 32,
+    "dropout": 0.05,
+    "target_modules": [
+      "q_proj",
+      "k_proj",
+      "v_proj",
+      "o_proj",
+      "gate_proj",
+      "up_proj",
+      "down_proj"
+    ]
+  },
+  "optimization": {
+    "learning_rate": 0.0002,
+    "epochs": 3.0,
+    "max_upsample_factor": 2.0,
+    "max_seq_length": 1024,
+    "per_device_train_batch_size": 1,
+    "gradient_accumulation_steps": 16,
+    "max_steps": -1,
+    "optimizer": "adamw_torch",
+    "optimizer_placement": "gpu_ddp_replicated",
+    "parameter_placement": "gpu_ddp_replicated",
+    "deepspeed": "",
+    "deepspeed_config_hash": "",
+    "deepspeed_stage": 0,
+    "zero3_initialized_before_model_load": false,
+    "cpu_offload": false,
+    "gradient_checkpointing": {
+      "enabled": true,
+      "use_reentrant": false
+    },
+    "ddp_find_unused_parameters": false,
+    "load_best_model_in_trainer": false
+  },
+  "dependencies": {
+    "torch": "2.6.0+cu124",
+    "transformers": "4.51.3",
+    "accelerate": "1.14.0",
+    "deepspeed": "0.17.6",
+    "peft": "0.17.1"
+  },
+  "formal_test_reference_count": 0,
+  "errors": [],
+  "metrics": {
+    "train_runtime": 520.1565,
+    "train_samples_per_second": 8.063,
+    "train_steps_per_second": 0.121,
+    "total_flos": 7488466807947264.0,
+    "train_loss": 0.28286673010341706,
+    "epoch": 2.96,
+    "best_eval_loss": 0.5802631974220276
+  },
+  "best_checkpoint": "models/checkpoints/p0a4/student-shared-v1/checkpoint-21",
+  "published_adapter_files": [
+    "adapter_config.json",
+    "adapter_model.safetensors",
+    "README.md"
+  ],
+  "trainable_parameters": 17432576,
+  "report_hash": "ebc8cb05e750d07ee2a0e7f3e7e1415ebd23432da6c1e76c3b4bcb316d6b5e78"
+}

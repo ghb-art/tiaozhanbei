@@ -1,53 +1,102 @@
 # DB4AI-EdgeServe
 
-面向云边协同场景的分布式人工智能感知与决策原型，参赛题号 `XH-202606`。项目以 G1-G7 可量化门禁为准，详细指标与阶段退出条件见 `IMPLEMENTATION_PLAN.md`。
+面向云边协同场景的分布式人工智能感知与决策原型，参赛题号 `XH-202606`。项目以 G1–G7 可量化门禁为准，详细指标和阶段退出条件见 `IMPLEMENTATION_PLAN.md`。
 
 ## 当前状态
 
-首轮 `G0-CAPMEM` 已完成，结果为 `failed, feasible=0/9`。DeepSeek-R1-Distill-Qwen-1.5B 的 Q2_K_S 产物为 716.71MB，20 次预热 + 100 次测量的峰值总内存为 920.23MB，但首轮 matched capability smoke 未达到 80%，因此当前没有已晋级的主边缘模型。
+首轮 `G0-CAPMEM` 为 `failed, feasible=0/9`。随后完成 DeepSeek-R1-Distill-Qwen-1.5B 的 170 条冻结 Dev：Math `84.38%`、Code `23.81%`、NLP `17.19%`。该结果来自未量化 BF16 基座，Code/NLP 已无合理恢复余量，因此 P0-A2 关闭，不再训练或量化 DeepSeek。
 
-现阶段只执行 P0-A2：在 DeepSeek 1.5B 内存安全基座上进行 train-only 能力与输出格式恢复，再重新执行相同 G0。历史 v1-v31 结论保留在 `docs/REVISION_LOG.md`，对应启动代码和本地大模型已清理。
+P0-A3 已证明未蒸馏 Qwen3-1.7B HF 在170题上可保持 Teacher 的 `86.11%`，但量化配置仍未形成联合通过证据。当前进入 P0-A4：
+
+1. 当前 Qwen2.5-14B-AWQ 是不可调优的正式分母，官方完整测试清单固定为 GSM8K 1319、HumanEval 164、CMMLU 11582；
+2. 单独的 Qwen2.5-14B BF16 使用4卡 ZeRO-3 LoRA调优，只作为经过答案/执行校验的蒸馏Teacher；
+3. Qwen3-1.7B先做共享多任务蒸馏，必要时增加Top-1任务Adapter，再以训练集imatrix生成Q4_K_M；Q3_K_M仅保留为能力失败对照；
+4. 量化运行固定使用Q8 KV；96题每项/宏平均≥75%，170题每项/宏平均≥80%，最多两个Student版本；
+5. 通过≤1400MB开发内存门后，只允许一次Student官方完整测试，逐题结果封存且不再反馈训练。
+
+Student v1的Q4在170题上保持率为Math/Code/NLP/Macro=`90.625/75.000/80.435/82.020%`，
+因Code低于80%未晋级；一次提前运行的官方全测也已失败并封存。当前进入最后一个候选v2：
+仅依据170题任务级汇总提高Code/NLP蒸馏权重，并在共享模型与Top-1 Adapter之间用96题汇总选择，
+不读取正式全测逐题结果。当前仍没有已经晋级的主边缘模型。
 
 ## 快速检查
 
 ```bash
 bash scripts/run_p0a.sh checks
-bash scripts/run_p0a2.sh preflight
+bash scripts/run_p0a3.sh preflight
+bash scripts/run_p0a4.sh preflight
 ```
 
-P0-A2 顺序：
+P0-A4 主流程：
 
 ```bash
-bash scripts/run_p0a2.sh upper-bound-smoke
-bash scripts/run_p0a2.sh upper-bound
-bash scripts/run_p0a2.sh train
-bash scripts/run_p0a2.sh evaluate-adapter
-bash scripts/run_p0a2.sh export
-bash scripts/run_p0a2.sh build-imatrix
-bash scripts/run_p0a2.sh quantize
-bash scripts/run_p0a2.sh g0-reentry
+# 终端A：先运行AWQ分母服务；终端B建立96/170分母，正式全量可稍后运行
+bash scripts/run_p0a4.sh baseline-serve
+bash scripts/run_p0a4.sh baseline-dev
+bash scripts/run_p0a4.sh baseline-full
+
+# 安装训练依赖、下载BF16 Teacher并训练1至3个候选
+bash scripts/run_p0a4.sh install-training-deps
+bash scripts/run_p0a4.sh download-teacher
+bash scripts/run_p0a4.sh teacher-train 1
+bash scripts/run_p0a4.sh teacher-serve
+bash scripts/run_p0a4.sh teacher-validate 1
+bash scripts/run_p0a4.sh teacher-select
+bash scripts/run_p0a4.sh teacher-distill 1
+
+# Student蒸馏、合并、量化和逐级门禁
+bash scripts/run_p0a4.sh student-train 1
+bash scripts/run_p0a4.sh student-merge 1
+bash scripts/run_p0a4.sh student-quantize
+bash scripts/run_p0a4.sh edge-start
+bash scripts/run_p0a4.sh student-smoke96
+bash scripts/run_p0a4.sh student-170 1
+bash scripts/run_p0a4.sh student-memory
+bash scripts/run_p0a4.sh student-full
 ```
 
-完整参数、数据隔离规则和产物路径见 `docs/RUNBOOK_P0A.md`。
+当前v2从以下命令开始，所有后续命令都必须保留版本环境变量；完整分阶段命令见运行手册：
+
+```bash
+P0A4_STUDENT_VERSION=2 bash scripts/run_p0a4.sh student-v2-preflight
+P0A4_STUDENT_VERSION=2 bash scripts/run_p0a4.sh student-train 2
+```
+
+v2共享与原Top-1 Adapter均因96题Code保持率只有`70.83%`停止，最后一次170题机会尚未消耗。
+当前修复入口将NLP改为短理由/直接选项混合蒸馏，将Code改为独立canonical任务和执行通过率
+选优：
+
+```bash
+bash scripts/run_p0a4r.sh preflight
+bash scripts/run_p0a4r.sh code-source-rebuild
+bash scripts/run_p0a4r.sh code-build
+```
+
+当前本地Code构建已由1500个APPS official-train任务与292个MBPP train任务组成，共1792
+个独立训练组；另有42个独立执行验证组，组重叠和正式测试引用均为0，数据门状态为
+`promotion_eligible=true`。完整流程见`docs/RUNBOOK_P0A4R.md`。
+
+AWQ分母和BF16+LoRA Teacher都以一个vLLM端点在 GPU `0,1,2,3` 上执行TP=4，不是四个单卡副本。详细顺序和失败处理见 `docs/RUNBOOK_P0A4.md`；P0-A3历史诊断仍保留在 `docs/RUNBOOK_P0A.md`。
 
 ## 核心目录
 
 | 目录 | 用途 |
 |---|---|
-| `configs` | 模型、网络、负载、G0 与 P0-A2 冻结配置 |
-| `model_compression` | 蒸馏数据、LoRA 训练、合并导出 |
-| `scripts` | 数据检查、评测、量化、内存门禁和一键入口 |
+| `configs` | 模型、网络、负载、P0-A3历史配置和P0-A4冻结配置 |
+| `model_compression` | 数据构建、Teacher校验蒸馏、P0-A4 LoRA训练和Student合并工具 |
+| `scripts` | 数据检查、同口径评测、量化、内存门禁和启动入口 |
 | `data/splits` | 冻结的 train/validation/test ID 与 hash |
-| `data/distill` | 本地训练/校准数据，不提交 Git |
-| `models` | 本地模型、adapter、GGUF，不提交 Git |
-| `reports/audit` | 数据、训练、能力、内存和门禁审计 |
-| `docs` | 数据策略、状态、运行手册与修改记录 |
+| `data/distill` | 本地训练和校准数据，不提交 Git |
+| `models` | 本地 HF 模型和独立 GGUF，不提交 Git |
+| `reports/audit` | 数据、能力、内存和门禁审计 |
+| `docs` | 数据策略、状态、运行手册和修改记录 |
 | `sql`、`docker` | KWDB schema 与本地服务配置 |
 
 ## 硬约束
 
-- G1：Math、Code、NLP 与宏平均保持率均不低于 80%。
+- G1：Math、Code、NLP 与宏平均保持率均不低于 Qwen2.5-14B 的 80%。
 - G3：llama.cpp 完整进程树 RSS 加设备内存的推理窗口峰值不超过 1500MB（decimal）。
-- 正式 GSM8K test、HumanEval 164 题和 CMMLU test 不得进入训练或选模。
-- GGUF 文件大小不能替代运行峰值内存；Dev/smoke 结果不能写成 Final Gate 结果。
-- 模型、数据和运行产物由脚本生成，不上传 GitHub；Git 仓库保留代码、配置与可审计小型报告。
+- 正式 GSM8K 1319、HumanEval 164和CMMLU 11582题不进入训练、候选选择或错误修复。
+- 96题和170题均须与AWQ分母逐样本一致；170题只暴露任务级汇总，最多两个Student版本。
+- GGUF 文件大小不能替代运行峰值；`status=passed` 的执行审计不能替代能力保持率 Gate。
+- 模型、数据和运行产物不上传 GitHub，仓库只保留代码、配置和小型审计证据。

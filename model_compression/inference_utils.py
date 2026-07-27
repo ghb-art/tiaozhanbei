@@ -60,16 +60,10 @@ def resolve_torch_dtype(dtype_name: str) -> Any:
 
 def load_local_student(
     model_dir: Path,
-    adapter_path: Path | None,
     device: str,
     dtype_name: str,
-) -> tuple[Any, Any, dict[str, Any]]:
+) -> tuple[Any, Any]:
     from transformers import AutoModelForCausalLM, AutoTokenizer
-
-    try:
-        from .lora_utils import load_lora_adapter
-    except ImportError:
-        from lora_utils import load_lora_adapter
 
     tokenizer = AutoTokenizer.from_pretrained(model_dir, local_files_only=True, trust_remote_code=True)
     if tokenizer.pad_token_id is None:
@@ -81,9 +75,6 @@ def load_local_student(
         low_cpu_mem_usage=True,
         trust_remote_code=True,
     )
-    adapter_config: dict[str, Any] = {}
-    if adapter_path is not None:
-        adapter_config = load_lora_adapter(model, adapter_path)
     model.to(device)
     model.eval()
-    return tokenizer, model, adapter_config
+    return tokenizer, model

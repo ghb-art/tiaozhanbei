@@ -67,12 +67,54 @@ def formal_test_reference(row: dict[str, Any]) -> bool:
     return any(marker in searchable for marker in ("humaneval/test", "gsm8k/test", "cmmlu/test", "final_test"))
 
 
+def select_rows(
+    rows: list[dict[str, Any]],
+    rng: random.Random,
+    rows_per_source: int,
+    stratify_key: str = "",
+    strata: tuple[str, ...] = (),
+    rows_per_stratum: int = 0,
+) -> tuple[list[dict[str, Any]], dict[str, int]]:
+    if not stratify_key:
+        shuffled = list(rows)
+        rng.shuffle(shuffled)
+        return shuffled[:rows_per_source], {}
+    grouped: dict[str, list[dict[str, Any]]] = {}
+    for row in rows:
+        value = str(row.get(stratify_key, "")).strip()
+        if value:
+            grouped.setdefault(value, []).append(row)
+    selected_strata = strata or tuple(sorted(grouped))
+    if not selected_strata:
+        raise ValueError(f"No non-empty values for stratify key {stratify_key!r}")
+    if rows_per_stratum <= 0:
+        raise ValueError("--rows-per-stratum must be > 0 when --stratify-key is used")
+    selected: list[dict[str, Any]] = []
+    counts: dict[str, int] = {}
+    for stratum in selected_strata:
+        candidates = list(grouped.get(stratum, []))
+        if len(candidates) < rows_per_stratum:
+            raise ValueError(
+                f"Stratum {stratum!r} has {len(candidates)} rows; "
+                f"requires {rows_per_stratum}"
+            )
+        rng.shuffle(candidates)
+        chosen = candidates[:rows_per_stratum]
+        selected.extend(chosen)
+        counts[stratum] = len(chosen)
+    rng.shuffle(selected)
+    return selected, counts
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Build a train-only mixed calibration corpus for llama.cpp imatrix.")
     parser.add_argument("--source", action="append", required=True)
     parser.add_argument("--output", default=str(DEFAULT_OUTPUT))
     parser.add_argument("--audit", default=str(DEFAULT_AUDIT))
     parser.add_argument("--rows-per-source", type=int, default=256)
+    parser.add_argument("--stratify-key", default="")
+    parser.add_argument("--stratum", action="append", default=[])
+    parser.add_argument("--rows-per-stratum", type=int, default=0)
     parser.add_argument("--seed", type=int, default=202606)
     return parser.parse_args()
 
@@ -88,6 +130,8 @@ def main() -> int:
     rng = random.Random(args.seed)
     selected_texts: list[str] = []
     source_counts: dict[str, int] = {}
+    stratum_counts_by_source: dict[str, dict[str, int]] = {}
+    selected_stratum_counts: dict[str, int] = {}
     formal_test_reference_count = 0
     errors: list[str] = []
     for source in sources:
@@ -95,9 +139,23 @@ def main() -> int:
             errors.append(f"Missing source: {display_path(source)}")
             continue
         rows = load_jsonl(source)
-        rng.shuffle(rows)
-        selected = rows[: args.rows_per_source]
+        try:
+            selected, stratum_counts = select_rows(
+                rows,
+                rng,
+                args.rows_per_source,
+                args.stratify_key,
+                tuple(args.stratum),
+                args.rows_per_stratum,
+            )
+        except ValueError as exc:
+            errors.append(f"{display_path(source)}: {exc}")
+            continue
         source_counts[display_path(source)] = len(selected)
+        if stratum_counts:
+            stratum_counts_by_source[display_path(source)] = stratum_counts
+            for stratum, count in stratum_counts.items():
+                selected_stratum_counts[stratum] = selected_stratum_counts.get(stratum, 0) + count
         for row in selected:
             if formal_test_reference(row):
                 formal_test_reference_count += 1
@@ -121,6 +179,11 @@ def main() -> int:
         "status": status,
         "sources": {display_path(path): sha256_file(path) for path in sources if path.is_file()},
         "source_counts": source_counts,
+        "stratify_key": args.stratify_key,
+        "requested_strata": args.stratum,
+        "rows_per_stratum": args.rows_per_stratum,
+        "stratum_counts_by_source": stratum_counts_by_source,
+        "selected_stratum_counts": selected_stratum_counts,
         "selected_text_count": len(selected_texts),
         "formal_test_reference_count": formal_test_reference_count,
         "seed": args.seed,

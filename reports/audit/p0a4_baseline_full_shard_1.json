@@ -1,0 +1,70 @@
+{
+  "gate": "CH2-CAPABILITY-EVAL-shard",
+  "check_version": "1.3",
+  "created_by": "scripts/evaluate_chapter2_capability.py",
+  "created_ts": "2026-07-19T02:53:59.760037+00:00",
+  "status": "passed",
+  "probe_backend": "openai_compatible",
+  "student_url": "http://127.0.0.1:8000",
+  "student_endpoint_health_status": 200,
+  "student_model_id": "Qwen/Qwen2.5-14B-Instruct-AWQ",
+  "served_model_id": "/workspace/project_tiaozhanbei/tiaozhanbei/models/pretrained/Qwen--Qwen2.5-14B-Instruct-AWQ",
+  "local_model_dir": "models/pretrained/Qwen--Qwen2.5-14B-Instruct-AWQ",
+  "dtype": "float16",
+  "device": "cuda",
+  "output_trace_path": "reports/sealed/p0a4/shards/p0a4_baseline_full_shard_1.jsonl",
+  "capability_eval_trace_hash": "6227698c91b37f416dce0a7396530712d36a944ae8d6f79e9f9c6101614a219c",
+  "selected_dataset_keys": [
+    "cmmlu",
+    "gsm8k",
+    "humaneval"
+  ],
+  "use_frozen_final": true,
+  "split_dir": "data/splits/p0a4_official_full",
+  "split_manifest_hash": "72b18c95af618937ee172236e32c630e2dc5eb57089cd5e44c5f4b7fa2ac6159",
+  "sample_limit_per_dataset": 0,
+  "num_shards": 4,
+  "shard_index": 1,
+  "unsharded_sample_count": 13065,
+  "unsharded_sample_ids_hash": "083058a043fec7c70c05ce33b01bc96969088d284a4052e3f3731380852d0b00",
+  "sample_count": 3267,
+  "dataset_counts": {
+    "cmmlu": 2896,
+    "gsm8k": 330,
+    "humaneval": 41
+  },
+  "correct_counts": {
+    "cmmlu": 2191,
+    "gsm8k": 312,
+    "humaneval": 26
+  },
+  "accuracy_by_dataset": {
+    "cmmlu": 0.756560773480663,
+    "gsm8k": 0.9454545454545454,
+    "humaneval": 0.6341463414634146
+  },
+  "overall_accuracy": 0.7741046831955923,
+  "min_accuracy": 0.0,
+  "peak_memory_mb": 0.0,
+  "max_new_tokens": 160,
+  "max_new_tokens_map": {
+    "cmmlu": 16,
+    "gsm8k": 512,
+    "humaneval": 512
+  },
+  "request_extra_map_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+  "fail_fast_min_accuracy_map": {},
+  "fail_fast_reason": "",
+  "humaneval_timeout_sec": 10.0,
+  "generation_config": {
+    "do_sample": false,
+    "temperature": 0.0,
+    "num_candidates": 1
+  },
+  "prompt_style": "v15",
+  "prompt_style_map": {},
+  "prompt_template_hash": "d1019473f72612c1bef19c930b0518203cb5aa86549790d0ab40766e11621a76",
+  "humaneval_exec_preamble_hash": "45574eb37eb1cc75cd0dc9f4eca05b2f430f8cc89eac47361e31e55090876417",
+  "errors": [],
+  "report_hash": "9a6f5ca15abe71383a3c9219e6f7667a60341223077fc9a2aebf69565c41926c"
+}

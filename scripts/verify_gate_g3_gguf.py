@@ -22,6 +22,12 @@ DEFAULT_LLAMA_CPP = ROOT / "external" / "llama.cpp"
 DEFAULT_GGUF = ROOT / "models" / "quantized" / "db4ai-edge-3b-kd-q4_k_m.gguf"
 DEFAULT_TEACHER_TRACE = ROOT / "data" / "distill" / "teacher_decision_trace.jsonl"
 DEFAULT_AUDIT = ROOT / "reports" / "audit" / "gate_g3_memory_gguf.json"
+PROMPT_CACHE_SERVER_ARGS = {
+    "-cram",
+    "--cache-ram",
+    "--cache-idle-slots",
+    "--no-cache-idle-slots",
+}
 
 
 def sha256_text(text: str) -> str:
@@ -67,6 +73,28 @@ def parse_comma_values(values: list[str]) -> list[str]:
     for value in values:
         parsed.extend(part.strip() for part in value.split(",") if part.strip())
     return parsed
+
+
+def prompt_cache_server_args(cache_ram_mib: int, cache_idle_slots: bool) -> list[str]:
+    if cache_ram_mib < 0:
+        raise ValueError("--host-prompt-cache-mib must be >= 0 for a bounded memory gate")
+    if cache_idle_slots and cache_ram_mib == 0:
+        raise ValueError("--cache-idle-slots requires --host-prompt-cache-mib > 0")
+    return [
+        "--cache-ram",
+        str(cache_ram_mib),
+        "--cache-idle-slots" if cache_idle_slots else "--no-cache-idle-slots",
+    ]
+
+
+def validate_server_extra_args(values: list[str]) -> None:
+    for value in values:
+        option = value.split("=", 1)[0]
+        if option in PROMPT_CACHE_SERVER_ARGS:
+            raise ValueError(
+                f"{option} is reserved; use --host-prompt-cache-mib and "
+                "--cache-idle-slots/--no-cache-idle-slots"
+            )
 
 
 def select_rows(rows: list[dict[str, Any]], dataset_filter: set[str] | None, total: int) -> list[dict[str, Any]]:
@@ -270,6 +298,22 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--ubatch-size", "--ubatch_size", type=int, default=128)
     parser.add_argument("--cache-type-k", "--cache_type_k", default="q8_0")
     parser.add_argument("--cache-type-v", "--cache_type_v", default="q8_0")
+    parser.add_argument(
+        "--host-prompt-cache-mib",
+        "--host_prompt_cache_mib",
+        type=int,
+        default=0,
+        help=(
+            "Maximum llama-server host prompt cache in MiB. The memory-gate default is 0 "
+            "because cached idle-slot states are optional deployment acceleration state."
+        ),
+    )
+    parser.add_argument(
+        "--cache-idle-slots",
+        action=argparse.BooleanOptionalAction,
+        default=False,
+        help="Save idle slots to the host prompt cache (default: disabled).",
+    )
     parser.add_argument("--flash-attn", "--flash_attn", choices=("on", "off", "auto"), default="on")
     parser.add_argument("--no-repack", "--no_repack", action="store_true")
     parser.add_argument("--host", default="127.0.0.1")
@@ -288,9 +332,19 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--n-gpu-layers", "--n_gpu_layers", type=int, default=0)
     parser.add_argument("--sample-interval-ms", "--sample_interval_ms", type=int, default=50)
     parser.add_argument("--quantization-label", "--quantization_label", default="")
-    parser.add_argument("--lora", action="append", default=[], help="GGUF LoRA adapter to keep resident; repeatable.")
     parser.add_argument("--keep-server-log", "--keep_server_log", default="logs/g3/llama_server.log")
     parser.add_argument("--memory-trace-csv", "--memory_trace_csv", default="")
+    parser.add_argument(
+        "--server-extra-arg",
+        action="append",
+        default=[],
+        help="Additional audited llama-server argv item; repeat for each item.",
+    )
+    parser.add_argument(
+        "--request-extra-json",
+        default="{}",
+        help="Additional audited /completion request fields.",
+    )
     return parser.parse_args()
 
 
@@ -305,25 +359,36 @@ def main() -> int:
     if args.parallel != 1:
         print("G3 batch_size=1 requires --parallel 1", file=sys.stderr)
         return 2
+    try:
+        prompt_cache_args = prompt_cache_server_args(
+            args.host_prompt_cache_mib,
+            args.cache_idle_slots,
+        )
+        validate_server_extra_args(args.server_extra_arg)
+    except ValueError as exc:
+        print(str(exc), file=sys.stderr)
+        return 2
     gguf_path = resolve_path(args.gguf)
-    lora_paths = [resolve_path(value) for value in args.lora]
     llama_cpp_dir = resolve_path(args.llama_cpp_dir)
     teacher_trace_path = resolve_path(args.teacher_trace)
     audit_path = resolve_path(args.audit)
     memory_trace_path = resolve_path(args.memory_trace_csv) if args.memory_trace_csv else audit_path.with_suffix(".samples.csv")
     server_log_path = resolve_path(args.keep_server_log)
     dataset_filter = set(parse_comma_values(args.dataset)) if args.dataset else None
+    try:
+        request_extra = json.loads(args.request_extra_json)
+    except json.JSONDecodeError as exc:
+        print(f"Invalid --request-extra-json: {exc}", file=sys.stderr)
+        return 2
+    if not isinstance(request_extra, dict):
+        print("--request-extra-json must decode to an object", file=sys.stderr)
+        return 2
     total_requests = args.warmup_requests + args.measure_requests
     rows = select_rows(load_jsonl(teacher_trace_path), dataset_filter, total_requests)
     server_bin = find_one(llama_cpp_dir / "build", "llama-server")
     if not gguf_path.is_file():
         print(f"Missing GGUF file: {display_path(gguf_path)}", file=sys.stderr)
         return 2
-    missing_loras = [display_path(path) for path in lora_paths if not path.is_file()]
-    if missing_loras:
-        print(f"Missing GGUF LoRA adapters: {', '.join(missing_loras)}", file=sys.stderr)
-        return 2
-
     base_url = f"http://{args.host}:{args.port}"
     server_log_path.parent.mkdir(parents=True, exist_ok=True)
     command = [
@@ -353,12 +418,10 @@ def main() -> int:
         "--n-gpu-layers",
         str(args.n_gpu_layers),
     ]
+    command.extend(prompt_cache_args)
     if args.no_repack:
         command.append("--no-repack")
-    for lora_path in lora_paths:
-        command.extend(["--lora", str(lora_path)])
-    if lora_paths:
-        command.append("--lora-init-without-apply")
+    command.extend(args.server_extra_arg)
     created_ts = datetime.now(timezone.utc).isoformat()
     log_handle = server_log_path.open("w", encoding="utf-8")
     proc = subprocess.Popen(command, cwd=ROOT, stdout=log_handle, stderr=subprocess.STDOUT, text=True)
@@ -401,8 +464,7 @@ def main() -> int:
                     "temperature": 0,
                     "cache_prompt": False,
                 }
-                if lora_paths:
-                    payload["lora"] = [{"id": (index - 1) % len(lora_paths), "scale": 1.0}]
+                payload.update(request_extra)
                 phase = "warmup" if index <= args.warmup_requests else "measure"
                 current_rss: float | None = None
                 try:
@@ -505,26 +567,26 @@ def main() -> int:
             )
     audit = {
         "gate": "G3-memory-gguf",
-        "check_version": "2.0",
+        "check_version": "2.1",
         "created_by": "scripts/verify_gate_g3_gguf.py",
         "created_ts": created_ts,
         "status": status,
         "gguf_path": display_path(gguf_path),
         "gguf_hash": sha256_file(gguf_path),
         "gguf_bytes": gguf_path.stat().st_size,
-        "lora_paths": [display_path(path) for path in lora_paths],
-        "lora_hashes": {display_path(path): sha256_file(path) for path in lora_paths},
-        "lora_bytes": {display_path(path): path.stat().st_size for path in lora_paths},
-        "resident_lora_count": len(lora_paths),
         "llama_cpp_dir": display_path(llama_cpp_dir),
         "server_bin": display_path(server_bin),
         "server_command": command,
+        "server_extra_args": args.server_extra_arg,
+        "request_extra_hash": sha256_text(
+            json.dumps(request_extra, ensure_ascii=False, sort_keys=True)
+        ),
         "server_log": display_path(server_log_path),
         "teacher_trace_path": display_path(teacher_trace_path),
         "teacher_trace_hash": sha256_file(teacher_trace_path),
         "quantization_backend": "llama_cpp_gguf",
         "quantization_label": args.quantization_label,
-        "quantization_scope_note": "The supplied GGUF is measured as-is; model and adapter scope must be identified by its preparation audit.",
+        "quantization_scope_note": "The supplied standalone GGUF is measured as-is and identified by its preparation audit.",
         "warmup_requests": args.warmup_requests,
         "successful_warmup_requests": len(warmup_latencies),
         "measure_requests": len(measure_latencies),
@@ -537,6 +599,12 @@ def main() -> int:
         "ubatch_size": args.ubatch_size,
         "cache_type_k": args.cache_type_k,
         "cache_type_v": args.cache_type_v,
+        "host_prompt_cache_mib": args.host_prompt_cache_mib,
+        "host_prompt_cache_enabled": args.host_prompt_cache_mib > 0,
+        "cache_idle_slots": args.cache_idle_slots,
+        "host_prompt_cache_policy": (
+            "bounded_enabled" if args.host_prompt_cache_mib > 0 else "disabled_for_edge_memory_gate"
+        ),
         "flash_attn": args.flash_attn,
         "repack_enabled": not args.no_repack,
         "n_gpu_layers": args.n_gpu_layers,

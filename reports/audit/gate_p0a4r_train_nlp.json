@@ -1,0 +1,95 @@
+{
+  "gate": "P0-A4-LORA-TRAIN",
+  "check_version": "1.0",
+  "created_by": "model_compression/train_p0a4_lora.py",
+  "created_ts": "2026-07-23T05:47:36.529599+00:00",
+  "status": "passed",
+  "role": "student_expert",
+  "task": "cmmlu",
+  "candidate_index": 2,
+  "model_dir": "models/checkpoints/p0a4/student-shared-v2-merged",
+  "train_data": "data/distill/p0a4r_nlp_rationale_train.jsonl",
+  "train_data_hash": "b0c46085285b83a2745783f8a00755cb241e506135d00a7ec1239121859b9da6",
+  "validation_data": "data/distill/p0a4r_nlp_internal_validation.jsonl",
+  "validation_data_hash": "3e10cde4f042fd4c3dfad6b0c98753fe382f1c2c035b81d757ece2b0eb0ad443",
+  "train_rows": 1161,
+  "source_train_counts": {
+    "cmmlu": 1161
+  },
+  "source_unique_prompt_counts": {
+    "gsm8k": 0,
+    "humaneval": 0,
+    "cmmlu": 1161
+  },
+  "validation_rows": 64,
+  "train_counts": {
+    "cmmlu": 1161
+  },
+  "output_dir": "models/checkpoints/p0a4r/nlp",
+  "lora": {
+    "rank": 8,
+    "alpha": 16,
+    "dropout": 0.05,
+    "target_modules": [
+      "q_proj",
+      "k_proj",
+      "v_proj",
+      "o_proj",
+      "gate_proj",
+      "up_proj",
+      "down_proj"
+    ]
+  },
+  "optimization": {
+    "learning_rate": 3e-05,
+    "epochs": 2.0,
+    "max_upsample_factor": null,
+    "target_rows_by_task": null,
+    "max_seq_length": 1024,
+    "per_device_train_batch_size": 1,
+    "gradient_accumulation_steps": 8,
+    "max_steps": -1,
+    "optimizer": "adamw_torch",
+    "optimizer_placement": "gpu_ddp_replicated",
+    "parameter_placement": "gpu_ddp_replicated",
+    "deepspeed": "",
+    "deepspeed_config_hash": "",
+    "deepspeed_stage": 0,
+    "zero3_initialized_before_model_load": false,
+    "cpu_offload": false,
+    "gradient_checkpointing": {
+      "enabled": true,
+      "use_reentrant": false
+    },
+    "ddp_find_unused_parameters": false,
+    "load_best_model_in_trainer": false,
+    "external_checkpoint_selection": true
+  },
+  "dependencies": {
+    "torch": "2.6.0+cu124",
+    "transformers": "4.51.3",
+    "accelerate": "1.14.0",
+    "deepspeed": "0.17.6",
+    "peft": "0.17.1"
+  },
+  "formal_test_reference_count": 0,
+  "errors": [],
+  "metrics": {
+    "train_runtime": 277.5488,
+    "train_samples_per_second": 8.366,
+    "train_steps_per_second": 0.259,
+    "total_flos": 3899563748360192.0,
+    "train_loss": 1.1093547344207764,
+    "epoch": 1.9896907216494846,
+    "external_checkpoint_candidate_count": 2
+  },
+  "best_checkpoint": "",
+  "checkpoint_candidates": [
+    "models/checkpoints/p0a4r/nlp/checkpoint-36",
+    "models/checkpoints/p0a4r/nlp/checkpoint-72"
+  ],
+  "published_adapter_files": [],
+  "deployment_ready": false,
+  "trainable_parameters": 8716288,
+  "report_hash": "e5503c4093f5ebdf1aedee93011ef761a4bba0039acf6d038460c0a5ee75ff4b"
+}

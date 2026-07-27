@@ -1,0 +1,62 @@
+{
+  "gate": "P0-edge-candidate-dev",
+  "check_version": "2.0",
+  "created_by": "scripts/evaluate_edge_candidate_dev.py",
+  "created_ts": "2026-07-23T03:17:19.397323+00:00",
+  "status": "passed",
+  "candidate_name": "edge-student-v2-q4-k-m",
+  "backend": "openai_compatible_http",
+  "endpoint": "http://127.0.0.1:18441",
+  "endpoint_model_id": "p0a4-edge-student-v2-q4-k-m",
+  "endpoint_model_id_map": {},
+  "endpoint_model_id_map_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+  "model": {
+    "path": "models/quantized/p0a4-qwen3-1.7b-v2-q4_k_m.gguf",
+    "bytes": 1107408928,
+    "sha256": "98846217e9b899ad3fa1a3422e9e13367dbf293b9bf0ef2fb9c07e48ef119ebc"
+  },
+  "validation_data": "data/distill/p0a4_smoke96.jsonl",
+  "validation_data_sha256": "59c3f07d78de88b017aa48988286c552072bbdbdc07a875bb117b4b1f41d3325",
+  "output_trace": "data/eval/p0a4_edge_student_v2_q4_k_m_smoke96.jsonl",
+  "output_trace_sha256": "e7623466fafd02209e900e13ab25b712aff01a2d7afab466c05e344403c1d07f",
+  "sample_count": 96,
+  "dataset_counts": {
+    "cmmlu": 32,
+    "gsm8k": 32,
+    "humaneval": 32
+  },
+  "correct_counts": {
+    "cmmlu": 17,
+    "gsm8k": 25,
+    "humaneval": 17
+  },
+  "accuracy_by_dataset": {
+    "cmmlu": 0.53125,
+    "gsm8k": 0.78125,
+    "humaneval": 0.53125
+  },
+  "macro_accuracy": 0.6145833333333334,
+  "min_accuracy_by_dataset": {},
+  "min_macro_accuracy": 0.0,
+  "threshold_gate_enabled": false,
+  "threshold_failures": {},
+  "generation_error_count": 0,
+  "failure_reasons": [],
+  "mean_latency_ms": 290.96573646044516,
+  "peak_gpu_memory_mb_decimal": 0.0,
+  "dtype": "bfloat16",
+  "max_input_length": 1024,
+  "max_new_tokens_by_dataset": {
+    "gsm8k": 512,
+    "humaneval": 512,
+    "cmmlu": 16
+  },
+  "close_reasoning_prefix": false,
+  "disable_thinking": true,
+  "kv_cache_type": "q8_0",
+  "request_extra_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+  "request_extra_map_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+  "formal_test_labels_used": false,
+  "errors": [],
+  "report_hash": "d546321b81a9fae95176cf8f8e701f79a1faf036d9a15deb3e641207d0836028"
+}

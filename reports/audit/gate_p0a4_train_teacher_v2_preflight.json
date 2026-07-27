@@ -1,0 +1,68 @@
+{
+  "gate": "P0-A4-LORA-TRAIN",
+  "check_version": "1.0",
+  "created_by": "model_compression/train_p0a4_lora.py",
+  "created_ts": "2026-07-22T03:39:49.593230+00:00",
+  "status": "dry_run_passed",
+  "role": "teacher",
+  "task": "shared",
+  "candidate_index": 2,
+  "model_dir": "models/pretrained/Qwen--Qwen2.5-14B-Instruct",
+  "train_data": "data/distill/p0a4_train.jsonl",
+  "train_data_hash": "d3e8b8ef4f6abb36aa8196755ea740fd64d7921895f32753fd4caa5f76372e18",
+  "validation_data": "data/distill/p0a4_teacher_validation.jsonl",
+  "validation_data_hash": "e925350a9d04f02cba1e9b43dcf925213469fa49de84badb51fb8a4025d60406",
+  "train_rows": 5256,
+  "source_train_counts": {
+    "gsm8k": 1984,
+    "humaneval": 876,
+    "cmmlu": 4096
+  },
+  "validation_rows": 96,
+  "train_counts": {
+    "cmmlu": 1752,
+    "gsm8k": 1752,
+    "humaneval": 1752
+  },
+  "output_dir": "models/checkpoints/p0a4/teacher-v2-preflight",
+  "lora": {
+    "rank": 8,
+    "alpha": 16,
+    "dropout": 0.1,
+    "target_modules": [
+      "q_proj",
+      "k_proj",
+      "v_proj",
+      "o_proj",
+      "gate_proj",
+      "up_proj",
+      "down_proj"
+    ]
+  },
+  "optimization": {
+    "learning_rate": 3e-05,
+    "epochs": 1.0,
+    "max_upsample_factor": 2.0,
+    "max_seq_length": 1024,
+    "per_device_train_batch_size": 1,
+    "gradient_accumulation_steps": 16,
+    "optimizer": "adamw_torch",
+    "optimizer_placement": "gpu_zero3_partitioned",
+    "parameter_placement": "gpu_zero3_partitioned",
+    "deepspeed": "configs/deepspeed_p0a4_zero3.json",
+    "deepspeed_config_hash": "9a1282678dc2436ca860db31204ab5ff4af72712314d474122d5807ae0fa1ae2",
+    "deepspeed_stage": 3,
+    "zero3_initialized_before_model_load": true,
+    "cpu_offload": false
+  },
+  "dependencies": {
+    "torch": "2.6.0+cu124",
+    "transformers": "4.51.3",
+    "accelerate": "1.14.0",
+    "deepspeed": "0.17.6",
+    "peft": "0.17.1"
+  },
+  "formal_test_reference_count": 0,
+  "errors": [],
+  "report_hash": "3d158665d75983803d65cffe072e94dc5a22f999346289aaabdfb5a7395135a3"
+}

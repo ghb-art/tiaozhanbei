@@ -37,7 +37,7 @@ from inference_utils import (
 )
 
 
-DEFAULT_MODEL_DIR = ROOT / "models" / "pretrained" / "deepseek-ai--DeepSeek-R1-Distill-Qwen-1.5B"
+DEFAULT_MODEL_DIR = ROOT / "models" / "pretrained" / "Qwen--Qwen3-1.7B"
 DEFAULT_OUTPUT_TRACE = ROOT / "reports" / "audit" / "chapter2_capability_eval_smoke.jsonl"
 DEFAULT_AUDIT = ROOT / "reports" / "audit" / "gate_chapter2_capability_eval_smoke.json"
 SPLITS = ROOT / "data" / "splits"
@@ -87,8 +87,8 @@ def read_jsonl(path: Path) -> list[dict[str, Any]]:
     return rows
 
 
-def read_split_ids(dataset_key: str, split: str = "test") -> list[str]:
-    path = SPLITS / f"{dataset_key}_{split}.txt"
+def read_split_ids(dataset_key: str, split: str = "test", split_dir: Path = SPLITS) -> list[str]:
+    path = split_dir / f"{dataset_key}_{split}.txt"
     if not path.is_file():
         raise CapabilityEvalError(f"Missing split file: {display_path(path)}")
     return [line.strip() for line in path.read_text(encoding="utf-8").splitlines() if line.strip()]
@@ -313,8 +313,12 @@ def generate_text(
     messages: list[dict[str, str]],
     device: str,
     max_new_tokens: int,
+    disable_thinking: bool = False,
 ) -> tuple[str, float]:
-    chat_prompt = tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
+    template_kwargs = {"tokenize": False, "add_generation_prompt": True}
+    if disable_thinking:
+        template_kwargs["enable_thinking"] = False
+    chat_prompt = tokenizer.apply_chat_template(messages, **template_kwargs)
     inputs = tokenizer(chat_prompt, return_tensors="pt", truncation=True).to(device)
     input_length = int(inputs["input_ids"].shape[1])
     if device.startswith("cuda"):
@@ -377,7 +381,8 @@ def generate_text_endpoint(
     messages: list[dict[str, str]],
     timeout_sec: float,
     max_new_tokens: int,
-    lora_id: int | None = None,
+    disable_thinking: bool = False,
+    request_extra: dict[str, Any] | None = None,
 ) -> tuple[str, float]:
     payload = {
         "model": model_id,
@@ -386,8 +391,15 @@ def generate_text_endpoint(
         "max_tokens": max_new_tokens,
         "stream": False,
     }
-    if lora_id is not None:
-        payload["lora"] = [{"id": lora_id, "scale": 1.0}]
+    if disable_thinking:
+        payload["chat_template_kwargs"] = {"enable_thinking": False}
+    if request_extra:
+        forbidden = set(request_extra) & {"model", "messages", "temperature", "max_tokens", "stream"}
+        if disable_thinking and "chat_template_kwargs" in request_extra:
+            forbidden.add("chat_template_kwargs")
+        if forbidden:
+            raise CapabilityEvalError(f"Request-extra cannot override evaluator fields: {sorted(forbidden)}")
+        payload.update(request_extra)
     started = time.perf_counter()
     response = request_json(f"{base_url.rstrip('/')}/v1/chat/completions", payload, timeout_sec)
     latency_ms = (time.perf_counter() - started) * 1000
@@ -464,15 +476,20 @@ SAMPLE_LOADERS = {
 }
 
 
-def load_samples(dataset_key: str, limit: int, use_frozen_final: bool) -> list[dict[str, Any]]:
+def load_samples(
+    dataset_key: str,
+    limit: int,
+    use_frozen_final: bool,
+    split_dir: Path = SPLITS,
+) -> list[dict[str, Any]]:
     if dataset_key not in SAMPLE_LOADERS:
         raise CapabilityEvalError(f"Unsupported dataset: {dataset_key}")
     if use_frozen_final:
-        sample_ids = read_split_ids(dataset_key, "test")
+        sample_ids = read_split_ids(dataset_key, "test", split_dir)
     elif dataset_key == "humaneval":
         sample_ids = list(load_humaneval_rows())[:limit]
     else:
-        sample_ids = read_split_ids(dataset_key, "test")[:limit]
+        sample_ids = read_split_ids(dataset_key, "test", split_dir)[:limit]
     if limit > 0:
         sample_ids = sample_ids[:limit]
     return [SAMPLE_LOADERS[dataset_key](sample_id) for sample_id in sample_ids]
@@ -558,20 +575,6 @@ def score_sample(sample: dict[str, Any], response_text: str, humaneval_timeout_s
     raise CapabilityEvalError(f"Unsupported dataset: {dataset_key}")
 
 
-def parse_adapter_map(values: list[str]) -> dict[str, Path | None]:
-    adapter_map: dict[str, Path | None] = {}
-    for item in parse_comma_values(values):
-        if "=" not in item:
-            raise CapabilityEvalError(f"Invalid --adapter-map entry, expected dataset=path: {item}")
-        dataset_key, adapter_value = item.split("=", 1)
-        dataset_key = dataset_key.strip()
-        adapter_value = adapter_value.strip()
-        if dataset_key not in SAMPLE_LOADERS:
-            raise CapabilityEvalError(f"Unsupported --adapter-map dataset: {dataset_key}")
-        adapter_map[dataset_key] = None if adapter_value.lower() in {"", "none", "null", "base"} else resolve_path(adapter_value)
-    return adapter_map
-
-
 def parse_prompt_style_map(values: list[str]) -> dict[str, str]:
     prompt_style_map: dict[str, str] = {}
     for item in parse_comma_values(values):
@@ -586,25 +589,6 @@ def parse_prompt_style_map(values: list[str]) -> dict[str, str]:
             raise CapabilityEvalError(f"Unsupported prompt style for {dataset_key}: {style}")
         prompt_style_map[dataset_key] = style
     return prompt_style_map
-
-
-def parse_endpoint_lora_map(values: list[str]) -> dict[str, int]:
-    lora_map: dict[str, int] = {}
-    for item in parse_comma_values(values):
-        if "=" not in item:
-            raise CapabilityEvalError(f"Invalid --endpoint-lora-map entry, expected dataset=id: {item}")
-        dataset_key, lora_id_text = item.split("=", 1)
-        dataset_key = dataset_key.strip()
-        if dataset_key not in SAMPLE_LOADERS:
-            raise CapabilityEvalError(f"Unsupported --endpoint-lora-map dataset: {dataset_key}")
-        try:
-            lora_id = int(lora_id_text.strip())
-        except ValueError as exc:
-            raise CapabilityEvalError(f"Invalid LoRA id for {dataset_key}: {lora_id_text}") from exc
-        if lora_id < 0:
-            raise CapabilityEvalError(f"LoRA id must be non-negative for {dataset_key}")
-        lora_map[dataset_key] = lora_id
-    return lora_map
 
 
 def parse_max_new_tokens_map(values: list[str]) -> dict[str, int]:
@@ -624,6 +608,22 @@ def parse_max_new_tokens_map(values: list[str]) -> dict[str, int]:
             raise CapabilityEvalError(f"Max token count must be positive for {dataset_key}")
         token_map[dataset_key] = count
     return token_map
+
+
+def parse_request_extra_map(values: list[str]) -> dict[str, dict[str, Any]]:
+    parsed: dict[str, dict[str, Any]] = {}
+    for item in values:
+        if "=" not in item:
+            raise CapabilityEvalError(f"Invalid request-extra map entry: {item}")
+        dataset_key, payload_text = item.split("=", 1)
+        dataset_key = dataset_key.strip()
+        if dataset_key not in SAMPLE_LOADERS:
+            raise CapabilityEvalError(f"Unsupported request-extra dataset: {dataset_key}")
+        payload = json.loads(payload_text)
+        if not isinstance(payload, dict):
+            raise CapabilityEvalError("Each request-extra map value must be a JSON object")
+        parsed[dataset_key] = payload
+    return parsed
 
 
 def parse_min_accuracy_map(values: list[str]) -> dict[str, float]:
@@ -648,23 +648,8 @@ def parse_min_accuracy_map(values: list[str]) -> dict[str, float]:
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Run Chapter 2 capability evaluation for GSM8K, HumanEval and CMMLU.")
     parser.add_argument("--local-model-dir", "--local_model_dir", default=str(DEFAULT_MODEL_DIR))
-    parser.add_argument("--adapter-path", "--adapter_path", default="")
-    parser.add_argument(
-        "--adapter-map",
-        "--adapter_map",
-        action="append",
-        default=[],
-        help="Dataset-specific adapter mapping, e.g. gsm8k=models/adapters/math. Repeat or comma-separate.",
-    )
     parser.add_argument("--student-url", "--student_url", default="")
     parser.add_argument("--student-model-id", "--student_model_id", default="")
-    parser.add_argument(
-        "--endpoint-lora-map",
-        "--endpoint_lora_map",
-        action="append",
-        default=[],
-        help="Dataset-specific llama.cpp LoRA id mapping, e.g. gsm8k=0,humaneval=1,cmmlu=2.",
-    )
     parser.add_argument("--dataset", action="append", default=[], help="Dataset key filter; repeat or comma-separate.")
     parser.add_argument("--sample-limit-per-dataset", "--sample_limit_per_dataset", type=int, default=1)
     parser.add_argument(
@@ -673,10 +658,26 @@ def parse_args() -> argparse.Namespace:
         action="store_true",
         help="Evaluate frozen final test ids from data/splits/*_test.txt. Use --sample-limit-per-dataset 0 for all.",
     )
+    parser.add_argument(
+        "--split-dir",
+        default=str(SPLITS),
+        help="Directory containing dataset_test.txt files; P0-A4 uses its separate official-full directory.",
+    )
     parser.add_argument("--output-trace", "--output_trace", default=str(DEFAULT_OUTPUT_TRACE))
     parser.add_argument("--audit", default=str(DEFAULT_AUDIT))
     parser.add_argument("--device", default="cuda")
     parser.add_argument("--dtype", choices=["float16", "bfloat16", "float32"], default="float16")
+    parser.add_argument(
+        "--disable-thinking",
+        action=argparse.BooleanOptionalAction,
+        default=False,
+        help="Pass enable_thinking=false to Qwen3 local templates and HTTP endpoints.",
+    )
+    parser.add_argument(
+        "--kv-cache-type",
+        default="",
+        help="Audit-only endpoint KV cache type, for example q8_0.",
+    )
     parser.add_argument("--max-new-tokens", "--max_new_tokens", type=int, default=160)
     parser.add_argument(
         "--max-new-tokens-map",
@@ -684,6 +685,12 @@ def parse_args() -> argparse.Namespace:
         action="append",
         default=[],
         help="Dataset-specific generation limits, e.g. cmmlu=16,gsm8k=160,humaneval=256.",
+    )
+    parser.add_argument(
+        "--request-extra-json-map",
+        action="append",
+        default=[],
+        help="Dataset-specific endpoint extras as dataset=JSON; repeat once per task.",
     )
     parser.add_argument(
         "--fail-fast-min-accuracy-map",
@@ -730,45 +737,25 @@ def main() -> int:
         return 2
 
     try:
-        adapter_map = parse_adapter_map(args.adapter_map)
         prompt_style_map = parse_prompt_style_map(args.prompt_style_map)
-        endpoint_lora_map = parse_endpoint_lora_map(args.endpoint_lora_map)
         max_new_tokens_map = parse_max_new_tokens_map(args.max_new_tokens_map)
+        request_extra_map = parse_request_extra_map(args.request_extra_json_map)
         fail_fast_min_accuracy_map = parse_min_accuracy_map(args.fail_fast_min_accuracy_map)
     except CapabilityEvalError as exc:
         print(str(exc), file=sys.stderr)
         return 2
-    if args.student_url and adapter_map:
-        print("--adapter-map is only supported for local model evaluation, not --student-url.", file=sys.stderr)
-        return 2
-    if endpoint_lora_map and not args.student_url:
-        print("--endpoint-lora-map requires --student-url.", file=sys.stderr)
-        return 2
-
     model_dir = resolve_path(args.local_model_dir)
-    adapter_path = resolve_path(args.adapter_path) if args.adapter_path else None
+    split_dir = resolve_path(args.split_dir)
     output_path = resolve_path(args.output_trace)
     audit_path = resolve_path(args.audit)
     created_ts = datetime.now(timezone.utc).isoformat()
 
-    backend = (
-        "openai_compatible_lora_router"
-        if args.student_url and endpoint_lora_map
-        else "openai_compatible"
-        if args.student_url
-        else "local_transformers_adapter_router"
-        if adapter_map
-        else "local_transformers_adapter"
-        if adapter_path
-        else "local_transformers_base"
-    )
+    backend = "openai_compatible" if args.student_url else "local_transformers_base"
     health = None
     requested_model_id = args.student_model_id or infer_model_id(model_dir)
     served_model_id = requested_model_id
     tokenizer = None
     model = None
-    adapter_config: dict[str, Any] = {}
-    adapter_config_by_dataset: dict[str, dict[str, Any]] = {}
     if args.student_url:
         health = health_status(args.student_url, args.timeout_sec)
         if health != 200:
@@ -777,13 +764,8 @@ def main() -> int:
         served_model_id = get_served_model(args.student_url, args.timeout_sec, requested_model_id)
     elif args.device.startswith("cuda"):
         torch.cuda.reset_peak_memory_stats()
-    if not args.student_url and not adapter_map:
-        tokenizer, model, adapter_config = load_local_student(
-            model_dir,
-            adapter_path,
-            args.device,
-            args.dtype,
-        )
+    if not args.student_url:
+        tokenizer, model = load_local_student(model_dir, args.device, args.dtype)
 
     trace_rows: list[dict[str, Any]] = []
     unsharded_sample_ids: list[str] = []
@@ -791,19 +773,12 @@ def main() -> int:
     for dataset_key in sorted(requested):
         dataset_prompt_style = prompt_style_map.get(dataset_key, args.prompt_style)
         dataset_max_new_tokens = max_new_tokens_map.get(dataset_key, args.max_new_tokens)
-        dataset_adapter_path = adapter_map.get(dataset_key, adapter_path)
-        if adapter_map:
-            gc.collect()
-            if args.device.startswith("cuda"):
-                torch.cuda.empty_cache()
-            tokenizer, model, dataset_adapter_config = load_local_student(
-                model_dir,
-                dataset_adapter_path,
-                args.device,
-                args.dtype,
-            )
-            adapter_config_by_dataset[dataset_key] = dataset_adapter_config
-        samples = load_samples(dataset_key, args.sample_limit_per_dataset, args.use_frozen_final)
+        samples = load_samples(
+            dataset_key,
+            args.sample_limit_per_dataset,
+            args.use_frozen_final,
+            split_dir,
+        )
         unsharded_sample_ids.extend(str(sample["sample_id"]) for sample in samples)
         samples = apply_shard(samples, args.num_shards, args.shard_index)
         for index, sample in enumerate(samples, start=1):
@@ -818,11 +793,17 @@ def main() -> int:
                         messages,
                         args.timeout_sec,
                         dataset_max_new_tokens,
-                        endpoint_lora_map.get(dataset_key),
+                        args.disable_thinking,
+                        request_extra_map.get(dataset_key),
                     )
                 elif tokenizer is not None and model is not None:
                     response_text, latency_ms = generate_text(
-                        tokenizer, model, messages, args.device, dataset_max_new_tokens
+                        tokenizer,
+                        model,
+                        messages,
+                        args.device,
+                        dataset_max_new_tokens,
+                        args.disable_thinking,
                     )
                 else:
                     raise CapabilityEvalError("No model backend initialized")
@@ -841,8 +822,6 @@ def main() -> int:
                 "probe_backend": backend,
                 "dataset_key": dataset_key,
                 "sample_id": sample["sample_id"],
-                "adapter_path": display_path(dataset_adapter_path) if dataset_adapter_path else "",
-                "endpoint_lora_id": endpoint_lora_map.get(dataset_key),
                 "prompt_style": dataset_prompt_style,
                 "prompt_hash": prompt_hash,
                 "max_new_tokens": dataset_max_new_tokens,
@@ -862,14 +841,6 @@ def main() -> int:
                 f"correct={correct} latency_ms={latency_ms:.1f}",
                 flush=True,
             )
-        if adapter_map:
-            del model
-            del tokenizer
-            model = None
-            tokenizer = None
-            gc.collect()
-            if args.device.startswith("cuda"):
-                torch.cuda.empty_cache()
         dataset_rows = [row for row in trace_rows if row["dataset_key"] == dataset_key]
         dataset_accuracy = (
             sum(1 for row in dataset_rows if row["correct"]) / len(dataset_rows) if dataset_rows else 0.0
@@ -906,7 +877,7 @@ def main() -> int:
         gate = "CH2-CAPABILITY-EVAL-smoke"
     audit = {
         "gate": gate,
-        "check_version": "1.3",
+        "check_version": "1.4",
         "created_by": "scripts/evaluate_chapter2_capability.py",
         "created_ts": created_ts,
         "status": status,
@@ -916,20 +887,20 @@ def main() -> int:
         "student_model_id": requested_model_id,
         "served_model_id": served_model_id,
         "local_model_dir": display_path(model_dir),
-        "adapter_path": display_path(adapter_path) if adapter_path else "",
-        "adapter_map": {
-            key: display_path(value) if value else ""
-            for key, value in sorted(adapter_map.items())
-        },
-        "endpoint_lora_map": dict(sorted(endpoint_lora_map.items())),
-        "adapter_config": adapter_config,
-        "adapter_config_by_dataset": adapter_config_by_dataset,
         "dtype": args.dtype,
+        "disable_thinking": bool(args.disable_thinking),
+        "kv_cache_type": str(args.kv_cache_type),
         "device": args.device,
         "output_trace_path": display_path(output_path),
         "capability_eval_trace_hash": sha256_file(output_path),
         "selected_dataset_keys": sorted(requested),
         "use_frozen_final": bool(args.use_frozen_final),
+        "split_dir": display_path(split_dir),
+        "split_manifest_hash": (
+            sha256_file(split_dir / "manifest.json")
+            if (split_dir / "manifest.json").is_file()
+            else ""
+        ),
         "sample_limit_per_dataset": args.sample_limit_per_dataset,
         "num_shards": args.num_shards,
         "shard_index": args.shard_index,
@@ -944,6 +915,9 @@ def main() -> int:
         "peak_memory_mb": peak_memory_mb,
         "max_new_tokens": args.max_new_tokens,
         "max_new_tokens_map": dict(sorted(max_new_tokens_map.items())),
+        "request_extra_map_hash": sha256_text(
+            json.dumps(request_extra_map, ensure_ascii=False, sort_keys=True)
+        ),
         "fail_fast_min_accuracy_map": dict(sorted(fail_fast_min_accuracy_map.items())),
         "fail_fast_reason": fail_fast_reason,
         "humaneval_timeout_sec": args.humaneval_timeout_sec,

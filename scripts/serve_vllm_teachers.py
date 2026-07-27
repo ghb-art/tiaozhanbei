@@ -20,8 +20,13 @@ STOP_SIGNAL: int | None = None
 
 @dataclass(frozen=True)
 class TeacherSpec:
-    gpu: str
+    gpus: tuple[str, ...]
     port: int
+    tensor_parallel_size: int
+
+    @property
+    def gpu_group(self) -> str:
+        return ",".join(self.gpus)
 
 
 @dataclass
@@ -42,6 +47,41 @@ def parse_csv_values(values: list[str]) -> list[str]:
     for value in values:
         parsed.extend(part.strip() for part in value.split(",") if part.strip())
     return parsed
+
+
+def parse_gpu_groups(group_values: list[str], legacy_gpu_values: list[str]) -> list[tuple[str, ...]]:
+    if group_values and legacy_gpu_values:
+        raise ValueError("Use --gpu-group or legacy --gpu/--gpus, not both.")
+    if group_values:
+        groups = [tuple(parse_csv_values([value])) for value in group_values]
+    elif legacy_gpu_values:
+        groups = [(value,) for value in parse_csv_values(legacy_gpu_values)]
+    else:
+        groups = [("0",)]
+    if any(not group for group in groups):
+        raise ValueError("GPU groups must not be empty.")
+    flattened = [gpu for group in groups for gpu in group]
+    duplicates = sorted({gpu for gpu in flattened if flattened.count(gpu) > 1})
+    if duplicates:
+        raise ValueError(f"GPU ids cannot be reused across teacher groups: {duplicates}")
+    return groups
+
+
+def resolve_tensor_parallel_size(value: str, gpu_count: int) -> int:
+    raw = value.strip().lower()
+    if raw == "auto":
+        return gpu_count
+    try:
+        size = int(raw)
+    except ValueError as exc:
+        raise ValueError(f"Invalid tensor parallel size: {value}") from exc
+    if size <= 0:
+        raise ValueError("Tensor parallel size must be positive or 'auto'.")
+    if size != gpu_count:
+        raise ValueError(
+            f"Tensor parallel size ({size}) must equal visible GPUs in each group ({gpu_count})."
+        )
+    return size
 
 
 def parse_ports(values: list[str], base_port: int, count: int) -> list[int]:
@@ -67,7 +107,7 @@ def port_is_free(host: str, port: int) -> bool:
         return sock.connect_ex((bind_host, port)) != 0
 
 
-def build_command(args: argparse.Namespace, port: int) -> list[str]:
+def build_command(args: argparse.Namespace, spec: TeacherSpec) -> list[str]:
     vllm_bin = Path(args.vllm_bin)
     executable = str(vllm_bin if vllm_bin.is_absolute() else ROOT / vllm_bin)
     if not Path(executable).is_file():
@@ -78,19 +118,24 @@ def build_command(args: argparse.Namespace, port: int) -> list[str]:
         executable,
         "serve",
         model_arg,
-        "--quantization",
-        args.quantization,
         "--max-model-len",
         str(args.max_model_len),
         "--gpu-memory-utilization",
         str(args.gpu_memory_utilization),
         "--tensor-parallel-size",
-        str(args.tensor_parallel_size),
+        str(spec.tensor_parallel_size),
         "--host",
         args.host,
         "--port",
-        str(port),
+        str(spec.port),
     ]
+    quantization = str(getattr(args, "quantization", "")).strip()
+    if quantization and quantization.lower() not in {"none", "null", "bf16"}:
+        command.extend(["--quantization", quantization])
+    lora_modules = list(getattr(args, "lora_module", []) or [])
+    if lora_modules:
+        command.append("--enable-lora")
+        command.extend(["--lora-modules", *lora_modules])
     if args.disable_log_requests:
         command.append("--disable-log-requests")
     return command
@@ -103,11 +148,12 @@ def request_stop(signum: int, _frame: object) -> None:
 
 def start_teacher(args: argparse.Namespace, spec: TeacherSpec) -> TeacherProcess:
     env = os.environ.copy()
-    env["CUDA_VISIBLE_DEVICES"] = spec.gpu
+    env["CUDA_VISIBLE_DEVICES"] = spec.gpu_group
     env.setdefault("VLLM_WORKER_MULTIPROC_METHOD", "spawn")
-    command = build_command(args, spec.port)
+    command = build_command(args, spec)
     print(
-        f"[START] gpu={spec.gpu} port={spec.port} command={' '.join(command)}",
+        f"[START] gpu_group={spec.gpu_group} tensor_parallel={spec.tensor_parallel_size} "
+        f"port={spec.port} command={' '.join(command)}",
         flush=True,
     )
     process = subprocess.Popen(command, cwd=ROOT, env=env, start_new_session=True)
@@ -146,16 +192,38 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description="Start one or more 14B vLLM teacher servers in the foreground; Ctrl+C stops all children."
     )
-    parser.add_argument("--gpu", "--gpus", action="append", default=[], help="GPU id(s), repeat or comma-separate.")
+    parser.add_argument(
+        "--gpu-group",
+        action="append",
+        default=[],
+        help="CUDA devices for one tensor-parallel endpoint, e.g. 0,1,2,3; repeat for multiple endpoints.",
+    )
+    parser.add_argument(
+        "--gpu",
+        "--gpus",
+        action="append",
+        default=[],
+        help="Legacy single-GPU endpoint id(s), repeat or comma-separate.",
+    )
     parser.add_argument("--port", "--ports", action="append", default=[], help="Port(s), repeat or comma-separate.")
     parser.add_argument("--base-port", type=int, default=8000, help="First port when --port is omitted.")
     parser.add_argument("--model-dir", default=str(DEFAULT_MODEL_DIR), help="Local teacher model directory.")
     parser.add_argument("--vllm-bin", default=str(DEFAULT_VLLM_BIN), help="vLLM executable.")
     parser.add_argument("--host", default="0.0.0.0")
     parser.add_argument("--quantization", default="awq")
+    parser.add_argument(
+        "--lora-module",
+        action="append",
+        default=[],
+        help="vLLM mapping name=adapter_path; repeatable. Enables LoRA serving.",
+    )
     parser.add_argument("--max-model-len", type=int, default=4096)
     parser.add_argument("--gpu-memory-utilization", type=float, default=0.85)
-    parser.add_argument("--tensor-parallel-size", type=int, default=1)
+    parser.add_argument(
+        "--tensor-parallel-size",
+        default="auto",
+        help="Tensor parallel workers per endpoint; 'auto' uses every GPU in its group.",
+    )
     parser.add_argument("--grace-sec", type=float, default=20.0, help="Seconds to wait after SIGTERM before SIGKILL.")
     parser.add_argument("--disable-log-requests", action=argparse.BooleanOptionalAction, default=True)
     parser.add_argument("--skip-port-check", action="store_true")
@@ -165,16 +233,28 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> int:
     args = parse_args()
-    gpus = parse_csv_values(args.gpu) or ["0"]
     try:
-        ports = parse_ports(args.port, args.base_port, len(gpus))
+        gpu_groups = parse_gpu_groups(args.gpu_group, args.gpu)
+        ports = parse_ports(args.port, args.base_port, len(gpu_groups))
+        tensor_parallel_sizes = [
+            resolve_tensor_parallel_size(args.tensor_parallel_size, len(group))
+            for group in gpu_groups
+        ]
     except ValueError as exc:
         print(str(exc), file=sys.stderr)
         return 2
-    if len(ports) != len(gpus):
-        print(f"GPU count ({len(gpus)}) must match port count ({len(ports)}).", file=sys.stderr)
+    if len(ports) != len(gpu_groups):
+        print(
+            f"GPU group count ({len(gpu_groups)}) must match port count ({len(ports)}).",
+            file=sys.stderr,
+        )
         return 2
-    specs = [TeacherSpec(gpu=gpu, port=port) for gpu, port in zip(gpus, ports)]
+    specs = [
+        TeacherSpec(gpus=group, port=port, tensor_parallel_size=tensor_parallel_size)
+        for group, port, tensor_parallel_size in zip(
+            gpu_groups, ports, tensor_parallel_sizes
+        )
+    ]
 
     model_dir = Path(args.model_dir)
     resolved_model_dir = model_dir if model_dir.is_absolute() else ROOT / model_dir
@@ -189,10 +269,16 @@ def main() -> int:
             return 2
 
     for spec in specs:
-        print(f"[PLAN] gpu={spec.gpu} port={spec.port}")
+        print(
+            f"[PLAN] gpu_group={spec.gpu_group} "
+            f"tensor_parallel={spec.tensor_parallel_size} port={spec.port}"
+        )
     if args.dry_run:
         for spec in specs:
-            print(f"[DRY-RUN] CUDA_VISIBLE_DEVICES={spec.gpu} {' '.join(build_command(args, spec.port))}")
+            print(
+                f"[DRY-RUN] CUDA_VISIBLE_DEVICES={spec.gpu_group} "
+                f"{' '.join(build_command(args, spec))}"
+            )
         return 0
 
     signal.signal(signal.SIGINT, request_stop)
@@ -212,7 +298,8 @@ def main() -> int:
             if failed:
                 for item in failed:
                     print(
-                        f"[FAIL] gpu={item.spec.gpu} port={item.spec.port} exited with code {item.process.returncode}.",
+                        f"[FAIL] gpu_group={item.spec.gpu_group} port={item.spec.port} "
+                        f"exited with code {item.process.returncode}.",
                         flush=True,
                     )
                 exit_code = 1

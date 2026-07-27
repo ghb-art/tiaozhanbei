@@ -1,0 +1,61 @@
+{
+  "gate": "P0-A4-SELECTION170-RETENTION",
+  "check_version": "1.0",
+  "created_by": "scripts/p0a4_retention_gate.py",
+  "created_ts": "2026-07-23T02:24:30.932861+00:00",
+  "status": "failed",
+  "feedback_policy": "aggregate_by_task_only",
+  "candidate_name": "edge-student-v1-q4-k-m",
+  "baseline_trace": "data/eval/p0a4_baseline14b_awq_selection170.jsonl",
+  "baseline_trace_hash": "9f75f162827a580c6c72993f97c37c2d2709b840218e1382bcb97c9e941ccddd",
+  "candidate_trace": "data/eval/p0a4_edge_student_v1_q4_k_m_selection170.jsonl",
+  "candidate_trace_hash": "dc61cf063b08448ab1c3ce42aa90ebb966587f22ef79cbe77da829a58925951a",
+  "min_ratio_per_task": 0.8,
+  "min_capped_macro_ratio": 0.8,
+  "expected_counts": {
+    "gsm8k": 64,
+    "humaneval": 42,
+    "cmmlu": 64
+  },
+  "baseline_counts": {
+    "cmmlu": 64,
+    "gsm8k": 64,
+    "humaneval": 42
+  },
+  "candidate_counts": {
+    "cmmlu": 64,
+    "gsm8k": 64,
+    "humaneval": 42
+  },
+  "matched_sample_ids": true,
+  "missing_sample_count": 0,
+  "missing_sample_ids_hash": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+  "extra_sample_count": 0,
+  "extra_sample_ids_hash": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+  "prompt_mismatch_count": 0,
+  "baseline_accuracy_by_dataset": {
+    "gsm8k": 1.0,
+    "humaneval": 0.7619047619047619,
+    "cmmlu": 0.71875
+  },
+  "candidate_accuracy_by_dataset": {
+    "gsm8k": 0.90625,
+    "humaneval": 0.5714285714285714,
+    "cmmlu": 0.578125
+  },
+  "ratios": {
+    "math_ratio": 0.90625,
+    "code_ratio": 0.75,
+    "nlp_ratio": 0.8043478260869565
+  },
+  "capped_macro_ratio": 0.8201992753623188,
+  "ratio_failures": {
+    "code_ratio": {
+      "actual": 0.75,
+      "required": 0.8
+    }
+  },
+  "baseline_generation_error_count": 0,
+  "generation_error_count": 0,
+  "report_hash": "bf34dff281e3aba3b04990f9826fcc2da5908fb814f7d1f406bcf04ab9e3680f"
+}

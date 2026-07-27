@@ -1,0 +1,56 @@
+{
+  "gate": "P0-A4-SMOKE96-RETENTION",
+  "check_version": "1.0",
+  "created_by": "scripts/p0a4_retention_gate.py",
+  "created_ts": "2026-07-22T12:20:35.298432+00:00",
+  "status": "passed",
+  "feedback_policy": "aggregate_only",
+  "candidate_name": "edge-student-v1-f16-gguf",
+  "baseline_trace": "data/eval/p0a4_baseline14b_awq_smoke96.jsonl",
+  "baseline_trace_hash": "e5377fe3b833bb0a81503cff694a945ebecd90dc67e4403a55051c573b24ae31",
+  "candidate_trace": "data/eval/p0a4_edge_student_v1_f16_gguf_smoke96.jsonl",
+  "candidate_trace_hash": "2270ddc840a6be6f9d37817e72c3259ccb00fd35a837a914791dd1c4bf1577ab",
+  "min_ratio_per_task": 0.75,
+  "min_capped_macro_ratio": 0.75,
+  "expected_counts": {
+    "gsm8k": 32,
+    "humaneval": 32,
+    "cmmlu": 32
+  },
+  "baseline_counts": {
+    "cmmlu": 32,
+    "gsm8k": 32,
+    "humaneval": 32
+  },
+  "candidate_counts": {
+    "cmmlu": 32,
+    "gsm8k": 32,
+    "humaneval": 32
+  },
+  "matched_sample_ids": true,
+  "missing_sample_count": 0,
+  "missing_sample_ids_hash": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+  "extra_sample_count": 0,
+  "extra_sample_ids_hash": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+  "prompt_mismatch_count": 0,
+  "baseline_accuracy_by_dataset": {
+    "gsm8k": 1.0,
+    "humaneval": 0.75,
+    "cmmlu": 0.625
+  },
+  "candidate_accuracy_by_dataset": {
+    "gsm8k": 0.78125,
+    "humaneval": 0.59375,
+    "cmmlu": 0.5
+  },
+  "ratios": {
+    "math_ratio": 0.78125,
+    "code_ratio": 0.7916666666666666,
+    "nlp_ratio": 0.8
+  },
+  "capped_macro_ratio": 0.7909722222222223,
+  "ratio_failures": {},
+  "baseline_generation_error_count": 0,
+  "generation_error_count": 0,
+  "report_hash": "0ba6a9176c07ecdabfb50bb7cfe46f8315b0b0ad575fb93d2d0a48f061c537eb"
+}

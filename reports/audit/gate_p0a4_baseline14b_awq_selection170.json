@@ -1,0 +1,61 @@
+{
+  "gate": "P0-edge-candidate-dev",
+  "check_version": "2.0",
+  "created_by": "scripts/evaluate_edge_candidate_dev.py",
+  "created_ts": "2026-07-19T02:42:55.894604+00:00",
+  "status": "passed",
+  "candidate_name": "baseline14b-awq-selection170",
+  "backend": "openai_compatible_http",
+  "endpoint": "http://127.0.0.1:8000",
+  "endpoint_model_id": "/workspace/project_tiaozhanbei/tiaozhanbei/models/pretrained/Qwen--Qwen2.5-14B-Instruct-AWQ",
+  "model": {
+    "path": "models/pretrained/Qwen--Qwen2.5-14B-Instruct-AWQ",
+    "file_count": 27,
+    "bytes": 9991787349,
+    "key_metadata_hash": "3a2e31a312e41784737986360f7bfc885054f7e9310556c3e0992436cd10b756"
+  },
+  "validation_data": "data/distill/p0a2_recovery_validation.jsonl",
+  "validation_data_sha256": "e5fd483e537173f7a2ddafc71a49310799d71f5bdcf37406499d8862d0c4b8c0",
+  "output_trace": "data/eval/p0a4_baseline14b_awq_selection170.jsonl",
+  "output_trace_sha256": "9f75f162827a580c6c72993f97c37c2d2709b840218e1382bcb97c9e941ccddd",
+  "sample_count": 170,
+  "dataset_counts": {
+    "cmmlu": 64,
+    "gsm8k": 64,
+    "humaneval": 42
+  },
+  "correct_counts": {
+    "cmmlu": 46,
+    "gsm8k": 64,
+    "humaneval": 32
+  },
+  "accuracy_by_dataset": {
+    "cmmlu": 0.71875,
+    "gsm8k": 1.0,
+    "humaneval": 0.7619047619047619
+  },
+  "macro_accuracy": 0.8268849206349206,
+  "min_accuracy_by_dataset": {},
+  "min_macro_accuracy": 0.0,
+  "threshold_gate_enabled": false,
+  "threshold_failures": {},
+  "generation_error_count": 0,
+  "failure_reasons": [],
+  "mean_latency_ms": 3081.4436344539417,
+  "peak_gpu_memory_mb_decimal": 0.0,
+  "dtype": "bfloat16",
+  "max_input_length": 1024,
+  "max_new_tokens_by_dataset": {
+    "gsm8k": 512,
+    "humaneval": 512,
+    "cmmlu": 16
+  },
+  "close_reasoning_prefix": false,
+  "disable_thinking": false,
+  "kv_cache_type": "",
+  "request_extra_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+  "request_extra_map_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+  "formal_test_labels_used": false,
+  "errors": [],
+  "report_hash": "f8fb151b06f26e5e984565df9f72632ad0f31f7fd494656723182dc10a93043b"
+}

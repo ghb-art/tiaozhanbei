@@ -1,0 +1,70 @@
+{
+  "gate": "P0-edge-candidate-dev",
+  "check_version": "2.0",
+  "created_by": "scripts/evaluate_edge_candidate_dev.py",
+  "created_ts": "2026-07-23T06:21:24.130710+00:00",
+  "status": "passed",
+  "candidate_name": "edge-student-v2-adapter-top1",
+  "backend": "openai_compatible_http",
+  "endpoint": "http://127.0.0.1:18441",
+  "endpoint_model_id": "p0a4-edge-student-v2-q4-k-m",
+  "endpoint_model_id_map": {},
+  "endpoint_model_id_map_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+  "model": {
+    "path": "models/quantized/p0a4-qwen3-1.7b-v2-q4_k_m.gguf",
+    "bytes": 1107408928,
+    "sha256": "98846217e9b899ad3fa1a3422e9e13367dbf293b9bf0ef2fb9c07e48ef119ebc"
+  },
+  "base_model": {
+    "path": "models/pretrained/Qwen--Qwen3-1.7B",
+    "file_count": 25,
+    "bytes": 4079451393,
+    "key_metadata_hash": "d99a5ad60d505d0db4ac82cf7aa71ea477a78025f9a6cc344f79dbdd468d574a"
+  },
+  "adapter": {},
+  "adapter_scale": 0.0,
+  "validation_data": "data/distill/p0a4_smoke96.jsonl",
+  "validation_data_sha256": "59c3f07d78de88b017aa48988286c552072bbdbdc07a875bb117b4b1f41d3325",
+  "output_trace": "data/eval/p0a4_edge_student_v2_adapter_remediation_smoke96.jsonl",
+  "output_trace_sha256": "10378f9e53e7123c46e3523cf00cb108d3698badb39f4b8b2790a4f773d8b0b3",
+  "sample_count": 96,
+  "dataset_counts": {
+    "cmmlu": 32,
+    "gsm8k": 32,
+    "humaneval": 32
+  },
+  "correct_counts": {
+    "cmmlu": 18,
+    "gsm8k": 24,
+    "humaneval": 16
+  },
+  "accuracy_by_dataset": {
+    "cmmlu": 0.5625,
+    "gsm8k": 0.75,
+    "humaneval": 0.5
+  },
+  "macro_accuracy": 0.6041666666666666,
+  "min_accuracy_by_dataset": {},
+  "min_macro_accuracy": 0.0,
+  "threshold_gate_enabled": false,
+  "threshold_failures": {},
+  "generation_error_count": 0,
+  "failure_reasons": [],
+  "mean_latency_ms": 456.02532088620745,
+  "peak_gpu_memory_mb_decimal": 0.0,
+  "dtype": "bfloat16",
+  "max_input_length": 1024,
+  "max_new_tokens_by_dataset": {
+    "gsm8k": 512,
+    "humaneval": 512,
+    "cmmlu": 16
+  },
+  "close_reasoning_prefix": false,
+  "disable_thinking": true,
+  "kv_cache_type": "q8_0",
+  "request_extra_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+  "request_extra_map_hash": "c89766a02616e30aa8171dbeb89828bea24b30c9e3a5ce6df6041b3ac11dd75a",
+  "formal_test_labels_used": false,
+  "errors": [],
+  "report_hash": "e32ebc575967ae8ad0e4ada8827d4aa188b2f0663a89b82585e1282b6648ea6d"
+}

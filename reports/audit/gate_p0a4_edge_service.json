@@ -1,0 +1,29 @@
+{
+  "gate": "P0-A4-EDGE-SERVICE",
+  "check_version": "1.0",
+  "status": "passed",
+  "created_by": "scripts/run_p0a4.sh:start_edge_server",
+  "created_ts": "2026-07-23T06:20:09.583016+00:00",
+  "pid": 1051990,
+  "endpoint": "http://127.0.0.1:18441",
+  "alias": "p0a4-edge-student-v2-q4-k-m",
+  "model_path": "models/quantized/p0a4-qwen3-1.7b-v2-q4_k_m.gguf",
+  "model_hash": "98846217e9b899ad3fa1a3422e9e13367dbf293b9bf0ef2fb9c07e48ef119ebc",
+  "quantization_audit": "reports/audit/gate_p0a4_student_v2_q4_prepare.json",
+  "quant_type": "Q4_K_M",
+  "kv_cache_type": "q8_0",
+  "host_prompt_cache_mib": 0,
+  "cache_idle_slots": false,
+  "disable_thinking": true,
+  "command_line": "/workspace/project_tiaozhanbei/tiaozhanbei/external/llama.cpp/build/bin/llama-server --model models/quantized/p0a4-qwen3-1.7b-v2-q4_k_m.gguf --alias p0a4-edge-student-v2-q4-k-m --host 127.0.0.1 --port 18441 --ctx-size 6144 --threads 8 --parallel 4 --batch-size 32 --ubatch-size 16 --cache-type-k q8_0 --cache-type-v q8_0 --flash-attn on --cache-ram 0 --no-cache-idle-slots --n-gpu-layers all --no-repack --reasoning off --reasoning-format none --skip-chat-parsing --lora /workspace/project_tiaozhanbei/tiaozhanbei/models/adapters/p0a4r/gsm8k-rank-adapter-f16.gguf,/workspace/project_tiaozhanbei/tiaozhanbei/models/adapters/p0a4r/humaneval-rank-adapter-f16.gguf,/workspace/project_tiaozhanbei/tiaozhanbei/models/adapters/p0a4r/cmmlu-rank-adapter-f16.gguf --lora-init-without-apply ",
+  "gpu_backend": true,
+  "cuda_visible_devices": "0",
+  "gpu_memory_mib": [
+    1778
+  ],
+  "parallel": 4,
+  "ctx_size": 6144,
+  "adapter_manifest": "models/adapters/p0a4r/router_manifest.json",
+  "adapter_manifest_hash": "c85436139e9bc0016607b160b58ed0ea701e8f68b4ea02ce40e21a03bcbc428a",
+  "report_hash": "5b98f9d18bf9bd06f228649b4b837c5908425eb3edb7f6db5acf85c7e4e86c39"
+}

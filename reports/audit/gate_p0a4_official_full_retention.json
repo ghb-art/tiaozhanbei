@@ -1,0 +1,69 @@
+{
+  "gate": "P0-A4-OFFICIAL_FULL-RETENTION",
+  "check_version": "1.0",
+  "created_by": "scripts/p0a4_retention_gate.py",
+  "created_ts": "2026-07-22T14:22:46.262360+00:00",
+  "status": "failed",
+  "feedback_policy": "aggregate_only",
+  "candidate_name": "edge-student-v1-q4-k-m",
+  "baseline_trace": "reports/sealed/p0a4/baseline14b_awq_full.jsonl",
+  "baseline_trace_hash": "e8ebd0c86f4800d18b9237fa8f85ff724287b2cf603017cf5024a5a907a42ab2",
+  "candidate_trace": "reports/sealed/p0a4/edge_student_full.jsonl",
+  "candidate_trace_hash": "18c6431ec35c5a009661faad25a865b251b04bd9ce6ecc72846744fa0ba68f29",
+  "min_ratio_per_task": 0.8,
+  "min_capped_macro_ratio": 0.8,
+  "expected_counts": {
+    "gsm8k": 1319,
+    "humaneval": 164,
+    "cmmlu": 11582
+  },
+  "baseline_counts": {
+    "cmmlu": 11582,
+    "gsm8k": 1319,
+    "humaneval": 164
+  },
+  "candidate_counts": {
+    "cmmlu": 11582,
+    "gsm8k": 1319,
+    "humaneval": 164
+  },
+  "matched_sample_ids": true,
+  "missing_sample_count": 0,
+  "missing_sample_ids_hash": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+  "extra_sample_count": 0,
+  "extra_sample_ids_hash": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+  "prompt_mismatch_count": 0,
+  "baseline_accuracy_by_dataset": {
+    "gsm8k": 0.9173616376042456,
+    "humaneval": 0.6402439024390244,
+    "cmmlu": 0.7592816439302366
+  },
+  "candidate_accuracy_by_dataset": {
+    "gsm8k": 0.7536012130401819,
+    "humaneval": 0.43902439024390244,
+    "cmmlu": 0.5364358487307892
+  },
+  "ratios": {
+    "math_ratio": 0.8214876033057851,
+    "code_ratio": 0.6857142857142857,
+    "nlp_ratio": 0.7065044348419377
+  },
+  "capped_macro_ratio": 0.7379021079540028,
+  "ratio_failures": {
+    "code_ratio": {
+      "actual": 0.6857142857142857,
+      "required": 0.8
+    },
+    "nlp_ratio": {
+      "actual": 0.7065044348419377,
+      "required": 0.8
+    },
+    "capped_macro_ratio": {
+      "actual": 0.7379021079540028,
+      "required": 0.8
+    }
+  },
+  "baseline_generation_error_count": 0,
+  "generation_error_count": 0,
+  "report_hash": "adbda239ce7bebafae40cd9d073bf8cd473696253da6faa11234fcadcc81816c"
+}

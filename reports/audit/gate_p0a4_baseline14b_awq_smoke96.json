@@ -1,0 +1,61 @@
+{
+  "gate": "P0-edge-candidate-dev",
+  "check_version": "2.0",
+  "created_by": "scripts/evaluate_edge_candidate_dev.py",
+  "created_ts": "2026-07-19T02:34:09.899298+00:00",
+  "status": "passed",
+  "candidate_name": "baseline14b-awq-smoke96",
+  "backend": "openai_compatible_http",
+  "endpoint": "http://127.0.0.1:8000",
+  "endpoint_model_id": "/workspace/project_tiaozhanbei/tiaozhanbei/models/pretrained/Qwen--Qwen2.5-14B-Instruct-AWQ",
+  "model": {
+    "path": "models/pretrained/Qwen--Qwen2.5-14B-Instruct-AWQ",
+    "file_count": 27,
+    "bytes": 9991787349,
+    "key_metadata_hash": "3a2e31a312e41784737986360f7bfc885054f7e9310556c3e0992436cd10b756"
+  },
+  "validation_data": "data/distill/p0a4_smoke96.jsonl",
+  "validation_data_sha256": "59c3f07d78de88b017aa48988286c552072bbdbdc07a875bb117b4b1f41d3325",
+  "output_trace": "data/eval/p0a4_baseline14b_awq_smoke96.jsonl",
+  "output_trace_sha256": "e5377fe3b833bb0a81503cff694a945ebecd90dc67e4403a55051c573b24ae31",
+  "sample_count": 96,
+  "dataset_counts": {
+    "cmmlu": 32,
+    "gsm8k": 32,
+    "humaneval": 32
+  },
+  "correct_counts": {
+    "cmmlu": 20,
+    "gsm8k": 32,
+    "humaneval": 24
+  },
+  "accuracy_by_dataset": {
+    "cmmlu": 0.625,
+    "gsm8k": 1.0,
+    "humaneval": 0.75
+  },
+  "macro_accuracy": 0.7916666666666666,
+  "min_accuracy_by_dataset": {},
+  "min_macro_accuracy": 0.0,
+  "threshold_gate_enabled": false,
+  "threshold_failures": {},
+  "generation_error_count": 0,
+  "failure_reasons": [],
+  "mean_latency_ms": 2941.1779808676024,
+  "peak_gpu_memory_mb_decimal": 0.0,
+  "dtype": "bfloat16",
+  "max_input_length": 1024,
+  "max_new_tokens_by_dataset": {
+    "gsm8k": 512,
+    "humaneval": 512,
+    "cmmlu": 16
+  },
+  "close_reasoning_prefix": false,
+  "disable_thinking": false,
+  "kv_cache_type": "",
+  "request_extra_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+  "request_extra_map_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+  "formal_test_labels_used": false,
+  "errors": [],
+  "report_hash": "7bea1451d30e09592e571de05cf87de323d6e4d0b346a9969d1332813726acfd"
+}

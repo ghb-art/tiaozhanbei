@@ -1,30 +1,65 @@
-config_version: "0.1-dev"
+config_version: "0.3-p0a4"
 frozen_for_final_gate: false
 
 models:
   cloud_teacher:
-    role: cloud_teacher
+    role: immutable_capability_baseline
     model_id: "Qwen/Qwen2.5-14B-Instruct-AWQ"
     serving_backend: vllm
     endpoint: "http://localhost:8000"
-    purpose: "G1 denominator, teacher trace generation, cloud correction."
+    gpu_group: [0, 1, 2, 3]
+    tensor_parallel_size: 4
+    purpose: "Frozen P0-A4 G1 denominator and cloud correction model; never tuned."
+
+  distill_teacher:
+    role: distillation_teacher
+    model_id: "Qwen/Qwen2.5-14B-Instruct"
+    serving_backend: vllm
+    endpoint: "http://localhost:8000"
+    gpu_group: [0, 1, 2, 3]
+    tensor_parallel_size: 4
+    training: bf16_lora_zero3
+    status: p0a4_training_pending
+    purpose: "Correctness-filtered train-only trace generation; never used as the formal denominator."
 
   edge_student:
-    role: low_edge_recovery_candidate
-    model_id: "deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B"
-    target_name: "DB4AI-Edge-P0A2-DeepSeek-1.5B-Q2"
-    quant_format: "Q2_K_S"
+    role: p0a4_distilled_edge_student
+    model_id: "Qwen/Qwen3-1.7B"
+    target_name: "DB4AI-Edge-P0A4-Qwen3-1.7B-Q3_K_M-Q8KV"
+    quant_format: "Q3_K_M"
     serving_backend: llama_cpp
-    status: recovery_in_progress_not_promoted
-    purpose: "Only active edge route. The recovered and requantized model must pass G1 and G3 before system integration."
+    status: distillation_not_started
+    purpose: "Shared distilled Student; must pass 96/170, Q3+Q8 rerun, memory and one official-full gate."
+
+  edge_fallback:
+    role: fallback_reselection_candidate
+    model_id: "Qwen/Qwen2.5-1.5B-Instruct"
+    target_name: "DB4AI-Edge-P0A3-Qwen2.5-1.5B-Q3_K_M"
+    quant_format: "Q3_K_M"
+    serving_backend: llama_cpp
+    status: standby_until_primary_rejection
+    purpose: "Runs only after Qwen3 Q3 is rejected by the frozen Dev or memory gate."
+
+  rejected_edge_baseline:
+    role: immutable_rejected_evidence
+    model_id: "deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B"
+    quant_format: "Q2_K_S"
+    status: rejected
+    purpose: "Evidence only: BF16 Dev Math 84.38%, Code 23.81%, NLP 17.19%; no further recovery training."
 
 training:
-  seed: 42
-  adapter_method: lora
+  seed: 202606
+  status: enabled_in_p0a4
+  protocol: "configs/p0a4_distillation.json"
+  formal_test_labels_allowed: false
+  teacher_parallelism: "4-GPU ZeRO-3"
+  student_adapter_policy: "shared LoRA merge; optional rank-8 then rank-4 Top-1 task adapters"
   output_root: "models"
 
 artifacts:
-  recovery_adapter_dir: "models/adapters/p0a2_deepseek_recovery"
-  recovery_merged_dir: "models/checkpoints/p0a2-deepseek-recovery-merged"
-  recovery_quantized_model: "models/quantized/p0a2-deepseek-recovery-q2_k_s.gguf"
-  quantized_model_dir: "models/quantized"
+  primary_f16: "models/quantized/qwen3-1.7b-f16.gguf"
+  primary_imatrix: "models/quantized/qwen3-1.7b-q3_k_m.imatrix"
+  primary_quantized: "models/quantized/qwen3-1.7b-q3_k_m.gguf"
+  fallback_f16: "models/quantized/qwen2.5-1.5b-f16.gguf"
+  fallback_imatrix: "models/quantized/qwen2.5-1.5b-q3_k_m.imatrix"
+  fallback_quantized: "models/quantized/qwen2.5-1.5b-q3_k_m.gguf"

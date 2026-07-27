@@ -1,0 +1,95 @@
+{
+  "config_version": "1.0",
+  "route": "P0-A4R train-only NLP rationale and executable Code remediation",
+  "seed": 20260723,
+  "policy": {
+    "feedback_source": "train_only_internal_validation",
+    "smoke96_item_feedback_used": false,
+    "selection170_feedback_used": false,
+    "formal_full_feedback_used": false,
+    "allow_final_eval_labels": false,
+    "student_identity": "v2-adapter-remediation-before-selection170"
+  },
+  "models": {
+    "teacher_url": "http://127.0.0.1:8000",
+    "nlp_teacher_model_id": "distill-teacher-v1",
+    "student_base": "models/checkpoints/p0a4/student-shared-v2-merged",
+    "student_base_audit": "reports/audit/gate_p0a4_student_shared_v2_merge.json"
+  },
+  "data": {
+    "nlp_source": "data/distill/p0a4_train.jsonl",
+    "nlp_trace": "data/distill/p0a4r_nlp_rationale_trace.jsonl",
+    "nlp_train": "data/distill/p0a4r_nlp_rationale_train.jsonl",
+    "nlp_internal_validation": "data/distill/p0a4r_nlp_internal_validation.jsonl",
+    "code_primary_source": "data/distill/p0a4_train.jsonl",
+    "code_internal_validation_source": "data/distill/mbpp_v23_dev_gate.jsonl",
+    "code_optional_sources": [
+      "data/distill/code_v30_validated_train.jsonl",
+      "data/distill/p0a4r_apps_verified_train.jsonl"
+    ],
+    "code_optional_source_hashes": {
+      "data/distill/code_v30_validated_train.jsonl": "757ef8babd598af12f58a75c732020e5f8ef2b623c6ca07fb3114b0bf32f6fad"
+    },
+    "code_train": "data/distill/p0a4r_code_train.jsonl",
+    "code_internal_validation": "data/distill/p0a4r_code_internal_validation.jsonl"
+  },
+  "nlp_rationale": {
+    "variants_per_group": 2,
+    "validation_groups": 64,
+    "min_train_groups": 400,
+    "min_accepted_variants_per_train_group": 1,
+    "min_rationale_chars": 12,
+    "max_rationale_chars": 320,
+    "max_new_tokens": 192,
+    "workers": 4,
+    "request_timeout_sec": 180,
+    "retry_count": 2,
+    "max_rejected_retry_rounds": 2,
+    "label_replay_per_group": 1
+  },
+  "code_data": {
+    "pilot_min_unique_train_groups": 280,
+    "promotion_min_unique_train_groups": 1000,
+    "min_internal_validation_groups": 40,
+    "max_train_groups": 2048,
+    "code_timeout_sec": 8,
+    "one_row_per_group": true,
+    "optional_sources_required_for_promotion": true
+  },
+  "training": {
+    "code_adapter": {
+      "rank": 8,
+      "alpha": 16,
+      "dropout": 0.05,
+      "learning_rate": 0.00003,
+      "epochs": 2,
+      "max_seq_length": 1536,
+      "gradient_accumulation_steps": 8,
+      "selection": "internal_executable_pass_rate"
+    },
+    "nlp_adapter": {
+      "rank": 8,
+      "alpha": 16,
+      "dropout": 0.05,
+      "learning_rate": 0.00003,
+      "epochs": 2,
+      "max_seq_length": 1024,
+      "gradient_accumulation_steps": 8,
+      "selection": "internal_choice_accuracy"
+    }
+  },
+  "selection": {
+    "require_net_improvement": 1,
+    "max_regressions": 2,
+    "generation_errors": 0,
+    "code_adapter_scale_candidates": [0.25, 0.5],
+    "publish_only_selected_checkpoint": true
+  },
+  "outputs": {
+    "code_adapter": "models/checkpoints/p0a4r/code-selected",
+    "nlp_adapter": "models/checkpoints/p0a4r/nlp-selected",
+    "router_dir": "models/adapters/p0a4r",
+    "router_manifest": "models/adapters/p0a4r/router_manifest.json",
+    "router_audit": "reports/audit/gate_p0a4r_adapter_router_prepare.json"
+  }
+}

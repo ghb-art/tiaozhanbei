@@ -1,0 +1,30 @@
+{
+  "protocol_version": "p0a4-official-full-1.0",
+  "created_by": "scripts/p0a4_protocol.py",
+  "immutable": true,
+  "dataset_counts": {
+    "gsm8k": 1319,
+    "humaneval": 164,
+    "cmmlu": 11582
+  },
+  "total_count": 13065,
+  "files": {
+    "gsm8k": {
+      "path": "data/splits/p0a4_official_full/gsm8k_test.txt",
+      "count": 1319,
+      "sha256": "9fe37582ab4a11297d31b547e82abfcf61ada48d92377ae5fca987e9a782b329"
+    },
+    "humaneval": {
+      "path": "data/splits/p0a4_official_full/humaneval_test.txt",
+      "count": 164,
+      "sha256": "02b13d6fabddc54be8e3e22499bdeaf3d9cb8efb82571582899c264972633943"
+    },
+    "cmmlu": {
+      "path": "data/splits/p0a4_official_full/cmmlu_test.txt",
+      "count": 11582,
+      "sha256": "e4047215612be2c88bec0df899ec7fb6af9c3d716bb92a4b4c4a5627b4872bb8"
+    }
+  },
+  "combined_ids_hash": "c5ac9b1b4438849ee0036a83e0e8fa13f88f103bbe757fb11a9b28ca2ca2b5a0",
+  "manifest_hash": "936e7d56902501012335a475ae395725984432aaedbf8e14b9941a1788d39e01"
+}

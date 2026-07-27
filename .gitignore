@@ -21,13 +21,18 @@ data/datasets/**
 !data/datasets/**/.gitkeep
 results/
 reports/final/
+reports/sealed/
+reports/runtime/
+reports/audit/**/*.jsonl
+reports/audit/**/*.samples.csv
 
 # Models and checkpoints
 models/pretrained/
 models/checkpoints/
 models/quantized/
-models/adapters/*/*
-!models/adapters/*/.gitkeep
+models/adapters/**
+!models/adapters/**/
+!models/adapters/**/.gitkeep
 models/adapters_gguf/
 *.pt
 *.pth

@@ -1,0 +1,62 @@
+{
+  "gate": "P0-edge-candidate-dev",
+  "check_version": "2.0",
+  "created_by": "scripts/evaluate_edge_candidate_dev.py",
+  "created_ts": "2026-07-22T11:00:22.205815+00:00",
+  "status": "passed",
+  "candidate_name": "edge-student-v1-q3",
+  "backend": "openai_compatible_http",
+  "endpoint": "http://127.0.0.1:18441",
+  "endpoint_model_id": "p0a4-edge-student",
+  "endpoint_model_id_map": {},
+  "endpoint_model_id_map_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+  "model": {
+    "path": "models/quantized/p0a4-qwen3-1.7b-q3_k_m.gguf",
+    "bytes": 939538464,
+    "sha256": "26621d1df1443c6b4885c140bc0148ec10dc86b363d36dfdfc39757b09dfef4c"
+  },
+  "validation_data": "data/distill/p0a4_smoke96.jsonl",
+  "validation_data_sha256": "59c3f07d78de88b017aa48988286c552072bbdbdc07a875bb117b4b1f41d3325",
+  "output_trace": "data/eval/p0a4_edge_student_smoke96.jsonl",
+  "output_trace_sha256": "e149fcf6c0c9b3b217c6064ebc1610e96555adf943942800bd91ad5fef68f9ec",
+  "sample_count": 96,
+  "dataset_counts": {
+    "cmmlu": 32,
+    "gsm8k": 32,
+    "humaneval": 32
+  },
+  "correct_counts": {
+    "cmmlu": 17,
+    "gsm8k": 23,
+    "humaneval": 12
+  },
+  "accuracy_by_dataset": {
+    "cmmlu": 0.53125,
+    "gsm8k": 0.71875,
+    "humaneval": 0.375
+  },
+  "macro_accuracy": 0.5416666666666666,
+  "min_accuracy_by_dataset": {},
+  "min_macro_accuracy": 0.0,
+  "threshold_gate_enabled": false,
+  "threshold_failures": {},
+  "generation_error_count": 0,
+  "failure_reasons": [],
+  "mean_latency_ms": 7342.774999468626,
+  "peak_gpu_memory_mb_decimal": 0.0,
+  "dtype": "bfloat16",
+  "max_input_length": 1024,
+  "max_new_tokens_by_dataset": {
+    "gsm8k": 512,
+    "humaneval": 512,
+    "cmmlu": 16
+  },
+  "close_reasoning_prefix": false,
+  "disable_thinking": false,
+  "kv_cache_type": "",
+  "request_extra_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+  "request_extra_map_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+  "formal_test_labels_used": false,
+  "errors": [],
+  "report_hash": "f87654b57b92f68b5e86d077e45dcf54c013555f954c8b5d636e91668aebdc4b"
+}

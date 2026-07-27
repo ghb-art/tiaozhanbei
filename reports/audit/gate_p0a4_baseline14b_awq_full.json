@@ -1,0 +1,54 @@
+{
+  "gate": "P0-A4-BASELINE-OFFICIAL-FULL",
+  "check_version": "1.0",
+  "created_by": "scripts/p0a4_merge_shards.py",
+  "created_ts": "2026-07-19T03:57:17.832647+00:00",
+  "status": "passed",
+  "role": "baseline",
+  "model_name": "Baseline-14B-AWQ",
+  "split_manifest": "data/splits/p0a4_official_full/manifest.json",
+  "split_manifest_hash": "72b18c95af618937ee172236e32c630e2dc5eb57089cd5e44c5f4b7fa2ac6159",
+  "input_shards": [
+    {
+      "path": "reports/sealed/p0a4/shards/p0a4_baseline_full_shard_0.jsonl",
+      "sha256": "1704f902539729703a1ae0c0b5a6b01694de8b6a20cda6703b22facdb8d488bb"
+    },
+    {
+      "path": "reports/sealed/p0a4/shards/p0a4_baseline_full_shard_1.jsonl",
+      "sha256": "6227698c91b37f416dce0a7396530712d36a944ae8d6f79e9f9c6101614a219c"
+    },
+    {
+      "path": "reports/sealed/p0a4/shards/p0a4_baseline_full_shard_2.jsonl",
+      "sha256": "1232853b3a5ad799aa5cd41fb094196c43db3cce7aaf56bbfccc73cb0d5836d3"
+    },
+    {
+      "path": "reports/sealed/p0a4/shards/p0a4_baseline_full_shard_3.jsonl",
+      "sha256": "87293c3182fa86f6f3076db62b89fb95cf81f7fa50aeffe64a54f572d5c2e3b2"
+    }
+  ],
+  "sealed_trace": "reports/sealed/p0a4/baseline14b_awq_full.jsonl",
+  "sealed_trace_hash": "e8ebd0c86f4800d18b9237fa8f85ff724287b2cf603017cf5024a5a907a42ab2",
+  "sample_count": 13065,
+  "dataset_counts": {
+    "gsm8k": 1319,
+    "humaneval": 164,
+    "cmmlu": 11582
+  },
+  "correct_counts": {
+    "gsm8k": 1210,
+    "humaneval": 105,
+    "cmmlu": 8794
+  },
+  "accuracy_by_dataset": {
+    "gsm8k": 0.9173616376042456,
+    "humaneval": 0.6402439024390244,
+    "cmmlu": 0.7592816439302366
+  },
+  "macro_accuracy": 0.7722957279911689,
+  "generation_error_count": 0,
+  "duplicate_sample_count": 0,
+  "missing_sample_count": 0,
+  "extra_sample_count": 0,
+  "item_level_feedback_allowed_for_training": false,
+  "report_hash": "f95408987d3b12bb92bf3fb47311c8909775d7ea1abebb21771e0ab688cc8e00"
+}

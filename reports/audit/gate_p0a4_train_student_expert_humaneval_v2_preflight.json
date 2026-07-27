@@ -1,0 +1,79 @@
+{
+  "gate": "P0-A4-LORA-TRAIN",
+  "check_version": "1.0",
+  "created_by": "model_compression/train_p0a4_lora.py",
+  "created_ts": "2026-07-23T02:43:29.914428+00:00",
+  "status": "dry_run_passed",
+  "role": "student_expert",
+  "task": "humaneval",
+  "candidate_index": 2,
+  "model_dir": "models/checkpoints/p0a4/student-shared-v2-merged",
+  "train_data": "data/distill/p0a4_teacher_verified.jsonl",
+  "train_data_hash": "52268ae1365b9292d93e1e1e93764c880a16c5a8cec1574080db25a10995a892",
+  "validation_data": "data/distill/p0a4_teacher_validation.jsonl",
+  "validation_data_hash": "e925350a9d04f02cba1e9b43dcf925213469fa49de84badb51fb8a4025d60406",
+  "train_rows": 233,
+  "source_train_counts": {
+    "cmmlu": 440,
+    "gsm8k": 1952,
+    "humaneval": 233
+  },
+  "source_unique_prompt_counts": {
+    "gsm8k": 1952,
+    "humaneval": 233,
+    "cmmlu": 440
+  },
+  "validation_rows": 32,
+  "train_counts": {
+    "humaneval": 233
+  },
+  "output_dir": "models/checkpoints/p0a4/student-expert-humaneval-v2",
+  "lora": {
+    "rank": 16,
+    "alpha": 32,
+    "dropout": 0.05,
+    "target_modules": [
+      "q_proj",
+      "k_proj",
+      "v_proj",
+      "o_proj",
+      "gate_proj",
+      "up_proj",
+      "down_proj"
+    ]
+  },
+  "optimization": {
+    "learning_rate": 0.0001,
+    "epochs": 3.0,
+    "max_upsample_factor": null,
+    "target_rows_by_task": null,
+    "max_seq_length": 1024,
+    "per_device_train_batch_size": 1,
+    "gradient_accumulation_steps": 16,
+    "max_steps": -1,
+    "optimizer": "adamw_torch",
+    "optimizer_placement": "gpu_ddp_replicated",
+    "parameter_placement": "gpu_ddp_replicated",
+    "deepspeed": "",
+    "deepspeed_config_hash": "",
+    "deepspeed_stage": 0,
+    "zero3_initialized_before_model_load": false,
+    "cpu_offload": false,
+    "gradient_checkpointing": {
+      "enabled": true,
+      "use_reentrant": false
+    },
+    "ddp_find_unused_parameters": false,
+    "load_best_model_in_trainer": false
+  },
+  "dependencies": {
+    "torch": "2.6.0+cu124",
+    "transformers": "4.51.3",
+    "accelerate": "1.14.0",
+    "deepspeed": "0.17.6",
+    "peft": "0.17.1"
+  },
+  "formal_test_reference_count": 0,
+  "errors": [],
+  "report_hash": "25905957554c8ba1544c9b772591b06498aa9332f04fd2f2e4d6a39d8e297623"
+}

@@ -1,0 +1,73 @@
+{
+  "gate": "P0-A4-LORA-TRAIN",
+  "check_version": "1.0",
+  "created_by": "model_compression/train_p0a4_lora.py",
+  "created_ts": "2026-07-22T05:15:18.573633+00:00",
+  "status": "dry_run_passed",
+  "role": "teacher",
+  "task": "shared",
+  "candidate_index": 1,
+  "model_dir": "models/pretrained/Qwen--Qwen2.5-14B-Instruct",
+  "train_data": "data/distill/p0a4_train.jsonl",
+  "train_data_hash": "faf545653761c346afb6ff7eaae804ffdb4ffe66429b642bd56398dd445e0388",
+  "validation_data": "data/distill/p0a4_teacher_validation.jsonl",
+  "validation_data_hash": "e925350a9d04f02cba1e9b43dcf925213469fa49de84badb51fb8a4025d60406",
+  "train_rows": 5952,
+  "source_train_counts": {
+    "gsm8k": 1984,
+    "humaneval": 876,
+    "cmmlu": 512
+  },
+  "source_unique_prompt_counts": {
+    "gsm8k": 1984,
+    "humaneval": 292,
+    "cmmlu": 512
+  },
+  "validation_rows": 96,
+  "train_counts": {
+    "gsm8k": 1984,
+    "cmmlu": 1984,
+    "humaneval": 1984
+  },
+  "output_dir": "models/checkpoints/p0a4/teacher-preflight",
+  "lora": {
+    "rank": 16,
+    "alpha": 32,
+    "dropout": 0.05,
+    "target_modules": [
+      "q_proj",
+      "k_proj",
+      "v_proj",
+      "o_proj",
+      "gate_proj",
+      "up_proj",
+      "down_proj"
+    ]
+  },
+  "optimization": {
+    "learning_rate": 0.0001,
+    "epochs": 2.0,
+    "max_upsample_factor": null,
+    "max_seq_length": 1024,
+    "per_device_train_batch_size": 1,
+    "gradient_accumulation_steps": 16,
+    "optimizer": "adamw_torch",
+    "optimizer_placement": "gpu_zero3_partitioned",
+    "parameter_placement": "gpu_zero3_partitioned",
+    "deepspeed": "configs/deepspeed_p0a4_zero3.json",
+    "deepspeed_config_hash": "9a1282678dc2436ca860db31204ab5ff4af72712314d474122d5807ae0fa1ae2",
+    "deepspeed_stage": 3,
+    "zero3_initialized_before_model_load": true,
+    "cpu_offload": false
+  },
+  "dependencies": {
+    "torch": "2.6.0+cu124",
+    "transformers": "4.51.3",
+    "accelerate": "1.14.0",
+    "deepspeed": "0.17.6",
+    "peft": "0.17.1"
+  },
+  "formal_test_reference_count": 0,
+  "errors": [],
+  "report_hash": "7a472945b79893582a057b46e73a6b61e7960f71ca9363b26147a544d18d1ca9"
+}

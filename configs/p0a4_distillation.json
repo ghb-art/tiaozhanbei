@@ -1,0 +1,250 @@
+{
+  "config_version": "1.1",
+  "route": "P0-A4 sealed full baseline, verified distillation and edge promotion",
+  "seed": 202606,
+  "models": {
+    "baseline": {
+      "name": "Baseline-14B-AWQ",
+      "model_id": "Qwen/Qwen2.5-14B-Instruct-AWQ",
+      "local_dir": "models/pretrained/Qwen--Qwen2.5-14B-Instruct-AWQ",
+      "gpu_group": [0, 1, 2, 3],
+      "tensor_parallel_size": 4,
+      "mutable": false
+    },
+    "distill_teacher": {
+      "name": "Distill-Teacher-14B",
+      "model_id": "Qwen/Qwen2.5-14B-Instruct",
+      "local_dir": "models/pretrained/Qwen--Qwen2.5-14B-Instruct",
+      "gpu_group": [0, 1, 2, 3],
+      "training": "bf16_lora_zero3",
+      "max_candidates": 3,
+      "inference_routing": {
+        "mode": "explicit_task_top1",
+        "fallback": "base",
+        "task_models": {
+          "gsm8k": "base",
+          "humaneval": "base",
+          "cmmlu": "adapter"
+        },
+        "evidence": "teacher_validation_96"
+      }
+    },
+    "student": {
+      "name": "Edge-Student",
+      "model_id": "Qwen/Qwen3-1.7B",
+      "local_dir": "models/pretrained/Qwen--Qwen3-1.7B",
+      "shared_merged_dir": "models/checkpoints/p0a4/student-shared-merged",
+      "quantized_gguf": "models/quantized/p0a4-qwen3-1.7b-q4_k_m.gguf",
+      "quantization_audit": "reports/audit/gate_p0a4_student_q4_prepare.json",
+      "quant_type": "Q4_K_M",
+      "quantization_selection_evidence": {
+        "smoke96_retention": "reports/audit/gate_p0a4_edge_student_v1_q4_k_m_smoke96_retention.json",
+        "memory_precheck": "reports/audit/gate_p0a4_edge_student_q4_k_m_memory_precheck_cache_off.json",
+        "reason": "Q3_K_M failed code retention; Q4_K_M passed smoke96 and the cache-off memory precheck"
+      },
+      "kv_cache_type": "q8_0",
+      "host_prompt_cache_mib": 0,
+      "cache_idle_slots": false,
+      "disable_thinking": true,
+      "max_selection_candidates": 2,
+      "candidate_v2": {
+        "merged_dir": "models/checkpoints/p0a4/student-shared-v2-merged",
+        "quantized_gguf": "models/quantized/p0a4-qwen3-1.7b-v2-q4_k_m.gguf",
+        "quantization_audit": "reports/audit/gate_p0a4_student_v2_q4_prepare.json",
+        "adapter_manifest": "models/adapters/p0a4/v2/router_manifest.json",
+        "selection_policy": "aggregate_smoke96_maximize_worst_task_then_macro",
+        "formal_full_feedback_used": false
+      }
+    }
+  },
+  "data": {
+    "source_train": "data/distill/p0a2_recovery_train.jsonl",
+    "train": "data/distill/p0a4_train.jsonl",
+    "teacher_validation": "data/distill/p0a4_teacher_validation.jsonl",
+    "smoke96": "data/distill/p0a4_smoke96.jsonl",
+    "selection170": "data/distill/p0a2_recovery_validation.jsonl",
+    "teacher_distill": "data/distill/p0a4_teacher_verified.jsonl",
+    "official_full_split_dir": "data/splits/p0a4_official_full",
+    "official_counts": {
+      "gsm8k": 1319,
+      "humaneval": 164,
+      "cmmlu": 11582
+    },
+    "nlp_train": {
+      "cmmlu_dev_dir": "data/datasets/cmmlu/data/dev",
+      "mmlu_auxiliary_dir": "data/datasets/mmlu/data/auxiliary_train",
+      "target_unique_prompts": 512,
+      "min_unique_prompts": 400
+    },
+    "min_unique_train_prompts_by_task": {
+      "gsm8k": 400,
+      "humaneval": 230,
+      "cmmlu": 400
+    },
+    "holdout_count_per_task": 32,
+    "formal_test_labels_allowed_for_training": false
+  },
+  "training": {
+    "teacher": {
+      "lora_rank": 16,
+      "lora_alpha": 32,
+      "lora_dropout": 0.05,
+      "max_seq_length": 1024,
+      "learning_rate": 0.0001,
+      "epochs": 2,
+      "candidate_overrides": {
+        "2": {
+          "lora_rank": 8,
+          "lora_alpha": 16,
+          "lora_dropout": 0.1,
+          "learning_rate": 0.00003,
+          "epochs": 1,
+          "max_upsample_factor": 2.0
+        },
+        "3": {
+          "lora_rank": 4,
+          "lora_alpha": 8,
+          "lora_dropout": 0.1,
+          "learning_rate": 0.00002,
+          "epochs": 1,
+          "max_upsample_factor": 1.5
+        }
+      }
+    },
+    "student_shared": {
+      "lora_rank": 16,
+      "lora_alpha": 32,
+      "lora_dropout": 0.05,
+      "max_seq_length": 1024,
+      "learning_rate": 0.0002,
+      "epochs": 3,
+      "max_upsample_factor": 2.0,
+      "min_unique_prompts_by_task": {
+        "gsm8k": 400,
+        "humaneval": 220,
+        "cmmlu": 400
+      },
+      "candidate_overrides": {
+        "2": {
+          "lora_rank": 24,
+          "lora_alpha": 48,
+          "learning_rate": 0.0001,
+          "epochs": 2,
+          "max_upsample_factor": 4.0,
+          "target_rows_by_task": {
+            "gsm8k": 466,
+            "humaneval": 932,
+            "cmmlu": 880
+          }
+        }
+      }
+    },
+    "student_expert": {
+      "enabled": true,
+      "tasks": ["gsm8k", "humaneval", "cmmlu"],
+      "routing": "top1_explicit_task_key",
+      "unknown_task_fallback": "shared",
+      "initial_rank": 8,
+      "fallback_rank": 4,
+      "lora_alpha": 16,
+      "lora_dropout": 0.05,
+      "rank_by_task": {
+        "gsm8k": 4,
+        "humaneval": 16,
+        "cmmlu": 12
+      },
+      "alpha_by_task": {
+        "gsm8k": 8,
+        "humaneval": 32,
+        "cmmlu": 24
+      },
+      "learning_rate_by_task": {
+        "gsm8k": 0.00005,
+        "humaneval": 0.0001,
+        "cmmlu": 0.00008
+      },
+      "epochs_by_task": {
+        "gsm8k": 1,
+        "humaneval": 3,
+        "cmmlu": 2
+      }
+    }
+  },
+  "evaluation": {
+    "prompt_style": "v15",
+    "max_new_tokens": {"gsm8k": 512, "humaneval": 512, "cmmlu": 16},
+    "official_num_shards": 4,
+    "humaneval_timeout_sec": 10,
+    "request_timeout_sec": 240
+  },
+  "gates": {
+    "teacher_distill": {
+      "min_selected_unique_by_task": {
+        "gsm8k": 400,
+        "humaneval": 230,
+        "cmmlu": 400
+      },
+      "min_accepted_unique_by_task": {
+        "gsm8k": 400,
+        "humaneval": 220,
+        "cmmlu": 400
+      },
+      "min_accept_rate_by_task": {
+        "gsm8k": 0.75,
+        "humaneval": 0.75,
+        "cmmlu": 0.75
+      }
+    },
+    "smoke96": {
+      "expected_counts": {"gsm8k": 32, "humaneval": 32, "cmmlu": 32},
+      "min_ratio_per_task": 0.75,
+      "min_capped_macro_ratio": 0.75,
+      "max_generation_errors": 0
+    },
+    "selection170": {
+      "expected_counts": {"gsm8k": 64, "humaneval": 42, "cmmlu": 64},
+      "min_ratio_per_task": 0.8,
+      "min_capped_macro_ratio": 0.8,
+      "max_generation_errors": 0,
+      "feedback": "aggregate_by_task_only",
+      "max_student_versions": 2
+    },
+    "v2_promotion": {
+      "min_ratio_per_task": 0.85,
+      "min_capped_macro_ratio": 0.85,
+      "allowed_routes": ["shared", "adapter_top1"],
+      "feedback": "smoke96_aggregate_only",
+      "full_test_feedback_used": false
+    },
+    "memory": {
+      "dev_peak_total_memory_mb_decimal": 1400,
+      "formal_peak_total_memory_mb_decimal": 1500,
+      "warmup_requests": 20,
+      "measure_requests": 100,
+      "context_length": 512,
+      "host_prompt_cache_mib": 0,
+      "cache_idle_slots": false,
+      "host_prompt_cache_policy": "disabled_optional_acceleration_state"
+    },
+    "official_full": {
+      "min_ratio_per_task": 0.8,
+      "min_capped_macro_ratio": 0.8,
+      "max_generation_errors": 0,
+      "student_attempts": 1,
+      "no_post_test_tuning": true
+    }
+  },
+  "artifacts": {
+    "protocol_audit": "reports/audit/gate_p0a4_protocol.json",
+    "baseline_sealed_trace": "reports/sealed/p0a4/baseline14b_awq_full.jsonl",
+    "baseline_audit": "reports/audit/gate_p0a4_baseline14b_awq_full.json",
+    "edge_service_audit": "reports/audit/gate_p0a4_edge_service.json",
+    "student_selection170_retention": "reports/audit/gate_p0a4_edge_student_v1_q4_k_m_selection170_retention.json",
+    "student_memory_audit": "reports/audit/gate_p0a4_edge_student_memory_dev.json",
+    "student_full_authorization_audit": "reports/audit/gate_p0a4_student_full_authorization.json",
+    "student_v2_route_audit": "reports/audit/gate_p0a4_student_v2_route_selection.json",
+    "formal_student_sealed_trace": "reports/sealed/p0a4/edge_student_full.jsonl",
+    "formal_retention_audit": "reports/audit/gate_p0a4_official_full_retention.json",
+    "trial_ledger": "reports/audit/p0a4_trial_ledger.json"
+  }
+}

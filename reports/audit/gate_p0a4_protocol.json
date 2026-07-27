@@ -1,0 +1,105 @@
+{
+  "gate": "P0-A4-PROTOCOL",
+  "check_version": "1.0",
+  "created_by": "scripts/p0a4_protocol.py",
+  "created_ts": "2026-07-22T13:39:36.027234+00:00",
+  "status": "passed",
+  "config": "configs/p0a4_distillation.json",
+  "config_hash": "d0e9f7c1ce5f8fdb101888aa0c82b9df4fc9ff7d60acdd81688d841226cb20ff",
+  "official_full": {
+    "protocol_version": "p0a4-official-full-1.0",
+    "created_by": "scripts/p0a4_protocol.py",
+    "immutable": true,
+    "dataset_counts": {
+      "gsm8k": 1319,
+      "humaneval": 164,
+      "cmmlu": 11582
+    },
+    "total_count": 13065,
+    "files": {
+      "gsm8k": {
+        "path": "data/splits/p0a4_official_full/gsm8k_test.txt",
+        "count": 1319,
+        "sha256": "9fe37582ab4a11297d31b547e82abfcf61ada48d92377ae5fca987e9a782b329"
+      },
+      "humaneval": {
+        "path": "data/splits/p0a4_official_full/humaneval_test.txt",
+        "count": 164,
+        "sha256": "02b13d6fabddc54be8e3e22499bdeaf3d9cb8efb82571582899c264972633943"
+      },
+      "cmmlu": {
+        "path": "data/splits/p0a4_official_full/cmmlu_test.txt",
+        "count": 11582,
+        "sha256": "e4047215612be2c88bec0df899ec7fb6af9c3d716bb92a4b4c4a5627b4872bb8"
+      }
+    },
+    "combined_ids_hash": "c5ac9b1b4438849ee0036a83e0e8fa13f88f103bbe757fb11a9b28ca2ca2b5a0",
+    "manifest_hash": "936e7d56902501012335a475ae395725984432aaedbf8e14b9941a1788d39e01"
+  },
+  "corpora": {
+    "counts": {
+      "train": {
+        "gsm8k": 1984,
+        "humaneval": 876,
+        "cmmlu": 512
+      },
+      "teacher_validation": {
+        "gsm8k": 32,
+        "humaneval": 32,
+        "cmmlu": 32
+      },
+      "smoke96": {
+        "gsm8k": 32,
+        "humaneval": 32,
+        "cmmlu": 32
+      },
+      "selection170": {
+        "cmmlu": 64,
+        "gsm8k": 64,
+        "humaneval": 42
+      }
+    },
+    "unique_train_prompt_counts": {
+      "gsm8k": 1984,
+      "humaneval": 292,
+      "cmmlu": 512
+    },
+    "min_unique_train_prompts_by_task": {
+      "gsm8k": 400,
+      "humaneval": 230,
+      "cmmlu": 400
+    },
+    "group_overlap_counts": {
+      "train__teacher_validation": 0,
+      "train__smoke96": 0,
+      "train__selection170": 0,
+      "teacher_validation__smoke96": 0,
+      "teacher_validation__selection170": 0,
+      "smoke96__selection170": 0
+    },
+    "files": {
+      "train": {
+        "path": "data/distill/p0a4_train.jsonl",
+        "sha256": "faf545653761c346afb6ff7eaae804ffdb4ffe66429b642bd56398dd445e0388"
+      },
+      "teacher_validation": {
+        "path": "data/distill/p0a4_teacher_validation.jsonl",
+        "sha256": "e925350a9d04f02cba1e9b43dcf925213469fa49de84badb51fb8a4025d60406"
+      },
+      "smoke96": {
+        "path": "data/distill/p0a4_smoke96.jsonl",
+        "sha256": "59c3f07d78de88b017aa48988286c552072bbdbdc07a875bb117b4b1f41d3325"
+      },
+      "selection170": {
+        "path": "data/distill/p0a2_recovery_validation.jsonl",
+        "sha256": "e5fd483e537173f7a2ddafc71a49310799d71f5bdcf37406499d8862d0c4b8c0"
+      }
+    }
+  },
+  "formal_test_reference_count_in_train": 0,
+  "formal_test_item_results_allowed_for_training": false,
+  "selection170_feedback": "aggregate_by_task_only",
+  "selection170_max_student_versions": 2,
+  "errors": [],
+  "report_hash": "d35080d64d0175be4d5b009e3a5d83d5eaa819066a4d9f883641175b75079f37"
+}

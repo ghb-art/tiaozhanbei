@@ -1,0 +1,4 @@
+# Training-only dependencies. Runtime/evaluation keeps using the existing environment.
+accelerate>=1.2,<2
+deepspeed>=0.16,<0.18
+peft>=0.14,<0.18

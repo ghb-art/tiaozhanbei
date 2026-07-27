@@ -1,0 +1,42 @@
+{
+  "gate": "P0-A4-STUDENT-V2-PROTOCOL",
+  "check_version": "1.0",
+  "status": "passed",
+  "created_by": "scripts/run_p0a4.sh:student_v2_preflight",
+  "created_ts": "2026-07-23T02:43:09.676165+00:00",
+  "feedback_source": "selection170_task_aggregates_only",
+  "selection170_ratios": {
+    "math_ratio": 0.90625,
+    "code_ratio": 0.75,
+    "nlp_ratio": 0.8043478260869565
+  },
+  "selection170_capped_macro_ratio": 0.8201992753623188,
+  "selection170_audit": "reports/audit/gate_p0a4_edge_student_v1_q4_k_m_selection170_retention.json",
+  "selection170_audit_hash": "a309d1302e951907bcd88c76ac703c79b6e2a22f5b395c4ab07b32079cabb420",
+  "full_test_feedback_used": false,
+  "formal_trace_read": false,
+  "v2_shared_settings": {
+    "lora_rank": 24,
+    "lora_alpha": 48,
+    "learning_rate": 0.0001,
+    "epochs": 2,
+    "max_upsample_factor": 4.0,
+    "target_rows_by_task": {
+      "gsm8k": 466,
+      "humaneval": 932,
+      "cmmlu": 880
+    }
+  },
+  "v2_promotion_gate": {
+    "min_ratio_per_task": 0.85,
+    "min_capped_macro_ratio": 0.85,
+    "allowed_routes": [
+      "shared",
+      "adapter_top1"
+    ],
+    "feedback": "smoke96_aggregate_only",
+    "full_test_feedback_used": false
+  },
+  "remaining_selection170_slots": 1,
+  "report_hash": "32f9fd8f934fb5b8838f52689489c1d9e514e4a32af97640c0c214219f3ea805"
+}

@@ -1,0 +1,50 @@
+{
+  "gate": "P0-A4-ADAPTER-ROUTER-PREPARE",
+  "check_version": "1.0",
+  "created_by": "scripts/prepare_p0a4_adapters.py",
+  "created_ts": "2026-07-23T03:08:35.508324+00:00",
+  "status": "passed",
+  "top1": true,
+  "unknown_task_fallback": "shared",
+  "manifest": "models/adapters/p0a4/v2/router_manifest.json",
+  "manifest_hash": "0f834b12057865563f166f52396881021d64302360c7ce21e8b81e5d6179a55f",
+  "base_model": "models/checkpoints/p0a4/student-shared-v2-merged",
+  "base_model_hash": "10e3295d14771088c12529228e639c520de9cdb59333dd30f1060a5e049585ff",
+  "base_model_audit": "reports/audit/gate_p0a4_student_shared_v2_merge.json",
+  "base_model_audit_hash": "bcd34716cbbaace0b9484c16d087866ec69b042edb9716b89bbccb6e876c5c44",
+  "commands": [
+    [
+      "/workspace/project_tiaozhanbei/tiaozhanbei/.venv/bin/python",
+      "/workspace/project_tiaozhanbei/tiaozhanbei/external/llama.cpp/convert_lora_to_gguf.py",
+      "/workspace/project_tiaozhanbei/tiaozhanbei/models/checkpoints/p0a4/student-expert-gsm8k-v2",
+      "--base",
+      "/workspace/project_tiaozhanbei/tiaozhanbei/models/checkpoints/p0a4/student-shared-v2-merged",
+      "--outfile",
+      "/workspace/project_tiaozhanbei/tiaozhanbei/models/adapters/p0a4/v2/gsm8k-rank-adapter-f16.gguf",
+      "--outtype",
+      "f16"
+    ],
+    [
+      "/workspace/project_tiaozhanbei/tiaozhanbei/.venv/bin/python",
+      "/workspace/project_tiaozhanbei/tiaozhanbei/external/llama.cpp/convert_lora_to_gguf.py",
+      "/workspace/project_tiaozhanbei/tiaozhanbei/models/checkpoints/p0a4/student-expert-humaneval-v2",
+      "--base",
+      "/workspace/project_tiaozhanbei/tiaozhanbei/models/checkpoints/p0a4/student-shared-v2-merged",
+      "--outfile",
+      "/workspace/project_tiaozhanbei/tiaozhanbei/models/adapters/p0a4/v2/humaneval-rank-adapter-f16.gguf",
+      "--outtype",
+      "f16"
+    ],
+    [
+      "/workspace/project_tiaozhanbei/tiaozhanbei/.venv/bin/python",
+      "/workspace/project_tiaozhanbei/tiaozhanbei/external/llama.cpp/convert_lora_to_gguf.py",
+      "/workspace/project_tiaozhanbei/tiaozhanbei/models/checkpoints/p0a4/student-expert-cmmlu-v2",
+      "--base",
+      "/workspace/project_tiaozhanbei/tiaozhanbei/models/checkpoints/p0a4/student-shared-v2-merged",
+      "--outfile",
+      "/workspace/project_tiaozhanbei/tiaozhanbei/models/adapters/p0a4/v2/cmmlu-rank-adapter-f16.gguf",
+      "--outtype",
+      "f16"
+    ]
+  ]
+}

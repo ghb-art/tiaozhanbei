@@ -1,0 +1,18 @@
+{
+  "gate": "P0-A4-STUDENT-FULL-AUTHORIZATION",
+  "check_version": "1.0",
+  "status": "passed",
+  "created_by": "scripts/run_p0a4.sh:student_full",
+  "created_ts": "2026-07-22T14:06:02.965632+00:00",
+  "authorization": "explicit_user_override",
+  "waived_prerequisites": [
+    "selection170",
+    "memory_20_plus_100"
+  ],
+  "selection170_audit": "reports/audit/gate_p0a4_edge_student_v1_q4_k_m_selection170_retention.json",
+  "selection170_audit_exists": false,
+  "memory_audit": "reports/audit/gate_p0a4_edge_student_memory_dev.json",
+  "memory_audit_exists": false,
+  "warning": "This invocation consumes the single official-full Student attempt.",
+  "report_hash": "bebf694cce2139ccd755c0e4d1ede39934ad650626f0e956d42cab291038945d"
+}

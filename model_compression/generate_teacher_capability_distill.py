@@ -15,6 +15,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
+from urllib.request import Request, urlopen
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -28,7 +29,6 @@ from evaluate_chapter2_capability import (  # noqa: E402
     extract_function_block,
     extract_gsm8k_prediction,
     extract_gsm8k_reference,
-    get_served_model,
     health_status,
     humaneval_candidate_sources,
     generate_text_endpoint,
@@ -117,6 +117,42 @@ def parse_comma_values(values: list[str]) -> list[str]:
     return parsed
 
 
+def parse_teacher_model_id_map(values: list[str]) -> dict[str, str]:
+    parsed: dict[str, str] = {}
+    for item in parse_comma_values(values):
+        if "=" not in item:
+            raise CapabilityDistillError(f"Invalid teacher model map entry: {item}")
+        dataset, model_id = item.split("=", 1)
+        dataset = dataset.strip()
+        model_id = model_id.strip()
+        if dataset not in SUPPORTED_DATASETS:
+            raise CapabilityDistillError(f"Unsupported teacher model map dataset: {dataset}")
+        if not model_id:
+            raise CapabilityDistillError(f"Empty Teacher model ID for dataset: {dataset}")
+        parsed[dataset] = model_id
+    return parsed
+
+
+def parse_dataset_threshold_map(
+    values: list[str],
+    value_type: type[int] | type[float],
+    name: str,
+) -> dict[str, int | float]:
+    parsed: dict[str, int | float] = {}
+    for item in parse_comma_values(values):
+        if "=" not in item:
+            raise CapabilityDistillError(f"Invalid {name} entry: {item}")
+        dataset, raw_value = item.split("=", 1)
+        dataset = dataset.strip()
+        if dataset not in SUPPORTED_DATASETS:
+            raise CapabilityDistillError(f"Unsupported dataset in {name}: {dataset}")
+        try:
+            parsed[dataset] = value_type(raw_value.strip())
+        except ValueError as exc:
+            raise CapabilityDistillError(f"Invalid {name} value: {item}") from exc
+    return parsed
+
+
 def input_key(row: dict[str, Any]) -> str:
     payload = {
         "dataset_key": str(row.get("dataset_key", "")),
@@ -187,21 +223,63 @@ def load_source_rows(paths: list[Path], datasets: set[str]) -> tuple[list[dict[s
     return rows, duplicate_count
 
 
-def probe_endpoints(urls: list[str], timeout_sec: float, fallback_model: str) -> list[dict[str, Any]]:
+def list_served_models(url: str, timeout_sec: float) -> list[str]:
+    try:
+        with urlopen(Request(f"{url.rstrip('/')}/v1/models", method="GET"), timeout=timeout_sec) as response:
+            value = json.loads(response.read().decode("utf-8", errors="replace"))
+    except Exception as exc:
+        raise CapabilityDistillError(f"Cannot list Teacher models at {url}: {exc}") from exc
+    model_ids = [
+        str(item.get("id", ""))
+        for item in value.get("data", [])
+        if isinstance(item, dict) and item.get("id")
+    ]
+    if not model_ids:
+        raise CapabilityDistillError(f"Teacher endpoint returned no model IDs: {url}")
+    return model_ids
+
+
+def probe_endpoints(
+    urls: list[str],
+    timeout_sec: float,
+    default_model: str,
+    model_id_map: dict[str, str] | None = None,
+) -> list[dict[str, Any]]:
+    model_id_map = dict(model_id_map or {})
+    required_models = {default_model, *model_id_map.values()}
     endpoints: list[dict[str, Any]] = []
     for url in urls:
         status = health_status(url, timeout_sec)
         if status != 200:
             raise CapabilityDistillError(f"Teacher endpoint health check failed: {url} status={status}")
+        available_models = list_served_models(url, timeout_sec)
+        missing = sorted(required_models - set(available_models))
+        if missing:
+            raise CapabilityDistillError(
+                f"Teacher endpoint {url} is missing routed models {missing}; available={available_models}"
+            )
         endpoints.append(
             {
                 "teacher_url": url,
                 "health_status": status,
-                "teacher_model_id": fallback_model,
-                "served_model_id": get_served_model(url, timeout_sec, fallback_model),
+                "teacher_model_id": default_model,
+                "served_model_id": default_model,
+                "served_model_id_map": model_id_map,
+                "available_model_ids": available_models,
             }
         )
     return endpoints
+
+
+def route_endpoint(endpoint: dict[str, Any], dataset_key: str) -> dict[str, Any]:
+    routed = dict(endpoint)
+    model_id_map = endpoint.get("served_model_id_map", {})
+    if not isinstance(model_id_map, dict):
+        raise CapabilityDistillError("Endpoint served_model_id_map must be an object")
+    model_id = str(model_id_map.get(dataset_key, endpoint["served_model_id"]))
+    routed["teacher_model_id"] = model_id
+    routed["served_model_id"] = model_id
+    return routed
 
 
 def call_teacher(
@@ -815,6 +893,12 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--partial-audit", default=None)
     parser.add_argument("--teacher-url", action="append", default=[])
     parser.add_argument("--teacher-model-id", default=DEFAULT_TEACHER_MODEL_ID)
+    parser.add_argument(
+        "--teacher-model-id-map",
+        action="append",
+        default=[],
+        help="Dataset-specific served Teacher IDs as dataset=model_id; repeat or comma-separate entries.",
+    )
     parser.add_argument("--trace-version", default=None)
     parser.add_argument("--rehearsal-version", default=None)
     parser.add_argument("--dataset", action="append", default=[])
@@ -827,6 +911,9 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--checkpoint-interval", type=int, default=25)
     parser.add_argument("--min-accept-rate", type=float, default=0.5)
     parser.add_argument("--min-group-coverage-rate", type=float, default=0.0)
+    parser.add_argument("--min-selected-count-map", action="append", default=[])
+    parser.add_argument("--min-accepted-count-map", action="append", default=[])
+    parser.add_argument("--min-accept-rate-map", action="append", default=[])
     parser.add_argument("--repair-from-trace", default=None)
     parser.add_argument("--repair-rounds", type=int, default=0)
     parser.add_argument("--retry-rejected-on-resume", action="store_true")
@@ -872,6 +959,26 @@ def main() -> int:
         print(f"Unsupported datasets: {', '.join(sorted(unknown))}", file=sys.stderr)
         return 2
     source_rows, duplicate_count = load_source_rows(input_paths, datasets)
+    try:
+        teacher_model_id_map = parse_teacher_model_id_map(args.teacher_model_id_map)
+        min_selected_counts = parse_dataset_threshold_map(
+            args.min_selected_count_map, int, "--min-selected-count-map"
+        )
+        min_accepted_counts = parse_dataset_threshold_map(
+            args.min_accepted_count_map, int, "--min-accepted-count-map"
+        )
+        min_accept_rates = parse_dataset_threshold_map(
+            args.min_accept_rate_map, float, "--min-accept-rate-map"
+        )
+    except CapabilityDistillError as exc:
+        print(str(exc), file=sys.stderr)
+        return 2
+    if (
+        any(int(value) < 0 for value in (*min_selected_counts.values(), *min_accepted_counts.values()))
+        or any(not 0 <= float(value) <= 1 for value in min_accept_rates.values())
+    ):
+        print("Per-task count/rate thresholds are invalid.", file=sys.stderr)
+        return 2
     source_by_key = {str(row["teacher_distill_input_key"]): row for row in source_rows}
     repair_mode = bool(args.repair_from_trace)
     if repair_mode and datasets != {"humaneval"}:
@@ -898,10 +1005,16 @@ def main() -> int:
                 "health_status": None,
                 "teacher_model_id": args.teacher_model_id,
                 "served_model_id": args.teacher_model_id,
+                "served_model_id_map": teacher_model_id_map,
             }
         ]
     else:
-        endpoints = probe_endpoints(teacher_urls, args.timeout_sec, args.teacher_model_id)
+        endpoints = probe_endpoints(
+            teacher_urls,
+            args.timeout_sec,
+            args.teacher_model_id,
+            teacher_model_id_map,
+        )
 
     existing_by_key: dict[str, dict[str, Any]] = {}
     retry_seed_by_key: dict[str, dict[str, Any]] = {}
@@ -909,11 +1022,16 @@ def main() -> int:
         for trace in read_jsonl(trace_path):
             key = str(trace.get("input_key", ""))
             source_row = source_by_key.get(key)
+            expected_teacher_model_id = (
+                teacher_model_id_map.get(str(source_row.get("dataset_key", "")), args.teacher_model_id)
+                if source_row is not None
+                else args.teacher_model_id
+            )
             if (
                 source_row is not None
                 and trace.get("input_row_hash") == source_row.get("teacher_distill_input_row_hash")
                 and trace.get("dry_run") == bool(args.dry_run)
-                and trace.get("teacher_model_id") == args.teacher_model_id
+                and trace.get("teacher_model_id") == expected_teacher_model_id
                 and trace.get("verifier_version") == verifier_version(str(source_row["dataset_key"]))
             ):
                 if args.retry_rejected_on_resume and trace.get("accepted_for_training") is not True:
@@ -939,6 +1057,7 @@ def main() -> int:
                 "health_status": None,
                 "teacher_model_id": str(trace.get("teacher_model_id", args.teacher_model_id)),
                 "served_model_id": str(trace.get("served_model_id", args.teacher_model_id)),
+                "served_model_id_map": {},
             }
         endpoints = [endpoint_by_url[url] for url in sorted(endpoint_by_url)]
     created_ts = datetime.now(timezone.utc).isoformat()
@@ -947,7 +1066,9 @@ def main() -> int:
     completed = 0
 
     def generate_one(index: int, source_row: dict[str, Any]) -> dict[str, Any]:
-        endpoint = endpoints[index % len(endpoints)]
+        endpoint = route_endpoint(
+            endpoints[index % len(endpoints)], str(source_row["dataset_key"])
+        )
         if repair_mode:
             key = str(source_row["teacher_distill_input_key"])
             parent_trace = retry_seed_by_key.get(key, repair_parent_by_key[key])
@@ -977,7 +1098,10 @@ def main() -> int:
             for repair_offset in range(args.repair_rounds):
                 if accepted:
                     break
-                final_endpoint = endpoints[(index + repair_offset) % len(endpoints)]
+                final_endpoint = route_endpoint(
+                    endpoints[(index + repair_offset) % len(endpoints)],
+                    str(source_row["dataset_key"]),
+                )
                 repair_messages = build_repair_messages(
                     source_row,
                     response,
@@ -1074,8 +1198,50 @@ def main() -> int:
     def current_traces() -> list[dict[str, Any]]:
         return [trace_by_key[row["teacher_distill_input_key"]] for row in source_rows if row["teacher_distill_input_key"] in trace_by_key]
 
+    def task_gate_snapshot(traces: list[dict[str, Any]]) -> dict[str, Any]:
+        selected_counts = Counter(str(row["dataset_key"]) for row in source_rows)
+        accepted_counts = Counter(
+            str(trace["dataset_key"])
+            for trace in traces
+            if trace.get("accepted_for_training") is True
+        )
+        accept_rates = {
+            task: accepted_counts[task] / selected_counts[task] if selected_counts[task] else 0.0
+            for task in sorted(datasets)
+        }
+        failures: dict[str, dict[str, dict[str, int | float]]] = {}
+        for task in sorted(datasets):
+            task_failures: dict[str, dict[str, int | float]] = {}
+            if selected_counts[task] < int(min_selected_counts.get(task, 0)):
+                task_failures["selected_unique_count"] = {
+                    "actual": selected_counts[task],
+                    "required": int(min_selected_counts[task]),
+                }
+            if accepted_counts[task] < int(min_accepted_counts.get(task, 0)):
+                task_failures["accepted_unique_count"] = {
+                    "actual": accepted_counts[task],
+                    "required": int(min_accepted_counts[task]),
+                }
+            if accept_rates[task] < float(min_accept_rates.get(task, 0.0)):
+                task_failures["accept_rate"] = {
+                    "actual": accept_rates[task],
+                    "required": float(min_accept_rates[task]),
+                }
+            if task_failures:
+                failures[task] = task_failures
+        return {
+            "selected_unique_prompt_counts": dict(sorted(selected_counts.items())),
+            "accepted_unique_prompt_counts": dict(sorted(accepted_counts.items())),
+            "accept_rate_by_dataset": accept_rates,
+            "min_selected_count_by_dataset": dict(sorted(min_selected_counts.items())),
+            "min_accepted_count_by_dataset": dict(sorted(min_accepted_counts.items())),
+            "min_accept_rate_by_dataset": dict(sorted(min_accept_rates.items())),
+            "task_gate_failures": failures,
+        }
+
     def write_outputs(target_audit: Path, status: str, is_partial: bool) -> dict[str, Any]:
         traces = current_traces()
+        task_gate = task_gate_snapshot(traces)
         distill_rows = [
             build_distill_row(
                 source_by_key[str(trace["input_key"])],
@@ -1143,6 +1309,10 @@ def main() -> int:
             "allow_final_eval_labels": False,
             "final_test_overlap_count": 0,
             "teacher_model_id": args.teacher_model_id,
+            "teacher_model_id_map": teacher_model_id_map,
+            "teacher_model_id_map_hash": sha256_text(
+                json.dumps(teacher_model_id_map, ensure_ascii=False, sort_keys=True)
+            ),
             "trace_version_override": args.trace_version,
             "rehearsal_version_override": args.rehearsal_version,
             "teacher_endpoints": endpoints,
@@ -1175,6 +1345,7 @@ def main() -> int:
             "audit_only": bool(args.audit_only),
             "trace_dataset_counts": dict(sorted(trace_counts.items())),
             "accepted_dataset_counts": dict(sorted(accepted_counts.items())),
+            **task_gate,
             "rejection_counts": dict(sorted(rejection_counts.items())),
             "endpoint_counts": dict(sorted(endpoint_counts.items())),
             "workers": args.workers,
@@ -1262,10 +1433,12 @@ def main() -> int:
         if trace.get("accepted_for_training") is True
     }
     group_coverage_rate = len(accepted_groups) / len(selected_groups) if selected_groups else 0.0
+    task_gate_failures = task_gate_snapshot(traces)["task_gate_failures"]
     final_status = (
         "passed"
         if not errors
         and len(traces) == len(source_rows)
+        and not task_gate_failures
         and (
             args.dry_run
             or (

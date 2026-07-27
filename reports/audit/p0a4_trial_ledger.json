@@ -1,0 +1,36 @@
+{
+  "ledger_version": "1.0",
+  "created_by": "scripts/p0a4_trials.py",
+  "trials": [
+    {
+      "phase": "baseline_full",
+      "version": "baseline14b-awq",
+      "status": "completed",
+      "reserved_ts": "2026-07-19T02:53:58.093591+00:00",
+      "completed_ts": "2026-07-19T03:57:17.955212+00:00",
+      "audit_path": "reports/audit/gate_p0a4_baseline14b_awq_full.json",
+      "audit_hash": "a7196d0939ea4e84d6b4a2205042bb97905f54ff894400443fb5632ef18ca580"
+    },
+    {
+      "phase": "selection170",
+      "version": "v1-q4_k_m",
+      "status": "failed",
+      "reserved_ts": "2026-07-22T13:44:34.830201+00:00",
+      "last_resume_ts": "2026-07-23T02:23:28.368284+00:00",
+      "completed_ts": "2026-07-23T02:24:30.984843+00:00",
+      "audit_path": "reports/audit/gate_p0a4_edge_student_v1_q4_k_m_selection170_retention.json",
+      "audit_hash": "a309d1302e951907bcd88c76ac703c79b6e2a22f5b395c4ab07b32079cabb420"
+    },
+    {
+      "phase": "official_full_student",
+      "version": "v1-q4_k_m",
+      "status": "completed",
+      "reserved_ts": "2026-07-22T13:46:20.318705+00:00",
+      "last_resume_ts": "2026-07-22T14:06:03.045797+00:00",
+      "completed_ts": "2026-07-22T14:22:46.357253+00:00",
+      "audit_path": "reports/audit/gate_p0a4_official_full_retention.json",
+      "audit_hash": "d2010a689f7cfc9216e9ad2803b9d7ae56f0ce36ded8bc0350c7d4eca838c063"
+    }
+  ],
+  "updated_ts": "2026-07-23T02:24:30.984965+00:00"
+}

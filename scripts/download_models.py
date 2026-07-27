@@ -23,9 +23,19 @@ MODEL_SPECS = [
         "local_name": "Qwen--Qwen2.5-14B-Instruct-AWQ",
     },
     {
-        "role": "edge_student",
-        "repo_id": "deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B",
-        "local_name": "deepseek-ai--DeepSeek-R1-Distill-Qwen-1.5B",
+        "role": "distill_teacher_base",
+        "repo_id": "Qwen/Qwen2.5-14B-Instruct",
+        "local_name": "Qwen--Qwen2.5-14B-Instruct",
+    },
+    {
+        "role": "primary_edge_candidate",
+        "repo_id": "Qwen/Qwen3-1.7B",
+        "local_name": "Qwen--Qwen3-1.7B",
+    },
+    {
+        "role": "fallback_edge_candidate",
+        "repo_id": "Qwen/Qwen2.5-1.5B-Instruct",
+        "local_name": "Qwen--Qwen2.5-1.5B-Instruct",
     },
 ]
 

@@ -1,0 +1,39 @@
+{
+  "gate": "G0-imatrix-calibration",
+  "check_version": "1.0",
+  "created_by": "scripts/build_imatrix_calibration.py",
+  "created_ts": "2026-07-23T03:08:47.650003+00:00",
+  "status": "passed",
+  "sources": {
+    "data/distill/p0a4_teacher_verified.jsonl": "52268ae1365b9292d93e1e1e93764c880a16c5a8cec1574080db25a10995a892"
+  },
+  "source_counts": {
+    "data/distill/p0a4_teacher_verified.jsonl": 384
+  },
+  "stratify_key": "dataset_key",
+  "requested_strata": [
+    "gsm8k",
+    "humaneval",
+    "cmmlu"
+  ],
+  "rows_per_stratum": 128,
+  "stratum_counts_by_source": {
+    "data/distill/p0a4_teacher_verified.jsonl": {
+      "gsm8k": 128,
+      "humaneval": 128,
+      "cmmlu": 128
+    }
+  },
+  "selected_stratum_counts": {
+    "gsm8k": 128,
+    "humaneval": 128,
+    "cmmlu": 128
+  },
+  "selected_text_count": 384,
+  "formal_test_reference_count": 0,
+  "seed": 202606,
+  "output": "data/distill/p0a4_imatrix_calibration_v2.txt",
+  "output_hash": "3519996d7410e9b572dab23bd6e745cbfe149df3075b493f496669c6dde67ca5",
+  "output_bytes": 292656,
+  "errors": []
+}

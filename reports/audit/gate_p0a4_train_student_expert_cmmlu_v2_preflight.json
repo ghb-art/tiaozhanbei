@@ -1,0 +1,79 @@
+{
+  "gate": "P0-A4-LORA-TRAIN",
+  "check_version": "1.0",
+  "created_by": "model_compression/train_p0a4_lora.py",
+  "created_ts": "2026-07-23T02:43:37.134414+00:00",
+  "status": "dry_run_passed",
+  "role": "student_expert",
+  "task": "cmmlu",
+  "candidate_index": 2,
+  "model_dir": "models/checkpoints/p0a4/student-shared-v2-merged",
+  "train_data": "data/distill/p0a4_teacher_verified.jsonl",
+  "train_data_hash": "52268ae1365b9292d93e1e1e93764c880a16c5a8cec1574080db25a10995a892",
+  "validation_data": "data/distill/p0a4_teacher_validation.jsonl",
+  "validation_data_hash": "e925350a9d04f02cba1e9b43dcf925213469fa49de84badb51fb8a4025d60406",
+  "train_rows": 440,
+  "source_train_counts": {
+    "cmmlu": 440,
+    "gsm8k": 1952,
+    "humaneval": 233
+  },
+  "source_unique_prompt_counts": {
+    "gsm8k": 1952,
+    "humaneval": 233,
+    "cmmlu": 440
+  },
+  "validation_rows": 32,
+  "train_counts": {
+    "cmmlu": 440
+  },
+  "output_dir": "models/checkpoints/p0a4/student-expert-cmmlu-v2",
+  "lora": {
+    "rank": 12,
+    "alpha": 24,
+    "dropout": 0.05,
+    "target_modules": [
+      "q_proj",
+      "k_proj",
+      "v_proj",
+      "o_proj",
+      "gate_proj",
+      "up_proj",
+      "down_proj"
+    ]
+  },
+  "optimization": {
+    "learning_rate": 8e-05,
+    "epochs": 2.0,
+    "max_upsample_factor": null,
+    "target_rows_by_task": null,
+    "max_seq_length": 1024,
+    "per_device_train_batch_size": 1,
+    "gradient_accumulation_steps": 16,
+    "max_steps": -1,
+    "optimizer": "adamw_torch",
+    "optimizer_placement": "gpu_ddp_replicated",
+    "parameter_placement": "gpu_ddp_replicated",
+    "deepspeed": "",
+    "deepspeed_config_hash": "",
+    "deepspeed_stage": 0,
+    "zero3_initialized_before_model_load": false,
+    "cpu_offload": false,
+    "gradient_checkpointing": {
+      "enabled": true,
+      "use_reentrant": false
+    },
+    "ddp_find_unused_parameters": false,
+    "load_best_model_in_trainer": false
+  },
+  "dependencies": {
+    "torch": "2.6.0+cu124",
+    "transformers": "4.51.3",
+    "accelerate": "1.14.0",
+    "deepspeed": "0.17.6",
+    "peft": "0.17.1"
+  },
+  "formal_test_reference_count": 0,
+  "errors": [],
+  "report_hash": "27c9ca7855a898e740ca7eb6515fad78a597c0ff0b2292c30acae6765fb3aaa1"
+}

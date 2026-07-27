@@ -1,0 +1,75 @@
+{
+  "gate": "P0-A4-LORA-TRAIN",
+  "check_version": "1.0",
+  "created_by": "model_compression/train_p0a4_lora.py",
+  "created_ts": "2026-07-20T07:35:27.057371+00:00",
+  "status": "passed",
+  "role": "teacher",
+  "task": "shared",
+  "candidate_index": 1,
+  "model_dir": "models/pretrained/Qwen--Qwen2.5-14B-Instruct",
+  "train_data": "data/distill/p0a4_train.jsonl",
+  "train_data_hash": "d3e8b8ef4f6abb36aa8196755ea740fd64d7921895f32753fd4caa5f76372e18",
+  "validation_data": "data/distill/p0a4_teacher_validation.jsonl",
+  "validation_data_hash": "e925350a9d04f02cba1e9b43dcf925213469fa49de84badb51fb8a4025d60406",
+  "train_rows": 12288,
+  "validation_rows": 96,
+  "train_counts": {
+    "humaneval": 4096,
+    "gsm8k": 4096,
+    "cmmlu": 4096
+  },
+  "output_dir": "models/checkpoints/p0a4/teacher-v1",
+  "lora": {
+    "rank": 16,
+    "alpha": 32,
+    "dropout": 0.05,
+    "target_modules": [
+      "q_proj",
+      "k_proj",
+      "v_proj",
+      "o_proj",
+      "gate_proj",
+      "up_proj",
+      "down_proj"
+    ]
+  },
+  "optimization": {
+    "learning_rate": 0.0001,
+    "epochs": 2.0,
+    "max_seq_length": 1024,
+    "per_device_train_batch_size": 1,
+    "gradient_accumulation_steps": 16,
+    "optimizer": "adamw_torch",
+    "optimizer_placement": "gpu_zero3_partitioned",
+    "parameter_placement": "gpu_zero3_partitioned",
+    "deepspeed": "configs/deepspeed_p0a4_zero3.json",
+    "deepspeed_config_hash": "9a1282678dc2436ca860db31204ab5ff4af72712314d474122d5807ae0fa1ae2",
+    "deepspeed_stage": 3,
+    "zero3_initialized_before_model_load": true,
+    "cpu_offload": false
+  },
+  "dependencies": {
+    "torch": "2.6.0+cu124",
+    "transformers": "4.51.3",
+    "accelerate": "1.14.0",
+    "deepspeed": "0.17.6",
+    "peft": "0.17.1"
+  },
+  "formal_test_reference_count": 0,
+  "errors": [],
+  "metrics": {
+    "train_runtime": 44134.5988,
+    "train_samples_per_second": 0.557,
+    "train_steps_per_second": 0.009,
+    "total_flos": 1107453636247552.0,
+    "train_loss": 0.06125978946996232,
+    "epoch": 2.0,
+    "eval_loss": 0.2713102400302887,
+    "eval_runtime": 88.2295,
+    "eval_samples_per_second": 1.088,
+    "eval_steps_per_second": 0.272
+  },
+  "trainable_parameters": 36962304,
+  "report_hash": "5d3bed2858ac4f7303d5fa4df160954dc221f8b0f72329f3b8d21a8853183e2d"
+}

@@ -1,0 +1,13 @@
+{
+  "gate": "P0-A4R-NLP-FREEZE",
+  "check_version": "1.0",
+  "created_by": "scripts/freeze_p0a4r_nlp.py",
+  "created_ts": "2026-07-23T06:47:44.455039+00:00",
+  "status": "passed",
+  "manifest": "models/adapters/p0a4r/frozen_nlp_manifest.json",
+  "manifest_sha256": "dc099991996c3be44c9f227d8230fc13c5d2875d6b88f0c0265945bd110186b2",
+  "base_compatibility": "v2_only",
+  "v1_deployment": "shared_model_no_nlp_adapter",
+  "formal_test_reference_count": 0,
+  "report_hash": "fae811ecb06e04070ffe21fb4bcebe78a9fffd87c30d885a1fa5cd3a98a09c14"
+}

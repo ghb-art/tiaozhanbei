@@ -1,0 +1,54 @@
+{
+  "gate": "P0-A4-STUDENT-OFFICIAL-FULL",
+  "check_version": "1.0",
+  "created_by": "scripts/p0a4_merge_shards.py",
+  "created_ts": "2026-07-22T14:22:45.851717+00:00",
+  "status": "passed",
+  "role": "student",
+  "model_name": "Edge-Student-v1-shared-Q4_K_M-Q8KV-explicit-user-override-skip-selection170-and-memory",
+  "split_manifest": "data/splits/p0a4_official_full/manifest.json",
+  "split_manifest_hash": "72b18c95af618937ee172236e32c630e2dc5eb57089cd5e44c5f4b7fa2ac6159",
+  "input_shards": [
+    {
+      "path": "reports/sealed/p0a4/shards/p0a4_student_q4_k_m_full_shard_0.jsonl",
+      "sha256": "4edc1ae744a06911c3ea7741c03bfa08db0385de5a4a41ee71fad16ecddb7536"
+    },
+    {
+      "path": "reports/sealed/p0a4/shards/p0a4_student_q4_k_m_full_shard_1.jsonl",
+      "sha256": "cf4197ba021c7b2e584075c5a452bdc73b3673d065e572888d290847af1495f7"
+    },
+    {
+      "path": "reports/sealed/p0a4/shards/p0a4_student_q4_k_m_full_shard_2.jsonl",
+      "sha256": "ea28e2fd3c9888b07cc19b590945c08c7ce4f05729627ab7400b015fa8674f50"
+    },
+    {
+      "path": "reports/sealed/p0a4/shards/p0a4_student_q4_k_m_full_shard_3.jsonl",
+      "sha256": "bb32e80d90c3af46c787abc831ff05db83c2678180610afb2788a393b543bb38"
+    }
+  ],
+  "sealed_trace": "reports/sealed/p0a4/edge_student_full.jsonl",
+  "sealed_trace_hash": "18c6431ec35c5a009661faad25a865b251b04bd9ce6ecc72846744fa0ba68f29",
+  "sample_count": 13065,
+  "dataset_counts": {
+    "gsm8k": 1319,
+    "humaneval": 164,
+    "cmmlu": 11582
+  },
+  "correct_counts": {
+    "gsm8k": 994,
+    "humaneval": 72,
+    "cmmlu": 6213
+  },
+  "accuracy_by_dataset": {
+    "gsm8k": 0.7536012130401819,
+    "humaneval": 0.43902439024390244,
+    "cmmlu": 0.5364358487307892
+  },
+  "macro_accuracy": 0.5763538173382912,
+  "generation_error_count": 0,
+  "duplicate_sample_count": 0,
+  "missing_sample_count": 0,
+  "extra_sample_count": 0,
+  "item_level_feedback_allowed_for_training": false,
+  "report_hash": "3cf1b0eae18ed5b337cd09196245027a60a909f134d474f5a2048565492af03c"
+}

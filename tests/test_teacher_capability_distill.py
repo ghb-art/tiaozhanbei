@@ -7,6 +7,9 @@ from model_compression.generate_teacher_capability_distill import (
     CODE_VERIFIER_VERSION,
     CONTRACT_CLARIFICATIONS,
     build_repair_messages,
+    parse_dataset_threshold_map,
+    parse_teacher_model_id_map,
+    route_endpoint,
     run_code_equivalence,
     safe_code_ast,
     validate_code_row,
@@ -15,6 +18,24 @@ from scripts.evaluate_chapter2_capability import build_messages
 
 
 class TeacherCapabilityDistillTests(unittest.TestCase):
+    def test_per_task_distill_threshold_map(self) -> None:
+        parsed = parse_dataset_threshold_map(
+            ["gsm8k=400,humaneval=220", "cmmlu=400"], int, "counts"
+        )
+        self.assertEqual(parsed, {"gsm8k": 400, "humaneval": 220, "cmmlu": 400})
+
+    def test_teacher_model_route_uses_adapter_only_for_configured_task(self) -> None:
+        model_map = parse_teacher_model_id_map(["cmmlu=teacher-v1"])
+        endpoint = {
+            "teacher_url": "http://localhost:8000",
+            "teacher_model_id": "base",
+            "served_model_id": "base",
+            "served_model_id_map": model_map,
+        }
+
+        self.assertEqual(route_endpoint(endpoint, "humaneval")["served_model_id"], "base")
+        self.assertEqual(route_endpoint(endpoint, "cmmlu")["served_model_id"], "teacher-v1")
+
     def test_code_verifier_contract_version(self) -> None:
         self.assertEqual(CODE_VERIFIER_VERSION, "1.2")
         self.assertIn("sorted and unique", CONTRACT_CLARIFICATIONS["compress_ranges"])

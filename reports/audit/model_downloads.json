@@ -47,34 +47,116 @@
     ]
   },
   {
-    "role": "edge_student",
-    "repo_id": "deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B",
-    "local_dir": "models/pretrained/deepseek-ai--DeepSeek-R1-Distill-Qwen-1.5B",
-    "local_status": "audited_existing",
-    "file_count": 9,
-    "bytes": 3562046103,
+    "role": "distill_teacher_base",
+    "repo_id": "Qwen/Qwen2.5-14B-Instruct",
+    "local_dir": "models/pretrained/Qwen--Qwen2.5-14B-Instruct",
+    "local_status": "downloaded",
+    "file_count": 18,
+    "bytes": 29551688871,
     "key_files": [
       {
         "path": "config.json",
-        "bytes": 679,
-        "sha256": "37bd455e9679d2959536270fed49d25cc7c290a64f6e52abb97c71345a9cee41"
+        "bytes": 663,
+        "sha256": "0f2085dbbe2ee251bd6a6a0797d84a6ce34436044d629aa3cba793b43d311a9e"
       },
       {
         "path": "generation_config.json",
-        "bytes": 181,
-        "sha256": "72cbec1015da9ed03ad025483005cbf6481403abf947adfd54e504d1a66a2126"
+        "bytes": 242,
+        "sha256": "ea35dfb6fc5051b01114f9b995820d55dab01ed33ee490f6378b442af82c09f9"
+      },
+      {
+        "path": "model.safetensors.index.json",
+        "bytes": 47472,
+        "sha256": "46627f7a9e851d9cede6a7a4c49999082148ced9c22d2b9cfaaa5ba8b65dc68f"
       },
       {
         "path": "tokenizer_config.json",
-        "bytes": 3071,
-        "sha256": "8ac8c85fb242563c2260baec0909debd69d718af6a0b3d90e6cab62b4d341cd5"
+        "bytes": 7305,
+        "sha256": "5b5d4f65d0acd3b2d56a35b56d374a36cbc1c8fa5cf3b3febbbfabf22f359583"
       }
     ],
     "weight_files": [
       {
-        "path": "model.safetensors",
-        "bytes": 3554214621,
-        "sha256": "58858233513d76b8703e72eed6ce16807b523328188e13329257fb9594462945"
+        "path": "model-00001-of-00008.safetensors",
+        "bytes": 3885154816,
+        "sha256": "b477be7572f0ab3ae3cbba38d508cc33e70600b2045669c4ad848051c3432094"
+      },
+      {
+        "path": "model-00002-of-00008.safetensors",
+        "bytes": 3995327992,
+        "sha256": "eb356aacae443e30f52712b1e98fadf206976365e2f5ee886321b0bb38c7cea8"
+      },
+      {
+        "path": "model-00003-of-00008.safetensors",
+        "bytes": 3995328080,
+        "sha256": "cee9dbdf738ce61adb21c70ad5c5585747caaab6457c9ffc3bfa20d73127c2c6"
+      },
+      {
+        "path": "model-00004-of-00008.safetensors",
+        "bytes": 3995338432,
+        "sha256": "b1201a6edcac8ef96a37040524fe37a5a84e446513ed40491e764a37302385fa"
+      },
+      {
+        "path": "model-00005-of-00008.safetensors",
+        "bytes": 3979624824,
+        "sha256": "fbbda3cdee31895d0c57d617449af5579d219df34f3d63f7a23acbfe7fb0a647"
+      },
+      {
+        "path": "model-00006-of-00008.safetensors",
+        "bytes": 3995328080,
+        "sha256": "f7ac652aa101717c97cfeccf5109985cca5b04529b57d3f4d2ec7a802266296b"
+      },
+      {
+        "path": "model-00007-of-00008.safetensors",
+        "bytes": 3995328080,
+        "sha256": "e9115e615b575acb6e8b3a06524b32cbf7f680f07517125e4334f62c3f4acb0d"
+      },
+      {
+        "path": "model-00008-of-00008.safetensors",
+        "bytes": 1698703696,
+        "sha256": "a77f603d8368749c19d3ac9cf2a300e476edcc794ea41af8e473ee12935eadb8"
+      }
+    ]
+  },
+  {
+    "role": "primary_edge_candidate",
+    "repo_id": "Qwen/Qwen3-1.7B",
+    "local_dir": "models/pretrained/Qwen--Qwen3-1.7B",
+    "local_status": "downloaded",
+    "file_count": 12,
+    "bytes": 4079450110,
+    "key_files": [
+      {
+        "path": "config.json",
+        "bytes": 726,
+        "sha256": "1ddb5b89ebc90dcb417a45c213d818577e65976454d29385c8f6140771d95197"
+      },
+      {
+        "path": "generation_config.json",
+        "bytes": 239,
+        "sha256": "2325da0f15bb848e018c5ae071b7943332e9f871d6b60e2ed22ca97d4cb993d2"
+      },
+      {
+        "path": "model.safetensors.index.json",
+        "bytes": 25605,
+        "sha256": "0d660e94b165eb912669a5249dff44b83188c4777a07ddb9611fb78d91b0578d"
+      },
+      {
+        "path": "tokenizer_config.json",
+        "bytes": 9732,
+        "sha256": "d5d09f07b48c3086c508b30d1c9114bd1189145b74e982a265350c923acd8101"
+      }
+    ],
+    "weight_files": [
+      {
+        "path": "model-00001-of-00002.safetensors",
+        "bytes": 3441185608,
+        "sha256": "169ad53ec313c3a34b06c0809216e4fc072cce444a5d4ff2b59690d064130ed5"
+      },
+      {
+        "path": "model-00002-of-00002.safetensors",
+        "bytes": 622329984,
+        "sha256": "912becff8d60672aa8628ef08c05898d9adf17c2ad4ae3caf99b065622fdeff9"
       }
     ]
   }

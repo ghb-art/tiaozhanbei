@@ -1,0 +1,56 @@
+{
+  "gate": "P0-edge-candidate-dev",
+  "check_version": "2.0",
+  "created_by": "scripts/evaluate_edge_candidate_dev.py",
+  "created_ts": "2026-07-18T11:38:22.390436+00:00",
+  "status": "passed",
+  "candidate_name": "qwen3-1p7b-hf-smoke",
+  "backend": "local_transformers_base",
+  "endpoint": "",
+  "endpoint_model_id": "",
+  "model": {
+    "path": "models/pretrained/Qwen--Qwen3-1.7B",
+    "file_count": 25,
+    "bytes": 4079451393,
+    "key_metadata_hash": "d99a5ad60d505d0db4ac82cf7aa71ea477a78025f9a6cc344f79dbdd468d574a"
+  },
+  "validation_data": "data/distill/p0a2_recovery_validation.jsonl",
+  "validation_data_sha256": "e5fd483e537173f7a2ddafc71a49310799d71f5bdcf37406499d8862d0c4b8c0",
+  "output_trace": "reports/audit/p0a3_qwen3_1p7b_hf_smoke.jsonl",
+  "output_trace_sha256": "0a44fdf7277ec04f08644ab5f4ad2db1faadf6972f62a6fc21dfc42b506ac8af",
+  "sample_count": 3,
+  "dataset_counts": {
+    "cmmlu": 1,
+    "gsm8k": 1,
+    "humaneval": 1
+  },
+  "correct_counts": {
+    "gsm8k": 1
+  },
+  "accuracy_by_dataset": {
+    "cmmlu": 0.0,
+    "gsm8k": 1.0,
+    "humaneval": 0.0
+  },
+  "macro_accuracy": 0.3333333333333333,
+  "min_accuracy_by_dataset": {},
+  "min_macro_accuracy": 0.0,
+  "threshold_gate_enabled": false,
+  "threshold_failures": {},
+  "generation_error_count": 0,
+  "failure_reasons": [],
+  "mean_latency_ms": 1859.7880226249497,
+  "peak_gpu_memory_mb_decimal": 3475.321856,
+  "dtype": "bfloat16",
+  "max_input_length": 1024,
+  "max_new_tokens_by_dataset": {
+    "gsm8k": 512,
+    "humaneval": 512,
+    "cmmlu": 256
+  },
+  "close_reasoning_prefix": false,
+  "disable_thinking": true,
+  "formal_test_labels_used": false,
+  "errors": [],
+  "report_hash": "476ea98cd4db6100f974cdc4799615a938298ab613f0e67e64f8cc8a2efc2b26"
+}

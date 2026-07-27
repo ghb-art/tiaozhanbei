@@ -214,7 +214,7 @@ def final_reference(row: dict[str, Any], final_ids: set[str]) -> bool:
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Freeze train-only and selection-only data for DeepSeek P0-A2 capability recovery."
+        description="Freeze the train-only corpus and model-agnostic 170-row selection Dev reused by P0-A3."
     )
     parser.add_argument("--config", default=str(DEFAULT_CONFIG))
     return parser.parse_args()
@@ -450,10 +450,10 @@ def main() -> int:
         print(f"Wrote {display_path(train_path)} ({len(train_rows)} rows)")
         print(f"Wrote {display_path(validation_path)} ({len(validation_rows)} rows)")
         print(f"Wrote {display_path(audit_path)}")
-        print("P0-A2 recovery data gate passed.")
+        print("Frozen edge-candidate data gate passed.")
         return 0
     except (KeyError, TypeError, ValueError, RecoveryDataError) as exc:
-        print(f"P0-A2 recovery data gate failed: {exc}", file=sys.stderr)
+        print(f"Frozen edge-candidate data gate failed: {exc}", file=sys.stderr)
         return 1
 
 

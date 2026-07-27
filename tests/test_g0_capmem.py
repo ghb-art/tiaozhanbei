@@ -100,9 +100,15 @@ class G0CapmemTests(unittest.TestCase):
     def test_percentile_handles_interpolation(self) -> None:
         self.assertEqual(g3.percentile([1.0, 2.0, 3.0], 0.5), 2.0)
 
-    def test_endpoint_lora_map_parses_dataset_ids(self) -> None:
-        result = capability.parse_endpoint_lora_map(["gsm8k=0,humaneval=1", "cmmlu=2"])
-        self.assertEqual(result, {"gsm8k": 0, "humaneval": 1, "cmmlu": 2})
+    def test_memory_gate_disables_host_prompt_cache(self) -> None:
+        self.assertEqual(
+            g3.prompt_cache_server_args(0, False),
+            ["--cache-ram", "0", "--no-cache-idle-slots"],
+        )
+        with self.assertRaisesRegex(ValueError, "requires"):
+            g3.prompt_cache_server_args(0, True)
+        with self.assertRaisesRegex(ValueError, "reserved"):
+            g3.validate_server_extra_args(["--cache-ram=8192"])
 
     def test_max_new_tokens_map_parses_positive_limits(self) -> None:
         result = capability.parse_max_new_tokens_map(["cmmlu=16,gsm8k=160", "humaneval=256"])
@@ -118,27 +124,54 @@ class G0CapmemTests(unittest.TestCase):
         with self.assertRaises(capability.CapabilityEvalError):
             capability.parse_min_accuracy_map(["humaneval=1.01"])
 
-    def test_candidate_artifact_includes_resident_loras(self) -> None:
+    def test_chapter2_endpoint_explicitly_disables_qwen3_thinking(self) -> None:
+        captured = {}
+        original = capability.request_json
+
+        def fake_request(url, payload, timeout_sec):
+            captured.update(payload)
+            return {"choices": [{"message": {"content": "ok"}}]}
+
+        capability.request_json = fake_request
+        try:
+            text, _ = capability.generate_text_endpoint(
+                "http://127.0.0.1:1",
+                "student",
+                [{"role": "user", "content": "x"}],
+                1.0,
+                8,
+                True,
+                {"lora": {"id": 0, "scale": 1.0}},
+            )
+            self.assertEqual(text, "ok")
+            self.assertEqual(captured["chat_template_kwargs"], {"enable_thinking": False})
+            with self.assertRaises(capability.CapabilityEvalError):
+                capability.generate_text_endpoint(
+                    "http://127.0.0.1:1",
+                    "student",
+                    [{"role": "user", "content": "x"}],
+                    1.0,
+                    8,
+                    True,
+                    {"chat_template_kwargs": {"enable_thinking": True}},
+                )
+        finally:
+            capability.request_json = original
+
+    def test_candidate_artifact_is_the_quantized_model(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             base = root / "base.gguf"
-            lora_a = root / "a.gguf"
-            lora_b = root / "b.gguf"
             base.write_bytes(b"b" * 10)
-            lora_a.write_bytes(b"a" * 3)
-            lora_b.write_bytes(b"c" * 4)
             result = g0.candidate_result(
                 {
-                    "name": "router",
+                    "name": "edge-base",
                     "gguf": str(base),
-                    "lora_adapters": [str(lora_a), str(lora_b)],
                 },
                 {},
             )
             self.assertTrue(result["artifact_exists"])
-            self.assertEqual(result["base_gguf_bytes"], 10)
-            self.assertEqual(result["resident_lora_bytes"], 7)
-            self.assertEqual(result["artifact_bytes"], 17)
+            self.assertEqual(result["artifact_bytes"], 10)
 
 
 if __name__ == "__main__":

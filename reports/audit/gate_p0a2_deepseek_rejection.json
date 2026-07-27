@@ -1,0 +1,32 @@
+{
+  "gate": "P0-A2-route-decision",
+  "check_version": "1.0",
+  "created_by": "P0-A3 capability-first reselection",
+  "created_ts": "2026-07-18T10:00:00+00:00",
+  "status": "failed",
+  "decision": "close_deepseek_recovery_route",
+  "source_audit": "reports/audit/gate_p0a2_deepseek_upper_bound.json",
+  "source_audit_sha256": "93304660bb2b8369bdfbd57e7fe87df5f29e8af6f9a672108e2509cdd5e8bd20",
+  "source_trace": "data/eval/p0a2_deepseek_upper_bound.jsonl",
+  "source_trace_sha256": "e866cbd4029926633f7dc1b42d8579b74ff7a2241c00a067c3030e2e95a7e7ff",
+  "sample_count": 170,
+  "correct_counts": {
+    "cmmlu": 11,
+    "gsm8k": 54,
+    "humaneval": 10
+  },
+  "accuracy_by_dataset": {
+    "cmmlu": 0.171875,
+    "gsm8k": 0.84375,
+    "humaneval": 0.23809523809523808
+  },
+  "macro_accuracy": 0.41790674603174605,
+  "generation_error_count": 0,
+  "formal_test_labels_used": false,
+  "reasons": [
+    "The BF16 base is below the random-choice baseline on the frozen CMMLU Dev.",
+    "Code execution accuracy is 23.81%, leaving an implausibly large recovery gap before Q2 quantization.",
+    "The P0-A2 evaluator status=passed recorded execution completion because threshold_gate_enabled=false; it was not a capability pass."
+  ],
+  "allowed_next_route": "P0-A3 Qwen3-1.7B Q3_K_M capability-first reselection"
+}

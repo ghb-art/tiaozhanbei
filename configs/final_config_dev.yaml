@@ -1,4 +1,4 @@
-config_version: "0.1-dev"
+config_version: "0.3-p0a4"
 stage: "dev"
 frozen_for_final_gate: false
 
@@ -28,9 +28,14 @@ decision_header:
     - selected_path
 
 dev_gates:
-  g1_min_ratio: 0.82
+  # P0-A4 uses an independent 96-row early gate followed by the frozen 170-row gate.
+  g1_smoke96_min_ratio: 0.75
+  g1_min_ratio: 0.80
+  g1_max_selection_student_versions: 2
+  g1_official_full_student_attempts: 1
   g2_min_ttft_reduction: 0.78
-  g3_max_rss_mb_decimal: 1450
+  # Peak total process-tree memory, not model file size or main-process RSS.
+  g3_max_total_memory_mb_decimal: 1400
   g4_min_business_retention: 0.92
   g5_max_p95_e2e_s: 0.18
   g6_max_conflict_ratio: 0.04

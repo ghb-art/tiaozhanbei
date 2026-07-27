@@ -1,0 +1,55 @@
+{
+  "gate": "P0-A2-recovery-dev",
+  "check_version": "1.0",
+  "created_by": "scripts/evaluate_p0a2_recovery.py",
+  "created_ts": "2026-07-18T10:01:37.848140+00:00",
+  "status": "passed",
+  "backend": "local_transformers_base",
+  "model": {
+    "path": "models/pretrained/deepseek-ai--DeepSeek-R1-Distill-Qwen-1.5B",
+    "file_count": 19,
+    "bytes": 3562047034,
+    "key_metadata_hash": "eee1405c8b9a877a95a73ea10744c4adb8d0332ef0635db643a35af372bd055c"
+  },
+  "adapter": null,
+  "adapter_config": {},
+  "validation_data": "data/distill/p0a2_recovery_validation.jsonl",
+  "validation_data_sha256": "e5fd483e537173f7a2ddafc71a49310799d71f5bdcf37406499d8862d0c4b8c0",
+  "output_trace": "data/eval/p0a2_deepseek_upper_bound.jsonl",
+  "output_trace_sha256": "e866cbd4029926633f7dc1b42d8579b74ff7a2241c00a067c3030e2e95a7e7ff",
+  "sample_count": 170,
+  "dataset_counts": {
+    "cmmlu": 64,
+    "gsm8k": 64,
+    "humaneval": 42
+  },
+  "correct_counts": {
+    "cmmlu": 11,
+    "gsm8k": 54,
+    "humaneval": 10
+  },
+  "accuracy_by_dataset": {
+    "cmmlu": 0.171875,
+    "gsm8k": 0.84375,
+    "humaneval": 0.23809523809523808
+  },
+  "macro_accuracy": 0.41790674603174605,
+  "min_accuracy_by_dataset": {},
+  "min_macro_accuracy": 0.0,
+  "threshold_gate_enabled": false,
+  "threshold_failures": {},
+  "generation_error_count": 0,
+  "mean_latency_ms": 8940.393763775115,
+  "peak_gpu_memory_mb_decimal": 3637.485056,
+  "dtype": "bfloat16",
+  "max_input_length": 1024,
+  "max_new_tokens_by_dataset": {
+    "gsm8k": 512,
+    "humaneval": 512,
+    "cmmlu": 256
+  },
+  "close_reasoning_prefix": true,
+  "formal_test_labels_used": false,
+  "errors": [],
+  "report_hash": "a75b350e68d910e5777d141d5949c75745084dae0f03b70e4814cb0732fd0ddf"
+}

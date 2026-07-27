@@ -1,0 +1,57 @@
+diff --git a/common/chat.cpp b/common/chat.cpp
+index 22d2ee4a2..81972ad55 100644
+--- a/common/chat.cpp
++++ b/common/chat.cpp
+@@ -12,6 +12,7 @@
+ #include "jinja/runtime.h"
+ #include "jinja/caps.h"
+ #include "peg-parser.h"
++#include "unicode.h"
+ 
+ #include "nlohmann/json.hpp"
+ 
+@@ -30,6 +31,29 @@
+ 
+ using json = nlohmann::ordered_json;
+ 
++static std::string common_chat_sanitize_utf8(const std::string & input, bool is_partial) {
++    std::string output;
++    output.reserve(input.size());
++    size_t offset = 0;
++    while (offset < input.size()) {
++        const auto parsed = common_parse_utf8_codepoint(input, offset);
++        if (parsed.status == utf8_parse_result::SUCCESS) {
++            output.append(input, offset, parsed.bytes_consumed);
++            offset += parsed.bytes_consumed;
++            continue;
++        }
++        if (parsed.status == utf8_parse_result::INCOMPLETE && is_partial) {
++            break;
++        }
++        output.append("\xEF\xBF\xBD");
++        if (parsed.status == utf8_parse_result::INCOMPLETE) {
++            break;
++        }
++        ++offset;
++    }
++    return output;
++}
++
+ static std::string format_time(const std::chrono::system_clock::time_point & now, const std::string & format) {
+     auto               time       = std::chrono::system_clock::to_time_t(now);
+     auto               local_time = *std::localtime(&time);
+@@ -2874,9 +2898,13 @@ common_chat_msg common_chat_peg_parse(const common_peg_arena &          src_pars
+         LOG_DBG("No parser definition detected, assuming pure content parser.");
+     }
+ 
+-    const std::string effective_input = params.generation_prompt.empty()
++    const std::string raw_effective_input = params.generation_prompt.empty()
+         ? input
+         : params.generation_prompt + input;
++    const std::string effective_input = common_chat_sanitize_utf8(raw_effective_input, is_partial);
++    if (effective_input != raw_effective_input && !is_partial) {
++        LOG_WRN("%s: replaced malformed UTF-8 in model output before PEG parsing\n", __func__);
++    }
+ 
+     //LOG_DBG("Parsing PEG input with format %s: %s\n", common_chat_format_name(params.format), effective_input.c_str());
+ 

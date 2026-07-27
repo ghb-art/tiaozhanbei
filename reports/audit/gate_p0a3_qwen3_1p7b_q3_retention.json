@@ -1,0 +1,85 @@
+{
+  "gate": "P0-A3-matched-dev-retention",
+  "check_version": "1.0",
+  "created_by": "scripts/summarize_edge_candidate_dev.py",
+  "created_ts": "2026-07-18T13:28:47.374698+00:00",
+  "candidate_name": "qwen3-1p7b-q3-k-m",
+  "teacher_trace": "data/eval/p0a3_qwen14_teacher_dev.jsonl",
+  "teacher_trace_sha256": "2d421843ab58ef1cf5788d0f0330805c9af24dd2c75fdce25156f2cbc21c2bea",
+  "candidate_trace": "data/eval/p0a3_qwen3_1p7b_q3_dev.jsonl",
+  "candidate_trace_sha256": "bf0200e908c2abdd8438e63e2f60cf9e27a053c5c7f102266079da3f6e540e80",
+  "formal_test_labels_used": false,
+  "status": "failed",
+  "sample_count": 170,
+  "teacher_sample_count": 170,
+  "expected_dataset_counts": {
+    "gsm8k": 64,
+    "humaneval": 42,
+    "cmmlu": 64
+  },
+  "teacher_dataset_counts": {
+    "cmmlu": 64,
+    "gsm8k": 64,
+    "humaneval": 42
+  },
+  "dataset_counts": {
+    "cmmlu": 64,
+    "gsm8k": 64,
+    "humaneval": 42
+  },
+  "complete_frozen_dev": true,
+  "teacher_correct_counts": {
+    "cmmlu": 46,
+    "gsm8k": 64,
+    "humaneval": 31
+  },
+  "candidate_correct_counts": {
+    "cmmlu": 21,
+    "gsm8k": 28,
+    "humaneval": 13
+  },
+  "teacher_accuracy_by_dataset": {
+    "gsm8k": 1.0,
+    "humaneval": 0.7380952380952381,
+    "cmmlu": 0.71875
+  },
+  "candidate_accuracy_by_dataset": {
+    "gsm8k": 0.4375,
+    "humaneval": 0.30952380952380953,
+    "cmmlu": 0.328125
+  },
+  "ratios": {
+    "math_ratio": 0.4375,
+    "code_ratio": 0.41935483870967744,
+    "nlp_ratio": 0.45652173913043476
+  },
+  "capped_macro_ratio": 0.43779219261337077,
+  "min_ratio": 0.8,
+  "ratio_failures": {
+    "math_ratio": {
+      "actual": 0.4375,
+      "required": 0.8
+    },
+    "code_ratio": {
+      "actual": 0.41935483870967744,
+      "required": 0.8
+    },
+    "nlp_ratio": {
+      "actual": 0.45652173913043476,
+      "required": 0.8
+    }
+  },
+  "teacher_generation_error_count": 0,
+  "teacher_generation_errors_by_dataset": {},
+  "generation_error_count": 0,
+  "generation_errors_by_dataset": {},
+  "missing_from_candidate_count": 0,
+  "missing_from_candidate_hash": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+  "extra_in_candidate_count": 0,
+  "extra_in_candidate_hash": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+  "dataset_mismatch_count": 0,
+  "dataset_mismatch_hash": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+  "matched_sample_ids": true,
+  "passed": false,
+  "report_hash": "91bc2e9a0a717348b8872a6a857907ac4ad950907c0ba85ae5a8af757b3a974d"
+}

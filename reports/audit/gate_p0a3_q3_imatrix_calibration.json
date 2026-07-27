@@ -1,0 +1,20 @@
+{
+  "gate": "G0-imatrix-calibration",
+  "check_version": "1.0",
+  "created_by": "scripts/build_imatrix_calibration.py",
+  "created_ts": "2026-07-18T12:37:01.353016+00:00",
+  "status": "passed",
+  "sources": {
+    "data/distill/p0a2_recovery_train.jsonl": "4c29b5051bd51a07ca6a3509c0a632a06017b51ac6fdb87bf04e830ad3bc9c6b"
+  },
+  "source_counts": {
+    "data/distill/p0a2_recovery_train.jsonl": 768
+  },
+  "selected_text_count": 768,
+  "formal_test_reference_count": 0,
+  "seed": 202606,
+  "output": "data/distill/p0a3_q3_imatrix_calibration.txt",
+  "output_hash": "4161401d833620eb02d2e63e8d9c2fea0393033febc967d887bffb2f6f90b865",
+  "output_bytes": 485975,
+  "errors": []
+}

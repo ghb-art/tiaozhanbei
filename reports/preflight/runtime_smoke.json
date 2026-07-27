@@ -1,7 +1,7 @@
 {
   "report_version": "0.1",
   "created_by": "scripts/preflight_runtime_smoke.py",
-  "created_ts": "2026-07-18T08:57:17.136217+00:00",
+  "created_ts": "2026-07-18T11:08:47.169387+00:00",
   "project_root": "/workspace/project_tiaozhanbei/tiaozhanbei",
   "python_executable": "/workspace/project_tiaozhanbei/tiaozhanbei/.venv/bin/python",
   "summary": {
@@ -81,7 +81,7 @@
       "passed": true,
       "details": {
         "path": "README.md",
-        "size_chars": 1553
+        "size_chars": 1960
       }
     },
     {
@@ -89,7 +89,7 @@
       "passed": true,
       "details": {
         "path": "IMPLEMENTATION_PLAN.md",
-        "size_chars": 15301
+        "size_chars": 16903
       }
     },
     {
@@ -97,7 +97,7 @@
       "passed": true,
       "details": {
         "path": "docs/TODO.md",
-        "size_chars": 1184
+        "size_chars": 1491
       }
     },
     {
@@ -105,7 +105,7 @@
       "passed": true,
       "details": {
         "path": "docs/PROJECT_STATUS.md",
-        "size_chars": 1659
+        "size_chars": 1755
       }
     },
     {
@@ -113,7 +113,7 @@
       "passed": true,
       "details": {
         "path": "docs/REVISION_LOG.md",
-        "size_chars": 44618
+        "size_chars": 46084
       }
     },
     {
@@ -129,7 +129,7 @@
       "passed": true,
       "details": {
         "path": "docs/RUNBOOK_P0A.md",
-        "size_chars": 2015
+        "size_chars": 2391
       }
     },
     {
@@ -153,7 +153,7 @@
       "passed": true,
       "details": {
         "path": "configs/models.yaml",
-        "size_chars": 1025
+        "size_chars": 1869
       }
     },
     {
@@ -161,7 +161,7 @@
       "passed": true,
       "details": {
         "path": "configs/final_config_dev.yaml",
-        "size_chars": 875
+        "size_chars": 1122
       }
     },
     {
@@ -169,7 +169,7 @@
       "passed": true,
       "details": {
         "path": "configs/g0_capmem_candidates.json",
-        "size_chars": 3600
+        "size_chars": 4557
       }
     },
     {
@@ -177,7 +177,23 @@
       "passed": true,
       "details": {
         "path": "configs/p0a2_recovery.json",
-        "size_chars": 2353
+        "size_chars": 1958
+      }
+    },
+    {
+      "name": "readable_file:configs/p0a3_reselection.json",
+      "passed": true,
+      "details": {
+        "path": "configs/p0a3_reselection.json",
+        "size_chars": 2801
+      }
+    },
+    {
+      "name": "readable_file:reports/audit/gate_p0a2_deepseek_rejection.json",
+      "passed": true,
+      "details": {
+        "path": "reports/audit/gate_p0a2_deepseek_rejection.json",
+        "size_chars": 1305
       }
     },
     {
@@ -193,7 +209,7 @@
       "passed": true,
       "details": {
         "path": "manifest.template.json",
-        "size_chars": 2489
+        "size_chars": 2378
       }
     },
     {
@@ -209,7 +225,7 @@
       "passed": true,
       "details": {
         "path": "scripts/validate_project_structure.py",
-        "size_chars": 8424
+        "size_chars": 8330
       }
     },
     {
@@ -225,7 +241,7 @@
       "passed": true,
       "details": {
         "path": "scripts/validate_manifest_files.py",
-        "size_chars": 19698
+        "size_chars": 19629
       }
     },
     {
@@ -241,7 +257,7 @@
       "passed": true,
       "details": {
         "path": "scripts/preflight_runtime_smoke.py",
-        "size_chars": 11642
+        "size_chars": 11639
       }
     },
     {
@@ -265,7 +281,7 @@
       "passed": true,
       "details": {
         "path": "scripts/run_p0a.sh",
-        "size_chars": 3078
+        "size_chars": 3074
       }
     },
     {
@@ -273,7 +289,15 @@
       "passed": true,
       "details": {
         "path": "scripts/run_p0a2.sh",
-        "size_chars": 10337
+        "size_chars": 483
+      }
+    },
+    {
+      "name": "readable_file:scripts/run_p0a3.sh",
+      "passed": true,
+      "details": {
+        "path": "scripts/run_p0a3.sh",
+        "size_chars": 18182
       }
     },
     {
@@ -281,7 +305,7 @@
       "passed": true,
       "details": {
         "path": "scripts/run_g0_capmem.py",
-        "size_chars": 27126
+        "size_chars": 26035
       }
     },
     {
@@ -313,15 +337,23 @@
       "passed": true,
       "details": {
         "path": "scripts/evaluate_chapter2_capability.py",
-        "size_chars": 39666
+        "size_chars": 34994
       }
     },
     {
-      "name": "readable_file:scripts/evaluate_p0a2_recovery.py",
+      "name": "readable_file:scripts/evaluate_edge_candidate_dev.py",
       "passed": true,
       "details": {
-        "path": "scripts/evaluate_p0a2_recovery.py",
-        "size_chars": 14404
+        "path": "scripts/evaluate_edge_candidate_dev.py",
+        "size_chars": 18802
+      }
+    },
+    {
+      "name": "readable_file:scripts/summarize_edge_candidate_dev.py",
+      "passed": true,
+      "details": {
+        "path": "scripts/summarize_edge_candidate_dev.py",
+        "size_chars": 9653
       }
     },
     {
@@ -361,15 +393,15 @@
       "passed": true,
       "details": {
         "path": "model_compression/build_p0a2_recovery_data.py",
-        "size_chars": 17871
+        "size_chars": 17890
       }
     },
     {
-      "name": "readable_file:model_compression/export_merged_hf.py",
+      "name": "readable_file:model_compression/edge_candidate_eval_utils.py",
       "passed": true,
       "details": {
-        "path": "model_compression/export_merged_hf.py",
-        "size_chars": 5388
+        "path": "model_compression/edge_candidate_eval_utils.py",
+        "size_chars": 4589
       }
     },
     {
@@ -377,39 +409,7 @@
       "passed": true,
       "details": {
         "path": "model_compression/inference_utils.py",
-        "size_chars": 2693
-      }
-    },
-    {
-      "name": "readable_file:model_compression/lora_utils.py",
-      "passed": true,
-      "details": {
-        "path": "model_compression/lora_utils.py",
-        "size_chars": 12180
-      }
-    },
-    {
-      "name": "readable_file:model_compression/train_cedd_structured.py",
-      "passed": true,
-      "details": {
-        "path": "model_compression/train_cedd_structured.py",
-        "size_chars": 19767
-      }
-    },
-    {
-      "name": "readable_file:model_compression/train_cedd_repair.py",
-      "passed": true,
-      "details": {
-        "path": "model_compression/train_cedd_repair.py",
-        "size_chars": 78203
-      }
-    },
-    {
-      "name": "readable_file:scripts/summarize_chapter2_capability.py",
-      "passed": true,
-      "details": {
-        "path": "scripts/summarize_chapter2_capability.py",
-        "size_chars": 5002
+        "size_chars": 2360
       }
     },
     {
@@ -425,7 +425,7 @@
       "passed": true,
       "details": {
         "path": "scripts/verify_gate_g3_gguf.py",
-        "size_chars": 24636
+        "size_chars": 23653
       }
     },
     {
@@ -473,7 +473,6 @@
           "git_commit",
           "graph_model_hash",
           "latency_breakdown_hash",
-          "lora_adapter_sha256",
           "network_profile_hash",
           "online_perception_smoke_hash",
           "perception_metric_script_hash",
@@ -488,7 +487,6 @@
           "resource_metric_script_hash",
           "risk_matrix_hash",
           "runtime_state_model_hash",
-          "sft_config_hash",
           "student_init_model_id",
           "student_probe_trace_hash",
           "synthetic_chinese_nlp_hash",
@@ -531,8 +529,8 @@
           "scripts/validate_project_structure.py"
         ],
         "returncode": 0,
-        "started_ts": "2026-07-18T08:57:14.993499+00:00",
-        "finished_ts": "2026-07-18T08:57:15.032609+00:00",
+        "started_ts": "2026-07-18T11:08:45.035516+00:00",
+        "finished_ts": "2026-07-18T11:08:45.072866+00:00",
         "stdout_tail": "[OK] Network profile declared: low_bandwidth\n[OK] Network profile declared: high_loss\n[OK] Network profile declared: short_disconnect\n[OK] Workload profile declared: stable\n[OK] Workload profile declared: burst\n[OK] Workload profile declared: replay\n[OK] Workload profile declared: scale\n[OK] Model role declared: cloud_teacher\n[OK] Model role declared: edge_student\n[OK] Manifest template is valid JSON: dataset_manifest.template.json\n[OK] Manifest template marked template_only: dataset_manifest.template.json\n[OK] Manifest template key present: dataset_manifest.template.json::manifest_version\n[OK] Manifest template key present: dataset_manifest.template.json::created_by\n[OK] Manifest template key present: dataset_manifest.template.json::created_ts\n[OK] Manifest template key present: dataset_manifest.template.json::sampling_seed\n[OK] Manifest template key present: dataset_manifest.template.json::datasets\n[OK] Manifest template key present: dataset_manifest.template.json::scu_support\n[OK] Manifest template key present: dataset_manifest.template.json::global_leakage_check\n[OK] Manifest template is valid JSON: manifest.template.json\n[OK] Manifest template marked template_only: manifest.template.json\n[OK] Manifest template key present: manifest.template.json::git_commit\n[OK] Manifest template key present: manifest.template.json::final_config_hash\n[OK] Manifest template key present: manifest.template.json::teacher_model_id\n[OK] Manifest template key present: manifest.template.json::student_init_model_id\n[OK] Manifest template key present: manifest.template.json::edge_model_name\n[OK] Manifest template key present: manifest.template.json::fallback_events\n[OK] Manifest template key present: manifest.template.json::timestamp\n[OK] Manifest template is valid JSON: conflict_gt_manifest.template.json\n[OK] Manifest template marked template_only: conflict_gt_manifest.template.json\n[OK] Manifest template key present: conflict_gt_manifest.template.json::manifest_version\n[OK] Manifest template key present: conflict_gt_manifest.template.json::created_by\n[OK] Manifest template key present: conflict_gt_manifest.template.json::created_ts\n[OK] Manifest template key present: conflict_gt_manifest.template.json::datasets\n[OK] Manifest template key present: conflict_gt_manifest.template.json::split\n[OK] Manifest template key present: conflict_gt_manifest.template.json::conflict_groups\n[OK] Manifest template key present: conflict_gt_manifest.template.json::conflict_group_count\n[OK] Manifest template key present: conflict_gt_manifest.template.json::conflict_type_distribution\n[OK] Manifest template key present: conflict_gt_manifest.template.json::manifest_hash\n\nProject structure validation passed.",
         "stderr_tail": ""
       }
@@ -547,8 +545,8 @@
           "--allow-empty"
         ],
         "returncode": 0,
-        "started_ts": "2026-07-18T08:57:15.032800+00:00",
-        "finished_ts": "2026-07-18T08:57:17.080856+00:00",
+        "started_ts": "2026-07-18T11:08:45.072983+00:00",
+        "finished_ts": "2026-07-18T11:08:47.115863+00:00",
         "stdout_tail": "[OK] GSM8K -> data/datasets/gsm8k (7 payload files, 13880370 bytes)\n[OK] HumanEval -> data/datasets/humaneval (11 payload files, 64174 bytes)\n[OK] MMLU -> data/datasets/mmlu (187 payload files, 166066477 bytes)\n[OK] CMMLU -> data/datasets/cmmlu (136 payload files, 2512537 bytes)\n[OK] MVTec AD -> data/datasets/mvtec_ad (6645 payload files, 10536229804 bytes)\n[OK] NEU-DET -> data/datasets/neu_det (3601 payload files, 55922599 bytes)\n[OK] CityFlow -> data/datasets/cityflow (1063 payload files, 34973435649 bytes)\n[OK] UA-DETRAC -> data/datasets/ua_detrac (141041 payload files, 31257170002 bytes)\n\nDataset presence check completed with empty directories allowed.",
         "stderr_tail": ""
       }
@@ -563,12 +561,12 @@
           "--allow-missing"
         ],
         "returncode": 0,
-        "started_ts": "2026-07-18T08:57:17.080937+00:00",
-        "finished_ts": "2026-07-18T08:57:17.136146+00:00",
+        "started_ts": "2026-07-18T11:08:47.115933+00:00",
+        "finished_ts": "2026-07-18T11:08:47.169326+00:00",
         "stdout_tail": "[OK] dataset_manifest.json passed\n[OK] manifest.json passed\n[OK] conflict_gt_manifest.json passed\n\nFormal manifest validation passed.",
         "stderr_tail": ""
       }
     }
   ],
-  "report_hash": "0221cd573d53b0eea560bdeb85c48dff46d89fa93afde37dfa5c26faf771df5a"
+  "report_hash": "83d34d8208a151631b286711cdb993ea8c0e1fa3aba115c9e4db3b6b2ba93d63"
 }

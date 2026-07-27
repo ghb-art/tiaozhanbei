@@ -43,7 +43,70 @@ db_verify() {
 }
 
 teacher_serve() {
-  CUDA_VISIBLE_DEVICES="$P0A_GPUS" "$PYTHON_BIN" scripts/serve_vllm_teachers.py
+  gpu_preflight
+  "$PYTHON_BIN" scripts/serve_vllm_teachers.py \
+    --gpu-group "$P0A_GPUS" \
+    --tensor-parallel-size auto
+}
+
+teacher_plan() {
+  "$PYTHON_BIN" scripts/serve_vllm_teachers.py \
+    --gpu-group "$P0A_GPUS" \
+    --tensor-parallel-size auto \
+    --dry-run
+}
+
+teacher_stop() {
+  "$PYTHON_BIN" - "$ROOT/scripts/serve_vllm_teachers.py" <<'PY'
+import os
+import signal
+import sys
+import time
+from pathlib import Path
+
+target = str(Path(sys.argv[1]).resolve())
+matches = []
+for entry in Path("/proc").iterdir():
+    if not entry.name.isdigit():
+        continue
+    pid = int(entry.name)
+    if pid == os.getpid():
+        continue
+    try:
+        args = [
+            value.decode("utf-8", errors="replace")
+            for value in (entry / "cmdline").read_bytes().split(b"\0")
+            if value
+        ]
+        cwd = (entry / "cwd").resolve()
+    except (FileNotFoundError, PermissionError, ProcessLookupError):
+        continue
+    resolved_args = {
+        str((Path(value) if Path(value).is_absolute() else cwd / value).resolve())
+        for value in args
+    }
+    if target in resolved_args:
+        matches.append(pid)
+if not matches:
+    print("Teacher launcher is not running.")
+    raise SystemExit(0)
+if len(matches) != 1:
+    raise SystemExit(f"Refusing to stop ambiguous Teacher launchers: {matches}")
+pid = matches[0]
+if os.environ.get("P0A_TEACHER_STOP_DRY_RUN") == "1":
+    print(f"Teacher launcher matched: pid={pid}")
+    raise SystemExit(0)
+os.kill(pid, signal.SIGINT)
+deadline = time.monotonic() + 30
+while time.monotonic() < deadline:
+    try:
+        os.kill(pid, 0)
+    except ProcessLookupError:
+        print(f"Teacher launcher stopped: pid={pid}")
+        raise SystemExit(0)
+    time.sleep(0.2)
+raise SystemExit(f"Teacher launcher did not stop within 30 seconds: pid={pid}")
+PY
 }
 
 cloud_gate() {
@@ -74,14 +137,16 @@ Current commands:
   gpu-preflight       Ensure selected GPUs exist and are not already occupied.
   db-up               Start the KWDB service.
   db-verify           Verify the live database schema and smoke gate.
-  teacher-serve       Start the configured 14B teacher endpoints.
+  teacher-serve       Start one 14B teacher endpoint tensor-parallel across P0A_GPUS.
+  teacher-plan        Print the Teacher GPU/TP/vLLM launch plan without starting it.
+  teacher-stop        Gracefully stop the active Teacher launcher and its workers.
   cloud-gate          Verify the Cloud teacher service.
   g0-summary          Summarize current capability-memory candidates.
   g0-run              Prepare and execute current G0 candidates.
-  p0a2-<command>      Forward to scripts/run_p0a2.sh; e.g. p0a2-preflight.
+  p0a3-<command>      Forward to scripts/run_p0a3.sh; e.g. p0a3-preflight.
 
-The rejected v24-v31 launch matrix was removed. Its immutable audit reports remain
-under reports/audit; the active recovery route is documented by run_p0a2.sh.
+The rejected v24-v31 and DeepSeek P0-A2 routes remain immutable audit evidence.
+The active capability-first reselection route is documented by run_p0a3.sh.
 EOF
 }
 
@@ -92,9 +157,11 @@ case "$command" in
   db-up) db_up ;;
   db-verify) db_verify ;;
   teacher-serve) teacher_serve ;;
+  teacher-plan) teacher_plan ;;
+  teacher-stop) teacher_stop ;;
   cloud-gate) cloud_gate ;;
   g0-summary) g0_summary ;;
   g0-run) g0_run ;;
-  p0a2-*) bash scripts/run_p0a2.sh "${command#p0a2-}" ;;
+  p0a3-*) bash scripts/run_p0a3.sh "${command#p0a3-}" ;;
   *) usage; exit 2 ;;
 esac

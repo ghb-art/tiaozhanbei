@@ -59,7 +59,6 @@ KD_TEACHER_AUDITS = (
 )
 KD_STUDENT_PROBE_SMOKE_AUDIT = ROOT / "reports" / "audit" / "gate_kd_student_probe_smoke.json"
 KD_REPAIR_MINING_SMOKE_AUDIT = ROOT / "reports" / "audit" / "gate_kd_repair_mining_smoke.json"
-KD_CEDD_STRUCTURED_TRAIN_SMOKE_AUDIT = ROOT / "reports" / "audit" / "gate_kd_cedd_structured_train_smoke.json"
 KD_STUDENT_PROBE_LOCAL_SMOKE_AUDIT = ROOT / "reports" / "audit" / "gate_kd_student_probe_local_smoke.json"
 KD_REPAIR_MINING_LOCAL_SMOKE_AUDIT = ROOT / "reports" / "audit" / "gate_kd_repair_mining_local_smoke.json"
 CH2_CAPABILITY_EVAL_LOCAL_SMOKE_AUDIT = (
@@ -78,8 +77,6 @@ RUN_HASH_KEYS = [
     "student_probe_trace_hash",
     "counterfactual_repair_trace_hash",
     "quant_behavior_trace_hash",
-    "sft_config_hash",
-    "lora_adapter_sha256",
     "quant_config_hash",
     "planner_model_hash",
     "calibration_snapshot_hash",
@@ -352,50 +349,6 @@ def add_repair_mining_smoke_fields(manifest: dict[str, Any]) -> None:
     )
 
 
-def add_cedd_structured_train_smoke_fields(
-    manifest: dict[str, Any],
-    explicit_hashes: dict[str, str],
-) -> None:
-    if not KD_CEDD_STRUCTURED_TRAIN_SMOKE_AUDIT.is_file():
-        return
-    train = load_json(KD_CEDD_STRUCTURED_TRAIN_SMOKE_AUDIT)
-    explicit_hashes.update(
-        {
-            "lora_adapter_sha256": train.get("adapter_hash", derived_hash("lora_adapter_sha256")),
-            "sft_config_hash": train.get("adapter_config_hash", derived_hash("sft_config_hash")),
-        }
-    )
-    manifest.update(
-        {
-            "kd_cedd_structured_train_smoke_audit_hash": sha256_file(KD_CEDD_STRUCTURED_TRAIN_SMOKE_AUDIT),
-            "kd_cedd_structured_train_smoke_report_hash": train.get(
-                "report_hash",
-                derived_hash("kd_cedd_structured_train_smoke_report_hash"),
-            ),
-            "kd_cedd_structured_train_smoke_status": train.get("status", "unknown"),
-            "kd_cedd_structured_train_smoke_adapter_hash": train.get(
-                "adapter_hash",
-                derived_hash("kd_cedd_structured_train_smoke_adapter_hash"),
-            ),
-            "kd_cedd_structured_train_smoke_adapter_config_hash": train.get(
-                "adapter_config_hash",
-                derived_hash("kd_cedd_structured_train_smoke_adapter_config_hash"),
-            ),
-            "kd_cedd_structured_train_smoke_distill_data_hash": train.get(
-                "distill_data_hash",
-                derived_hash("kd_cedd_structured_train_smoke_distill_data_hash"),
-            ),
-            "kd_cedd_structured_train_smoke_sample_count": train.get("selected_sample_count", 0),
-            "kd_cedd_structured_train_smoke_dataset_counts": train.get("dataset_counts", {}),
-            "kd_cedd_structured_train_smoke_trainable_parameter_ratio": train.get(
-                "trainable_parameter_ratio",
-                0.0,
-            ),
-            "kd_cedd_structured_train_smoke_mean_loss": train.get("mean_loss", 0.0),
-        }
-    )
-
-
 def add_student_probe_local_smoke_fields(
     manifest: dict[str, Any],
     explicit_hashes: dict[str, str],
@@ -494,8 +447,8 @@ def build_run_manifest(frozen: dict[str, Any], conflict_manifest: dict[str, Any]
     manifest: dict[str, Any] = {
         "git_commit": git_commit(),
         "teacher_model_id": "Qwen/Qwen2.5-14B-Instruct-AWQ",
-        "student_init_model_id": "deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B",
-        "edge_model_name": "DB4AI-Edge-P0A2-DeepSeek-1.5B-Q2_K_S",
+        "student_init_model_id": "Qwen/Qwen3-1.7B",
+        "edge_model_name": "DB4AI-Edge-P0A3-Qwen3-1.7B-Q3_K_M-CANDIDATE",
         "chapter2_main_capability_dataset_keys": list(MAIN_CAPABILITY_DATASETS),
         "chapter2_main_application_dataset_keys": list(MAIN_APPLICATION_DATASETS),
         "chapter2_main_experiment_dataset_keys": list(MAIN_EXPERIMENT_DATASETS),
@@ -561,7 +514,6 @@ def build_run_manifest(frozen: dict[str, Any], conflict_manifest: dict[str, Any]
         )
     add_student_probe_smoke_fields(manifest)
     add_repair_mining_smoke_fields(manifest)
-    add_cedd_structured_train_smoke_fields(manifest, explicit_hashes)
     add_student_probe_local_smoke_fields(manifest, explicit_hashes)
     add_repair_mining_local_smoke_fields(manifest, explicit_hashes)
     add_ch2_capability_eval_local_smoke_fields(manifest)

@@ -20,7 +20,7 @@ def load_module(relative: str, name: str):
 builder = load_module(
     "model_compression/build_p0a2_recovery_data.py", "build_p0a2_recovery_data"
 )
-evaluator = load_module("scripts/evaluate_p0a2_recovery.py", "evaluate_p0a2_recovery")
+evaluator = load_module("scripts/evaluate_edge_candidate_dev.py", "evaluate_edge_candidate_dev")
 
 
 def read_jsonl(path: Path) -> list[dict]:
@@ -89,13 +89,11 @@ class P0A2RecoveryTests(unittest.TestCase):
         with self.assertRaises(evaluator.RecoveryEvalError):
             evaluator.parse_map(["unknown=1"], int, "tokens")
 
-    def test_launcher_enforces_guarded_train_and_g0_reentry(self) -> None:
+    def test_rejected_launcher_cannot_resume_deepseek_training(self) -> None:
         launcher = (ROOT / "scripts/run_p0a2.sh").read_text(encoding="utf-8")
-        self.assertIn("--validation-selection-metric generation", launcher)
-        self.assertIn("--parent-preservation-weight 0.1", launcher)
-        self.assertIn("--min-generation-validation-improvement 0.01", launcher)
-        self.assertIn("--require-feasible", launcher)
-        self.assertNotIn("HumanEval.jsonl", launcher)
+        self.assertIn("P0-A2 is closed", launcher)
+        self.assertIn("run_p0a3.sh", launcher)
+        self.assertNotIn("train_cedd_repair.py", launcher)
 
 
 if __name__ == "__main__":

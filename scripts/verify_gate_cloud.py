@@ -333,8 +333,9 @@ def stream_chat_completion(
 
 def start_command(model_dir: Path, port: int) -> str:
     return (
-        f"vllm serve {display_path(model_dir)} --quantization awq --max-model-len 4096 "
-        f"--gpu-memory-utilization 0.85 --tensor-parallel-size 1 --port {port}"
+        f"CUDA_VISIBLE_DEVICES=0,1,2,3 vllm serve {display_path(model_dir)} "
+        f"--quantization awq --max-model-len 4096 --gpu-memory-utilization 0.85 "
+        f"--tensor-parallel-size 4 --port {port}"
     )
 
 

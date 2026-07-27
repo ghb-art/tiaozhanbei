@@ -1,0 +1,57 @@
+{
+  "gate": "P0-edge-candidate-dev",
+  "check_version": "2.0",
+  "created_by": "scripts/evaluate_edge_candidate_dev.py",
+  "created_ts": "2026-07-18T11:38:04.442739+00:00",
+  "status": "passed",
+  "candidate_name": "qwen14-teacher-endpoint-smoke",
+  "backend": "openai_compatible_http",
+  "endpoint": "http://127.0.0.1:8000/v1/chat/completions",
+  "endpoint_model_id": "/workspace/project_tiaozhanbei/tiaozhanbei/models/pretrained/Qwen--Qwen2.5-14B-Instruct-AWQ",
+  "model": {
+    "path": "models/pretrained/Qwen--Qwen2.5-14B-Instruct-AWQ",
+    "file_count": 27,
+    "bytes": 9991787349,
+    "key_metadata_hash": "3a2e31a312e41784737986360f7bfc885054f7e9310556c3e0992436cd10b756"
+  },
+  "validation_data": "data/distill/p0a2_recovery_validation.jsonl",
+  "validation_data_sha256": "e5fd483e537173f7a2ddafc71a49310799d71f5bdcf37406499d8862d0c4b8c0",
+  "output_trace": "reports/audit/p0a3_qwen14_teacher_endpoint_smoke.jsonl",
+  "output_trace_sha256": "d3e2e83af0b3589c56741c51a0ebb5a3da17785484a2a4f4a44835b717bd85ce",
+  "sample_count": 3,
+  "dataset_counts": {
+    "cmmlu": 1,
+    "gsm8k": 1,
+    "humaneval": 1
+  },
+  "correct_counts": {
+    "cmmlu": 1,
+    "gsm8k": 1
+  },
+  "accuracy_by_dataset": {
+    "cmmlu": 1.0,
+    "gsm8k": 1.0,
+    "humaneval": 0.0
+  },
+  "macro_accuracy": 0.6666666666666666,
+  "min_accuracy_by_dataset": {},
+  "min_macro_accuracy": 0.0,
+  "threshold_gate_enabled": false,
+  "threshold_failures": {},
+  "generation_error_count": 0,
+  "failure_reasons": [],
+  "mean_latency_ms": 12857.326327667883,
+  "peak_gpu_memory_mb_decimal": 0.0,
+  "dtype": "bfloat16",
+  "max_input_length": 1024,
+  "max_new_tokens_by_dataset": {
+    "gsm8k": 512,
+    "humaneval": 512,
+    "cmmlu": 256
+  },
+  "close_reasoning_prefix": false,
+  "disable_thinking": false,
+  "formal_test_labels_used": false,
+  "errors": [],
+  "report_hash": "d4a50f5d6240510d7187fd2aa5d63cf484a675f1090cbf09cea1839ee0b296db"
+}

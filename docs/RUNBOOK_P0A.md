@@ -1,78 +1,112 @@
-# P0-A2 DeepSeek 能力恢复运行手册
+# P0-A3 边缘模型重新选型运行手册
 
 更新时间：2026-07-18
 
-首轮 `G0-CAPMEM` 已关闭，9 个候选中没有一个同时满足能力与 1.5GB 峰值总内存门槛。当前只允许使用 `DeepSeek-R1-Distill-Qwen-1.5B` 的 Q2_K_S 内存安全基座做一次受控能力恢复；v24-v31 启动链已删除，历史结论和不可变证据保留在 `docs/REVISION_LOG.md` 与 `reports/audit/`。
+DeepSeek P0-A2 已由完整 BF16 Dev 关闭：Math 84.38%、Code 23.81%、NLP 17.19%。当前只执行能力优先的 P0-A3：Qwen3-1.7B Q3_K_M 为主候选，Qwen2.5-1.5B Q3_K_M 为条件备用。
 
-## 1. 当前边界
-
-- 基座：`deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B`。
-- 已知内存：Q2_K_S GGUF 716.71MB，20 次预热 + 100 次测量的峰值总内存 920.23MB。
-- 已知阻塞：首轮 matched smoke 能力不达标，不能进入 P1 系统集成。
-- 训练数据：GSM8K official train 教师验真数据、MBPP official train、synthetic CMMLU 格式恢复数据。
-- 选模数据：GSM8K train 内部留出、MBPP dev_select、CMMLU official dev。
-- 正式 GSM8K test、HumanEval 164 题、CMMLU test 不参与训练或选模。
-
-## 2. 无 GPU 预检
+## 1. 无模型预检
 
 ```bash
-bash scripts/run_p0a2.sh build-data
-bash scripts/run_p0a2.sh preflight
+bash scripts/run_p0a3.sh preflight
+bash scripts/run_p0a3.sh checks
 ```
 
-数据门禁会生成：
+预检要求 170 条 Dev 完整、训练/验证组隔离、正式集引用为 0，并核对 DeepSeek 拒绝证据。`run_p0a2.sh` 已禁用，任何旧训练命令都会直接退出。
 
-- `data/distill/p0a2_recovery_train.jsonl`；
-- `data/distill/p0a2_recovery_validation.jsonl`；
-- `reports/audit/gate_p0a2_recovery_data.json`。
-
-必须满足训练/验证 group overlap 为 0、正式集引用为 0、HumanEval prompt overlap 为 0。
-
-## 3. 全精度能力上限
-
-先用一题/任务验证环境和输出协议：
+## 2. 恢复主候选
 
 ```bash
-bash scripts/run_p0a2.sh upper-bound-smoke
+bash scripts/run_p0a3.sh download-primary
 ```
 
-再运行完整的 170 题独立 Dev：
+只下载 `Qwen/Qwen3-1.7B`。不要恢复 Qwen3 IQ2_XS；它虽然峰值为 1306.14MB，但 matched capability 已失败。
+
+## 3. 建立同口径 Teacher 分母
+
+终端 A：
 
 ```bash
-bash scripts/run_p0a2.sh upper-bound
+bash scripts/run_p0a.sh teacher-plan
+bash scripts/run_p0a.sh teacher-serve
 ```
 
-该结果是 DeepSeek 未量化基座的可达上限证据，不使用正式测试集。如果全精度基座在 Math/Code 上也明显无可达路径，应停止训练，转向结构化工具头，而不是从正式错题制造监督。
-
-## 4. 受控 LoRA 恢复
-
-默认使用 GPU 0-3；可通过 `P0A2_GPUS=0,1` 覆盖：
+终端 B：
 
 ```bash
-bash scripts/run_p0a.sh gpu-preflight
-bash scripts/run_p0a2.sh train
-bash scripts/run_p0a2.sh evaluate-adapter
+bash scripts/run_p0a3.sh teacher-dev
 ```
 
-训练固定使用 group 隔离 NLL validation、170 题外部 generation validation、父正确 token 保护、每 16 updates 选模和 best restore。generation macro accuracy 没有至少提升 1 个百分点时恢复 step 0，不允许因为训练 loss 下降而晋级。
+默认 `P0A_GPUS=0,1,2,3`，启动一个端口为 8000 的 vLLM 服务，并将 Qwen2.5-14B-AWQ 以 tensor parallel 4 分布到四张 GPU；不是启动四个单卡副本。`teacher-serve` 会先检查四卡显存，旧单卡 Teacher 尚未停止时会拒绝启动。`teacher-plan` 只打印 GPU 组和最终 vLLM 参数，不占用显存。
 
-## 5. 合并、重要性量化与 G0 回归
+默认访问 `http://127.0.0.1:8000`。如端口不同，设置 `P0A3_TEACHER_URL`。评测器会通过 `/v1/models` 自动发现 vLLM 实际发布的模型 ID，避免服务使用绝对路径、客户端使用相对路径时产生 HTTP 404；只有服务同时发布多个模型时，才需要显式设置 `P0A3_TEACHER_MODEL_ID`。Teacher、HF 候选和 Q3 候选必须使用 `p0a2_recovery_validation.jsonl` 中完全相同的 170 个 sample ID。
+
+## 4. Qwen3 未量化能力 Gate
 
 ```bash
-bash scripts/run_p0a2.sh export
-bash scripts/run_p0a2.sh build-imatrix
-bash scripts/run_p0a2.sh quantize
-bash scripts/run_p0a2.sh g0-reentry
+bash scripts/run_p0a3.sh qwen3-hf-smoke
+bash scripts/run_p0a3.sh qwen3-hf
 ```
 
-`g0-reentry` 重新执行同口径 matched capability smoke 和 20+100 请求峰值内存测试。只有 Math、Code、NLP 与宏平均保持率均不低于 80%，且峰值总内存不超过 1500MB，候选才能成为主边缘模型。
+Qwen3 使用 `enable_thinking=false`，三任务 token 上限固定为 CMMLU 256、GSM8K 512、Code 512。`qwen3-hf` 结束后自动计算：
 
-## 6. 常用检查
+完整 `teacher-dev` 结束后，在终端 A 按 `Ctrl+C`，或在另一终端运行 `bash scripts/run_p0a.sh teacher-stop`，停止四卡 Teacher。确认显存释放后再运行 Qwen3 HF。HF 评测仍会从 `nvidia-smi` 自动选择空闲显存最多的 GPU；需要固定设备时可使用 `P0A3_EVAL_GPU=1 bash scripts/run_p0a3.sh qwen3-hf`。四卡 Teacher 运行期间不得同时加载本地候选。
+
+```text
+Math_ratio = Qwen3_GSM8K / Qwen14_GSM8K
+Code_ratio = Qwen3_MBPP / Qwen14_MBPP
+NLP_ratio  = Qwen3_CMMLU / Qwen14_CMMLU
+```
+
+三项和 capped macro 均须 ≥80%，生成错误须为 0。任一失败即停止，不训练、不量化，并留下 `gate_p0a3_qwen3_1p7b_hf_retention.json`。
+
+## 5. Importance-aware Q3 与同集复验
+
+仅在 HF Gate 通过后：
 
 ```bash
-bash scripts/run_p0a.sh checks
-bash scripts/run_p0a2.sh checks
-bash scripts/run_p0a.sh g0-summary
+bash scripts/run_p0a3.sh prepare-qwen3
+bash scripts/run_p0a3.sh qwen3-q3-dev
 ```
 
-不要恢复已删除的 v24-v31 启动命令，不要根据正式能力评测错误继续调参，也不要把 GGUF 文件大小当成运行峰值内存。
+校准文本只来自 train-only 数据。Q3 使用Q8 KV cache，并必须在同一170条上再次通过逐任务80%保持率，不能以平均分掩盖单项失败。Q4 KV已被F16/Q3首token logits对照明确否决，不得为了节省内存恢复。
+
+项目固定llama.cpp提交 `2d973636e292ee6f75fadcf08d29cb33511f509f`，并由 `setup_llama_cpp.sh` 应用 `patches/llama_cpp_chat_utf8_sanitize.patch`。该补丁避免Q3偶发非法UTF-8字节触发PEG HTTP 500，只把非法字节保留为显式替代字符，不改logits或评分。若Q3 trace不足170条，必须先排除运行错误，不能把缺失任务的0分当成模型拒绝。
+
+若完整 Q3 运行无生成错误但能力相对 HF 异常大幅下降，先运行同后端 F16 对照：
+
+```bash
+bash scripts/run_p0a3.sh qwen3-f16-control
+```
+
+该命令固定使用F16 GGUF与F16 KV，只验证GGUF转换和llama.cpp能否复现HF。原F16+Q4 KV结果仅保留为失败配置证据；它与HF的token ID完全一致，但logits明显偏移，不能用于否决GGUF或Q3权重。F16对照不是边侧候选，不参与内存Gate，也不能解锁正式G0。
+
+## 6. 内存与一次正式 G0
+
+```bash
+bash scripts/run_p0a3.sh qwen3-memory
+bash scripts/run_p0a3.sh qwen3-formal-g0
+```
+
+内存固定 20 次预热 + 100 次测量、50ms 采样、batch 1、context 512、CPU llama.cpp 完整进程树。P0-A3 Dev 要求峰值 ≤1400MB，为正式 1500MB 留出余量。正式 G0 只有在 HF Dev、Q3 Dev 和内存 Dev 全部通过后才可运行一次。
+
+## 7. 条件备用路线
+
+仅当 Qwen3 的 HF Dev、Q3 Dev 或 1400MB 内存 Gate 之一形成明确拒绝审计时：
+
+```bash
+bash scripts/run_p0a3.sh download-fallback
+bash scripts/run_p0a3.sh qwen25-hf
+bash scripts/run_p0a3.sh prepare-qwen25
+bash scripts/run_p0a3.sh qwen25-q3-dev
+bash scripts/run_p0a3.sh qwen25-memory
+bash scripts/run_p0a3.sh qwen25-formal-g0
+```
+
+备用路线使用完全相同的数据、Teacher 分母、量化和内存协议。不得同时调两个候选，也不得根据正式 G1 错题返回修改模型。
+
+## 8. 结果解释
+
+- `evaluate_edge_candidate_dev.py` 中的 `status=passed` 只在配置准确率阈值时代表绝对能力门；P0-A3 的晋级结论以 `summarize_edge_candidate_dev.py` 保持率审计为准。
+- HF GPU 显存不是 G3；G3 使用 `verify_gate_g3_gguf.py` 的完整进程树 RSS + 设备内存。
+- 170 条是 selection-only Dev，不是正式 GSM8K test、HumanEval 或 CMMLU test。
+- 任何候选只有 G1/G3 同时通过才可写入正式边缘模型名称。

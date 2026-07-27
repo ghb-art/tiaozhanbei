@@ -1,0 +1,57 @@
+{
+  "gate": "P0-edge-candidate-dev",
+  "check_version": "2.0",
+  "created_by": "scripts/evaluate_edge_candidate_dev.py",
+  "created_ts": "2026-07-18T13:28:43.823184+00:00",
+  "status": "passed",
+  "candidate_name": "qwen3-1p7b-q3-k-m",
+  "backend": "openai_compatible_http",
+  "endpoint": "http://127.0.0.1:18431",
+  "endpoint_model_id": "qwen3-1p7b-q3-k-m",
+  "model": {
+    "path": "models/quantized/qwen3-1.7b-q3_k_m.gguf",
+    "bytes": 1073242688,
+    "sha256": "31917ce8f19541e1e4d2551acd90239f4a56b49e0ce10e5634d36b851bb3fe27"
+  },
+  "validation_data": "data/distill/p0a2_recovery_validation.jsonl",
+  "validation_data_sha256": "e5fd483e537173f7a2ddafc71a49310799d71f5bdcf37406499d8862d0c4b8c0",
+  "output_trace": "data/eval/p0a3_qwen3_1p7b_q3_dev.jsonl",
+  "output_trace_sha256": "bf0200e908c2abdd8438e63e2f60cf9e27a053c5c7f102266079da3f6e540e80",
+  "sample_count": 170,
+  "dataset_counts": {
+    "cmmlu": 64,
+    "gsm8k": 64,
+    "humaneval": 42
+  },
+  "correct_counts": {
+    "cmmlu": 21,
+    "gsm8k": 28,
+    "humaneval": 13
+  },
+  "accuracy_by_dataset": {
+    "cmmlu": 0.328125,
+    "gsm8k": 0.4375,
+    "humaneval": 0.30952380952380953
+  },
+  "macro_accuracy": 0.3583829365079365,
+  "min_accuracy_by_dataset": {},
+  "min_macro_accuracy": 0.0,
+  "threshold_gate_enabled": false,
+  "threshold_failures": {},
+  "generation_error_count": 0,
+  "failure_reasons": [],
+  "mean_latency_ms": 6647.47170067447,
+  "peak_gpu_memory_mb_decimal": 0.0,
+  "dtype": "bfloat16",
+  "max_input_length": 1024,
+  "max_new_tokens_by_dataset": {
+    "gsm8k": 512,
+    "humaneval": 512,
+    "cmmlu": 256
+  },
+  "close_reasoning_prefix": false,
+  "disable_thinking": false,
+  "formal_test_labels_used": false,
+  "errors": [],
+  "report_hash": "1a4fde536508abae1454623beff4e898be6aaa1bb8cbd57037ce73347d2b221a"
+}

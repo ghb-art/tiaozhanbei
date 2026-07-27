@@ -79,8 +79,6 @@ RUN_MANIFEST_REQUIRED_KEYS = [
     "student_probe_trace_hash",
     "counterfactual_repair_trace_hash",
     "quant_behavior_trace_hash",
-    "sft_config_hash",
-    "lora_adapter_sha256",
     "quant_config_hash",
     "planner_model_hash",
     "calibration_snapshot_hash",
@@ -407,9 +405,9 @@ def validate_run_manifest(data: dict[str, Any]) -> list[str]:
 
     if data.get("teacher_model_id") != "Qwen/Qwen2.5-14B-Instruct-AWQ":
         errors.append("$.teacher_model_id must match the implementation plan")
-    if data.get("student_init_model_id") != "deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B":
+    if data.get("student_init_model_id") != "Qwen/Qwen3-1.7B":
         errors.append("$.student_init_model_id must match the implementation plan")
-    if data.get("edge_model_name") != "DB4AI-Edge-P0A2-DeepSeek-1.5B-Q2_K_S":
+    if data.get("edge_model_name") != "DB4AI-Edge-P0A3-Qwen3-1.7B-Q3_K_M-CANDIDATE":
         errors.append("$.edge_model_name must match the implementation plan")
 
     fallback_events = data.get("fallback_events")

@@ -264,8 +264,6 @@ def measure_candidate(candidate: dict[str, Any], common: dict[str, Any], index: 
     ]
     if not bool(common.get("repack", False)):
         command.append("--no-repack")
-    for lora_path in candidate.get("lora_adapters", []):
-        command.extend(["--lora", str(lora_path)])
     return run_command(command)
 
 
@@ -286,7 +284,7 @@ def capability_smoke_candidate(candidate: dict[str, Any], common: dict[str, Any]
         "--port",
         str(port),
         "--ctx-size",
-        str(common.get("ctx_size", 512)),
+        str(common.get("capability_ctx_size", common.get("ctx_size", 512))),
         "--threads",
         str(common.get("threads", 8)),
         "--parallel",
@@ -306,10 +304,6 @@ def capability_smoke_candidate(candidate: dict[str, Any], common: dict[str, Any]
     ]
     if not bool(common.get("repack", False)):
         command.append("--no-repack")
-    for lora_path in candidate.get("lora_adapters", []):
-        command.extend(["--lora", str(resolve_path(str(lora_path)))])
-    if candidate.get("lora_adapters"):
-        command.append("--lora-init-without-apply")
     command.extend(str(value) for value in candidate.get("capability_server_args", []))
     created = datetime.now(timezone.utc).isoformat()
     handle = server_log.open("w", encoding="utf-8")
@@ -370,14 +364,6 @@ def capability_smoke_candidate(candidate: dict[str, Any], common: dict[str, Any]
                 [
                     "--fail-fast-min-accuracy-map",
                     ",".join(f"{key}={value}" for key, value in sorted(fail_fast_map.items())),
-                ]
-            )
-        endpoint_lora_map = candidate.get("endpoint_lora_map", {})
-        if endpoint_lora_map:
-            eval_command.extend(
-                [
-                    "--endpoint-lora-map",
-                    ",".join(f"{key}={value}" for key, value in sorted(endpoint_lora_map.items())),
                 ]
             )
         eval_result = run_command(eval_command, resolve_path(str(candidate.get("capability_log", f"logs/g0/{candidate['name']}_capability.log"))))
@@ -504,13 +490,8 @@ def memory_result(candidate: dict[str, Any], common: dict[str, Any]) -> dict[str
 def candidate_result(candidate: dict[str, Any], common: dict[str, Any]) -> dict[str, Any]:
     gguf_value = candidate.get("gguf", "")
     gguf = resolve_path(str(gguf_value)) if gguf_value else None
-    lora_paths = [resolve_path(str(value)) for value in candidate.get("lora_adapters", [])]
-    base_exists = bool(gguf and gguf.is_file())
-    loras_exist = all(path.is_file() for path in lora_paths)
-    artifact_exists = base_exists and loras_exist
-    base_bytes = gguf.stat().st_size if base_exists and gguf is not None else 0
-    lora_bytes = sum(path.stat().st_size for path in lora_paths if path.is_file())
-    artifact_bytes = base_bytes + lora_bytes
+    artifact_exists = bool(gguf and gguf.is_file())
+    artifact_bytes = gguf.stat().st_size if artifact_exists and gguf is not None else 0
     capability = capability_result(candidate, common)
     memory = memory_result(candidate, common)
     cap_pass = capability["passed"]
@@ -535,9 +516,6 @@ def candidate_result(candidate: dict[str, Any], common: dict[str, Any]) -> dict[
         "artifact_exists": artifact_exists,
         "artifact_bytes": artifact_bytes,
         "artifact_mb_decimal": artifact_bytes / 1_000_000,
-        "base_gguf_bytes": base_bytes,
-        "resident_lora_paths": [display_path(path) for path in lora_paths],
-        "resident_lora_bytes": lora_bytes,
         "capability": capability,
         "memory": memory,
         "joint_feasible": feasible,

@@ -1,0 +1,72 @@
+{
+  "gate": "P0-A3-matched-dev-retention",
+  "check_version": "1.0",
+  "created_by": "scripts/summarize_edge_candidate_dev.py",
+  "created_ts": "2026-07-18T12:32:01.768730+00:00",
+  "candidate_name": "qwen3-1p7b-hf",
+  "teacher_trace": "data/eval/p0a3_qwen14_teacher_dev.jsonl",
+  "teacher_trace_sha256": "2d421843ab58ef1cf5788d0f0330805c9af24dd2c75fdce25156f2cbc21c2bea",
+  "candidate_trace": "data/eval/p0a3_qwen3_1p7b_hf_dev.jsonl",
+  "candidate_trace_sha256": "d7077e54b8458df3dba3627f72241958a9b3ae053311b248b2b65289587851b2",
+  "formal_test_labels_used": false,
+  "status": "passed",
+  "sample_count": 170,
+  "teacher_sample_count": 170,
+  "expected_dataset_counts": {
+    "gsm8k": 64,
+    "humaneval": 42,
+    "cmmlu": 64
+  },
+  "teacher_dataset_counts": {
+    "cmmlu": 64,
+    "gsm8k": 64,
+    "humaneval": 42
+  },
+  "dataset_counts": {
+    "cmmlu": 64,
+    "gsm8k": 64,
+    "humaneval": 42
+  },
+  "complete_frozen_dev": true,
+  "teacher_correct_counts": {
+    "cmmlu": 46,
+    "gsm8k": 64,
+    "humaneval": 31
+  },
+  "candidate_correct_counts": {
+    "cmmlu": 40,
+    "gsm8k": 56,
+    "humaneval": 26
+  },
+  "teacher_accuracy_by_dataset": {
+    "gsm8k": 1.0,
+    "humaneval": 0.7380952380952381,
+    "cmmlu": 0.71875
+  },
+  "candidate_accuracy_by_dataset": {
+    "gsm8k": 0.875,
+    "humaneval": 0.6190476190476191,
+    "cmmlu": 0.625
+  },
+  "ratios": {
+    "math_ratio": 0.875,
+    "code_ratio": 0.8387096774193549,
+    "nlp_ratio": 0.8695652173913043
+  },
+  "capped_macro_ratio": 0.8610916316035531,
+  "min_ratio": 0.8,
+  "ratio_failures": {},
+  "teacher_generation_error_count": 0,
+  "teacher_generation_errors_by_dataset": {},
+  "generation_error_count": 0,
+  "generation_errors_by_dataset": {},
+  "missing_from_candidate_count": 0,
+  "missing_from_candidate_hash": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+  "extra_in_candidate_count": 0,
+  "extra_in_candidate_hash": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+  "dataset_mismatch_count": 0,
+  "dataset_mismatch_hash": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+  "matched_sample_ids": true,
+  "passed": true,
+  "report_hash": "524f10ec4a8f846e9e5f77f1f26a5543dcc934a71d2a159dd238976ee43564d8"
+}

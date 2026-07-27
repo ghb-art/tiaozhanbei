@@ -3,6 +3,7 @@ from __future__ import annotations
 import importlib.util
 import json
 import sys
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -24,6 +25,10 @@ contest = load_module(
     "p0a4r3_code_contests_utils",
     "model_compression/code_contests_utils.py",
 )
+code_data = load_module(
+    "p0a4r3_code_data",
+    "model_compression/build_p0a4r3_code_data.py",
+)
 nlp = load_module(
     "p0a4r3_nlp_data",
     "model_compression/generate_p0a4r3_nlp_data.py",
@@ -31,6 +36,21 @@ nlp = load_module(
 
 
 class P0A4R3SharedTests(unittest.TestCase):
+    class FakeTokenizer:
+        @staticmethod
+        def encode(text: str, add_special_tokens: bool = False) -> list[int]:
+            del add_special_tokens
+            return list(range(len(text.split())))
+
+        @staticmethod
+        def apply_chat_template(
+            messages: list[dict[str, str]],
+            **_: object,
+        ) -> list[int]:
+            return list(
+                range(sum(len(message["content"].split()) for message in messages))
+            )
+
     def test_contest_solution_must_pass_stdio_tests(self) -> None:
         source = (
             "import sys\n"
@@ -54,6 +74,72 @@ class P0A4R3SharedTests(unittest.TestCase):
         )
         self.assertFalse(safe)
         self.assertIn(reason, {"forbidden_import", "forbidden_attribute"})
+
+    def test_code_distill_selects_shortest_executable_reference(self) -> None:
+        long_solution = (
+            "import sys\n"
+            "values = list(map(int, sys.stdin.read().split()))\n"
+            "answer = 0\n"
+            "for value in values:\n"
+            "    answer = answer + value\n"
+            "print(answer)\n"
+        )
+        short_solution = (
+            "import sys\n"
+            "print(sum(map(int, sys.stdin.read().split())))\n"
+        )
+        candidate = code_data.Candidate(
+            cache_key="cache",
+            group_id="code_contests/train/test",
+            name="sum",
+            description="Read integers and print their sum.",
+            origin="test",
+            difficulty="easy",
+            tests=(
+                {"input": "1 2\n", "output": "3\n"},
+                {"input": "10 -3 5\n", "output": "12\n"},
+                {"input": "0\n", "output": "0\n"},
+            ),
+            solutions=(long_solution, short_solution),
+        )
+        row, reason = code_data.verified_row(
+            candidate,
+            timeout_sec=2.0,
+            tokenizer=self.FakeTokenizer(),
+            max_sequence_tokens=128,
+            solution_selection="shortest_tokens",
+            max_answer_tokens=64,
+        )
+        self.assertEqual(reason, "")
+        self.assertIsNotNone(row)
+        assert row is not None
+        self.assertEqual(row["answer"], short_solution)
+        self.assertEqual(
+            row["distillation_quality"]["solution_selection"],
+            "shortest_tokens",
+        )
+        self.assertTrue(
+            row["distillation_quality"]["all_selected_tests_passed"]
+        )
+
+    def test_code_builder_reads_explicit_group_exclusions(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "excluded.jsonl"
+            path.write_text(
+                "\n".join(
+                    [
+                        json.dumps({"validation_group_id": "code/train/1"}),
+                        json.dumps({"validation_group_id": "code/train/2"}),
+                        json.dumps({"validation_group_id": "code/train/1"}),
+                    ]
+                )
+                + "\n",
+                encoding="utf-8",
+            )
+            self.assertEqual(
+                code_data.load_excluded_groups([path]),
+                {"code/train/1", "code/train/2"},
+            )
 
     def test_nlp_teacher_output_requires_matching_train_label(self) -> None:
         request = {
@@ -116,6 +202,28 @@ class P0A4R3SharedTests(unittest.TestCase):
             counts[row["domain"]] = counts.get(row["domain"], 0) + 1
         self.assertEqual(len(counts), 8)
         self.assertGreaterEqual(min(counts.values()), 8)
+
+    def test_nlp_zero_target_and_exclusions_support_fresh_validation_only(self) -> None:
+        self.assertEqual(
+            nlp.select_balanced_verified(
+                [],
+                target=0,
+                seed=1,
+                split_name="train",
+                minimum_equal_quota_ratio=0.8,
+            ),
+            [],
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "old.jsonl"
+            path.write_text(
+                json.dumps({"validation_group_id": "mmlu-aux/old"}) + "\n",
+                encoding="utf-8",
+            )
+            self.assertEqual(
+                nlp.excluded_validation_groups([path]),
+                {"mmlu-aux/old"},
+            )
 
     def test_protocol_freezes_math_and_only_registers_two_shared_candidates(self) -> None:
         config = json.loads(

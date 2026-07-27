@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import importlib.util
+import os
 import sys
 import unittest
 from pathlib import Path
@@ -58,6 +59,23 @@ class MemoryWatchdogTests(unittest.TestCase):
         self.assertIn('MEMORY_GUARD_THRESHOLD_PERCENT:-60', source)
         self.assertIn('"$ROOT/scripts/memory_watchdog.py" run', source)
         self.assertIn('-- "$@"', source)
+
+    def test_process_identity_matches_current_process(self) -> None:
+        start_time = watchdog.process_start_time_ticks(os.getpid())
+        self.assertIsNotNone(start_time)
+        assert start_time is not None
+        self.assertTrue(
+            watchdog.process_identity_matches(os.getpid(), start_time)
+        )
+        self.assertFalse(
+            watchdog.process_identity_matches(os.getpid(), start_time + 1)
+        )
+
+    def test_monitor_parser_requires_a_positive_pid(self) -> None:
+        parser = watchdog.build_parser()
+        args = parser.parse_args(["monitor", "--pid", str(os.getpid())])
+        self.assertEqual(args.pid, os.getpid())
+        self.assertEqual(args.threshold_percent, 60.0)
 
 
 if __name__ == "__main__":

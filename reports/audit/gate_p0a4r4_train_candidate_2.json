@@ -2,21 +2,21 @@
   "gate": "P0-A4-LORA-TRAIN",
   "check_version": "1.0",
   "created_by": "model_compression/train_p0a4_lora.py",
-  "created_ts": "2026-07-27T08:11:26.194079+00:00",
-  "status": "passed",
+  "created_ts": "2026-07-27T11:26:08.614002+00:00",
+  "status": "dry_run_passed",
   "role": "student_shared",
   "task": "shared",
-  "candidate_index": 1,
+  "candidate_index": 2,
   "model_dir": "models/checkpoints/p0a4/student-shared-merged",
-  "train_data": "data/distill/p0a4r3_shared_train.jsonl",
-  "train_data_hash": "06c734d55544320de23c430ae9d02102ea51e7ed0b13b1edc63f28bd4008e63b",
-  "validation_data": "data/distill/p0a4r3_train_only_validation.jsonl",
-  "validation_data_hash": "7a86e33fa3657e87f61bcc88354d5e7f88ead444b6324b2a38f1520e12b2b1c2",
+  "train_data": "data/distill/p0a4r4_shared_train.jsonl",
+  "train_data_hash": "ce5d4c652051ddcc8bf7c423af8ffac97824a34d2843deac58bf7e6ee2387ec7",
+  "validation_data": "data/distill/p0a4r4_train_only_validation.jsonl",
+  "validation_data_hash": "c5edb1f29964e9a2f038ccf2924bab6907470a0c447d964e09de8db12c17ab88",
   "train_rows": 7792,
   "source_train_counts": {
+    "cmmlu": 3000,
     "gsm8k": 1000,
-    "humaneval": 3792,
-    "cmmlu": 3000
+    "humaneval": 3792
   },
   "source_unique_prompt_counts": {
     "gsm8k": 1000,
@@ -25,14 +25,14 @@
   },
   "validation_rows": 640,
   "train_counts": {
+    "humaneval": 3792,
     "cmmlu": 3000,
-    "gsm8k": 1000,
-    "humaneval": 3792
+    "gsm8k": 1000
   },
-  "output_dir": "models/checkpoints/p0a4r3/candidate-1",
+  "output_dir": "models/checkpoints/p0a4r4/candidate-2",
   "lora": {
-    "rank": 8,
-    "alpha": 16,
+    "rank": 16,
+    "alpha": 32,
     "dropout": 0.05,
     "target_modules": [
       "q_proj",
@@ -45,8 +45,8 @@
     ]
   },
   "optimization": {
-    "learning_rate": 5e-05,
-    "epochs": 2.0,
+    "learning_rate": 1e-05,
+    "epochs": 1.0,
     "max_upsample_factor": 1.0,
     "target_rows_by_task": {
       "gsm8k": 1000,
@@ -55,7 +55,7 @@
     },
     "max_seq_length": 1536,
     "per_device_train_batch_size": 1,
-    "gradient_accumulation_steps": 8,
+    "gradient_accumulation_steps": 16,
     "max_steps": -1,
     "optimizer": "adamw_torch",
     "optimizer_placement": "gpu_ddp_replicated",
@@ -79,6 +79,23 @@
       "loss_weights": {},
       "weighted_mass_by_source": {},
       "row_duplication": false
+    },
+    "explicit_sample_weights": {
+      "enabled": true,
+      "key": "training_weight",
+      "minimum": 0.5056,
+      "maximum": 4.328767123287672,
+      "mass_by_task": {
+        "humaneval": 3791.9999999999673,
+        "cmmlu": 3000.0,
+        "gsm8k": 1000.0
+      },
+      "mass_by_code_origin": {
+        "apps": 1263.9999999999432,
+        "code_contests": 1263.9999999999873,
+        "mbpp": 1263.9999999999977
+      },
+      "row_duplication": false
     }
   },
   "dependencies": {
@@ -90,23 +107,5 @@
   },
   "formal_test_reference_count": 0,
   "errors": [],
-  "metrics": {
-    "train_runtime": 2088.4202,
-    "train_samples_per_second": 7.462,
-    "train_steps_per_second": 0.233,
-    "total_flos": 4.598793950252237e+16,
-    "train_loss": 0.6561884924217507,
-    "epoch": 1.9938398357289526,
-    "best_eval_loss": 0.7303768396377563
-  },
-  "best_checkpoint": "models/checkpoints/p0a4r3/candidate-1/checkpoint-486",
-  "checkpoint_candidates": [],
-  "published_adapter_files": [
-    "adapter_config.json",
-    "adapter_model.safetensors",
-    "README.md"
-  ],
-  "deployment_ready": true,
-  "trainable_parameters": 8716288,
-  "report_hash": "271ba7b5c771765fa1481bc5c8bc8911151e37f63cafbb3b5a3cdb4d2c6c2d5a"
+  "report_hash": "0c402e4d928320ac77c5ca76ad141fe6232e810c3c61b3ceb8704a910e949513"
 }

@@ -185,6 +185,51 @@ def equal_source_loss_weights(
     return counts, weights
 
 
+def explicit_sample_weight_summary(
+    rows: list[dict[str, Any]],
+    weight_key: str,
+) -> dict[str, Any]:
+    """Validate pre-registered row weights and summarize their loss mass."""
+    if not weight_key.strip():
+        raise TrainingError("sample weight key must not be empty")
+    mass_by_task: Counter[str] = Counter()
+    mass_by_code_origin: Counter[str] = Counter()
+    minimum = math.inf
+    maximum = 0.0
+    for row in rows:
+        if weight_key not in row:
+            raise TrainingError(
+                f"Missing explicit sample weight key {weight_key}: "
+                f"{row.get('sample_id', '<missing>')}"
+            )
+        weight = float(row[weight_key])
+        if not math.isfinite(weight) or weight <= 0:
+            raise TrainingError(
+                f"Invalid explicit sample weight {weight}: "
+                f"{row.get('sample_id', '<missing>')}"
+            )
+        task = str(row.get("dataset_key", ""))
+        mass_by_task[task] += weight
+        if task == "humaneval":
+            origin = str(row.get("origin", "")).strip()
+            if not origin:
+                raise TrainingError(
+                    "Code row with explicit weights is missing origin: "
+                    f"{row.get('sample_id', '<missing>')}"
+                )
+            mass_by_code_origin[origin] += weight
+        minimum = min(minimum, weight)
+        maximum = max(maximum, weight)
+    return {
+        "key": weight_key,
+        "minimum": minimum,
+        "maximum": maximum,
+        "mass_by_task": dict(mass_by_task),
+        "mass_by_code_origin": dict(mass_by_code_origin),
+        "row_duplication": False,
+    }
+
+
 def dependency_versions() -> dict[str, str]:
     versions: dict[str, str] = {}
     for module in ("torch", "transformers", "accelerate", "deepspeed", "peft"):
@@ -255,6 +300,7 @@ class TokenizedDataset:
         disable_thinking: bool,
         source_balance_key: str = "",
         source_loss_weights: dict[str, float] | None = None,
+        sample_weight_key: str = "",
     ):
         self.rows = rows
         self.tokenizer = tokenizer
@@ -262,6 +308,7 @@ class TokenizedDataset:
         self.disable_thinking = disable_thinking
         self.source_balance_key = source_balance_key
         self.source_loss_weights = source_loss_weights or {}
+        self.sample_weight_key = sample_weight_key
 
     def __len__(self) -> int:
         return len(self.rows)
@@ -276,6 +323,10 @@ class TokenizedDataset:
                 feature["sample_weight"] = float(self.source_loss_weights[source])
             except KeyError as exc:
                 raise TrainingError(f"Missing loss weight for source: {source}") from exc
+        elif self.sample_weight_key:
+            feature["sample_weight"] = float(
+                self.rows[index][self.sample_weight_key]
+            )
         return feature
 
 
@@ -364,6 +415,15 @@ def parse_args() -> argparse.Namespace:
         help=(
             "Optional row field used for equal-source loss weighting. This preserves every "
             "unique row exactly once and does not create duplicated training examples."
+        ),
+    )
+    parser.add_argument(
+        "--sample-weight-key",
+        default="",
+        help=(
+            "Optional pre-registered positive row field used as the per-example loss "
+            "weight. Unlike --source-balance-key, this is allowed for shared Student "
+            "training and must be present on every selected training row."
         ),
     )
     parser.add_argument("--per-device-train-batch-size", type=int, default=1)
@@ -485,6 +545,11 @@ def main() -> int:
             raise TrainingError("Task filtering produced an empty train or validation set")
         source_balance_counts: dict[str, int] = {}
         source_loss_weights: dict[str, float] = {}
+        explicit_weight_summary: dict[str, Any] = {}
+        if args.source_balance_key and args.sample_weight_key:
+            raise TrainingError(
+                "--source-balance-key and --sample-weight-key are mutually exclusive"
+            )
         if args.source_balance_key:
             if args.role != "student_expert":
                 raise TrainingError("Source-balanced loss is supported only for student_expert")
@@ -495,6 +560,11 @@ def main() -> int:
             source_balance_counts, source_loss_weights = equal_source_loss_weights(
                 train_rows,
                 args.source_balance_key,
+            )
+        elif args.sample_weight_key:
+            explicit_weight_summary = explicit_sample_weight_summary(
+                train_rows,
+                args.sample_weight_key,
             )
 
         rank = int(args.rank or settings.get("lora_rank", settings.get("initial_rank", 8)))
@@ -571,6 +641,10 @@ def main() -> int:
                         for source, weight in source_loss_weights.items()
                     },
                     "row_duplication": False,
+                },
+                "explicit_sample_weights": {
+                    "enabled": bool(args.sample_weight_key),
+                    **explicit_weight_summary,
                 },
             },
             "dependencies": dependencies,
@@ -707,7 +781,11 @@ def main() -> int:
         )
         model = get_peft_model(model, peft_config)
         disable_thinking = args.role != "teacher"
-        trainer_class = SourceBalancedTrainer if args.source_balance_key else Trainer
+        trainer_class = (
+            SourceBalancedTrainer
+            if args.source_balance_key or args.sample_weight_key
+            else Trainer
+        )
         trainer = trainer_class(
             model=model,
             args=training_args,
@@ -718,6 +796,7 @@ def main() -> int:
                 disable_thinking,
                 source_balance_key=args.source_balance_key,
                 source_loss_weights=source_loss_weights,
+                sample_weight_key=args.sample_weight_key,
             ),
             eval_dataset=TokenizedDataset(validation_rows, tokenizer, max_length, disable_thinking),
             data_collator=SupervisedCollator(tokenizer),

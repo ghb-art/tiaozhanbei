@@ -85,6 +85,22 @@ def read_jsonl(path: Path) -> list[dict[str, Any]]:
     return rows
 
 
+def excluded_validation_groups(paths: Iterable[Path]) -> set[str]:
+    groups: set[str] = set()
+    for path in paths:
+        if not path.is_file():
+            raise NlpDataError(f"Missing exclusion JSONL: {display_path(path)}")
+        for row in read_jsonl(path):
+            group = str(row.get("validation_group_id", "")).strip()
+            if not group:
+                raise NlpDataError(
+                    f"Exclusion row is missing validation_group_id: "
+                    f"{display_path(path)}"
+                )
+            groups.add(group)
+    return groups
+
+
 def normalized_identity(question: str, options: list[str]) -> str:
     return sha256_text(" ".join([question, *options]).casefold())
 
@@ -121,7 +137,10 @@ def prepare_requests(
     validation_target: int,
     seed: int,
     oversample_factor: float,
+    excluded_groups: set[str] | None = None,
+    route_prefix: str = "p0a4r3",
 ) -> list[dict[str, Any]]:
+    excluded_groups = excluded_groups or set()
     paths = sorted(source_dir.glob("*.csv"))
     if not paths:
         raise NlpDataError(f"No MMLU auxiliary CSV files: {display_path(source_dir)}")
@@ -142,13 +161,19 @@ def prepare_requests(
                 ):
                     continue
                 identity = normalized_identity(question, options)
+                validation_group_id = f"mmlu-aux/{identity[:20]}"
+                if validation_group_id in excluded_groups:
+                    continue
                 if identity in domain_seen:
                     continue
                 domain_seen.add(identity)
                 by_domain[path.stem].append(
                     {
-                        "request_id": f"p0a4r3/nlp/{path.stem}/{identity[:20]}",
-                        "validation_group_id": f"mmlu-aux/{identity[:20]}",
+                        "request_id": (
+                            f"{route_prefix}/nlp/{path.stem}/{identity[:20]}"
+                        ),
+                        "validation_group_id": validation_group_id,
+                        "route_prefix": route_prefix,
                         "domain": path.stem,
                         "source_row": row_number,
                         "expected_label": expected,
@@ -217,6 +242,8 @@ def select_balanced_verified(
     split_name: str,
     minimum_equal_quota_ratio: float,
 ) -> list[dict[str, Any]]:
+    if target == 0:
+        return []
     by_domain: dict[str, list[dict[str, Any]]] = defaultdict(list)
     for row in rows:
         by_domain[str(row.get("domain", ""))].append(row)
@@ -380,7 +407,10 @@ def validate_translation(
         "sample_id": str(request_row["request_id"]),
         "validation_group_id": str(request_row["validation_group_id"]),
         "dataset_key": "cmmlu",
-        "source": "p0a4r3_mmlu_aux_teacher_verified_chinese",
+        "source": (
+            f"{str(request_row.get('route_prefix', 'p0a4r3'))}_"
+            "mmlu_aux_teacher_verified_chinese"
+        ),
         "origin": "mmlu_auxiliary_train",
         "domain": str(request_row["domain"]),
         "messages": [
@@ -412,17 +442,29 @@ def load_latest_trace(path: Path) -> dict[str, dict[str, Any]]:
     return values
 
 
+def restrict_trace_to_requests(
+    trace: dict[str, dict[str, Any]],
+    requests: Iterable[dict[str, Any]],
+) -> dict[str, dict[str, Any]]:
+    request_ids = {str(row.get("request_id", "")) for row in requests}
+    return {
+        request_id: row
+        for request_id, row in trace.items()
+        if request_id in request_ids
+    }
+
+
 def generate(args: argparse.Namespace) -> None:
     requests_path = resolve_path(args.requests)
     requests = read_jsonl(requests_path)
     if not requests:
         raise NlpDataError(f"No teacher requests: {display_path(requests_path)}")
     trace_path = resolve_path(args.trace)
-    previous = load_latest_trace(trace_path)
-    fallback_model_id = discover_fallback_model_id(
-        args.endpoint,
-        args.model_id,
-        args.fallback_model_id,
+    previous = restrict_trace_to_requests(load_latest_trace(trace_path), requests)
+    fallback_model_id = (
+        args.fallback_model_id
+        if args.fallback_model_id and args.fallback_model_id != "auto"
+        else args.model_id
     )
     accepted: dict[str, dict[str, Any]] = {
         key: value["verified_row"]
@@ -536,6 +578,12 @@ def generate(args: argparse.Namespace) -> None:
         selected_outputs = select_outputs()
     except NlpDataError:
         pass
+    if selected_outputs is None:
+        fallback_model_id = discover_fallback_model_id(
+            args.endpoint,
+            args.model_id,
+            args.fallback_model_id,
+        )
     processed = 0
     batch_size = max(args.workers, args.workers * 4)
     with trace_path.open("a", encoding="utf-8") as stream:
@@ -584,10 +632,14 @@ def generate(args: argparse.Namespace) -> None:
         errors.append("incomplete_verified_validation")
     train_groups = {str(row["validation_group_id"]) for row in train}
     validation_groups = {str(row["validation_group_id"]) for row in validation}
+    if len(train_groups) != len(train):
+        errors.append("duplicate_train_group")
+    if len(validation_groups) != len(validation):
+        errors.append("duplicate_validation_group")
     if train_groups & validation_groups:
         errors.append("train_validation_group_overlap")
     audit = {
-        "gate": "P0-A4R3-NLP-CHINESE-DATA",
+        "gate": f"{args.route_prefix.upper()}-NLP-CHINESE-DATA",
         "check_version": "1.0",
         "created_by": "model_compression/generate_p0a4r3_nlp_data.py",
         "created_ts": datetime.now(timezone.utc).isoformat(),
@@ -616,7 +668,9 @@ def generate(args: argparse.Namespace) -> None:
         "rejection_counts": dict(
             Counter(
                 str(row.get("reason", ""))
-                for row in load_latest_trace(trace_path).values()
+                for row in restrict_trace_to_requests(
+                    load_latest_trace(trace_path), requests
+                ).values()
                 if not isinstance(row.get("verified_row"), dict)
             )
         ),
@@ -656,6 +710,20 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--train-output", default=str(DEFAULT_TRAIN))
     parser.add_argument("--validation-output", default=str(DEFAULT_VALIDATION))
     parser.add_argument("--audit", default=str(DEFAULT_AUDIT))
+    parser.add_argument(
+        "--exclude-jsonl",
+        action="append",
+        default=[],
+        help=(
+            "Exclude every validation_group_id in this JSONL while preparing fresh "
+            "train-only requests. Repeat for multiple protected pools."
+        ),
+    )
+    parser.add_argument(
+        "--route-prefix",
+        default="p0a4r3",
+        help="Identity prefix recorded on newly prepared requests and verified rows.",
+    )
     parser.add_argument("--train-target", type=int, default=3000)
     parser.add_argument("--validation-target", type=int, default=256)
     parser.add_argument("--endpoint", default="http://127.0.0.1:8000")
@@ -693,8 +761,9 @@ def main() -> int:
     args = parse_args()
     try:
         if (
-            args.train_target <= 0
-            or args.validation_target <= 0
+            args.train_target < 0
+            or args.validation_target < 0
+            or args.train_target + args.validation_target <= 0
             or args.workers <= 0
             or args.retries <= 0
             or args.timeout_sec <= 0
@@ -715,6 +784,9 @@ def main() -> int:
                 print(f"{display_path(path)} exists={path.is_file()}")
             return 0
         if args.command in {"prepare", "all"}:
+            exclusion_paths = [
+                resolve_path(value) for value in args.exclude_jsonl
+            ]
             rows = prepare_requests(
                 resolve_path(args.source_dir),
                 requests_path,
@@ -722,6 +794,8 @@ def main() -> int:
                 args.validation_target,
                 args.seed,
                 args.oversample_factor,
+                excluded_validation_groups(exclusion_paths),
+                args.route_prefix,
             )
             print(f"Wrote {display_path(requests_path)} rows={len(rows)}")
         if args.command in {"generate", "all"}:
@@ -734,7 +808,10 @@ def main() -> int:
         KeyError,
         json.JSONDecodeError,
     ) as exc:
-        print(f"P0-A4R3 NLP data failed: {exc}", file=sys.stderr)
+        print(
+            f"{args.route_prefix.upper()} NLP data failed: {exc}",
+            file=sys.stderr,
+        )
         return 1
 
 

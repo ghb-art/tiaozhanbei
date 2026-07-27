@@ -1,0 +1,71 @@
+{
+  "gate": "P0-edge-candidate-dev",
+  "check_version": "2.0",
+  "created_by": "scripts/evaluate_edge_candidate_dev.py",
+  "created_ts": "2026-07-27T09:42:24.161673+00:00",
+  "status": "passed",
+  "candidate_name": "p0a4r3-candidate-1",
+  "backend": "local_transformers_base",
+  "endpoint": "",
+  "endpoint_model_id": "",
+  "endpoint_model_id_map": {},
+  "endpoint_model_id_map_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+  "model": {
+    "path": "models/checkpoints/p0a4r3/candidate-1-merged",
+    "file_count": 9,
+    "bytes": 3457068971,
+    "key_metadata_hash": "7d5030a4689780f2c529de9fc454a13cdce89d42f571e1f012781a32c99f4194"
+  },
+  "base_model": {
+    "path": "models/checkpoints/p0a4r3/candidate-1-merged",
+    "file_count": 9,
+    "bytes": 3457068971,
+    "key_metadata_hash": "7d5030a4689780f2c529de9fc454a13cdce89d42f571e1f012781a32c99f4194"
+  },
+  "adapter": {},
+  "adapter_scale": 0.0,
+  "validation_data": "data/distill/p0a4r3_train_only_validation.jsonl",
+  "validation_data_sha256": "7a86e33fa3657e87f61bcc88354d5e7f88ead444b6324b2a38f1520e12b2b1c2",
+  "output_trace": "data/eval/p0a4r3_candidate_1_train_only.jsonl",
+  "output_trace_sha256": "818e6865f6f223a60a75dcd61e706044eff5c288d6115818a6cd3869cee8570b",
+  "sample_count": 640,
+  "dataset_counts": {
+    "cmmlu": 256,
+    "gsm8k": 128,
+    "humaneval": 256
+  },
+  "correct_counts": {
+    "cmmlu": 187,
+    "gsm8k": 116,
+    "humaneval": 13
+  },
+  "accuracy_by_dataset": {
+    "cmmlu": 0.73046875,
+    "gsm8k": 0.90625,
+    "humaneval": 0.05078125
+  },
+  "macro_accuracy": 0.5625,
+  "min_accuracy_by_dataset": {},
+  "min_macro_accuracy": 0.0,
+  "threshold_gate_enabled": false,
+  "threshold_failures": {},
+  "generation_error_count": 0,
+  "failure_reasons": [],
+  "mean_latency_ms": 5097.546783215649,
+  "peak_gpu_memory_mb_decimal": 3702.066688,
+  "dtype": "bfloat16",
+  "max_input_length": 1536,
+  "max_new_tokens_by_dataset": {
+    "gsm8k": 512,
+    "humaneval": 1024,
+    "cmmlu": 256
+  },
+  "close_reasoning_prefix": false,
+  "disable_thinking": true,
+  "kv_cache_type": "",
+  "request_extra_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+  "request_extra_map_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+  "formal_test_labels_used": false,
+  "errors": [],
+  "report_hash": "8d0708568502d0ab22b2743bfe20207aad56fe0d9bae1efd9759cb48ea9882b0"
+}

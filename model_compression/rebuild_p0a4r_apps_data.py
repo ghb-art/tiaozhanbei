@@ -172,6 +172,24 @@ def write_json(path: Path, value: dict[str, Any]) -> None:
     path.write_text(json.dumps(value, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
 
+def load_excluded_groups(paths: Iterable[Path]) -> set[str]:
+    groups: set[str] = set()
+    for path in paths:
+        if not path.is_file():
+            raise AppsRebuildError(
+                f"Missing exclusion JSONL: {display_path(path)}"
+            )
+        for row in read_jsonl(path):
+            group = str(row.get("validation_group_id", "")).strip()
+            if not group:
+                raise AppsRebuildError(
+                    f"Exclusion row is missing validation_group_id: "
+                    f"{display_path(path)}"
+                )
+            groups.add(group)
+    return groups
+
+
 def download_archive(archive: Path) -> str:
     archive.parent.mkdir(parents=True, exist_ok=True)
     if archive.is_file():
@@ -799,7 +817,17 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--dataset-dir", default=str(DEFAULT_DATASET_DIR))
     parser.add_argument("--output", default=str(DEFAULT_OUTPUT))
     parser.add_argument("--audit", default=str(DEFAULT_AUDIT))
+    parser.add_argument("--gate-name", default="P0-A4R-APPS-TRAIN-SOURCE")
     parser.add_argument("--cache", default=str(DEFAULT_CACHE))
+    parser.add_argument(
+        "--exclude-jsonl",
+        action="append",
+        default=[],
+        help=(
+            "Exclude every validation_group_id in this JSONL from the selected "
+            "train-only APPS pool. Repeat for multiple protected pools."
+        ),
+    )
     parser.add_argument("--tokenizer-dir", default=str(DEFAULT_TOKENIZER))
     parser.add_argument("--workers", type=int, default=12)
     parser.add_argument("--target-unique", type=int, default=1500)
@@ -878,8 +906,15 @@ def build(args: argparse.Namespace, train_dir: Path, output: Path, audit_path: P
         resolve_path(args.tokenizer_dir),
         args.max_sequence_tokens,
     )
+    exclusion_paths = [resolve_path(value) for value in args.exclude_jsonl]
+    excluded_groups = load_excluded_groups(exclusion_paths)
+    eligible_after_exclusion = [
+        row
+        for row in within_budget
+        if str(row.get("validation_group_id", "")) not in excluded_groups
+    ]
     selected = sorted(
-        within_budget,
+        eligible_after_exclusion,
         key=lambda row: sha256_text(f"{args.seed}:apps:{row['validation_group_id']}"),
     )[: args.target_unique]
     selected.sort(key=lambda row: str(row["sample_id"]))
@@ -898,7 +933,7 @@ def build(args: argparse.Namespace, train_dir: Path, output: Path, audit_path: P
     ):
         errors.append("formal_or_gate_identity_in_training")
     report = {
-        "gate": "P0-A4R-APPS-TRAIN-SOURCE",
+        "gate": args.gate_name,
         "check_version": "1.0",
         "created_by": "model_compression/rebuild_p0a4r_apps_data.py",
         "created_ts": datetime.now(timezone.utc).isoformat(),
@@ -929,6 +964,11 @@ def build(args: argparse.Namespace, train_dir: Path, output: Path, audit_path: P
         "overlap_rejection_counts": dict(overlap_rejections),
         "overlap_examples": overlap_examples,
         "token_budget": token_audit,
+        "exclusion_inputs": {
+            display_path(path): sha256_file(path) for path in exclusion_paths
+        },
+        "excluded_group_count": len(excluded_groups),
+        "eligible_after_exclusion_count": len(eligible_after_exclusion),
         "selected_unique_group_count": group_count,
         "minimum_unique_group_count": args.minimum_unique,
         "target_unique_group_count": args.target_unique,

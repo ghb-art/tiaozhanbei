@@ -44,7 +44,7 @@ DeepSeek Q2 的 716.71MB 文件和 920.23MB 运行峰值只证明内存安全，
 - P0-A4R NLP训练与内部选择已完成，量化v2修复路线96题NLP保持率从85%升至90%；冻结清单位于`models/adapters/p0a4r/frozen_nlp_manifest.json`。由于其训练基座是`student-shared-v2-merged`，不得应用到v1。
 - P0-A4R2已使用`student-shared-merged`（v1）完成温和Code训练。原始数据仍为APPS 1500 + MBPP 292个独立组，训练器采用损失权重`0.597333`与`3.068493`，两类总损失质量均为896，`row_duplication=false`。唯一checkpoint-56在42题train-only执行集上与v1基线均为24题正确，未满足净增1题的发布门槛；`models/checkpoints/p0a4r2-v1/code-selected`未创建。
 
-## P0-A4R3 当前实施
+## P0-A4R3 已关闭
 
 - 已将实施协议冻结在`configs/p0a4r3_shared_distillation.json`：Math只回放，禁止任务Adapter，
   共享LoRA仅允许Rank 8和Rank 16两个候选。
@@ -69,6 +69,25 @@ DeepSeek Q2 的 716.71MB 文件和 920.23MB 运行峰值只证明内存安全，
 - P0-A4R3共享数据总门已通过：训练Math/Code/NLP=`1000/3792/3000`，验证
   `128/256/256`；旧Teacher96、Smoke96、Selection170、旧Code42/NLP64重叠均为0，
   正式测试引用为0。Rank 8和Rank 16两个候选的训练dry-run均通过。
+- 独立验证实测v1的Math/Code/NLP为`87.50/13.67/63.28%`。Rank 8候选为
+  `90.63/5.08/73.05%`，Rank 16候选为`89.06/4.69/73.83%`；两者均出现明显Code
+  回退，被`gate_p0a4r3_candidate_selection.json`正式拒绝，P0-A4R3不发布模型。
+
+## P0-A4R4 当前实施
+
+- 新协议冻结在`configs/p0a4r4_long_code_distillation.json`，仍从v1共享HF基座开始，
+  禁止继承P0-A4R3失败候选，也不使用任务Adapter。
+- CodeContests参考解改为在最多8个候选中选择通过全部隔离测试的最短token程序，答案
+  最多768 token且完整序列不超过1536 token；验证推理的Code生成上限同步预注册为768。
+- 已构建1000个紧凑CodeContests训练组，答案P50/P95/最大长度由旧数据的
+  `166/566/1229`降至`103/427/762` token。MBPP 292、APPS 2500、CodeContests
+  1000不复制样本，通过`training_weight`使三来源总损失质量相等。
+- 新Code验证为从未进入旧训练或验证的APPS 128组和CodeContests 128组；NLP扩展候选后
+  冻结256组八领域Teacher标签校验验证；Math也从训练池重新留出128组。新总数据门已通过：
+  训练Math/Code/NLP=`1000/3792/3000`，验证=`128/256/256`，组重叠和正式引用均为0。
+- Rank 8（`2e-5`、1轮）与Rank 16（`1e-5`、1轮）两个共享候选的训练dry-run均通过。
+  下一步先在新验证集运行v1分母，随后只训练Candidate 1；Candidate 1失败时才启动
+  Candidate 2。
 
 ## P0-A3 历史证据
 

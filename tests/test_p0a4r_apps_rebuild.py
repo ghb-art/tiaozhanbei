@@ -31,6 +31,25 @@ class P0A4RAppsRebuildTests(unittest.TestCase):
         self.assertFalse(safe)
         self.assertEqual(reason, "forbidden_import")
 
+    def test_explicit_group_exclusions_are_deduplicated(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            path = Path(temporary) / "excluded.jsonl"
+            path.write_text(
+                "\n".join(
+                    [
+                        json.dumps({"validation_group_id": "apps/task/1"}),
+                        json.dumps({"validation_group_id": "apps/task/2"}),
+                        json.dumps({"validation_group_id": "apps/task/1"}),
+                    ]
+                )
+                + "\n",
+                encoding="utf-8",
+            )
+            self.assertEqual(
+                apps.load_excluded_groups([path]),
+                {"apps/task/1", "apps/task/2"},
+            )
+
     def test_call_based_task_builds_and_executes(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             task = Path(temporary) / "0001"

@@ -22,6 +22,18 @@ bash scripts/run_with_memory_guard.sh \
 每次运行的状态文件写入`reports/runtime/memory_watchdog_*.json`，事件日志
 追加到`logs/memory_watchdog.log`。因内存超限终止时，脚本退出码为75。
 
+如果训练命令已经在独立进程组中运行、但原看门狗因终端或调度器退出而丢失，
+可以在不重启训练的情况下接管其主PID：
+
+```bash
+.venv/bin/python scripts/memory_watchdog.py monitor \
+  --pid TRAIN_MAIN_PID \
+  --threshold-percent 60
+```
+
+接管模式会记录PID启动时间，避免PID复用后误杀其他任务；只有持续达到阈值时
+才终止目标进程组。主动停止接管监控不会终止训练。
+
 如需调整采样频率或连续次数，可设置环境变量，但正式运行保持60%阈值：
 
 ```bash

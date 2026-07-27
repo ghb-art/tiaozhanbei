@@ -1,0 +1,61 @@
+{
+  "gate": "P0-A4R4-CODE-CONTESTS-COMPACT-TRAIN",
+  "check_version": "1.0",
+  "created_by": "model_compression/build_p0a4r3_code_data.py",
+  "created_ts": "2026-07-27T11:25:46.347741+00:00",
+  "status": "passed",
+  "policy": {
+    "upstream_split": "train_only",
+    "validation_or_test_split_read": false,
+    "solution_languages": [
+      "PYTHON3"
+    ],
+    "teacher_output_validation": "all selected stdio tests pass",
+    "solution_selection": "shortest_tokens",
+    "answer_token_limit": 768,
+    "sequence_limit": "prompt plus verified answer <= 1536 tokens",
+    "formal_humaneval_use": "prompt-only exact decontamination",
+    "formal_test_labels_used": false
+  },
+  "parquet_shards": {
+    "data/datasets/code_contests/parquet/train/train-0000.parquet": "b7b9b02dd0eeb87b3c1ad1db87ba0351f5afdb6099e4faa0d2085809cf4c3248",
+    "data/datasets/code_contests/parquet/train/train-0001.parquet": "32a03e0c8716925c6f921057d8ac16a05b397588eee59b2315e408a2b2bf810e",
+    "data/datasets/code_contests/parquet/train/train-0002.parquet": "402e93415bca76f1e2444a6790026348bd5371756f05a4ab971d3f261c4c537e",
+    "data/datasets/code_contests/parquet/train/train-0003.parquet": "d2ede855aa493d4a7cec29deae74adeb0238446bf0d6708e712b039d75dea94a",
+    "data/datasets/code_contests/parquet/train/train-0004.parquet": "9f34a1e1527552f0991e60507062d82dd19f72801eb8b20b584df38a440ad6ec",
+    "data/datasets/code_contests/parquet/train/train-0005.parquet": "da79f6fd930473491b274f8c9a5089bc491275f5af4097298e33682c7ee4482b",
+    "data/datasets/code_contests/parquet/train/train-0006.parquet": "2929a38aea45d838b7b9943d433ab1b5ce09de84f525d62fdfe0cd33c5148b3d"
+  },
+  "exclusion_inputs": {
+    "data/distill/p0a4r3_code_contests_validation.jsonl": "198685d8fb2c2517104054b3107d11e48e3dc7f592d82c2d2c04f1b715366370",
+    "data/distill/p0a4r4_code_contests_validation.jsonl": "013e9a579c15ec93ec971114fd79c3aa93b9041f9a56d2704e54e59bb55db8cf"
+  },
+  "excluded_group_count": 384,
+  "candidate_count": 1822,
+  "execution_examined_count": 1256,
+  "source_rejections": {
+    "no_safe_python3_solution": 1391,
+    "insufficient_tests": 158,
+    "file_io_problem": 7,
+    "duplicate_problem_identity": 0,
+    "explicit_group_exclusion": 384
+  },
+  "execution_verified_count": 1010,
+  "execution_rejections": {
+    "answer_too_long": 26,
+    "runtime_error:1": 33,
+    "wrong_answer": 168,
+    "sequence_too_long": 12,
+    "runtime_error:-9": 7
+  },
+  "cache_hit_count": 1256,
+  "train_output": "data/distill/p0a4r4_code_contests_compact_train.jsonl",
+  "train_hash": "03df0e68765cf054e409bc40e28906ed6fd9624ba8f109922a0f9ae0be9a306f",
+  "train_unique_groups": 1000,
+  "validation_output": "runtime/p0a4r4_empty_code_validation.jsonl",
+  "validation_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "validation_unique_groups": 0,
+  "train_validation_overlap": 0,
+  "errors": [],
+  "report_hash": "9ecc4ca9e62a328d5a6dce0a4cf612773a062060f8d50a26b162f497b02796da"
+}

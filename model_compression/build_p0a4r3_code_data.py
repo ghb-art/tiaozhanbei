@@ -248,6 +248,8 @@ def collect_candidates(
     max_solutions: int,
     max_description_chars: int,
     max_sequence_tokens: int,
+    solution_selection: str,
+    max_answer_tokens: int,
 ) -> tuple[list[Candidate], Counter[str]]:
     try:
         import pyarrow.parquet as pq
@@ -320,6 +322,8 @@ def collect_candidates(
                             "tests": stable_test_hash(tests),
                             "solutions": [sha256_text(source) for source in python3],
                             "max_sequence_tokens": max_sequence_tokens,
+                            "solution_selection": solution_selection,
+                            "max_answer_tokens": max_answer_tokens,
                             "token_filter_protocol": "qwen3_chat_template_thinking_off_v1",
                         }
                     )
@@ -357,15 +361,42 @@ def load_cache(path: Path) -> dict[str, dict[str, Any]]:
     return cache
 
 
+def load_excluded_groups(paths: Iterable[Path]) -> set[str]:
+    groups: set[str] = set()
+    for path in paths:
+        if not path.is_file():
+            raise CodeContestsError(
+                f"Missing exclusion JSONL: {display_path(path)}"
+            )
+        with path.open(encoding="utf-8") as handle:
+            for line_number, line in enumerate(handle, start=1):
+                if not line.strip():
+                    continue
+                value = json.loads(line)
+                group = str(value.get("validation_group_id", "")).strip()
+                if not group:
+                    raise CodeContestsError(
+                        f"Missing validation_group_id in exclusion file "
+                        f"{display_path(path)}:{line_number}"
+                    )
+                groups.add(group)
+    return groups
+
+
 def verified_row(
     candidate: Candidate,
     timeout_sec: float,
     tokenizer: Any,
     max_sequence_tokens: int,
+    solution_selection: str = "first_passing",
+    max_answer_tokens: int = 0,
 ) -> tuple[dict[str, Any] | None, str]:
-    selected = ""
+    if solution_selection not in {"first_passing", "shortest_tokens"}:
+        raise CodeContestsError(
+            f"Unsupported solution selection policy: {solution_selection}"
+        )
+    selected: tuple[int, int, int, str, int] | None = None
     last_reason = "no_solution_passed"
-    passed_tests = 0
     prompt = (
         "Solve the programming problem below. Return only a complete Python 3 "
         "program that reads standard input and writes standard output. Do not use "
@@ -376,6 +407,10 @@ def verified_row(
         result = run_contest_tests(solution, candidate.tests, timeout_sec)
         if not result.passed:
             last_reason = result.reason
+            continue
+        answer_tokens = tokenizer.encode(solution, add_special_tokens=False)
+        if max_answer_tokens > 0 and len(answer_tokens) > max_answer_tokens:
+            last_reason = "answer_too_long"
             continue
         tokenized = tokenizer.apply_chat_template(
             [
@@ -389,11 +424,22 @@ def verified_row(
         if len(tokenized) > max_sequence_tokens:
             last_reason = "sequence_too_long"
             continue
-        selected = solution
-        passed_tests = result.passed_tests
-        break
-    if not selected:
+        scored = (
+            len(answer_tokens),
+            len(tokenized),
+            len(solution),
+            solution,
+            result.passed_tests,
+        )
+        if selected is None or scored[:3] < selected[:3]:
+            selected = scored
+        if solution_selection == "first_passing":
+            break
+    if selected is None:
         return None, last_reason
+    answer_token_count, sequence_token_count, _, selected_source, passed_tests = (
+        selected
+    )
     row = {
         "sample_id": f"p0a4r3/{candidate.group_id}",
         "validation_group_id": candidate.group_id,
@@ -403,7 +449,7 @@ def verified_row(
         "origin_source": candidate.origin,
         "origin_difficulty": candidate.difficulty,
         "messages": [{"role": "user", "content": prompt}],
-        "answer": selected,
+        "answer": selected_source,
         "code_eval": {
             "kind": "code_contests_stdio_v1",
             "execution_protocol": "isolated_python3_stdio_resource_limited",
@@ -412,6 +458,13 @@ def verified_row(
             "verified_test_count": passed_tests,
         },
         "supervision_type": "canonical_executable_solution",
+        "distillation_quality": {
+            "solution_selection": solution_selection,
+            "answer_token_count": answer_token_count,
+            "sequence_token_count": sequence_token_count,
+            "answer_token_limit": max_answer_tokens,
+            "all_selected_tests_passed": True,
+        },
         "used_for_final_test": False,
     }
     return row, ""
@@ -424,6 +477,8 @@ def validate_all(
     timeout_sec: float,
     tokenizer: Any,
     max_sequence_tokens: int,
+    solution_selection: str,
+    max_answer_tokens: int,
 ) -> tuple[list[dict[str, Any]], Counter[str], int]:
     cache = load_cache(cache_path)
     accepted: list[dict[str, Any]] = []
@@ -447,6 +502,8 @@ def validate_all(
                     timeout_sec,
                     tokenizer,
                     max_sequence_tokens,
+                    solution_selection,
+                    max_answer_tokens,
                 ): candidate
                 for candidate in pending
             }
@@ -494,6 +551,19 @@ def build(args: argparse.Namespace) -> None:
         args.max_solutions,
         args.max_description_chars,
         args.max_sequence_tokens,
+        args.solution_selection,
+        args.max_answer_tokens,
+    )
+    exclusion_paths = [resolve_path(value) for value in args.exclude_jsonl]
+    excluded_groups = load_excluded_groups(exclusion_paths)
+    pre_exclusion_count = len(candidates)
+    candidates = [
+        candidate
+        for candidate in candidates
+        if candidate.group_id not in excluded_groups
+    ]
+    source_rejections["explicit_group_exclusion"] += (
+        pre_exclusion_count - len(candidates)
     )
     ordered = sorted(
         candidates,
@@ -522,6 +592,8 @@ def build(args: argparse.Namespace) -> None:
             args.timeout_sec,
             tokenizer,
             args.max_sequence_tokens,
+            args.solution_selection,
+            args.max_answer_tokens,
         )
         verified.extend(batch_verified)
         execution_rejections.update(batch_rejections)
@@ -548,16 +620,16 @@ def build(args: argparse.Namespace) -> None:
     write_jsonl(train_path, train)
     write_jsonl(validation_path, validation)
     errors: list[str] = []
-    if len(train) < args.train_target:
+    if len(train) != args.train_target:
         errors.append("insufficient_verified_train_groups")
-    if len(validation) < args.validation_target:
+    if len(validation) != args.validation_target:
         errors.append("insufficient_verified_validation_groups")
     train_groups = {str(row["validation_group_id"]) for row in train}
     validation_groups = {str(row["validation_group_id"]) for row in validation}
     if train_groups & validation_groups:
         errors.append("train_validation_group_overlap")
     audit = {
-        "gate": "P0-A4R3-CODE-CONTESTS",
+        "gate": args.gate_name,
         "check_version": "1.0",
         "created_by": "model_compression/build_p0a4r3_code_data.py",
         "created_ts": datetime.now(timezone.utc).isoformat(),
@@ -567,6 +639,8 @@ def build(args: argparse.Namespace) -> None:
             "validation_or_test_split_read": False,
             "solution_languages": ["PYTHON3"],
             "teacher_output_validation": "all selected stdio tests pass",
+            "solution_selection": args.solution_selection,
+            "answer_token_limit": args.max_answer_tokens,
             "sequence_limit": (
                 f"prompt plus verified answer <= {args.max_sequence_tokens} tokens"
             ),
@@ -576,6 +650,10 @@ def build(args: argparse.Namespace) -> None:
         "parquet_shards": {
             display_path(path): sha256_file(path) for path in shards
         },
+        "exclusion_inputs": {
+            display_path(path): sha256_file(path) for path in exclusion_paths
+        },
+        "excluded_group_count": len(excluded_groups),
         "candidate_count": len(candidates),
         "execution_examined_count": examined,
         "source_rejections": dict(source_rejections),
@@ -612,6 +690,16 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--validation-output", default=str(DEFAULT_VALIDATION))
     parser.add_argument("--cache", default=str(DEFAULT_CACHE))
     parser.add_argument("--audit", default=str(DEFAULT_AUDIT))
+    parser.add_argument("--gate-name", default="P0-A4R3-CODE-CONTESTS")
+    parser.add_argument(
+        "--exclude-jsonl",
+        action="append",
+        default=[],
+        help=(
+            "Exclude every validation_group_id present in this JSONL. Repeat the "
+            "option to protect prior train-only validation or training pools."
+        ),
+    )
     parser.add_argument("--train-target", type=int, default=1000)
     parser.add_argument("--validation-target", type=int, default=256)
     parser.add_argument("--max-tests", type=int, default=8)
@@ -619,6 +707,21 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--max-description-chars", type=int, default=12000)
     parser.add_argument("--tokenizer-dir", default=str(DEFAULT_TOKENIZER))
     parser.add_argument("--max-sequence-tokens", type=int, default=1536)
+    parser.add_argument(
+        "--solution-selection",
+        choices=("first_passing", "shortest_tokens"),
+        default="first_passing",
+        help=(
+            "Choose the first executable reference or the shortest-token executable "
+            "reference among the inspected solutions."
+        ),
+    )
+    parser.add_argument(
+        "--max-answer-tokens",
+        type=int,
+        default=0,
+        help="Reject longer reference programs; zero disables the separate answer cap.",
+    )
     parser.add_argument("--workers", type=int, default=12)
     parser.add_argument("--timeout-sec", type=float, default=4.0)
     parser.add_argument("--seed", type=int, default=20260727)
@@ -629,13 +732,15 @@ def main() -> int:
     args = parse_args()
     try:
         if (
-            args.train_target <= 0
-            or args.validation_target <= 0
+            args.train_target < 0
+            or args.validation_target < 0
+            or args.train_target + args.validation_target <= 0
             or args.max_tests < 3
             or args.max_solutions <= 0
             or args.workers <= 0
             or args.timeout_sec <= 0
             or args.max_sequence_tokens <= 0
+            or args.max_answer_tokens < 0
         ):
             raise CodeContestsError("Invalid count/worker/timeout arguments")
         parquet_dir = resolve_path(args.parquet_dir)

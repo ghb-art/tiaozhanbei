@@ -28,6 +28,46 @@ class P0A4R2V1CodeTests(unittest.TestCase):
         self.assertAlmostEqual(counts["apps"] * weights["apps"], 4.0)
         self.assertEqual(len(rows), 8)
 
+    def test_explicit_shared_weights_equalize_code_source_mass(self) -> None:
+        rows = [
+            {
+                "sample_id": "math-1",
+                "dataset_key": "gsm8k",
+                "training_weight": 1.0,
+            },
+            {
+                "sample_id": "code-mbpp",
+                "dataset_key": "humaneval",
+                "origin": "mbpp",
+                "training_weight": 3.0,
+            },
+            {
+                "sample_id": "code-apps-1",
+                "dataset_key": "humaneval",
+                "origin": "apps",
+                "training_weight": 1.5,
+            },
+            {
+                "sample_id": "code-apps-2",
+                "dataset_key": "humaneval",
+                "origin": "apps",
+                "training_weight": 1.5,
+            },
+            {
+                "sample_id": "nlp-1",
+                "dataset_key": "cmmlu",
+                "training_weight": 1.0,
+            },
+        ]
+        summary = trainer.explicit_sample_weight_summary(
+            rows, "training_weight"
+        )
+        self.assertEqual(
+            summary["mass_by_code_origin"],
+            {"mbpp": 3.0, "apps": 3.0},
+        )
+        self.assertFalse(summary["row_duplication"])
+
     def test_config_freezes_nlp_but_routes_v1_nlp_to_shared(self) -> None:
         config = json.loads(
             (ROOT / "configs/p0a4r2_v1_code.json").read_text(encoding="utf-8")

@@ -1,0 +1,92 @@
+{
+  "gate": "P0-A4R-APPS-TRAIN-SOURCE",
+  "check_version": "1.0",
+  "created_by": "model_compression/rebuild_p0a4r_apps_data.py",
+  "created_ts": "2026-07-27T06:13:59.614700+00:00",
+  "status": "passed",
+  "policy": {
+    "source": "APPS official archive",
+    "split": "train_only",
+    "evaluation_split_extracted": false,
+    "canonical_validation": "all stored call tests executed in a resource-limited subprocess",
+    "formal_humaneval_use": "prompt-only decontamination; labels, canonical answers and tests not read",
+    "internal_dev_use": "prompt/entry-point-only decontamination; labels and tests not read",
+    "selection170_feedback_used": false,
+    "smoke96_item_feedback_used": false,
+    "formal_full_feedback_used": false
+  },
+  "archive": "data/datasets/apps/APPS.tar.gz",
+  "archive_sha256": "6ef8e98ecca10b0159df0da4b524ecc1ca782a3b9473c57fc547ebccbbc2d0ca",
+  "archive_expected_sha256": "6ef8e98ecca10b0159df0da4b524ecc1ca782a3b9473c57fc547ebccbbc2d0ca",
+  "train_dir": "data/datasets/apps/APPS/train",
+  "train_task_count": 5000,
+  "complete_train_task_count": 4805,
+  "eligible_descriptor_count": 2712,
+  "execution_verified_count": 2645,
+  "execution_rejection_counts": {
+    "instance_state_dependency": 11,
+    "canonical_failed:NameError: name 'DS' is not defined": 1,
+    "canonical_failed:NameError: name 'Solution' is not defined": 2,
+    "canonical_failed:NameError: name 'sys' is not defined": 1,
+    "canonical_failed:ImportError: cannot import name 'gcd' from 'fractions' (/usr/lib/python3.10/fractions.py)": 5,
+    "canonical_failed:AssertionError": 8,
+    "forbidden_import": 17,
+    "forbidden_call_eval": 2,
+    "canonical_failed:IndexError: list index out of range": 4,
+    "canonical_failed:TypeError: sequence item 0: expected str instance, NoneType found": 1,
+    "canonical_failed:NameError: name 'inf' is not defined. Did you mean: 'int'?": 2,
+    "entry_point_missing": 7,
+    "canonical_failed:ValueError: Exceeds the limit (4300) for integer string conversion; use sys.set_int_max_str_digits() to increase the limit": 2,
+    "canonical_failed:TypeError: can't multiply sequence by non-int of type 'str'": 1,
+    "forbidden_attribute_remove": 1,
+    "canonical_failed:TypeError: '>' not supported between instances of 'str' and 'int'": 1,
+    "canonical_failed:NameError: name 'WORD_LIST' is not defined": 1
+  },
+  "cache_hit_count": 2712,
+  "decontamination_reference_counts": {
+    "humaneval_prompt_only": 164,
+    "internal_dev_prompt_only": 84
+  },
+  "decontamination_labels_or_tests_accessed": false,
+  "overlap_rejection_counts": {
+    "internal_dev_entry_point_collision": 4
+  },
+  "overlap_examples": [
+    {
+      "sample_id": "apps/train/2743",
+      "reason": "internal_dev_entry_point_collision",
+      "match": null
+    },
+    {
+      "sample_id": "apps/train/3383",
+      "reason": "internal_dev_entry_point_collision",
+      "match": null
+    },
+    {
+      "sample_id": "apps/train/3537",
+      "reason": "internal_dev_entry_point_collision",
+      "match": null
+    },
+    {
+      "sample_id": "apps/train/4148",
+      "reason": "internal_dev_entry_point_collision",
+      "match": null
+    }
+  ],
+  "token_budget": {
+    "input_count": 2641,
+    "accepted_count": 2637,
+    "rejected_sequence_too_long": 4,
+    "max_tokens": 1408,
+    "p95_tokens": 817
+  },
+  "selected_unique_group_count": 2500,
+  "minimum_unique_group_count": 2400,
+  "target_unique_group_count": 2500,
+  "output": "data/distill/p0a4r3_apps_verified_train.jsonl",
+  "output_sha256": "9355f06f435943d41951823d517dde6ec0dd815955747301f424ec71257f78fe",
+  "formal_test_training_count": 0,
+  "formal_test_selection_count": 0,
+  "errors": [],
+  "report_hash": "f5e67b35ff7b4b74a2b4d12998ea6dd45ef3f718ae2fe05488e80109bee7efdf"
+}

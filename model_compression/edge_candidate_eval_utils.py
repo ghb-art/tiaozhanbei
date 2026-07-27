@@ -7,8 +7,10 @@ from typing import Any
 
 try:
     from .generate_teacher_capability_distill import validate_code_row
+    from .code_contests_utils import validate_contest_eval
 except ImportError:
     from generate_teacher_capability_distill import validate_code_row
+    from code_contests_utils import validate_contest_eval
 
 
 class EdgeCandidateEvalError(RuntimeError):
@@ -120,6 +122,15 @@ def score_generation_validation(
         expected = extract_choice(answer) or answer.strip().upper()[:1]
         return float(bool(expected) and extract_choice(response) == expected)
     if dataset_key == "humaneval":
+        code_eval = example.get("code_eval", {})
+        if (
+            isinstance(code_eval, dict)
+            and code_eval.get("kind") == "code_contests_stdio_v1"
+        ):
+            accepted, _, _ = validate_contest_eval(
+                code_eval, response, code_timeout_sec
+            )
+            return float(accepted)
         accepted, _, _ = validate_code_row(example, response, code_timeout_sec)
         return float(accepted)
     return 0.0

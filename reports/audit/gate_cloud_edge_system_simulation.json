@@ -1,0 +1,44 @@
+{
+  "gate": "CLOUD-EDGE-SYSTEM-SIMULATION",
+  "check_version": "1.0",
+  "created_by": "scripts/simulate_cloud_edge.py",
+  "created_ts": "2026-07-27T06:39:55.852898+00:00",
+  "status": "passed",
+  "evidence_scope": "deterministic protocol simulation; not formal hardware evidence",
+  "scenarios": [
+    "industrial",
+    "traffic"
+  ],
+  "config": "configs/cloud_edge_runtime.json",
+  "config_hash": "f27c6f54308504abd1fcea4db400de1bbb6427bd1f79347ee64ec36a52b26a6a",
+  "metrics": {
+    "scenario_count": 2,
+    "request_count": 1000,
+    "mean_end_to_end_latency_ms": 69.196,
+    "p95_end_to_end_latency_ms": 115.0,
+    "weak_network_request_count": 242,
+    "weak_network_functionality_rate": 1.0,
+    "raw_conflict_group_count": 280,
+    "raw_conflict_ratio": 0.56,
+    "post_arbitration_unresolved_count": 0,
+    "post_arbitration_conflict_ratio": 0.0,
+    "conflict_resolution_success_rate": 1.0,
+    "route_counts": {
+      "edge_model": 386,
+      "cloud_model": 203,
+      "edge_fast_path": 411
+    },
+    "outbox_queued_during_weak_network": 242,
+    "outbox_synced_after_recovery": 242,
+    "outbox_pending_count": 0
+  },
+  "gates": {
+    "scenario_count": 2,
+    "p95_end_to_end_latency_ms": 200,
+    "weak_network_functionality_rate": 0.9,
+    "post_arbitration_conflict_ratio": 0.05,
+    "conflict_resolution_success_rate": 0.9
+  },
+  "failures": [],
+  "report_hash": "80ccfdc0f243413b1e1822628e221c79dfe96560ddc6f6abf55f67e62a0ac2b6"
+}

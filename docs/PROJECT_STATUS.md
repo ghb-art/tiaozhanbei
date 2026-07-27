@@ -1,6 +1,6 @@
 # Project Status
 
-更新时间：2026-07-23
+更新时间：2026-07-27
 
 ## 阶段结论
 
@@ -14,6 +14,7 @@
 | Edge-Student v2 | Qwen3-1.7B共享蒸馏 + Top-1任务Adapter | 共享模型和三个Adapter均已训练、合并/转换并完成96题；共享与Adapter路线都因Code保持率70.83%失败，未消耗第二次170题机会 |
 | P0-A4R修复 | v2共享基座 + 新Code/NLP Adapter | NLP修复后的96题保持率达到90%，已按模型、Adapter和报告哈希冻结；该NLP Adapter仅兼容v2，不挂载到v1。修复版Code保持率只有66.67%，整条v2 Adapter路线终止 |
 | P0-A4R2回退 | v1 Q4_K_M共享模型 + 可选Code Adapter | 已回到表现更好的v1；Math/NLP走共享v1。使用1792个独立任务完成Rank 4、alpha 4、`1e-5`、1轮、4卡DDP Code训练，MBPP/APPS不复制样本而按总损失各占50%平衡；内部执行结果为基线24/42、Adapter 24/42，净增0且回退0，故Adapter未发布，当前可部署路线仍为纯v1 |
+| P0-A4R3当前路线 | v1 HF合并基座 + 共享Code/NLP蒸馏 | Math冻结并加入回放；废止少量任务Adapter；以至少3500个可执行Code任务和3000个标签校验中文NLP任务训练Rank 8/16两个预注册共享LoRA候选；只使用全新train-only验证集选择 |
 | P0-A3 主候选 | Qwen3-1.7B Q3_K_M + Q8 KV | Teacher与HF 170条均完成；HF保持率Math/Code/NLP/Macro=`87.50/83.87/86.96/86.11%`。原Q3+Q4 KV完整结果仅`43.75/41.94/45.65/43.78%`，F16+Q4 KV也只有`53.13/58.06/63.04/58.08%`；token完全一致但首token logits偏移。改为F16 KV后logits与HF恢复一致，Q3+Q8 KV 24题为`3/8、7/8、3/8`，接近HF `3/8、7/8、4/8`。主候选重新开放，待Q8 KV完整170条。 |
 | P0-A3 备用 | Qwen2.5-1.5B-Instruct Q3_K_M | 原Q4 KV拒绝已判定为运行参数污染，不再解锁备用；只有Qwen3 Q8 KV完整能力或内存Gate明确失败后才启动。 |
 | 已拒绝 | DeepSeek-R1-Distill-Qwen-1.5B | BF16 Dev：Math 84.38%、Code 23.81%、NLP 17.19%；P0-A2 关闭，不再训练 |
@@ -43,6 +44,32 @@ DeepSeek Q2 的 716.71MB 文件和 920.23MB 运行峰值只证明内存安全，
 - P0-A4R NLP训练与内部选择已完成，量化v2修复路线96题NLP保持率从85%升至90%；冻结清单位于`models/adapters/p0a4r/frozen_nlp_manifest.json`。由于其训练基座是`student-shared-v2-merged`，不得应用到v1。
 - P0-A4R2已使用`student-shared-merged`（v1）完成温和Code训练。原始数据仍为APPS 1500 + MBPP 292个独立组，训练器采用损失权重`0.597333`与`3.068493`，两类总损失质量均为896，`row_duplication=false`。唯一checkpoint-56在42题train-only执行集上与v1基线均为24题正确，未满足净增1题的发布门槛；`models/checkpoints/p0a4r2-v1/code-selected`未创建。
 
+## P0-A4R3 当前实施
+
+- 已将实施协议冻结在`configs/p0a4r3_shared_distillation.json`：Math只回放，禁止任务Adapter，
+  共享LoRA仅允许Rank 8和Rank 16两个候选。
+- Code数据计划为MBPP、APPS和CodeContests三源，至少3500个独立训练组；Teacher/参考程序
+  必须通过隔离执行测试。新Code验证集固定256组，不使用已经多次消费的旧42题。
+- NLP从MMLU auxiliary train抽取八个领域，Teacher只看到题目和选项，不看到标签；生成的
+  中文翻译、短理由和最终选项必须再与训练标签校验。训练目标3000组，新验证集256组。
+- 每个候选加入Math训练回放1000组和验证回放128组。候选选择只读取新验证集任务级汇总：
+  Math相对v1至少保持95%，Code/NLP均不回退，且二者平均至少净增1个百分点。
+- 量化仍固定为训练数据imatrix、Q4_K_M和Q8 KV，不再以继续压缩模型作为优化方向。
+- 已实现工业/交通规则Fast Path、弱网边缘强制路由与幂等outbox、云失败回退以及安全优先
+  冲突仲裁的开发骨架；仿真结果不得替代正式硬件和网络实验。
+- Code数据已实际构建通过：MBPP 292、APPS 2500、CodeContests 1000，共3792个不同训练组；
+  CodeContests另冻结256个新验证组。其参考Python 3程序逐条通过隔离stdin/stdout执行，
+  且prompt与答案合计不超过1536 tokens；训练/验证组交集为0。
+- 云边协议仿真已运行1000个工业/交通请求，P95模拟时延115ms、弱网功能保持率100%、
+  仲裁后未解决冲突比例0、冲突解决成功率100%。该报告明确标记为simulation，不是正式
+  GPU、网络和双场景部署证据。
+- NLP数据已实际构建通过：从4397个八领域候选请求中，3341条通过Teacher独立答案与训练
+  标签校验；最终冻结3000个训练组和256个新验证组，八领域均超过等额配额80%的下限，
+  训练/验证交集为0。
+- P0-A4R3共享数据总门已通过：训练Math/Code/NLP=`1000/3792/3000`，验证
+  `128/256/256`；旧Teacher96、Smoke96、Selection170、旧Code42/NLP64重叠均为0，
+  正式测试引用为0。Rank 8和Rank 16两个候选的训练dry-run均通过。
+
 ## P0-A3 历史证据
 
 - `configs/p0a3_reselection.json` 固定 Teacher、170 条 Dev、候选顺序和门槛。
@@ -61,9 +88,10 @@ DeepSeek Q2 的 716.71MB 文件和 920.23MB 运行峰值只证明内存安全，
 ## 下一退出条件
 
 1. 保留纯v1作为当前回退服务，不加载未晋级的P0-A4R2 Code Adapter；
-2. 不覆盖NLP冻结清单、P0-A4R2训练报告或内部选择失败报告；
-3. 如继续Code修复，必须先注册新的train-only候选协议和独立验证证据，不能反复围绕已消费的96题调参；
-4. 只有新候选先通过内部执行选择、量化96题三项门和5+20内存≤1400MB，才可消耗第二个也是最后一个170题候选名额；
-5. 170题要求三任务及宏均≥80%；既有官方完整测试证据不得被覆盖或反馈训练。
+2. 完成P0-A4R3 CodeContests执行校验、中文NLP Teacher标签校验及共享数据审计；
+3. 先评测v1在全新train-only验证集的冻结分数，再顺序训练最多两个共享候选；
+4. 仅任务级汇总满足Math防遗忘、Code/NLP不回退和平均增益门槛的候选可进入Q4_K_M量化；
+5. 量化候选仍须通过96、170和≤1400MB开发门。既有官方完整测试不得覆盖或反馈训练；
+6. 并行完成工业、交通两个闭环的正式时延、弱网业务保持率与冲突一致性实验。
 
 CPU llama.cpp 秒级短输出不能满足 0.2s 端到端指标。模型通过 G0 后仍须依赖加速设备和结构化 fast path 完成系统时延目标。

@@ -15,9 +15,13 @@ P0-A3 已证明未蒸馏 Qwen3-1.7B HF 在170题上可保持 Teacher 的 `86.11%
 5. 通过≤1400MB开发内存门后，只允许一次Student官方完整测试，逐题结果封存且不再反馈训练。
 
 Student v1的Q4在170题上保持率为Math/Code/NLP/Macro=`90.625/75.000/80.435/82.020%`，
-因Code低于80%未晋级；一次提前运行的官方全测也已失败并封存。当前进入最后一个候选v2：
-仅依据170题任务级汇总提高Code/NLP蒸馏权重，并在共享模型与Top-1 Adapter之间用96题汇总选择，
-不读取正式全测逐题结果。当前仍没有已经晋级的主边缘模型。
+因Code低于80%未晋级；一次提前运行的官方全测也已失败并封存。v2、P0-A4R任务Adapter
+和P0-A4R2温和Code Adapter均未产生足够增益，现已停止。
+
+当前唯一开放路线为P0-A4R3：从v1 HF合并基座重新训练共享Code+NLP LoRA，Math冻结并加入
+回放防遗忘；Code扩展到至少3500个真正不同且执行通过的MBPP/APPS/CodeContests任务，
+NLP扩展到3000个经过标签校验的中文多领域选择题。只保留Rank 8/16两个预注册候选，
+使用全新train-only验证集选择，不重复既有正式全测。量化保持Q4_K_M、Q8 KV和训练数据imatrix。
 
 ## 快速检查
 
@@ -25,6 +29,8 @@ Student v1的Q4在170题上保持率为Math/Code/NLP/Macro=`90.625/75.000/80.435
 bash scripts/run_p0a.sh checks
 bash scripts/run_p0a3.sh preflight
 bash scripts/run_p0a4.sh preflight
+bash scripts/run_p0a4r3.sh structural-check
+bash scripts/run_p0a4r3.sh protocol
 ```
 
 P0-A4 主流程：
@@ -75,6 +81,23 @@ bash scripts/run_p0a4r.sh code-build
 当前本地Code构建已由1500个APPS official-train任务与292个MBPP train任务组成，共1792
 个独立训练组；另有42个独立执行验证组，组重叠和正式测试引用均为0，数据门状态为
 `promotion_eligible=true`。完整流程见`docs/RUNBOOK_P0A4R.md`。
+
+P0-A4R3从以下命令开始，完整流程和停止条件见`docs/RUNBOOK_P0A4R3.md`：
+
+```bash
+bash scripts/run_p0a4r3.sh protocol
+bash scripts/run_p0a4r3.sh apps-expand
+bash scripts/run_p0a4r3.sh code-all
+bash scripts/run_p0a4r3.sh nlp-prepare
+bash scripts/run_p0a4r3.sh nlp-generate
+bash scripts/run_p0a4r3.sh assemble
+bash scripts/run_p0a4r3.sh preflight
+```
+
+当前P0-A4R3 Code数据门已通过：MBPP 292 + APPS 2500 + CodeContests 1000，共3792
+个不同且可执行校验的训练任务；另有256个全新Code train-only验证组。
+NLP数据门也已通过：3000个八领域中文训练组和256个新验证组全部经过Teacher答案与训练
+标签校验。组合后的共享训练集为Math/Code/NLP=`1000/3792/3000`，两个候选dry-run通过。
 
 AWQ分母和BF16+LoRA Teacher都以一个vLLM端点在 GPU `0,1,2,3` 上执行TP=4，不是四个单卡副本。详细顺序和失败处理见 `docs/RUNBOOK_P0A4.md`；P0-A3历史诊断仍保留在 `docs/RUNBOOK_P0A.md`。
 

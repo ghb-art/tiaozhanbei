@@ -1,0 +1,61 @@
+{
+  "gate": "P0-A4R3-NLP-CHINESE-DATA",
+  "check_version": "1.0",
+  "created_by": "model_compression/generate_p0a4r3_nlp_data.py",
+  "created_ts": "2026-07-27T07:06:58.743085+00:00",
+  "status": "passed",
+  "policy": {
+    "source_split": "MMLU auxiliary_train only",
+    "teacher_prompt_contains_source_label": false,
+    "acceptance": "teacher final must match train label",
+    "required_language": "Chinese",
+    "minimum_domain_equal_quota_ratio": 0.8,
+    "formal_test_labels_used": false
+  },
+  "teacher_endpoint": "http://127.0.0.1:8000",
+  "teacher_model_id": "distill-teacher-v1",
+  "teacher_fallback_model_id": "/workspace/project_tiaozhanbei/tiaozhanbei/models/pretrained/Qwen--Qwen2.5-14B-Instruct",
+  "requests": "data/distill/p0a4r3_nlp_teacher_requests.jsonl",
+  "requests_hash": "722a1b735f6812786646768b96f9dfd9f1f40c3b2aef838f3fb751f9bf0d5886",
+  "request_count": 4397,
+  "accepted_count": 3341,
+  "accepted_candidate_counts": {
+    "train": 3075,
+    "new_train_only_validation": 266
+  },
+  "rejection_counts": {
+    "label_verification_failed": 288,
+    "insufficient_chinese_content": 1,
+    "missing_translation_field": 1,
+    "teacher_response_not_json": 2
+  },
+  "train": "data/distill/p0a4r3_nlp_verified_train.jsonl",
+  "train_hash": "1243e7b6c3234495899ea6c709d8d239b16dc920ce2957c15af453f4111d2850",
+  "train_unique_groups": 3000,
+  "train_domain_counts": {
+    "arc_easy": 448,
+    "arc_hard": 448,
+    "aux_law_90s": 351,
+    "mc_test": 361,
+    "obqa": 346,
+    "race": 319,
+    "science_elementary": 356,
+    "science_middle": 371
+  },
+  "validation": "data/distill/p0a4r3_nlp_verified_validation.jsonl",
+  "validation_hash": "26ecf2d7f2b96eff77e5866838001db6b487621449bbbb71d9c094a5870f24ef",
+  "validation_unique_groups": 256,
+  "validation_domain_counts": {
+    "arc_easy": 37,
+    "arc_hard": 37,
+    "aux_law_90s": 30,
+    "mc_test": 27,
+    "obqa": 36,
+    "race": 27,
+    "science_elementary": 34,
+    "science_middle": 28
+  },
+  "train_validation_overlap": 0,
+  "errors": [],
+  "report_hash": "da6ab47430875040465c52a45b0ee7ae28559d3cacdbaafaad8349811fc390a9"
+}

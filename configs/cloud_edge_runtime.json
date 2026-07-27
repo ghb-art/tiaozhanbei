@@ -1,0 +1,29 @@
+{
+  "config_version": "1.0",
+  "fast_path": {
+    "target_latency_ms": 20,
+    "industrial": {
+      "emergency_temperature_c": 90,
+      "emergency_vibration_mm_s": 12,
+      "emergency_defect_score": 0.95
+    },
+    "traffic": {
+      "congestion_queue_length": 35,
+      "emergency_preemption": true
+    }
+  },
+  "scheduler": {
+    "edge_model_latency_ms": 115,
+    "cloud_model_latency_ms": 70,
+    "weak_network_rtt_ms": 100,
+    "weak_network_loss_rate": 0.1,
+    "weak_network_bandwidth_mbps": 2
+  },
+  "gates": {
+    "scenario_count": 2,
+    "p95_end_to_end_latency_ms": 200,
+    "weak_network_functionality_rate": 0.9,
+    "post_arbitration_conflict_ratio": 0.05,
+    "conflict_resolution_success_rate": 0.9
+  }
+}

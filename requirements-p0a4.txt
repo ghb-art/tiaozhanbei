@@ -2,3 +2,4 @@
 accelerate>=1.2,<2
 deepspeed>=0.16,<0.18
 peft>=0.14,<0.18
+pyarrow>=17,<20

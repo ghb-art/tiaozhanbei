@@ -1,0 +1,94 @@
+{
+  "gate": "P0-A4-LORA-TRAIN",
+  "check_version": "1.0",
+  "created_by": "model_compression/train_p0a4_lora.py",
+  "created_ts": "2026-07-27T07:08:32.156730+00:00",
+  "status": "dry_run_passed",
+  "role": "student_shared",
+  "task": "shared",
+  "candidate_index": 1,
+  "model_dir": "models/checkpoints/p0a4/student-shared-merged",
+  "train_data": "data/distill/p0a4r3_shared_train.jsonl",
+  "train_data_hash": "06c734d55544320de23c430ae9d02102ea51e7ed0b13b1edc63f28bd4008e63b",
+  "validation_data": "data/distill/p0a4r3_train_only_validation.jsonl",
+  "validation_data_hash": "7a86e33fa3657e87f61bcc88354d5e7f88ead444b6324b2a38f1520e12b2b1c2",
+  "train_rows": 7792,
+  "source_train_counts": {
+    "gsm8k": 1000,
+    "humaneval": 3792,
+    "cmmlu": 3000
+  },
+  "source_unique_prompt_counts": {
+    "gsm8k": 1000,
+    "humaneval": 3784,
+    "cmmlu": 3000
+  },
+  "validation_rows": 640,
+  "train_counts": {
+    "cmmlu": 3000,
+    "gsm8k": 1000,
+    "humaneval": 3792
+  },
+  "output_dir": "models/checkpoints/p0a4r3/candidate-1",
+  "lora": {
+    "rank": 8,
+    "alpha": 16,
+    "dropout": 0.05,
+    "target_modules": [
+      "q_proj",
+      "k_proj",
+      "v_proj",
+      "o_proj",
+      "gate_proj",
+      "up_proj",
+      "down_proj"
+    ]
+  },
+  "optimization": {
+    "learning_rate": 5e-05,
+    "epochs": 2.0,
+    "max_upsample_factor": 1.0,
+    "target_rows_by_task": {
+      "gsm8k": 1000,
+      "humaneval": 3792,
+      "cmmlu": 3000
+    },
+    "max_seq_length": 1536,
+    "per_device_train_batch_size": 1,
+    "gradient_accumulation_steps": 16,
+    "max_steps": -1,
+    "optimizer": "adamw_torch",
+    "optimizer_placement": "gpu_ddp_replicated",
+    "parameter_placement": "gpu_ddp_replicated",
+    "deepspeed": "",
+    "deepspeed_config_hash": "",
+    "deepspeed_stage": 0,
+    "zero3_initialized_before_model_load": false,
+    "cpu_offload": false,
+    "gradient_checkpointing": {
+      "enabled": true,
+      "use_reentrant": false
+    },
+    "ddp_find_unused_parameters": false,
+    "load_best_model_in_trainer": false,
+    "external_checkpoint_selection": false,
+    "source_balance": {
+      "enabled": false,
+      "key": "",
+      "counts": {},
+      "loss_weights": {},
+      "weighted_mass_by_source": {},
+      "row_duplication": false
+    }
+  },
+  "dependencies": {
+    "torch": "2.6.0+cu124",
+    "transformers": "4.51.3",
+    "accelerate": "1.14.0",
+    "deepspeed": "0.17.6",
+    "peft": "0.17.1"
+  },
+  "formal_test_reference_count": 0,
+  "errors": [],
+  "report_hash": "44377b14e37aa263d57aa8508bd94d162eeb888106a2ae2346a7504f1266e734"
+}

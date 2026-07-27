@@ -1,0 +1,71 @@
+{
+  "gate": "P0-edge-candidate-dev",
+  "check_version": "2.0",
+  "created_by": "scripts/evaluate_edge_candidate_dev.py",
+  "created_ts": "2026-07-23T05:53:18.529705+00:00",
+  "status": "passed",
+  "candidate_name": "nlp-checkpoint-72",
+  "backend": "local_transformers_peft",
+  "endpoint": "",
+  "endpoint_model_id": "",
+  "endpoint_model_id_map": {},
+  "endpoint_model_id_map_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+  "model": {
+    "path": "models/checkpoints/p0a4r/nlp/checkpoint-72",
+    "file_count": 11,
+    "bytes": 105051471,
+    "key_metadata_hash": "cf9d73938782aede90bb07014f6c8a3b7fbe41f2a79cfa072428d1dcfa636cdb"
+  },
+  "base_model": {
+    "path": "models/checkpoints/p0a4/student-shared-v2-merged",
+    "file_count": 9,
+    "bytes": 3457068971,
+    "key_metadata_hash": "7d5030a4689780f2c529de9fc454a13cdce89d42f571e1f012781a32c99f4194"
+  },
+  "adapter": {
+    "path": "models/checkpoints/p0a4r/nlp/checkpoint-72",
+    "file_count": 11,
+    "bytes": 105051471,
+    "key_metadata_hash": "cf9d73938782aede90bb07014f6c8a3b7fbe41f2a79cfa072428d1dcfa636cdb"
+  },
+  "validation_data": "data/distill/p0a4r_nlp_internal_validation.jsonl",
+  "validation_data_sha256": "3e10cde4f042fd4c3dfad6b0c98753fe382f1c2c035b81d757ece2b0eb0ad443",
+  "output_trace": "data/eval/p0a4r/nlp_checkpoint_72.jsonl",
+  "output_trace_sha256": "0b3637861e06609b9670c5c5863353bee1512224feb7ca7d6fbbd6a7163307db",
+  "sample_count": 64,
+  "dataset_counts": {
+    "cmmlu": 64
+  },
+  "correct_counts": {
+    "cmmlu": 46
+  },
+  "accuracy_by_dataset": {
+    "cmmlu": 0.71875
+  },
+  "macro_accuracy": 0.71875,
+  "min_accuracy_by_dataset": {
+    "cmmlu": 0.0
+  },
+  "min_macro_accuracy": 0.0,
+  "threshold_gate_enabled": true,
+  "threshold_failures": {},
+  "generation_error_count": 0,
+  "failure_reasons": [],
+  "mean_latency_ms": 131.78234194492688,
+  "peak_gpu_memory_mb_decimal": 3702.198784,
+  "dtype": "bfloat16",
+  "max_input_length": 1024,
+  "max_new_tokens_by_dataset": {
+    "gsm8k": 512,
+    "humaneval": 512,
+    "cmmlu": 16
+  },
+  "close_reasoning_prefix": false,
+  "disable_thinking": true,
+  "kv_cache_type": "",
+  "request_extra_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+  "request_extra_map_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+  "formal_test_labels_used": false,
+  "errors": [],
+  "report_hash": "4a1bd1d1504c13cda6d33c4468dce84dad45374336410de8445f24439e3db066"
+}

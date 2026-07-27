@@ -1,0 +1,72 @@
+{
+  "gate": "P0-edge-candidate-dev",
+  "check_version": "2.0",
+  "created_by": "scripts/evaluate_edge_candidate_dev.py",
+  "created_ts": "2026-07-23T06:18:13.009987+00:00",
+  "status": "passed",
+  "candidate_name": "code-checkpoint-112",
+  "backend": "local_transformers_peft",
+  "endpoint": "",
+  "endpoint_model_id": "",
+  "endpoint_model_id_map": {},
+  "endpoint_model_id_map_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+  "model": {
+    "path": "models/checkpoints/p0a4r/code/checkpoint-112",
+    "file_count": 11,
+    "bytes": 105052116,
+    "key_metadata_hash": "8cc80861a40305c3d92a2434a0c945c7dcb21b1a30c59f4f14f800f6cb9ca188"
+  },
+  "base_model": {
+    "path": "models/checkpoints/p0a4/student-shared-v2-merged",
+    "file_count": 9,
+    "bytes": 3457068971,
+    "key_metadata_hash": "7d5030a4689780f2c529de9fc454a13cdce89d42f571e1f012781a32c99f4194"
+  },
+  "adapter": {
+    "path": "models/checkpoints/p0a4r/code/checkpoint-112",
+    "file_count": 11,
+    "bytes": 105052116,
+    "key_metadata_hash": "8cc80861a40305c3d92a2434a0c945c7dcb21b1a30c59f4f14f800f6cb9ca188"
+  },
+  "adapter_scale": 1.0,
+  "validation_data": "data/distill/p0a4r_code_internal_validation.jsonl",
+  "validation_data_sha256": "4e26440ccd037a0c702f4caea709f9947049d770c2861899cfaf09385fdca6f0",
+  "output_trace": "data/eval/p0a4r/code_checkpoint_112.jsonl",
+  "output_trace_sha256": "759ff8be178367f114cf625a9ce32bcc903aac7c4a01a5ed424b03abfa76e730",
+  "sample_count": 42,
+  "dataset_counts": {
+    "humaneval": 42
+  },
+  "correct_counts": {
+    "humaneval": 17
+  },
+  "accuracy_by_dataset": {
+    "humaneval": 0.40476190476190477
+  },
+  "macro_accuracy": 0.40476190476190477,
+  "min_accuracy_by_dataset": {
+    "humaneval": 0.0
+  },
+  "min_macro_accuracy": 0.0,
+  "threshold_gate_enabled": true,
+  "threshold_failures": {},
+  "generation_error_count": 0,
+  "failure_reasons": [],
+  "mean_latency_ms": 1635.5580286499821,
+  "peak_gpu_memory_mb_decimal": 3565.869056,
+  "dtype": "bfloat16",
+  "max_input_length": 1024,
+  "max_new_tokens_by_dataset": {
+    "gsm8k": 512,
+    "humaneval": 512,
+    "cmmlu": 16
+  },
+  "close_reasoning_prefix": false,
+  "disable_thinking": true,
+  "kv_cache_type": "",
+  "request_extra_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+  "request_extra_map_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+  "formal_test_labels_used": false,
+  "errors": [],
+  "report_hash": "1881689459f5726cad24090836ce94af880c338a220fff13e0541cf254312ace"
+}

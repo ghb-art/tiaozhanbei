@@ -1,0 +1,66 @@
+{
+  "gate": "P0-edge-candidate-dev",
+  "check_version": "2.0",
+  "created_by": "scripts/evaluate_edge_candidate_dev.py",
+  "created_ts": "2026-07-23T05:52:42.764044+00:00",
+  "status": "passed",
+  "candidate_name": "nlp-base",
+  "backend": "local_transformers_base",
+  "endpoint": "",
+  "endpoint_model_id": "",
+  "endpoint_model_id_map": {},
+  "endpoint_model_id_map_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+  "model": {
+    "path": "models/checkpoints/p0a4/student-shared-v2-merged",
+    "file_count": 9,
+    "bytes": 3457068971,
+    "key_metadata_hash": "7d5030a4689780f2c529de9fc454a13cdce89d42f571e1f012781a32c99f4194"
+  },
+  "base_model": {
+    "path": "models/checkpoints/p0a4/student-shared-v2-merged",
+    "file_count": 9,
+    "bytes": 3457068971,
+    "key_metadata_hash": "7d5030a4689780f2c529de9fc454a13cdce89d42f571e1f012781a32c99f4194"
+  },
+  "adapter": {},
+  "validation_data": "data/distill/p0a4r_nlp_internal_validation.jsonl",
+  "validation_data_sha256": "3e10cde4f042fd4c3dfad6b0c98753fe382f1c2c035b81d757ece2b0eb0ad443",
+  "output_trace": "data/eval/p0a4r/nlp_base.jsonl",
+  "output_trace_sha256": "08ba3ca6e41258568e267c7bd50f4833e483acbb4aa0fbba4fce60bfd09d35f3",
+  "sample_count": 64,
+  "dataset_counts": {
+    "cmmlu": 64
+  },
+  "correct_counts": {
+    "cmmlu": 45
+  },
+  "accuracy_by_dataset": {
+    "cmmlu": 0.703125
+  },
+  "macro_accuracy": 0.703125,
+  "min_accuracy_by_dataset": {
+    "cmmlu": 0.0
+  },
+  "min_macro_accuracy": 0.0,
+  "threshold_gate_enabled": true,
+  "threshold_failures": {},
+  "generation_error_count": 0,
+  "failure_reasons": [],
+  "mean_latency_ms": 76.79807145905215,
+  "peak_gpu_memory_mb_decimal": 3620.106752,
+  "dtype": "bfloat16",
+  "max_input_length": 1024,
+  "max_new_tokens_by_dataset": {
+    "gsm8k": 512,
+    "humaneval": 512,
+    "cmmlu": 16
+  },
+  "close_reasoning_prefix": false,
+  "disable_thinking": true,
+  "kv_cache_type": "",
+  "request_extra_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+  "request_extra_map_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+  "formal_test_labels_used": false,
+  "errors": [],
+  "report_hash": "abf8af103b9aa523f045f239c334c63d3fc57f3cf424932bab1e9ea643e1bdbd"
+}

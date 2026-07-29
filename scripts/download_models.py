@@ -18,7 +18,7 @@ DEFAULT_AUDIT_COPY_PATH = ROOT / "reports" / "audit" / "model_downloads.json"
 
 MODEL_SPECS = [
     {
-        "role": "cloud_teacher",
+        "role": "cloud_baseline",
         "repo_id": "Qwen/Qwen2.5-14B-Instruct-AWQ",
         "local_name": "Qwen--Qwen2.5-14B-Instruct-AWQ",
     },
@@ -26,16 +26,6 @@ MODEL_SPECS = [
         "role": "distill_teacher_base",
         "repo_id": "Qwen/Qwen2.5-14B-Instruct",
         "local_name": "Qwen--Qwen2.5-14B-Instruct",
-    },
-    {
-        "role": "primary_edge_candidate",
-        "repo_id": "Qwen/Qwen3-1.7B",
-        "local_name": "Qwen--Qwen3-1.7B",
-    },
-    {
-        "role": "fallback_edge_candidate",
-        "repo_id": "Qwen/Qwen2.5-1.5B-Instruct",
-        "local_name": "Qwen--Qwen2.5-1.5B-Instruct",
     },
 ]
 

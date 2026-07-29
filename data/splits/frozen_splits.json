@@ -2,29 +2,29 @@
   "split_version": "1.0",
   "created_by": "scripts/validate_splits.py",
   "sampling_seed": 42,
-  "global_split_hash": "d7f3fac67fd3f235802ed405cdbac46302db513925cdab56d13198b0b871e7cf",
+  "global_split_hash": "1e4b7f37ece825b50375c697e6428cf5619ed0544212fba1f2a479edecbb247f",
   "datasets": [
     {
       "dataset_key": "gsm8k",
       "dataset_name": "GSM8K",
       "dataset_version": "openai-grade-school-math@3101c7d",
       "official_scale": "train=7473, test=1319",
-      "method": "Use official train for distillation; freeze deterministic 500-sample subset from official test for Final Gate.",
+      "method": "Preserve official train/test. P0-A5 makes its 7173/200/100 train-only split separately.",
       "sampling_seed": 42,
       "counts": {
         "train": 7473,
         "validation": 0,
-        "test": 500
+        "test": 1319
       },
       "hashes": {
         "train": "885248680da5d8165a7f4810dd8017523c94ef984351e85b198f84494e0dba3a",
         "validation": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
-        "test": "afb4abca18ea8f98ee57cf5afcf9137dca6626bf0231c712f56dcfe2e5f3312a"
+        "test": "4df7e113aa0db8477fac566f9786f0abe3c4d4c7850c130028a67130b1930f2a"
       },
-      "split_hash": "780300b0e227e082cc1cc9f6b68999119c5968d0bbd1b1c5413301fa9b5cfa3c",
+      "split_hash": "b3a73ef31e2ed05dfb5022eb8b61f23c23456773b5c9afbd527f15bc10564542",
       "metadata": {
         "official_test_count": 1319,
-        "final_gate_subset_count": 500
+        "official_test_full_final_gate": true
       },
       "split_files": {
         "train": "data/splits/gsm8k_train.txt",
@@ -60,51 +60,23 @@
       }
     },
     {
-      "dataset_key": "mmlu",
-      "dataset_name": "MMLU",
-      "dataset_version": "hendrycks-data.tar",
-      "official_scale": "subjects=57, official test rows sampled to 1000 final items",
-      "method": "Use auxiliary_train plus official dev for train; official val for validation; stratified 1000-sample official test subset for Final Gate.",
-      "sampling_seed": 42,
-      "counts": {
-        "train": 100062,
-        "validation": 1474,
-        "test": 1000
-      },
-      "hashes": {
-        "train": "4f73e4b8e13f8fe0c6b686bd463d94ae766d53c0c7df353c989bb03a6cfcbd80",
-        "validation": "b3ba6b5da57080f2bae7c6043666c1b4a9b3e6326c65ee71e9803ef8aa39525e",
-        "test": "6f965919c51c31620c15e8678e924ff7bd9594fb2006c3c53f96f3552d70b2fa"
-      },
-      "split_hash": "4d2d2a116317f509a810fc08e84a4878c593b81ca4014ac5f0a8a9b63d0e2f84",
-      "metadata": {
-        "subject_count": 57,
-        "test_pool_count": 13985
-      },
-      "split_files": {
-        "train": "data/splits/mmlu_train.txt",
-        "validation": "data/splits/mmlu_validation.txt",
-        "test": "data/splits/mmlu_test.txt"
-      }
-    },
-    {
       "dataset_key": "cmmlu",
       "dataset_name": "CMMLU",
       "dataset_version": "haonan-li-CMMLU@d6e7b71",
       "official_scale": "subjects=67, test rows=11582",
-      "method": "Use official dev for validation; freeze stratified 1000-sample official test subset for Final Gate; no non-final train data yet.",
+      "method": "Use official dev only for the fixed P0-A5 100-item gate; use the full official test for formal evaluation.",
       "sampling_seed": 42,
       "counts": {
         "train": 0,
         "validation": 335,
-        "test": 1000
+        "test": 11582
       },
       "hashes": {
         "train": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
         "validation": "8023227fc0c04c55abfda465766e94a037dff10c387409d5b8d77ea48b353f4c",
-        "test": "8b9fde5a765238e30f7bda020558f731649c669308747d48ed7be2e752f18ffb"
+        "test": "b59bac878107df805f507403d2bddf87f2ca8bda7d2ed23c34413a7227257527"
       },
-      "split_hash": "a28fed0d94499fa97702b8214424c682f97f675dfe48a80274be1978df457863",
+      "split_hash": "04f0a03ff618b5f4a25816b21c893d089d45357dd1d72b76e4d589f76caf5d46",
       "metadata": {
         "subject_count": 67,
         "test_pool_count": 11582

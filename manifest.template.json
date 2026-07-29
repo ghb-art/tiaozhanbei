@@ -9,7 +9,7 @@
   "baseline_fairness_hash": "REPLACE_WITH_SHA256",
   "teacher_model_id": "Qwen/Qwen2.5-14B-Instruct-AWQ",
   "student_init_model_id": "Qwen/Qwen3-1.7B",
-  "edge_model_name": "DB4AI-Edge-P0A3-Qwen3-1.7B-Q3_K_M-CANDIDATE",
+  "edge_model_name": "DB4AI-Edge-P0A5-Qwen3-1.7B-Q4_K_M-Q8KV-CANDIDATE",
   "edge_model_sha256": "REPLACE_WITH_SHA256",
   "distill_dataset_hash": "REPLACE_WITH_SHA256",
   "teacher_trace_hash": "REPLACE_WITH_SHA256",

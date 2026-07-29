@@ -13,8 +13,9 @@ IGNORED_FILES = {".gitkeep"}
 EXPECTED_DATASETS = [
     ("gsm8k", "GSM8K"),
     ("humaneval", "HumanEval"),
-    ("mmlu", "MMLU"),
     ("cmmlu", "CMMLU"),
+    ("opencodeinstruct", "NVIDIA OpenCodeInstruct"),
+    ("coig_cqia", "COIG-CQIA"),
     ("mvtec_ad", "MVTec AD"),
     ("neu_det", "NEU-DET"),
     ("cityflow", "CityFlow"),

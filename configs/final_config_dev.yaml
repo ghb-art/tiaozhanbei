@@ -1,4 +1,4 @@
-config_version: "0.3-p0a4"
+config_version: "0.4-p0a5"
 stage: "dev"
 frozen_for_final_gate: false
 
@@ -28,8 +28,9 @@ decision_header:
     - selected_path
 
 dev_gates:
-  # P0-A4 uses an independent 96-row early gate followed by the frozen 170-row gate.
-  g1_smoke96_min_ratio: 0.75
+  # P0-A5 uses one fixed 300-item gate: 100 Math + 100 Code + 100 NLP.
+  g1_gate300_initial_ratio: 0.78
+  g1_gate300_recommended_full_ratio: 0.82
   g1_min_ratio: 0.80
   g1_max_selection_student_versions: 2
   g1_official_full_student_attempts: 1

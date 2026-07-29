@@ -1,0 +1,142 @@
+{
+  "config_version": "1.0",
+  "route": "P0-A5 single-gate shared distillation",
+  "seed": 20260729,
+  "policy": {
+    "baseline_frozen": true,
+    "baseline_model": "Qwen2.5-14B-Instruct-AWQ",
+    "teacher_model": "Qwen2.5-14B-Instruct-BF16",
+    "student_base": "models/checkpoints/p0a4/student-shared-merged",
+    "formal_feedback_for_training": false,
+    "maximum_preregistered_students": 2,
+    "adapters_allowed": false,
+    "single_shared_lora": true
+  },
+  "datasets": {
+    "math": {
+      "source": "GSM8K",
+      "train_source": "data/datasets/gsm8k/grade_school_math/data/train.jsonl",
+      "train_rows": 7173,
+      "internal_validation_rows": 200,
+      "gate_rows": 100,
+      "formal_rows": 1319
+    },
+    "code": {
+      "source": "nvidia/OpenCodeInstruct",
+      "source_revision": "main",
+      "source_shards": [
+        0,
+        17,
+        33
+      ],
+      "train_rows": 20000,
+      "internal_validation_rows": 1000,
+      "gate_rows": 100,
+      "formal_dataset": "HumanEval",
+      "formal_rows": 164,
+      "minimum_average_test_score": 1.0,
+      "execution_timeout_sec": 5,
+      "max_prompt_chars": 5000,
+      "max_answer_chars": 4000
+    },
+    "nlp": {
+      "source": "m-a-p/COIG-CQIA",
+      "source_revision": "main",
+      "train_rows": 9500,
+      "internal_validation_rows": 1000,
+      "gate_dataset": "CMMLU-dev",
+      "gate_rows": 100,
+      "formal_dataset": "CMMLU-test",
+      "formal_rows": 11582,
+      "category_train_quotas": {
+        "exam": 300,
+        "science_encyclopedia": 1700,
+        "humanities_social_science": 1240,
+        "law_economics_management": 670,
+        "language_reasoning": 5590
+      }
+    }
+  },
+  "artifacts": {
+    "source_train": "data/capability_v2/source_train.jsonl",
+    "source_validation": "data/capability_v2/internal_validation.jsonl",
+    "distill_train": "data/capability_v2/distill_train.jsonl",
+    "gate_manifest": "data/capability_v2/gate300.jsonl",
+    "split_manifest": "data/capability_v2/manifest.json",
+    "data_audit": "reports/audit/gate_p0a5_data.json",
+    "protocol_audit": "reports/audit/gate_p0a5_protocol.json",
+    "baseline_gate_trace": "data/eval/p0a5_baseline14b_gate300.jsonl",
+    "student_gate_trace": "data/eval/p0a5_student_q4_gate300.jsonl",
+    "gate_audit": "reports/audit/gate_p0a5_student_gate300.json"
+  },
+  "teacher_training": {
+    "lora_rank": 16,
+    "lora_alpha": 32,
+    "lora_dropout": 0.05,
+    "learning_rate": 0.00001,
+    "epochs": 1,
+    "max_seq_length": 1536,
+    "tensor_parallel_or_zero3_gpus": 4
+  },
+  "student_training": {
+    "lora_rank": 16,
+    "lora_alpha": 32,
+    "lora_dropout": 0.05,
+    "learning_rate": 0.00001,
+    "epochs": 1,
+    "max_seq_length": 1536,
+    "task_loss_mass": {
+      "gsm8k": 0.3,
+      "opencodeinstruct": 0.35,
+      "cmmlu": 0.35
+    },
+    "math_preservation": {
+      "enabled": true,
+      "method": "base_student_token_kl",
+      "kl_weight": 0.5,
+      "supervised_weight": 0.5,
+      "temperature": 1.0,
+      "allowed_drift_points": 1.0
+    },
+    "candidate_overrides": {
+      "2": {
+        "learning_rate": 0.0000075,
+        "math_kl_weight": 0.65
+      }
+    }
+  },
+  "gate300": {
+    "expected_counts": {
+      "math": 100,
+      "code": 100,
+      "nlp": 100
+    },
+    "initial_ratio": 0.78,
+    "recommended_full_ratio": 0.82,
+    "recommended_full_capped_macro": 0.82,
+    "maximum_generation_errors": 0,
+    "outcomes": {
+      "below_initial": "reject",
+      "initial_only": "eligible_for_second_preregistered_candidate",
+      "recommended": "eligible_for_quantization_memory_and_formal_full"
+    }
+  },
+  "formal_gate": {
+    "expected_counts": {
+      "gsm8k": 1319,
+      "humaneval": 164,
+      "cmmlu": 11582
+    },
+    "minimum_ratio_each": 0.8,
+    "minimum_capped_macro": 0.8,
+    "maximum_generation_errors": 0,
+    "post_test_tuning": false
+  },
+  "quantization": {
+    "weight_type": "Q4_K_M",
+    "kv_cache_type": "q8_0",
+    "imatrix_source": "training_only",
+    "memory_dev_mb_decimal": 1400,
+    "memory_formal_mb_decimal": 1500
+  }
+}

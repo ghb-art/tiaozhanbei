@@ -1,12 +1,12 @@
 {
   "report_version": "0.1",
   "created_by": "scripts/preflight_runtime_smoke.py",
-  "created_ts": "2026-07-18T11:08:47.169387+00:00",
+  "created_ts": "2026-07-29T05:12:59.102643+00:00",
   "project_root": "/workspace/project_tiaozhanbei/tiaozhanbei",
   "python_executable": "/workspace/project_tiaozhanbei/tiaozhanbei/.venv/bin/python",
   "summary": {
     "passed": true,
-    "check_count": 59,
+    "check_count": 50,
     "failed_check_count": 0,
     "errors": []
   },
@@ -81,7 +81,7 @@
       "passed": true,
       "details": {
         "path": "README.md",
-        "size_chars": 1960
+        "size_chars": 1738
       }
     },
     {
@@ -89,7 +89,7 @@
       "passed": true,
       "details": {
         "path": "IMPLEMENTATION_PLAN.md",
-        "size_chars": 16903
+        "size_chars": 5220
       }
     },
     {
@@ -97,7 +97,7 @@
       "passed": true,
       "details": {
         "path": "docs/TODO.md",
-        "size_chars": 1491
+        "size_chars": 657
       }
     },
     {
@@ -105,7 +105,7 @@
       "passed": true,
       "details": {
         "path": "docs/PROJECT_STATUS.md",
-        "size_chars": 1755
+        "size_chars": 1386
       }
     },
     {
@@ -113,7 +113,7 @@
       "passed": true,
       "details": {
         "path": "docs/REVISION_LOG.md",
-        "size_chars": 46084
+        "size_chars": 49741
       }
     },
     {
@@ -121,15 +121,15 @@
       "passed": true,
       "details": {
         "path": "docs/DATASET_SOURCES.md",
-        "size_chars": 10492
+        "size_chars": 1214
       }
     },
     {
-      "name": "readable_file:docs/RUNBOOK_P0A.md",
+      "name": "readable_file:docs/RUNBOOK_P0A5.md",
       "passed": true,
       "details": {
-        "path": "docs/RUNBOOK_P0A.md",
-        "size_chars": 2391
+        "path": "docs/RUNBOOK_P0A5.md",
+        "size_chars": 1304
       }
     },
     {
@@ -153,7 +153,7 @@
       "passed": true,
       "details": {
         "path": "configs/models.yaml",
-        "size_chars": 1869
+        "size_chars": 2055
       }
     },
     {
@@ -161,39 +161,15 @@
       "passed": true,
       "details": {
         "path": "configs/final_config_dev.yaml",
-        "size_chars": 1122
+        "size_chars": 1186
       }
     },
     {
-      "name": "readable_file:configs/g0_capmem_candidates.json",
+      "name": "readable_file:configs/p0a5_capability.json",
       "passed": true,
       "details": {
-        "path": "configs/g0_capmem_candidates.json",
-        "size_chars": 4557
-      }
-    },
-    {
-      "name": "readable_file:configs/p0a2_recovery.json",
-      "passed": true,
-      "details": {
-        "path": "configs/p0a2_recovery.json",
-        "size_chars": 1958
-      }
-    },
-    {
-      "name": "readable_file:configs/p0a3_reselection.json",
-      "passed": true,
-      "details": {
-        "path": "configs/p0a3_reselection.json",
-        "size_chars": 2801
-      }
-    },
-    {
-      "name": "readable_file:reports/audit/gate_p0a2_deepseek_rejection.json",
-      "passed": true,
-      "details": {
-        "path": "reports/audit/gate_p0a2_deepseek_rejection.json",
-        "size_chars": 1305
+        "path": "configs/p0a5_capability.json",
+        "size_chars": 4056
       }
     },
     {
@@ -201,7 +177,7 @@
       "passed": true,
       "details": {
         "path": "dataset_manifest.template.json",
-        "size_chars": 5111
+        "size_chars": 4571
       }
     },
     {
@@ -209,7 +185,7 @@
       "passed": true,
       "details": {
         "path": "manifest.template.json",
-        "size_chars": 2378
+        "size_chars": 2383
       }
     },
     {
@@ -225,7 +201,7 @@
       "passed": true,
       "details": {
         "path": "scripts/validate_project_structure.py",
-        "size_chars": 8330
+        "size_chars": 8129
       }
     },
     {
@@ -233,7 +209,7 @@
       "passed": true,
       "details": {
         "path": "scripts/validate_dataset_presence.py",
-        "size_chars": 3407
+        "size_chars": 3470
       }
     },
     {
@@ -241,7 +217,7 @@
       "passed": true,
       "details": {
         "path": "scripts/validate_manifest_files.py",
-        "size_chars": 19629
+        "size_chars": 19622
       }
     },
     {
@@ -249,7 +225,7 @@
       "passed": true,
       "details": {
         "path": "scripts/inspect_datasets.py",
-        "size_chars": 8464
+        "size_chars": 8749
       }
     },
     {
@@ -257,7 +233,7 @@
       "passed": true,
       "details": {
         "path": "scripts/preflight_runtime_smoke.py",
-        "size_chars": 11639
+        "size_chars": 11243
       }
     },
     {
@@ -265,15 +241,15 @@
       "passed": true,
       "details": {
         "path": "scripts/setup_llama_cpp.sh",
-        "size_chars": 1537
+        "size_chars": 2353
       }
     },
     {
-      "name": "readable_file:scripts/setup_mbpp_v23.py",
+      "name": "readable_file:patches/llama_cpp_chat_utf8_sanitize.patch",
       "passed": true,
       "details": {
-        "path": "scripts/setup_mbpp_v23.py",
-        "size_chars": 6534
+        "path": "patches/llama_cpp_chat_utf8_sanitize.patch",
+        "size_chars": 2184
       }
     },
     {
@@ -281,31 +257,15 @@
       "passed": true,
       "details": {
         "path": "scripts/run_p0a.sh",
-        "size_chars": 3074
+        "size_chars": 4421
       }
     },
     {
-      "name": "readable_file:scripts/run_p0a2.sh",
+      "name": "readable_file:scripts/run_p0a5.sh",
       "passed": true,
       "details": {
-        "path": "scripts/run_p0a2.sh",
-        "size_chars": 483
-      }
-    },
-    {
-      "name": "readable_file:scripts/run_p0a3.sh",
-      "passed": true,
-      "details": {
-        "path": "scripts/run_p0a3.sh",
-        "size_chars": 18182
-      }
-    },
-    {
-      "name": "readable_file:scripts/run_g0_capmem.py",
-      "passed": true,
-      "details": {
-        "path": "scripts/run_g0_capmem.py",
-        "size_chars": 26035
+        "path": "scripts/run_p0a5.sh",
+        "size_chars": 12006
       }
     },
     {
@@ -313,7 +273,7 @@
       "passed": true,
       "details": {
         "path": "scripts/build_imatrix_calibration.py",
-        "size_chars": 5131
+        "size_chars": 7683
       }
     },
     {
@@ -321,7 +281,7 @@
       "passed": true,
       "details": {
         "path": "scripts/serve_vllm_teachers.py",
-        "size_chars": 8328
+        "size_chars": 11390
       }
     },
     {
@@ -329,7 +289,7 @@
       "passed": true,
       "details": {
         "path": "scripts/verify_gate_cloud.py",
-        "size_chars": 18672
+        "size_chars": 18713
       }
     },
     {
@@ -337,23 +297,7 @@
       "passed": true,
       "details": {
         "path": "scripts/evaluate_chapter2_capability.py",
-        "size_chars": 34994
-      }
-    },
-    {
-      "name": "readable_file:scripts/evaluate_edge_candidate_dev.py",
-      "passed": true,
-      "details": {
-        "path": "scripts/evaluate_edge_candidate_dev.py",
-        "size_chars": 18802
-      }
-    },
-    {
-      "name": "readable_file:scripts/summarize_edge_candidate_dev.py",
-      "passed": true,
-      "details": {
-        "path": "scripts/summarize_edge_candidate_dev.py",
-        "size_chars": 9653
+        "size_chars": 38218
       }
     },
     {
@@ -365,43 +309,27 @@
       }
     },
     {
-      "name": "readable_file:model_compression/generate_teacher_capability_distill.py",
+      "name": "readable_file:model_compression/build_p0a5_data.py",
       "passed": true,
       "details": {
-        "path": "model_compression/generate_teacher_capability_distill.py",
-        "size_chars": 56010
+        "path": "model_compression/build_p0a5_data.py",
+        "size_chars": 36215
       }
     },
     {
-      "name": "readable_file:model_compression/build_capability_rehearsal.py",
+      "name": "readable_file:model_compression/generate_p0a5_distill.py",
       "passed": true,
       "details": {
-        "path": "model_compression/build_capability_rehearsal.py",
-        "size_chars": 91962
+        "path": "model_compression/generate_p0a5_distill.py",
+        "size_chars": 12819
       }
     },
     {
-      "name": "readable_file:model_compression/build_mbpp_v23.py",
+      "name": "readable_file:model_compression/train_p0a5_lora.py",
       "passed": true,
       "details": {
-        "path": "model_compression/build_mbpp_v23.py",
-        "size_chars": 16559
-      }
-    },
-    {
-      "name": "readable_file:model_compression/build_p0a2_recovery_data.py",
-      "passed": true,
-      "details": {
-        "path": "model_compression/build_p0a2_recovery_data.py",
-        "size_chars": 17890
-      }
-    },
-    {
-      "name": "readable_file:model_compression/edge_candidate_eval_utils.py",
-      "passed": true,
-      "details": {
-        "path": "model_compression/edge_candidate_eval_utils.py",
-        "size_chars": 4589
+        "path": "model_compression/train_p0a5_lora.py",
+        "size_chars": 22831
       }
     },
     {
@@ -425,7 +353,7 @@
       "passed": true,
       "details": {
         "path": "scripts/verify_gate_g3_gguf.py",
-        "size_chars": 23653
+        "size_chars": 26766
       }
     },
     {
@@ -529,9 +457,9 @@
           "scripts/validate_project_structure.py"
         ],
         "returncode": 0,
-        "started_ts": "2026-07-18T11:08:45.035516+00:00",
-        "finished_ts": "2026-07-18T11:08:45.072866+00:00",
-        "stdout_tail": "[OK] Network profile declared: low_bandwidth\n[OK] Network profile declared: high_loss\n[OK] Network profile declared: short_disconnect\n[OK] Workload profile declared: stable\n[OK] Workload profile declared: burst\n[OK] Workload profile declared: replay\n[OK] Workload profile declared: scale\n[OK] Model role declared: cloud_teacher\n[OK] Model role declared: edge_student\n[OK] Manifest template is valid JSON: dataset_manifest.template.json\n[OK] Manifest template marked template_only: dataset_manifest.template.json\n[OK] Manifest template key present: dataset_manifest.template.json::manifest_version\n[OK] Manifest template key present: dataset_manifest.template.json::created_by\n[OK] Manifest template key present: dataset_manifest.template.json::created_ts\n[OK] Manifest template key present: dataset_manifest.template.json::sampling_seed\n[OK] Manifest template key present: dataset_manifest.template.json::datasets\n[OK] Manifest template key present: dataset_manifest.template.json::scu_support\n[OK] Manifest template key present: dataset_manifest.template.json::global_leakage_check\n[OK] Manifest template is valid JSON: manifest.template.json\n[OK] Manifest template marked template_only: manifest.template.json\n[OK] Manifest template key present: manifest.template.json::git_commit\n[OK] Manifest template key present: manifest.template.json::final_config_hash\n[OK] Manifest template key present: manifest.template.json::teacher_model_id\n[OK] Manifest template key present: manifest.template.json::student_init_model_id\n[OK] Manifest template key present: manifest.template.json::edge_model_name\n[OK] Manifest template key present: manifest.template.json::fallback_events\n[OK] Manifest template key present: manifest.template.json::timestamp\n[OK] Manifest template is valid JSON: conflict_gt_manifest.template.json\n[OK] Manifest template marked template_only: conflict_gt_manifest.template.json\n[OK] Manifest template key present: conflict_gt_manifest.template.json::manifest_version\n[OK] Manifest template key present: conflict_gt_manifest.template.json::created_by\n[OK] Manifest template key present: conflict_gt_manifest.template.json::created_ts\n[OK] Manifest template key present: conflict_gt_manifest.template.json::datasets\n[OK] Manifest template key present: conflict_gt_manifest.template.json::split\n[OK] Manifest template key present: conflict_gt_manifest.template.json::conflict_groups\n[OK] Manifest template key present: conflict_gt_manifest.template.json::conflict_group_count\n[OK] Manifest template key present: conflict_gt_manifest.template.json::conflict_type_distribution\n[OK] Manifest template key present: conflict_gt_manifest.template.json::manifest_hash\n\nProject structure validation passed.",
+        "started_ts": "2026-07-29T05:12:56.966701+00:00",
+        "finished_ts": "2026-07-29T05:12:57.004705+00:00",
+        "stdout_tail": "[OK] Network profile declared: high_loss\n[OK] Network profile declared: short_disconnect\n[OK] Workload profile declared: stable\n[OK] Workload profile declared: burst\n[OK] Workload profile declared: replay\n[OK] Workload profile declared: scale\n[OK] Model role declared: cloud_baseline\n[OK] Model role declared: distill_teacher\n[OK] Model role declared: edge_student\n[OK] Manifest template is valid JSON: dataset_manifest.template.json\n[OK] Manifest template marked template_only: dataset_manifest.template.json\n[OK] Manifest template key present: dataset_manifest.template.json::manifest_version\n[OK] Manifest template key present: dataset_manifest.template.json::created_by\n[OK] Manifest template key present: dataset_manifest.template.json::created_ts\n[OK] Manifest template key present: dataset_manifest.template.json::sampling_seed\n[OK] Manifest template key present: dataset_manifest.template.json::datasets\n[OK] Manifest template key present: dataset_manifest.template.json::scu_support\n[OK] Manifest template key present: dataset_manifest.template.json::global_leakage_check\n[OK] Manifest template is valid JSON: manifest.template.json\n[OK] Manifest template marked template_only: manifest.template.json\n[OK] Manifest template key present: manifest.template.json::git_commit\n[OK] Manifest template key present: manifest.template.json::final_config_hash\n[OK] Manifest template key present: manifest.template.json::teacher_model_id\n[OK] Manifest template key present: manifest.template.json::student_init_model_id\n[OK] Manifest template key present: manifest.template.json::edge_model_name\n[OK] Manifest template key present: manifest.template.json::fallback_events\n[OK] Manifest template key present: manifest.template.json::timestamp\n[OK] Manifest template is valid JSON: conflict_gt_manifest.template.json\n[OK] Manifest template marked template_only: conflict_gt_manifest.template.json\n[OK] Manifest template key present: conflict_gt_manifest.template.json::manifest_version\n[OK] Manifest template key present: conflict_gt_manifest.template.json::created_by\n[OK] Manifest template key present: conflict_gt_manifest.template.json::created_ts\n[OK] Manifest template key present: conflict_gt_manifest.template.json::datasets\n[OK] Manifest template key present: conflict_gt_manifest.template.json::split\n[OK] Manifest template key present: conflict_gt_manifest.template.json::conflict_groups\n[OK] Manifest template key present: conflict_gt_manifest.template.json::conflict_group_count\n[OK] Manifest template key present: conflict_gt_manifest.template.json::conflict_type_distribution\n[OK] Manifest template key present: conflict_gt_manifest.template.json::manifest_hash\n\nProject structure validation passed.",
         "stderr_tail": ""
       }
     },
@@ -545,9 +473,9 @@
           "--allow-empty"
         ],
         "returncode": 0,
-        "started_ts": "2026-07-18T11:08:45.072983+00:00",
-        "finished_ts": "2026-07-18T11:08:47.115863+00:00",
-        "stdout_tail": "[OK] GSM8K -> data/datasets/gsm8k (7 payload files, 13880370 bytes)\n[OK] HumanEval -> data/datasets/humaneval (11 payload files, 64174 bytes)\n[OK] MMLU -> data/datasets/mmlu (187 payload files, 166066477 bytes)\n[OK] CMMLU -> data/datasets/cmmlu (136 payload files, 2512537 bytes)\n[OK] MVTec AD -> data/datasets/mvtec_ad (6645 payload files, 10536229804 bytes)\n[OK] NEU-DET -> data/datasets/neu_det (3601 payload files, 55922599 bytes)\n[OK] CityFlow -> data/datasets/cityflow (1063 payload files, 34973435649 bytes)\n[OK] UA-DETRAC -> data/datasets/ua_detrac (141041 payload files, 31257170002 bytes)\n\nDataset presence check completed with empty directories allowed.",
+        "started_ts": "2026-07-29T05:12:57.004813+00:00",
+        "finished_ts": "2026-07-29T05:12:59.050555+00:00",
+        "stdout_tail": "[OK] GSM8K -> data/datasets/gsm8k (7 payload files, 13880370 bytes)\n[OK] HumanEval -> data/datasets/humaneval (11 payload files, 64174 bytes)\n[OK] CMMLU -> data/datasets/cmmlu (136 payload files, 2512537 bytes)\n[OK] NVIDIA OpenCodeInstruct -> data/datasets/opencodeinstruct (7 payload files, 427798905 bytes)\n[OK] COIG-CQIA -> data/datasets/coig_cqia (3 payload files, 149473097 bytes)\n[OK] MVTec AD -> data/datasets/mvtec_ad (6645 payload files, 10536229804 bytes)\n[OK] NEU-DET -> data/datasets/neu_det (3601 payload files, 55922599 bytes)\n[OK] CityFlow -> data/datasets/cityflow (1063 payload files, 34973435649 bytes)\n[OK] UA-DETRAC -> data/datasets/ua_detrac (141041 payload files, 31257170002 bytes)\n\nDataset presence check completed with empty directories allowed.",
         "stderr_tail": ""
       }
     },
@@ -561,12 +489,12 @@
           "--allow-missing"
         ],
         "returncode": 0,
-        "started_ts": "2026-07-18T11:08:47.115933+00:00",
-        "finished_ts": "2026-07-18T11:08:47.169326+00:00",
+        "started_ts": "2026-07-29T05:12:59.050657+00:00",
+        "finished_ts": "2026-07-29T05:12:59.102566+00:00",
         "stdout_tail": "[OK] dataset_manifest.json passed\n[OK] manifest.json passed\n[OK] conflict_gt_manifest.json passed\n\nFormal manifest validation passed.",
         "stderr_tail": ""
       }
     }
   ],
-  "report_hash": "83d34d8208a151631b286711cdb993ea8c0e1fa3aba115c9e4db3b6b2ba93d63"
+  "report_hash": "7862d2110054b5968a15158629a3c1056360b9d0a0e228c404e6c6d51cc947cc"
 }

@@ -113,21 +113,6 @@ cloud_gate() {
   "$PYTHON_BIN" scripts/verify_gate_cloud.py
 }
 
-g0_summary() {
-  "$PYTHON_BIN" scripts/run_g0_capmem.py \
-    --config configs/g0_capmem_candidates.json \
-    --output reports/audit/gate_g0_capmem_current.json
-}
-
-g0_run() {
-  "$PYTHON_BIN" scripts/run_g0_capmem.py \
-    --config configs/g0_capmem_candidates.json \
-    --prepare \
-    --execute-memory \
-    --execute-capability-smoke \
-    --output reports/audit/gate_g0_capmem_current.json
-}
-
 usage() {
   cat <<'EOF'
 Usage: bash scripts/run_p0a.sh <command>
@@ -141,12 +126,10 @@ Current commands:
   teacher-plan        Print the Teacher GPU/TP/vLLM launch plan without starting it.
   teacher-stop        Gracefully stop the active Teacher launcher and its workers.
   cloud-gate          Verify the Cloud teacher service.
-  g0-summary          Summarize current capability-memory candidates.
-  g0-run              Prepare and execute current G0 candidates.
-  p0a3-<command>      Forward to scripts/run_p0a3.sh; e.g. p0a3-preflight.
+  p0a5-<command>      Forward to scripts/run_p0a5.sh; e.g. p0a5-preflight.
 
-The rejected v24-v31 and DeepSeek P0-A2 routes remain immutable audit evidence.
-The active capability-first reselection route is documented by run_p0a3.sh.
+Rejected historical routes remain immutable audit evidence.
+The active capability route is documented by run_p0a5.sh.
 EOF
 }
 
@@ -157,11 +140,8 @@ case "$command" in
   db-up) db_up ;;
   db-verify) db_verify ;;
   teacher-serve) teacher_serve ;;
-  teacher-plan) teacher_plan ;;
   teacher-stop) teacher_stop ;;
   cloud-gate) cloud_gate ;;
-  g0-summary) g0_summary ;;
-  g0-run) g0_run ;;
-  p0a3-*) bash scripts/run_p0a3.sh "${command#p0a3-}" ;;
+  p0a5-*) bash scripts/run_p0a5.sh "${command#p0a5-}" ;;
   *) usage; exit 2 ;;
 esac

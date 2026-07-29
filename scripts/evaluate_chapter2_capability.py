@@ -37,7 +37,7 @@ from inference_utils import (
 )
 
 
-DEFAULT_MODEL_DIR = ROOT / "models" / "pretrained" / "Qwen--Qwen3-1.7B"
+DEFAULT_MODEL_DIR = ROOT / "models" / "checkpoints" / "p0a4" / "student-shared-merged"
 DEFAULT_OUTPUT_TRACE = ROOT / "reports" / "audit" / "chapter2_capability_eval_smoke.jsonl"
 DEFAULT_AUDIT = ROOT / "reports" / "audit" / "gate_chapter2_capability_eval_smoke.json"
 SPLITS = ROOT / "data" / "splits"
@@ -661,7 +661,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--split-dir",
         default=str(SPLITS),
-        help="Directory containing dataset_test.txt files; P0-A4 uses its separate official-full directory.",
+        help="Directory containing the frozen full dataset_test.txt files.",
     )
     parser.add_argument("--output-trace", "--output_trace", default=str(DEFAULT_OUTPUT_TRACE))
     parser.add_argument("--audit", default=str(DEFAULT_AUDIT))

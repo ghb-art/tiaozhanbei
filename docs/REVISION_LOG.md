@@ -19,6 +19,7 @@
 
 | Date | Stage | Change | Reason | Hash Impact | Artifacts |
 |---|---|---|---|---|---|
+| 2026-07-29 | P0-A5 | 能力路线收敛为GSM8K、OpenCodeInstruct→HumanEval、COIG-CQIA→CMMLU；建立唯一300题门禁、共享LoRA蒸馏和Math保持约束，移除旧96/170、MBPP/APPS/CodeContests/MMLU翻译及任务Adapter主线 | 避免重复门禁和反复围绕已使用验证集调参，以真实不同、可校验训练样本集中修复Code/NLP，同时保留Math | Yes，重建数据、协议、模型和正式split hash；历史sealed结果不变 | `IMPLEMENTATION_PLAN.md`, `configs/p0a5_capability.json`, `model_compression/*p0a5*`, `scripts/run_p0a5.sh`, `scripts/p0a5_*`, `data/splits/frozen_splits.json`, `dataset_manifest.json` |
 | 2026-06-30 | P0-A0 | 初始化工程管理文档、基础配置和结构校验脚本 | 将方案文档推进到可检查的工程骨架 | No Final hash yet | `docs/`, `configs/`, `scripts/validate_project_structure.py` |
 | 2026-06-30 | P0-A0 | 新增 manifest 模板生成脚本和三类 template JSON | 按实施方案固化 G-DATA/Final Gate 产物字段标准 | No Final hash yet | `scripts/generate_manifest_template.py`, `*.template.json` |
 | 2026-06-30 | P0-A0 | 新增正式 manifest 验收脚本 | 在数据接入前自动化 G-DATA/Final Gate manifest 基础验收规则 | No Final hash yet | `scripts/validate_manifest_files.py`, `scripts/validate_project_structure.py` |

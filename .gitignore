@@ -16,6 +16,7 @@ data/kwdb/
 data/distill/
 data/eval/
 data/datasets/**
+data/capability_v2/
 !data/datasets/
 !data/datasets/**/
 !data/datasets/**/.gitkeep

@@ -24,7 +24,7 @@ MAIN_CAPABILITY_DATASETS = ("gsm8k", "humaneval", "cmmlu")
 MAIN_APPLICATION_DATASETS = ("neu_det", "cityflow")
 MAIN_EXPERIMENT_DATASETS = MAIN_CAPABILITY_DATASETS + MAIN_APPLICATION_DATASETS
 CHAPTER2_TEACHER_TRACE_DATASETS = ("gsm8k", "neu_det", "cityflow")
-SUPPORT_ONLY_DATASETS = ("mmlu", "mvtec_ad", "ua_detrac")
+SUPPORT_ONLY_DATASETS = ("mvtec_ad", "ua_detrac")
 KD_TEACHER_AUDITS = (
     (
         "kd_trace_teacher_smoke",
@@ -448,7 +448,7 @@ def build_run_manifest(frozen: dict[str, Any], conflict_manifest: dict[str, Any]
         "git_commit": git_commit(),
         "teacher_model_id": "Qwen/Qwen2.5-14B-Instruct-AWQ",
         "student_init_model_id": "Qwen/Qwen3-1.7B",
-        "edge_model_name": "DB4AI-Edge-P0A3-Qwen3-1.7B-Q3_K_M-CANDIDATE",
+        "edge_model_name": "DB4AI-Edge-P0A5-Qwen3-1.7B-Q4_K_M-Q8KV-CANDIDATE",
         "chapter2_main_capability_dataset_keys": list(MAIN_CAPABILITY_DATASETS),
         "chapter2_main_application_dataset_keys": list(MAIN_APPLICATION_DATASETS),
         "chapter2_main_experiment_dataset_keys": list(MAIN_EXPERIMENT_DATASETS),

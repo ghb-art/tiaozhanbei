@@ -1,0 +1,71 @@
+{
+  "gate": "P0-edge-candidate-dev",
+  "check_version": "2.0",
+  "created_by": "scripts/evaluate_edge_candidate_dev.py",
+  "created_ts": "2026-07-27T13:13:15.976348+00:00",
+  "status": "passed",
+  "candidate_name": "p0a4r4-candidate-1",
+  "backend": "local_transformers_base",
+  "endpoint": "",
+  "endpoint_model_id": "",
+  "endpoint_model_id_map": {},
+  "endpoint_model_id_map_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+  "model": {
+    "path": "models/checkpoints/p0a4r4/candidate-1-merged",
+    "file_count": 9,
+    "bytes": 3457068971,
+    "key_metadata_hash": "7d5030a4689780f2c529de9fc454a13cdce89d42f571e1f012781a32c99f4194"
+  },
+  "base_model": {
+    "path": "models/checkpoints/p0a4r4/candidate-1-merged",
+    "file_count": 9,
+    "bytes": 3457068971,
+    "key_metadata_hash": "7d5030a4689780f2c529de9fc454a13cdce89d42f571e1f012781a32c99f4194"
+  },
+  "adapter": {},
+  "adapter_scale": 0.0,
+  "validation_data": "data/distill/p0a4r4_train_only_validation.jsonl",
+  "validation_data_sha256": "c5edb1f29964e9a2f038ccf2924bab6907470a0c447d964e09de8db12c17ab88",
+  "output_trace": "data/eval/p0a4r4_candidate_1_train_only.jsonl",
+  "output_trace_sha256": "c01bbf2e9f8fd48c9fdc80aac7ea50f82f4d421e0338fce9181e7b154a5d02a1",
+  "sample_count": 640,
+  "dataset_counts": {
+    "cmmlu": 256,
+    "gsm8k": 128,
+    "humaneval": 256
+  },
+  "correct_counts": {
+    "cmmlu": 182,
+    "gsm8k": 102,
+    "humaneval": 35
+  },
+  "accuracy_by_dataset": {
+    "cmmlu": 0.7109375,
+    "gsm8k": 0.796875,
+    "humaneval": 0.13671875
+  },
+  "macro_accuracy": 0.5481770833333334,
+  "min_accuracy_by_dataset": {},
+  "min_macro_accuracy": 0.0,
+  "threshold_gate_enabled": false,
+  "threshold_failures": {},
+  "generation_error_count": 0,
+  "failure_reasons": [],
+  "mean_latency_ms": 3486.871459117214,
+  "peak_gpu_memory_mb_decimal": 3682.445824,
+  "dtype": "bfloat16",
+  "max_input_length": 1536,
+  "max_new_tokens_by_dataset": {
+    "gsm8k": 512,
+    "humaneval": 768,
+    "cmmlu": 256
+  },
+  "close_reasoning_prefix": false,
+  "disable_thinking": true,
+  "kv_cache_type": "",
+  "request_extra_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+  "request_extra_map_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+  "formal_test_labels_used": false,
+  "errors": [],
+  "report_hash": "333a90f745bd992f2917d1ee099cbe9b35a84edabc8fa86a99cbacd0edc5ede5"
+}

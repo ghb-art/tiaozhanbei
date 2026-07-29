@@ -1,14 +1,14 @@
 {
   "manifest_version": "1.0",
   "created_by": "scripts/build_conflict_gt.py",
-  "created_ts": "2026-07-18T13:05:10.478946+00:00",
+  "created_ts": "2026-07-29T05:12:00.930978+00:00",
   "datasets": [
     "CityFlow",
     "MVTec AD",
     "NEU-DET"
   ],
   "split": "test",
-  "data_split_hash": "d7f3fac67fd3f235802ed405cdbac46302db513925cdab56d13198b0b871e7cf",
+  "data_split_hash": "1e4b7f37ece825b50375c697e6428cf5619ed0544212fba1f2a479edecbb247f",
   "source_split_files": {
     "CityFlow": "data/splits/cityflow_test.txt",
     "MVTec AD": "data/splits/mvtec_ad_test.txt",
@@ -1283,5 +1283,5 @@
     "action_conflict": 15,
     "duplicate_alert": 15
   },
-  "manifest_hash": "c4ed2f5a427fd76726f2517ba4e34af08cbe410eb64c6bf908c4f3b3e0dc8c7d"
+  "manifest_hash": "036c5d677fe2deada3582b229e4613bf94ed7637f22290cb41b006dfa372d596"
 }

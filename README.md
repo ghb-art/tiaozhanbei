@@ -1,125 +1,77 @@
 # DB4AI-EdgeServe
 
-面向云边协同场景的分布式人工智能感知与决策原型，参赛题号 `XH-202606`。项目以 G1–G7 可量化门禁为准，详细指标和阶段退出条件见 `IMPLEMENTATION_PLAN.md`。
+面向云边协同场景的分布式人工智能感知与决策系统，题目编号XH-202606。
 
-## 当前状态
+当前唯一有效的能力路线是P0-A5：
 
-首轮 `G0-CAPMEM` 为 `failed, feasible=0/9`。随后完成 DeepSeek-R1-Distill-Qwen-1.5B 的 170 条冻结 Dev：Math `84.38%`、Code `23.81%`、NLP `17.19%`。该结果来自未量化 BF16 基座，Code/NLP 已无合理恢复余量，因此 P0-A2 关闭，不再训练或量化 DeepSeek。
+- 云端分母：冻结Qwen2.5-14B-Instruct-AWQ；
+- 蒸馏Teacher：Qwen2.5-14B-Instruct BF16，4 GPU ZeRO-3；
+- 边缘Student：Qwen3-1.7B v1合并基座，单一共享LoRA；
+- 量化：Q4_K_M权重、Q8_0 KV；
+- 小门禁：Math、Code、NLP各100题；
+- 正式测试：GSM8K 1,319、HumanEval 164、CMMLU 11,582。
 
-P0-A3 已证明未蒸馏 Qwen3-1.7B HF 在170题上可保持 Teacher 的 `86.11%`，但量化配置仍未形成联合通过证据。当前进入 P0-A4：
+历史Student v1正式保持率为Math 82.149%、Code 68.571%、NLP 70.650%，未通过。旧96题、170题、MBPP、APPS、CodeContests、翻译MMLU和任务Adapter路线已经退出主线。
 
-1. 当前 Qwen2.5-14B-AWQ 是不可调优的正式分母，官方完整测试清单固定为 GSM8K 1319、HumanEval 164、CMMLU 11582；
-2. 单独的 Qwen2.5-14B BF16 使用4卡 ZeRO-3 LoRA调优，只作为经过答案/执行校验的蒸馏Teacher；
-3. Qwen3-1.7B先做共享多任务蒸馏，必要时增加Top-1任务Adapter，再以训练集imatrix生成Q4_K_M；Q3_K_M仅保留为能力失败对照；
-4. 量化运行固定使用Q8 KV；96题每项/宏平均≥75%，170题每项/宏平均≥80%，最多两个Student版本；
-5. 通过≤1400MB开发内存门后，只允许一次Student官方完整测试，逐题结果封存且不再反馈训练。
+## 当前数据
 
-Student v1的Q4在170题上保持率为Math/Code/NLP/Macro=`90.625/75.000/80.435/82.020%`，
-因Code低于80%未晋级；一次提前运行的官方全测也已失败并封存。v2、P0-A4R任务Adapter
-和P0-A4R2温和Code Adapter均未产生足够增益，现已停止。
+| 领域 | 训练 | 内部验证 | 唯一小门禁 | 正式测试 |
+|---|---:|---:|---:|---:|
+| Math | GSM8K 7,173 | 200 | GSM8K 100 | GSM8K 1,319 |
+| Code | OpenCodeInstruct 20,000 | 1,000 | OpenCodeInstruct 100 | HumanEval 164 |
+| NLP | COIG-CQIA人工核验分层9,500 | 1,000 | CMMLU dev 100 | CMMLU test 11,582 |
 
-当前唯一开放路线为P0-A4R3：从v1 HF合并基座重新训练共享Code+NLP LoRA，Math冻结并加入
-回放防遗忘；Code扩展到至少3500个真正不同且执行通过的MBPP/APPS/CodeContests任务，
-NLP扩展到3000个经过标签校验的中文多领域选择题。只保留Rank 8/16两个预注册候选，
-使用全新train-only验证集选择，不重复既有正式全测。量化保持Q4_K_M、Q8 KV和训练数据imatrix。
+Code训练题必须独立执行通过并与HumanEval去重。COIG-CQIA必须按考试、科学、社会人文、法商和语言推理五类配额选择。Student训练按Math/Code/NLP=`30/35/35%`损失权重混合，并对Math启用基座KL保持约束。
 
-## 快速检查
-
-```bash
-bash scripts/run_p0a.sh checks
-bash scripts/run_p0a3.sh preflight
-bash scripts/run_p0a4.sh preflight
-bash scripts/run_p0a4r3.sh structural-check
-bash scripts/run_p0a4r3.sh protocol
-```
-
-P0-A4 主流程：
+## CPU准备
 
 ```bash
-# 终端A：先运行AWQ分母服务；终端B建立96/170分母，正式全量可稍后运行
-bash scripts/run_p0a4.sh baseline-serve
-bash scripts/run_p0a4.sh baseline-dev
-bash scripts/run_p0a4.sh baseline-full
-
-# 安装训练依赖、下载BF16 Teacher并训练1至3个候选
-bash scripts/run_p0a4.sh install-training-deps
-bash scripts/run_p0a4.sh download-teacher
-bash scripts/run_p0a4.sh teacher-train 1
-bash scripts/run_p0a4.sh teacher-serve
-bash scripts/run_p0a4.sh teacher-validate 1
-bash scripts/run_p0a4.sh teacher-select
-bash scripts/run_p0a4.sh teacher-distill 1
-
-# Student蒸馏、合并、量化和逐级门禁
-bash scripts/run_p0a4.sh student-train 1
-bash scripts/run_p0a4.sh student-merge 1
-bash scripts/run_p0a4.sh student-quantize
-bash scripts/run_p0a4.sh edge-start
-bash scripts/run_p0a4.sh student-smoke96
-bash scripts/run_p0a4.sh student-170 1
-bash scripts/run_p0a4.sh student-memory
-bash scripts/run_p0a4.sh student-full
+bash scripts/run_p0a5.sh data-download
+bash scripts/run_p0a5.sh data-build
+bash scripts/run_p0a5.sh preflight
+bash scripts/run_p0a5.sh status
 ```
 
-当前v2从以下命令开始，所有后续命令都必须保留版本环境变量；完整分阶段命令见运行手册：
+上述命令不启动GPU。
+
+CPU准备通过后的第一个GPU命令：
 
 ```bash
-P0A4_STUDENT_VERSION=2 bash scripts/run_p0a4.sh student-v2-preflight
-P0A4_STUDENT_VERSION=2 bash scripts/run_p0a4.sh student-train 2
+P0A5_GPUS=0,1,2,3 \
+bash scripts/run_p0a5.sh teacher-train \
+2>&1 | tee logs/p0a5_teacher_train.log
 ```
 
-v2共享与原Top-1 Adapter均因96题Code保持率只有`70.83%`停止，最后一次170题机会尚未消耗。
-当前修复入口将NLP改为短理由/直接选项混合蒸馏，将Code改为独立canonical任务和执行通过率
-选优：
+完整顺序见`docs/RUNBOOK_P0A5.md`，指标和数据隔离原则见`IMPLEMENTATION_PLAN.md`。
 
-```bash
-bash scripts/run_p0a4r.sh preflight
-bash scripts/run_p0a4r.sh code-source-rebuild
-bash scripts/run_p0a4r.sh code-build
+## 300题门禁
+
+```text
+任意领域保持率 < 78%  → 拒绝
+三项 ≥78%但未全部≥82% → 只允许第二个预注册候选
+三项及宏平均 ≥82%      → 推荐进入内存和正式全测
 ```
 
-当前本地Code构建已由1500个APPS official-train任务与292个MBPP train任务组成，共1792
-个独立训练组；另有42个独立执行验证组，组重叠和正式测试引用均为0，数据门状态为
-`promotion_eligible=true`。完整流程见`docs/RUNBOOK_P0A4R.md`。
+正式全测仍要求每项及宏平均≥80%，且正式逐题结果不得反馈训练。
 
-P0-A4R3从以下命令开始，完整流程和停止条件见`docs/RUNBOOK_P0A4R3.md`：
+## 系统架构
 
-```bash
-bash scripts/run_p0a4r3.sh protocol
-bash scripts/run_p0a4r3.sh apps-expand
-bash scripts/run_p0a4r3.sh code-all
-bash scripts/run_p0a4r3.sh nlp-prepare
-bash scripts/run_p0a4r3.sh nlp-generate
-bash scripts/run_p0a4r3.sh assemble
-bash scripts/run_p0a4r3.sh preflight
-```
+能力模型之外，项目继续实现：
 
-当前P0-A4R3 Code数据门已通过：MBPP 292 + APPS 2500 + CodeContests 1000，共3792
-个不同且可执行校验的训练任务；另有256个全新Code train-only验证组。
-NLP数据门也已通过：3000个八领域中文训练组和256个新验证组全部经过Teacher答案与训练
-标签校验。组合后的共享训练集为Math/Code/NLP=`1000/3792/3000`，两个候选dry-run通过。
+- 工业缺陷和城市交通两个场景；
+- 规则/轻量模型Fast Path；
+- 边缘1.7B本地自治；
+- 网络和任务复杂度感知的云边调度；
+- 弱网outbox和恢复补传；
+- GraphTrust多节点冲突仲裁；
+- KWDB事件、状态、模型版本和审计存储。
 
-AWQ分母和BF16+LoRA Teacher都以一个vLLM端点在 GPU `0,1,2,3` 上执行TP=4，不是四个单卡副本。详细顺序和失败处理见 `docs/RUNBOOK_P0A4.md`；P0-A3历史诊断仍保留在 `docs/RUNBOOK_P0A.md`。
+比赛还要求TTFT降低≥75%、单次推理内存≤1.5GB、弱网保持率≥90%、两场景平均端到端时延≤0.2秒、冲突率≤5%和解决成功率≥90%。能力门通过不等同于比赛已经完成。
 
-## 核心目录
+## 仓库原则
 
-| 目录 | 用途 |
-|---|---|
-| `configs` | 模型、网络、负载、P0-A3历史配置和P0-A4冻结配置 |
-| `model_compression` | 数据构建、Teacher校验蒸馏、P0-A4 LoRA训练和Student合并工具 |
-| `scripts` | 数据检查、同口径评测、量化、内存门禁和启动入口 |
-| `data/splits` | 冻结的 train/validation/test ID 与 hash |
-| `data/distill` | 本地训练和校准数据，不提交 Git |
-| `models` | 本地 HF 模型和独立 GGUF，不提交 Git |
-| `reports/audit` | 数据、能力、内存和门禁审计 |
-| `docs` | 数据策略、状态、运行手册和修改记录 |
-| `sql`、`docker` | KWDB schema 与本地服务配置 |
-
-## 硬约束
-
-- G1：Math、Code、NLP 与宏平均保持率均不低于 Qwen2.5-14B 的 80%。
-- G3：llama.cpp 完整进程树 RSS 加设备内存的推理窗口峰值不超过 1500MB（decimal）。
-- 正式 GSM8K 1319、HumanEval 164和CMMLU 11582题不进入训练、候选选择或错误修复。
-- 96题和170题均须与AWQ分母逐样本一致；170题只暴露任务级汇总，最多两个Student版本。
-- GGUF 文件大小不能替代运行峰值；`status=passed` 的执行审计不能替代能力保持率 Gate。
-- 模型、数据和运行产物不上传 GitHub，仓库只保留代码、配置和小型审计证据。
+- 模型、原始数据、训练数据和密封逐题结果不进Git；
+- Git提交代码、配置、文档、数据重建脚本和必要汇总审计；
+- 正式测试集禁止用于训练、提示词选择和错题修复；
+- 不覆盖已有模型或密封结果；
+- 旧路线结论保留在`docs/REVISION_LOG.md`。

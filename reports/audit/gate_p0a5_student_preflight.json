@@ -1,0 +1,73 @@
+{
+  "gate": "P0-A5-LORA-TRAIN",
+  "check_version": "1.0",
+  "created_by": "model_compression/train_p0a5_lora.py",
+  "created_ts": "2026-07-29T05:09:38.824169+00:00",
+  "status": "dry_run_passed",
+  "role": "student",
+  "candidate_index": 1,
+  "config": "configs/p0a5_capability.json",
+  "config_hash": "065819f8382bf5a9b73b27a4f0af047bd7d6d00b495edc5cad3d7832406f5489",
+  "model_dir": "models/checkpoints/p0a4/student-shared-merged",
+  "train_data": "data/capability_v2/source_train.jsonl",
+  "train_data_hash": "6374684593e6c43a3d5da4d107d1a88d8d3aaa422caf99a19edd8cd544e25bb8",
+  "validation_data": "data/capability_v2/internal_validation.jsonl",
+  "validation_data_hash": "b928468a07a232461e07a8bca80be2f169824a7e8e71c956da19dd6f0598c1d9",
+  "train_counts": {
+    "cmmlu": 9500,
+    "gsm8k": 7173,
+    "opencodeinstruct": 20000
+  },
+  "validation_counts": {
+    "cmmlu": 1000,
+    "gsm8k": 200,
+    "opencodeinstruct": 1000
+  },
+  "weighted_task_mass": {
+    "cmmlu": 0.3499999999999252,
+    "gsm8k": 0.29999999999993743,
+    "opencodeinstruct": 0.3500000000001373
+  },
+  "lora": {
+    "rank": 16,
+    "alpha": 32,
+    "dropout": 0.05,
+    "target_modules": [
+      "q_proj",
+      "k_proj",
+      "v_proj",
+      "o_proj",
+      "gate_proj",
+      "up_proj",
+      "down_proj"
+    ]
+  },
+  "optimization": {
+    "learning_rate": 1e-05,
+    "epochs": 1.0,
+    "max_seq_length": 1536,
+    "per_device_train_batch_size": 1,
+    "gradient_accumulation_steps": 8,
+    "deepspeed": "",
+    "deepspeed_stage": 0,
+    "cpu_offload": false
+  },
+  "math_preservation": {
+    "enabled": true,
+    "method": "base_student_token_kl",
+    "kl_weight": 0.5,
+    "supervised_weight": 0.5,
+    "temperature": 1.0,
+    "allowed_drift_points": 1.0
+  },
+  "formal_test_reference_count": 0,
+  "dependencies": {
+    "torch": "2.6.0+cu124",
+    "transformers": "4.51.3",
+    "accelerate": "1.14.0",
+    "deepspeed": "0.17.6",
+    "peft": "0.17.1"
+  },
+  "errors": [],
+  "report_hash": "e8edc84a4f8324cd38470f3a15344eb87d44acaa70527af8a36a361d219ae04d"
+}

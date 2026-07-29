@@ -2,8 +2,8 @@
   "gate": "P0-A4-LORA-TRAIN",
   "check_version": "1.0",
   "created_by": "model_compression/train_p0a4_lora.py",
-  "created_ts": "2026-07-27T11:26:00.425870+00:00",
-  "status": "dry_run_passed",
+  "created_ts": "2026-07-27T12:16:34.126305+00:00",
+  "status": "passed",
   "role": "student_shared",
   "task": "shared",
   "candidate_index": 1,
@@ -55,7 +55,7 @@
     },
     "max_seq_length": 1536,
     "per_device_train_batch_size": 1,
-    "gradient_accumulation_steps": 16,
+    "gradient_accumulation_steps": 8,
     "max_steps": -1,
     "optimizer": "adamw_torch",
     "optimizer_placement": "gpu_ddp_replicated",
@@ -107,5 +107,23 @@
   },
   "formal_test_reference_count": 0,
   "errors": [],
-  "report_hash": "9a01256d6abdab07261fc6cc8e70fba416d7099d550cf9cf30ba2c2162eab0e1"
+  "metrics": {
+    "train_runtime": 1099.9412,
+    "train_samples_per_second": 7.084,
+    "train_steps_per_second": 0.221,
+    "total_flos": 2.238328360193229e+16,
+    "train_loss": 6.629294705489045,
+    "epoch": 0.997946611909651,
+    "best_eval_loss": 0.7997618913650513
+  },
+  "best_checkpoint": "models/checkpoints/p0a4r4/candidate-1/checkpoint-243",
+  "checkpoint_candidates": [],
+  "published_adapter_files": [
+    "adapter_config.json",
+    "adapter_model.safetensors",
+    "README.md"
+  ],
+  "deployment_ready": true,
+  "trainable_parameters": 8716288,
+  "report_hash": "6c8902589ecec776ac789c8bd1c51afff976f2f10ecf6e506ee58caa54bdf4d2"
 }

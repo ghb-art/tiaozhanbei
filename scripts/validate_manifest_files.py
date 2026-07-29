@@ -34,7 +34,6 @@ PLACEHOLDER_PREFIXES = (
 REQUIRED_DATASETS = {
     "GSM8K",
     "HumanEval",
-    "MMLU",
     "CMMLU",
     "MVTec AD",
     "NEU-DET",
@@ -407,7 +406,7 @@ def validate_run_manifest(data: dict[str, Any]) -> list[str]:
         errors.append("$.teacher_model_id must match the implementation plan")
     if data.get("student_init_model_id") != "Qwen/Qwen3-1.7B":
         errors.append("$.student_init_model_id must match the implementation plan")
-    if data.get("edge_model_name") != "DB4AI-Edge-P0A3-Qwen3-1.7B-Q3_K_M-CANDIDATE":
+    if data.get("edge_model_name") != "DB4AI-Edge-P0A5-Qwen3-1.7B-Q4_K_M-Q8KV-CANDIDATE":
         errors.append("$.edge_model_name must match the implementation plan")
 
     fallback_events = data.get("fallback_events")

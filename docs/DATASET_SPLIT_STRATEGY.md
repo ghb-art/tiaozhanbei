@@ -1,26 +1,48 @@
 # Dataset Split Strategy
 
-本文件记录 G-DATA 阶段的固定划分方法。所有划分使用 `sampling_seed=42`，输出由 `scripts/validate_splits.py --write --check-leakage` 生成到 `data/splits/`。
+当前能力协议使用`seed=20260729`，场景数据继续使用原已冻结划分。真实数据和生成逐题记录不进Git。
 
-## 通用原则
+## 能力数据
 
-- Final Gate 的 test 子集不得进入 train、validation、distill、planner、policy、graph 或 calibration。
-- 每个 split 的 sample id 文件必须固定，并由 `frozen_splits.json` 记录 count、hash 和全局 `global_split_hash`。
-- Kaggle mirror 只作为 fallback source，正式 manifest 必须记录 mirror URL、archive hash 和本地结构校验结果。
+| Dataset | Train | Internal validation | Small gate | Formal test |
+|---|---:|---:|---:|---:|
+| GSM8K | official train 7,173 | official train 200 | official train 100 | official test 1,319 |
+| OpenCodeInstruct | filtered train 20,000 | filtered train 1,000 | filtered train 100 | none |
+| HumanEval | none | none | none | official 164 |
+| COIG-CQIA | human-verified stratified 9,500 | stratified 1,000 | none | none |
+| CMMLU | none | none | official dev 100 | official test 11,582 |
 
-## 数据集划分
+规则：
 
-| Dataset | Train | Validation | Final Test | Method |
-|---|---|---|---|---|
-| GSM8K | official train 全量 | none | official test 中 seed=42 固定 500 条 | 保持 OpenAI 官方 train/test 边界。 |
-| HumanEval | none | none | official 164 tasks 全量 | 只用于代码能力 Final Gate。 |
-| MMLU | support-only auxiliary_train + official dev | support-only official val | support-only official test 分科目 stratified 1000 条 | 不进入第 2 章主实验，仅保留支持/备份 split。 |
-| CMMLU | none | official dev | official test 分科目 stratified 1000 条 | 中文 Final Gate 不进入蒸馏训练。 |
-| MVTec AD | official train/good 全量 | none | official test 全量 | official test 不用于 validation。 |
-| NEU-DET | 每类 210 | 每类 30 | 每类 60 | 不沿用 mirror split，先按 image/xml stem 配对，再做 70/10/20 分层划分。 |
-| CityFlow | official train camera dirs | official validation camera dirs | official test camera dirs | 关系统计来自 AI City eval ground truth。 |
-| UA-DETRAC | none | train XML sequences | test XML sequences | 镜像保留官方风格 60/40 annotation split；不用于 graph training。 |
+- GSM8K正式test不参与任何开发。
+- OpenCodeInstruct三组按ID和语义去重，并与HumanEval去重。
+- COIG-CQIA训练与内部验证互斥，并与CMMLU精确去重。
+- CMMLU dev门禁覆盖全部67个学科。
+- 唯一能力小门禁为300题，不再维护96题和170题。
+- 正式测试只允许输出任务级汇总用于报告，不反馈训练。
 
-## NEU-DET 特别处理
+生成命令：
 
-Kaggle mirror 中 `crazing_240.jpg` 位于 train，而 `crazing_240.xml` 位于 validation。冻结 split 时不使用 mirror 目录划分，而是扫描全量图片和 XML，按文件 stem 重新配对后再分层采样，因此该错位不会进入正式 split。
+```bash
+bash scripts/run_p0a5.sh data-build
+```
+
+冻结清单：
+
+```text
+data/capability_v2/manifest.json
+data/capability_v2/gate300.jsonl
+reports/audit/gate_p0a5_data.json
+reports/audit/gate_p0a5_protocol.json
+```
+
+## 场景数据
+
+| Dataset | 用途 | 划分 |
+|---|---|---|
+| NEU-DET | 工业缺陷主场景 | 每类210/30/60 |
+| MVTec AD | 工业异常补充 | official train用于开发，official test用于最终场景评测 |
+| CityFlow | 交通多摄像头主场景 | official train/validation/test |
+| UA-DETRAC | 交通检测补充 | 保留官方风格train/test |
+
+场景数据不得与能力训练混合。Fast Path、弱网和冲突实验使用独立场景清单及哈希。

@@ -10,8 +10,11 @@
 
 ```bash
 bash scripts/run_with_memory_guard.sh \
-  bash scripts/run_p0a4r2.sh train-code
+  .venv/bin/python your_long_task.py
 ```
+
+`scripts/run_p0a5.sh teacher-train`和`student-train`内部已经接入该看门狗，
+不要再在外层重复套一层。
 
 查看当前主机 RAM 使用率，不启动任务：
 

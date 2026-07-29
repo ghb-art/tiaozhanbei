@@ -1,0 +1,13 @@
+{
+  "gate": "P0-A4-STUDENT-SHARED-MERGE",
+  "check_version": "1.0",
+  "created_by": "model_compression/merge_p0a4_adapter.py",
+  "created_ts": "2026-07-27T12:35:23.619506+00:00",
+  "status": "passed",
+  "base_model": "models/checkpoints/p0a4/student-shared-merged",
+  "base_hash": "c07347b188f3441b8de079b053eed0a54f38555ae9df30dc5f576cc74be8cb81",
+  "adapter": "models/checkpoints/p0a4r4/candidate-1",
+  "adapter_hash": "3c2e68233f96c22f5ec26efde19126b484603999b11de0785bdc3fc707a5afe5",
+  "output": "models/checkpoints/p0a4r4/candidate-1-merged",
+  "output_hash": "9780bb70de5572e4fe54e76dab03758864f5c586385fab0897bc921dc43dbccf"
+}

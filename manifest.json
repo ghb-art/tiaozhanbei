@@ -1,8 +1,8 @@
 {
-  "git_commit": "eaa529eb65b1",
+  "git_commit": "178c1e40d07f",
   "teacher_model_id": "Qwen/Qwen2.5-14B-Instruct-AWQ",
   "student_init_model_id": "Qwen/Qwen3-1.7B",
-  "edge_model_name": "DB4AI-Edge-P0A3-Qwen3-1.7B-Q3_K_M-CANDIDATE",
+  "edge_model_name": "DB4AI-Edge-P0A5-Qwen3-1.7B-Q4_K_M-Q8KV-CANDIDATE",
   "chapter2_main_capability_dataset_keys": [
     "gsm8k",
     "humaneval",
@@ -25,7 +25,6 @@
     "cityflow"
   ],
   "support_only_dataset_keys": [
-    "mmlu",
     "mvtec_ad",
     "ua_detrac"
   ],
@@ -51,7 +50,7 @@
       "hash_regeneration_required": true
     }
   ],
-  "timestamp": "2026-07-18T13:05:10.478946+00:00",
+  "timestamp": "2026-07-29T05:12:00.930978+00:00",
   "cloud_teacher_first_token_latency_sec": 0.11692861514165998,
   "cloud_gate_status": "passed",
   "kd_trace_teacher_smoke_audit_hash": "3c9748df5a25272bd2d72c27af917b8d25c5744903b417e00f2cdbb336dcaf2c",
@@ -290,7 +289,7 @@
     "gsm8k": 1,
     "humaneval": 1
   },
-  "final_config_hash": "3dfeadf308a65ddb69957b2fbf193768e00aa48410250ede93085c19da9c1cc1",
+  "final_config_hash": "452ad51bf523b34f5eb382f29a0f3704067126a0afb87c009bc8f86b897d947c",
   "risk_matrix_hash": "429d7517e85584ab403b757a94d7d1c3d05ab42c81335593b636e7b33f7345f8",
   "fallback_policy_hash": "902918d3f6fdfefb1f94dfbd32e5d72333cf0f18d795c49fe30f022274936f6c",
   "preflight_report_hash": "5b54943b7c5d65d7264acce2d8822c92f7c7988670f1224d92c10f40917a0aa6",
@@ -308,11 +307,11 @@
   "policy_snapshot_hash": "e349b076a98b53a20cfa97ce34420bf8b3bd891371fca8f01cfbdf6cb9189e09",
   "graph_model_hash": "44df043ac35ba994a452de6d83d0658b394d7160222e1a2b2b3481aba7fc0040",
   "trust_posterior_snapshot_hash": "7f9eb98bff5c3872cd7ce84b372ccf90b73c17f8eb1cb2441f189524022e1df7",
-  "conflict_gt_audit_hash": "ca966d4f77d96aa1fd3468fa5bdc2e990e0c790a8ba0c3dffb015daabe8728bb",
-  "conflict_gt_sample_audit_hash": "6cb1148c8aab8e228f97b6352cff9fb275fccbbba9e3187bd22876186935b7b2",
+  "conflict_gt_audit_hash": "8a5b965c054630750c058b26183e664e08d918ae2117404365e1d22f54fedfb6",
+  "conflict_gt_sample_audit_hash": "c389f4241fbc86424889a2faf3875c513f658b551f75a115a0d257212185d176",
   "latency_breakdown_hash": "e95e884e77b86c27f8f6ed2da9f20d8c6da93fec41b8bda5506db87dc6021101",
   "online_perception_smoke_hash": "e448f71c83e8258ed02641ec9fee48abfdecb2d6eeda749eca322dec8b24d3ae",
-  "data_split_hash": "d7f3fac67fd3f235802ed405cdbac46302db513925cdab56d13198b0b871e7cf",
+  "data_split_hash": "1e4b7f37ece825b50375c697e6428cf5619ed0544212fba1f2a479edecbb247f",
   "network_profile_hash": "22663f040b5aedee31c77ee870e2d417b92707206c4f6b280ee5489228636c8d",
   "prompt_template_hash": "cc26d1a200cee87fe0c6183115fb5b0f27baac4ccc3fb289470c99bf6efeb9f3",
   "cloud_gate_audit_hash": "82957291e2815b757a621571dddaffb5401fa5720f2fcb023969dfe49f2f3afc",
@@ -321,7 +320,7 @@
   "cloud_teacher_smoke_prompt_hash": "51bf091a96a1a6be3cd64b476a0a75290b48bb1b874b3bdf6689101fd1b830bc",
   "policy_config_hash": "0d8ffeb4c08961911bc23f11ac5a9415fe1011693f1c84c3d6db94c87b680afc",
   "decision_parser_hash": "e314b60bca3e0664d13e5ddaf000fd8ed7442ea881c2b638dcffd8c7c73c9554",
-  "capability_metric_script_hash": "9f2be2a73c60ad056a949d8dd466b30585ad063d15ceaddc5b7a7f09414adb19",
+  "capability_metric_script_hash": "e8883800206a26b2874fd7f8500e6cab2fd86056b98e44c6656c3709529fa551",
   "ttft_metric_script_hash": "0e6c862b7bd5e835d3293df08eae587f772e1e5424f00dc58a40aea914d8aff8",
   "e2e_metric_script_hash": "ad2ce4e2d6a2d6452c60c4e80f691581f3300b9f87993c79629197a025c94039",
   "conflict_metric_script_hash": "9d8d086d041c874b7427e51950531a4757bb66a2d9aa317992836c320437224b",

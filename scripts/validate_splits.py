@@ -125,17 +125,16 @@ def build_gsm8k() -> dict[str, Any]:
     base = DATASETS / "gsm8k" / "grade_school_math" / "data"
     train = [f"gsm8k/train/{idx:05d}" for idx in range(count_jsonl(base / "train.jsonl"))]
     test_all = [f"gsm8k/test/{idx:05d}" for idx in range(count_jsonl(base / "test.jsonl"))]
-    selected = sample_stratified({"all": test_all}, 500, SEED)
     return split_record(
         "gsm8k",
         "GSM8K",
         "openai-grade-school-math@3101c7d",
         "train=7473, test=1319",
-        "Use official train for distillation; freeze deterministic 500-sample subset from official test for Final Gate.",
+        "Preserve official train/test. P0-A5 makes its 7173/200/100 train-only split separately.",
         train,
         [],
-        selected,
-        {"official_test_count": len(test_all), "final_gate_subset_count": len(selected)},
+        test_all,
+        {"official_test_count": len(test_all), "official_test_full_final_gate": True},
     )
 
 
@@ -179,45 +178,19 @@ def flatten(groups: dict[str, list[str]], prefix: str) -> list[str]:
     return sorted(f"{prefix}/{item}" for values in groups.values() for item in values)
 
 
-def build_mmlu() -> dict[str, Any]:
-    base = DATASETS / "mmlu" / "data"
-    dev = csv_split_ids(base / "dev", "dev", "_dev")
-    val = csv_split_ids(base / "val", "val", "_val")
-    test = csv_split_ids(base / "test", "test", "_test")
-    aux = csv_split_ids(base / "auxiliary_train", "auxiliary_train")
-    train = flatten(aux, "mmlu") + flatten(dev, "mmlu")
-    validation = flatten(val, "mmlu")
-    test_pool = {subject: [f"mmlu/{item}" for item in ids] for subject, ids in test.items()}
-    selected = sample_stratified(test_pool, 1000, SEED)
-    return split_record(
-        "mmlu",
-        "MMLU",
-        "hendrycks-data.tar",
-        "subjects=57, official test rows sampled to 1000 final items",
-        "Use auxiliary_train plus official dev for train; official val for validation; stratified 1000-sample official test subset for Final Gate.",
-        train,
-        validation,
-        selected,
-        {
-            "subject_count": len(test),
-            "test_pool_count": sum(len(ids) for ids in test.values()),
-        },
-    )
-
-
 def build_cmmlu() -> dict[str, Any]:
     base = DATASETS / "cmmlu" / "data"
     dev = csv_split_ids(base / "dev", "dev")
     test = csv_split_ids(base / "test", "test")
     validation = flatten(dev, "cmmlu")
     test_pool = {subject: [f"cmmlu/{item}" for item in ids] for subject, ids in test.items()}
-    selected = sample_stratified(test_pool, 1000, SEED)
+    selected = sorted(item for values in test_pool.values() for item in values)
     return split_record(
         "cmmlu",
         "CMMLU",
         "haonan-li-CMMLU@d6e7b71",
         "subjects=67, test rows=11582",
-        "Use official dev for validation; freeze stratified 1000-sample official test subset for Final Gate; no non-final train data yet.",
+        "Use official dev only for the fixed P0-A5 100-item gate; use the full official test for formal evaluation.",
         [],
         validation,
         selected,
@@ -414,7 +387,6 @@ def build_ua_detrac() -> dict[str, Any]:
 BUILDERS = [
     build_gsm8k,
     build_humaneval,
-    build_mmlu,
     build_cmmlu,
     build_mvtec,
     build_neu_det,

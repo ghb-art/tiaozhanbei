@@ -26,16 +26,22 @@ EXPECTED_DATASETS = [
         "purpose": "Code capability final evaluation.",
     },
     {
-        "dataset_key": "mmlu",
-        "dataset_name": "MMLU",
-        "relative_path": "data/datasets/mmlu",
-        "purpose": "English NLP capability evaluation.",
-    },
-    {
         "dataset_key": "cmmlu",
         "dataset_name": "CMMLU",
         "relative_path": "data/datasets/cmmlu",
         "purpose": "Chinese NLP capability evaluation.",
+    },
+    {
+        "dataset_key": "opencodeinstruct",
+        "dataset_name": "NVIDIA OpenCodeInstruct",
+        "relative_path": "data/datasets/opencodeinstruct",
+        "purpose": "Filtered executable Code distillation and the independent 100-item gate.",
+    },
+    {
+        "dataset_key": "coig_cqia",
+        "dataset_name": "COIG-CQIA",
+        "relative_path": "data/datasets/coig_cqia",
+        "purpose": "Stratified Chinese NLP distillation source.",
     },
     {
         "dataset_key": "mvtec_ad",

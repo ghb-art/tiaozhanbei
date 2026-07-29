@@ -1,65 +1,64 @@
-config_version: "0.3-p0a4"
+config_version: "0.4-p0a5"
 frozen_for_final_gate: false
 
 models:
-  cloud_teacher:
-    role: immutable_capability_baseline
+  cloud_baseline:
+    role: immutable_capability_denominator
     model_id: "Qwen/Qwen2.5-14B-Instruct-AWQ"
     serving_backend: vllm
-    endpoint: "http://localhost:8000"
+    endpoint: "http://127.0.0.1:8001"
     gpu_group: [0, 1, 2, 3]
     tensor_parallel_size: 4
-    purpose: "Frozen P0-A4 G1 denominator and cloud correction model; never tuned."
+    status: frozen
+    purpose: "生成唯一300题门禁分母及正式13,065题分母；不参与调优。"
 
   distill_teacher:
-    role: distillation_teacher
+    role: verified_distillation_teacher
     model_id: "Qwen/Qwen2.5-14B-Instruct"
     serving_backend: vllm
-    endpoint: "http://localhost:8000"
+    endpoint: "http://127.0.0.1:8000"
     gpu_group: [0, 1, 2, 3]
     tensor_parallel_size: 4
     training: bf16_lora_zero3
-    status: p0a4_training_pending
-    purpose: "Correctness-filtered train-only trace generation; never used as the formal denominator."
+    status: training_pending
+    purpose: "只对训练域样本生成经数值、执行或标签校验的蒸馏答案。"
+
+  edge_student_base:
+    role: preserved_v1_hf_base
+    model_id: "Qwen/Qwen3-1.7B"
+    local_path: "models/checkpoints/p0a4/student-shared-merged"
+    status: frozen_input
+    purpose: "历史v1合并HF基座；旧目录名仅用于模型血缘，不代表继续使用P0-A4协议。"
 
   edge_student:
-    role: p0a4_distilled_edge_student
-    model_id: "Qwen/Qwen3-1.7B"
-    target_name: "DB4AI-Edge-P0A4-Qwen3-1.7B-Q3_K_M-Q8KV"
-    quant_format: "Q3_K_M"
+    role: p0a5_shared_distilled_student
+    target_name: "DB4AI-Edge-P0A5-Qwen3-1.7B-Q4_K_M-Q8KV"
+    quant_format: "Q4_K_M"
+    kv_cache_type: "q8_0"
     serving_backend: llama_cpp
     status: distillation_not_started
-    purpose: "Shared distilled Student; must pass 96/170, Q3+Q8 rerun, memory and one official-full gate."
-
-  edge_fallback:
-    role: fallback_reselection_candidate
-    model_id: "Qwen/Qwen2.5-1.5B-Instruct"
-    target_name: "DB4AI-Edge-P0A3-Qwen2.5-1.5B-Q3_K_M"
-    quant_format: "Q3_K_M"
-    serving_backend: llama_cpp
-    status: standby_until_primary_rejection
-    purpose: "Runs only after Qwen3 Q3 is rejected by the frozen Dev or memory gate."
-
-  rejected_edge_baseline:
-    role: immutable_rejected_evidence
-    model_id: "deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B"
-    quant_format: "Q2_K_S"
-    status: rejected
-    purpose: "Evidence only: BF16 Dev Math 84.38%, Code 23.81%, NLP 17.19%; no further recovery training."
+    purpose: "共享Code+NLP蒸馏并加入Math回放/KL保持；最多两个预注册候选。"
 
 training:
-  seed: 202606
-  status: enabled_in_p0a4
-  protocol: "configs/p0a4_distillation.json"
+  seed: 20260729
+  status: enabled_in_p0a5
+  protocol: "configs/p0a5_capability.json"
   formal_test_labels_allowed: false
-  teacher_parallelism: "4-GPU ZeRO-3"
-  student_adapter_policy: "shared LoRA merge; optional rank-8 then rank-4 Top-1 task adapters"
-  output_root: "models"
+  teacher_parallelism: "4-GPU ZeRO-3, no CPU offload"
+  student_policy: "single shared LoRA; no task adapters"
+  output_root: "models/checkpoints/p0a5"
+
+evaluation:
+  single_gate: "100 GSM8K + 100 OpenCodeInstruct + 100 CMMLU-dev"
+  initial_ratio: 0.78
+  recommended_full_ratio: 0.82
+  formal_test: "GSM8K 1319 + HumanEval 164 + CMMLU 11582"
+  formal_minimum_ratio: 0.80
 
 artifacts:
-  primary_f16: "models/quantized/qwen3-1.7b-f16.gguf"
-  primary_imatrix: "models/quantized/qwen3-1.7b-q3_k_m.imatrix"
-  primary_quantized: "models/quantized/qwen3-1.7b-q3_k_m.gguf"
-  fallback_f16: "models/quantized/qwen2.5-1.5b-f16.gguf"
-  fallback_imatrix: "models/quantized/qwen2.5-1.5b-q3_k_m.imatrix"
-  fallback_quantized: "models/quantized/qwen2.5-1.5b-q3_k_m.gguf"
+  config: "configs/p0a5_capability.json"
+  data_manifest: "data/capability_v2/manifest.json"
+  protocol_audit: "reports/audit/gate_p0a5_protocol.json"
+  teacher_output: "models/checkpoints/p0a5/teacher"
+  student_candidate_1: "models/checkpoints/p0a5/student-candidate-1"
+  student_candidate_2: "models/checkpoints/p0a5/student-candidate-2"

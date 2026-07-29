@@ -11,7 +11,7 @@ GRACE_SECONDS="${MEMORY_GUARD_GRACE_SECONDS:-10}"
 
 if [[ $# -eq 0 ]]; then
   echo "Usage: bash scripts/run_with_memory_guard.sh COMMAND [ARG ...]" >&2
-  echo "Example: bash scripts/run_with_memory_guard.sh bash scripts/run_p0a4r2.sh train-code" >&2
+  echo "Example: bash scripts/run_with_memory_guard.sh .venv/bin/python your_long_task.py" >&2
   exit 2
 fi
 

@@ -1,0 +1,91 @@
+{
+  "gate": "P0-A6-STUDENT-TRAIN",
+  "check_version": "1.0",
+  "created_by": "model_compression/train_p0a6_student.py",
+  "created_ts": "2026-07-31T06:21:17.856407+00:00",
+  "status": "dry_run_passed",
+  "errors": [],
+  "model_dir": "models/checkpoints/p0a4/student-shared-merged",
+  "train_data": "data/p0a6/train.jsonl",
+  "train_data_hash": "dc743974f40c9e7040c4ef24f4ad2fd358be50fc9765ddf0a4e752bbc4ad590b",
+  "train_rows": 22096,
+  "domain_counts": {
+    "code": 4088,
+    "math": 7173,
+    "nlp": 10835
+  },
+  "kl_weight_by_domain": {
+    "math": {
+      "minimum": 0.6,
+      "maximum": 0.6,
+      "mean": 0.5999999999999566
+    },
+    "code": {
+      "minimum": 0.15,
+      "maximum": 0.15,
+      "mean": 0.14999999999998845
+    },
+    "nlp": {
+      "minimum": 0.2,
+      "maximum": 0.2,
+      "mean": 0.2000000000000203
+    }
+  },
+  "answer_token_weight_rows": {
+    "nlp": 1335
+  },
+  "formal_test_reference_count": 0,
+  "optimization": {
+    "lora_rank": 16,
+    "lora_alpha": 32,
+    "lora_dropout": 0.05,
+    "target_modules": [
+      "q_proj",
+      "k_proj",
+      "v_proj",
+      "o_proj",
+      "gate_proj",
+      "up_proj",
+      "down_proj"
+    ],
+    "learning_rate": 2e-06,
+    "bf16": true,
+    "max_seq_length": 1536,
+    "max_steps": 200,
+    "checkpoint_steps": 100,
+    "save_total_limit": null,
+    "per_device_train_batch_size": 1,
+    "gradient_accumulation_steps": 8,
+    "expected_world_size": 4,
+    "observed_world_size": 1,
+    "effective_global_batch_size": 32,
+    "warmup_ratio": 0.03,
+    "max_grad_norm": 1.0,
+    "gradient_checkpointing": true,
+    "gradient_checkpointing_use_reentrant": false,
+    "resume_from_checkpoint": ""
+  },
+  "preservation": {
+    "method": "all_task_adapter_disabled_base_kl",
+    "direction": "KL(base||student)",
+    "temperature": 2.0,
+    "mask": "assistant_answer_tokens_only",
+    "reference_forward": "unconditional_on_every_rank_and_batch",
+    "supervised_weight": "1-kl_weight_per_row"
+  },
+  "dependencies": {
+    "torch": "2.6.0+cu124",
+    "transformers": "4.51.3",
+    "accelerate": "1.14.0",
+    "peft": "0.17.1"
+  },
+  "token_budget_scan": {
+    "status": "passed",
+    "scanned_rows": 22096,
+    "max_seq_length": 1536,
+    "maximum_observed_tokens": 1536,
+    "maximum_sample_id": "coig_cqia/train/d2401198c30710d35024",
+    "answer_token_weight_rows": 1335
+  },
+  "report_hash": "f4bde76b00873a14057eacd89586639f574a5c07db774215c0b2090949bd330c"
+}

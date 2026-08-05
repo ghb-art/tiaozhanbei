@@ -1,0 +1,22 @@
+{
+  "gate": "P0-A44-ALIGNED-INTERNAL-VALIDATION",
+  "check_version": "1.0",
+  "created_by": "scripts/evaluate_p0a44_aligned.py",
+  "created_ts": "2026-08-03T15:55:16.430109+00:00",
+  "status": "passed",
+  "dataset": "code",
+  "candidate_name": "p0a47-code-256",
+  "served_model_id": "p0a47-code-256",
+  "manifest": "data/p0a44/code_validation.jsonl",
+  "manifest_hash": "c5a31c9f6f0e9b5bb761fbbb6e6673623bd82bb1453d3c2c558245274d06243a",
+  "sample_count": 1000,
+  "correct_count": 613,
+  "accuracy": 0.613,
+  "generation_error_count": 0,
+  "workers": 8,
+  "mean_latency_ms": 849.9217633454828,
+  "trace": "reports/audit/p0a44/p0a47_hf_256_trace.jsonl",
+  "trace_hash": "d559ecceb87956c2772bfe4cdbba2355bc7e41b4e95912a273a71b1c4dfd69b3",
+  "formal_full_loaded": false,
+  "report_hash": "796a214aa1eb76fec1fdc7fb7bf127031b08264a4dba90aee0a4f023cbd6fb3c"
+}

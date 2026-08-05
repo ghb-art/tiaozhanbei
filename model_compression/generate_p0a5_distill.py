@@ -3,8 +3,10 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import re
 import sys
+import tempfile
 import threading
 import time
 from collections import Counter
@@ -46,6 +48,22 @@ def read_jsonl(path: Path) -> list[dict[str, Any]]:
             if line.strip():
                 rows.append(json.loads(line))
     return rows
+
+
+def write_jsonl_atomic(path: Path, rows: list[dict[str, Any]]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with tempfile.NamedTemporaryFile(
+        "w",
+        encoding="utf-8",
+        dir=path.parent,
+        prefix=f".{path.name}.",
+        suffix=".tmp",
+        delete=False,
+    ) as handle:
+        temporary = Path(handle.name)
+        for row in rows:
+            handle.write(json.dumps(row, ensure_ascii=False, sort_keys=True) + "\n")
+    os.replace(temporary, path)
 
 
 def request_json(url: str, payload: dict[str, Any] | None, timeout: float) -> Any:
@@ -122,7 +140,8 @@ def prompt_for(row: dict[str, Any]) -> tuple[list[dict[str, str]], int]:
     if task == "gsm8k":
         system = (
             "Solve the math problem with a short correct derivation. "
-            "End with exactly `#### <number>`."
+            "End with one line in the form `#### 42`, replacing 42 with the "
+            "actual numeric answer. Never output a placeholder."
         )
         return [{"role": "system", "content": system}, {"role": "user", "content": user_prompt}], 512
     if task == "opencodeinstruct":
@@ -171,6 +190,52 @@ def validate_and_build(
     return f"简短分析：{rationale}\n最终答案：{source_answer}", status
 
 
+def training_sequence_token_count(
+    tokenizer: Any, row: dict[str, Any], answer: str
+) -> int:
+    messages = [
+        {"role": str(item["role"]), "content": str(item["content"])}
+        for item in row["messages"]
+        if isinstance(item, dict) and item.get("role") in {"system", "user"}
+    ]
+    messages.append({"role": "assistant", "content": answer})
+    token_ids = tokenizer.apply_chat_template(
+        messages,
+        tokenize=True,
+        add_generation_prompt=False,
+        enable_thinking=False,
+    )
+    if hasattr(token_ids, "tolist"):
+        token_ids = token_ids.tolist()
+    return len(token_ids)
+
+
+def enforce_training_token_budget(
+    tokenizer: Any,
+    source: dict[str, Any],
+    distill_answer: str,
+    validation: str,
+    max_length: int,
+) -> tuple[str, str, int, int, bool]:
+    before = training_sequence_token_count(tokenizer, source, distill_answer)
+    if before <= max_length:
+        return distill_answer, validation, before, before, False
+    source_answer = str(source["answer"]).strip()
+    after = training_sequence_token_count(tokenizer, source, source_answer)
+    if after > max_length:
+        raise DistillError(
+            f"Source answer exceeds Student token budget: "
+            f"{source.get('sample_id')} {after} > {max_length}"
+        )
+    return (
+        source_answer,
+        "source_verified_token_budget_fallback",
+        before,
+        after,
+        True,
+    )
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Generate verified P0-A5 distillation targets.")
     parser.add_argument("--config", default="configs/p0a5_capability.json")
@@ -210,7 +275,6 @@ def main() -> int:
         if args.dry_run:
             print(f"P0-A5 distill dry-run passed: rows={len(rows)} counts={dict(counts)}")
             return 0
-        model_id = discover_model(args.endpoint, args.model_id, args.timeout_sec)
         existing: dict[str, dict[str, Any]] = {}
         if trace_path.is_file():
             existing = {
@@ -218,6 +282,30 @@ def main() -> int:
                 for row in read_jsonl(trace_path)
                 if row.get("sample_id")
             }
+        missing_ids = {
+            str(row["sample_id"]) for row in rows
+        } - set(existing)
+        if missing_ids:
+            model_id = discover_model(args.endpoint, args.model_id, args.timeout_sec)
+        else:
+            existing_model_ids = {
+                str(row.get("teacher_model_id", "")).strip()
+                for row in existing.values()
+                if str(row.get("teacher_model_id", "")).strip()
+            }
+            if len(existing_model_ids) != 1:
+                raise DistillError(
+                    f"Completed trace has ambiguous Teacher ids: {sorted(existing_model_ids)}"
+                )
+            model_id = next(iter(existing_model_ids))
+            if args.model_id and args.model_id != model_id:
+                raise DistillError(
+                    f"Completed trace Teacher changed: {model_id} != {args.model_id}"
+                )
+            print(
+                f"Reusing completed Teacher trace offline: rows={len(existing)} "
+                f"model_id={model_id}"
+            )
         lock = threading.Lock()
         trace_path.parent.mkdir(parents=True, exist_ok=True)
         append_mode = trace_path.open("a", encoding="utf-8")
@@ -269,22 +357,61 @@ def main() -> int:
         by_id = {str(row["sample_id"]): row for row in results}
         if len(by_id) != len(rows):
             raise DistillError("Teacher trace contains duplicate or missing samples")
+        from transformers import AutoTokenizer
+
+        student_model_dir = resolve_path(config["policy"]["student_base"])
+        tokenizer = AutoTokenizer.from_pretrained(
+            student_model_dir,
+            local_files_only=True,
+            trust_remote_code=True,
+        )
+        max_length = int(config["student_training"]["max_seq_length"])
         output_rows: list[dict[str, Any]] = []
         validation_counts: Counter[str] = Counter()
         teacher_errors = 0
+        repaired_ids: list[str] = []
+        maximum_before_tokens = 0
+        maximum_after_tokens = 0
         for source in rows:
-            result = by_id[str(source["sample_id"])]
+            sample_id = str(source["sample_id"])
+            result = dict(by_id[sample_id])
+            (
+                answer,
+                validation,
+                before_tokens,
+                after_tokens,
+                repaired,
+            ) = enforce_training_token_budget(
+                tokenizer,
+                source,
+                str(result["distill_answer"]),
+                str(result["validation"]),
+                max_length,
+            )
+            maximum_before_tokens = max(maximum_before_tokens, before_tokens)
+            maximum_after_tokens = max(maximum_after_tokens, after_tokens)
+            if repaired:
+                repaired_ids.append(sample_id)
+                result["distill_answer"] = answer
+                result["validation"] = validation
+                result["row_hash"] = sha256_text(
+                    json.dumps(
+                        {key: value for key, value in result.items() if key != "row_hash"},
+                        ensure_ascii=False,
+                        sort_keys=True,
+                    )
+                )
+                by_id[sample_id] = result
             destination = dict(source)
-            destination["answer"] = result["distill_answer"]
-            destination["distill_validation"] = result["validation"]
+            destination["answer"] = answer
+            destination["distill_validation"] = validation
             destination["teacher_model_id"] = model_id
             output_rows.append(destination)
-            validation_counts[result["validation"]] += 1
+            validation_counts[validation] += 1
             teacher_errors += bool(result["teacher_error"])
-        output_path.parent.mkdir(parents=True, exist_ok=True)
-        with output_path.open("w", encoding="utf-8") as handle:
-            for row in output_rows:
-                handle.write(json.dumps(row, ensure_ascii=False, sort_keys=True) + "\n")
+        canonical_trace = [by_id[str(source["sample_id"])] for source in rows]
+        write_jsonl_atomic(trace_path, canonical_trace)
+        write_jsonl_atomic(output_path, output_rows)
         audit = {
             "gate": "P0-A5-DISTILL",
             "check_version": "1.0",
@@ -305,6 +432,16 @@ def main() -> int:
             "teacher_request_error_count": teacher_errors,
             "fallbacks_are_source_verified": True,
             "formal_test_reference_count": 0,
+            "student_token_budget": {
+                "status": "passed",
+                "max_seq_length": max_length,
+                "maximum_before_tokens": maximum_before_tokens,
+                "maximum_after_tokens": maximum_after_tokens,
+                "repaired_rows": len(repaired_ids),
+                "repaired_sample_ids_hash": sha256_text(
+                    json.dumps(repaired_ids, ensure_ascii=False)
+                ),
+            },
         }
         audit["report_hash"] = sha256_text(
             json.dumps(audit, ensure_ascii=False, sort_keys=True)

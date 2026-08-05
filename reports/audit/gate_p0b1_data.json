@@ -1,0 +1,69 @@
+{
+  "check_version": "1.0",
+  "created_by": "model_compression/build_p0b1_training_data.py",
+  "created_ts": "2026-08-04T12:19:00.499077+00:00",
+  "errors": [],
+  "gate": "P0-B1-CONVERGED-SHARED-DATA",
+  "inputs": {
+    "configs/p0b1_converged_shared.json": "51c3049d4e2b5ddbb7d88c49bd3f213f1b276a5ef3a4de248df83d842a275ad2",
+    "data/capability_v2/gate300.jsonl": "91d89bfce1ceae19eecdc894a1141c7816ec4dd6a4ef7115700d0c8a811741fc",
+    "data/capability_v2/internal_validation.jsonl": "74c38627e350386f70e5191c0c4bcfe54da485efc704e607df3d3e1304152a42",
+    "data/p0a45/train.jsonl": "5bac8bb8f2ba51b3c80ec8bf35172af0a5934219633775c36f6bffbcc2bc9d3b",
+    "data/p0b1/code_train.jsonl": "10a12c7148139b6261f7ab16f0e6dd5da43b3108483c395e528f3e42cb4a2f6c",
+    "data/p0b1/code_validation.jsonl": "8c95c03c4ecdd6003845a915efb29a44036b79247e618a67e1143361fff4cff0",
+    "data/p0b1/nlp_new_train.jsonl": "64ae9bead44fc302e79152fd3b5a64b0c9dce0f1c6b1e13765cabd99749ca03f",
+    "data/p0b1/nlp_new_validation.jsonl": "f3a91806a20f8fe20ef21e6c06e34233f0dda409411bc2809bfd79891c2e9d4c"
+  },
+  "nlp_rejections": {
+    "semantic_duplicate": 1,
+    "unparseable_or_unlabelled": 3
+  },
+  "nlp_source_counts": {
+    "p0b1_mcq/p0a45_verified_mcq/ceval_rationale_train": 1335,
+    "p0b1_mcq/p0a45_verified_mcq/coig_mcq_verified": 818,
+    "p0b1_mcq/p0a45_verified_mcq/coig_openqa_mcq_verified": 1024,
+    "p0b1_mcq/p0a45_verified_mcq/mmlu_aux_chinese": 6998,
+    "p0b1_mcq/p0a7_mmlu_aux_teacher_verified_chinese": 19999
+  },
+  "nlp_unique_candidates": 30174,
+  "output_contracts": {
+    "code": "humaneval_v15_body_only",
+    "math": "gsm8k_rationale_final_numeric",
+    "nlp": "cmmlu_v15_single_letter"
+  },
+  "outputs": {
+    "data/p0b1/internal_validation.jsonl": {
+      "rows": 800,
+      "sha256": "4f44375d9f8d04932d05a3e513c26850a05d52a4a0ff07efd152134dc1edb200"
+    },
+    "data/p0b1/train.jsonl": {
+      "rows": 57173,
+      "sha256": "6523c848d4864fa0eeebd19fd5621eca2fa0d06a2eba1dd7ee894465b1cc00b7"
+    }
+  },
+  "report_hash": "c6897b2536981012d3b998322e20736145e0a4ab92da24f293b9abcb7c8db6eb",
+  "separation": {
+    "formal_full_rows_loaded": 0,
+    "formal_item_feedback_used": false,
+    "train_gate_id_overlap": 0,
+    "train_gate_prompt_overlap": 0,
+    "train_validation_id_overlap": 0,
+    "train_validation_prompt_overlap": 0
+  },
+  "status": "passed",
+  "train_counts": {
+    "cmmlu": 30000,
+    "gsm8k": 7173,
+    "opencodeinstruct": 20000
+  },
+  "validation_counts": {
+    "cmmlu": 300,
+    "gsm8k": 200,
+    "opencodeinstruct": 300
+  },
+  "weighted_task_mass": {
+    "cmmlu": 0.3500000000000289,
+    "gsm8k": 0.29999999999995647,
+    "opencodeinstruct": 0.35000000000001463
+  }
+}

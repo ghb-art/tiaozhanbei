@@ -1,0 +1,34 @@
+{
+  "gate": "P0-A5-GATE300-RESCORE",
+  "check_version": "1.2",
+  "protocol": "p0a5-gate300-v3",
+  "rescore_protocol": "think-strip+dedent",
+  "created_by": "scripts/evaluate_p0a5_gate.py",
+  "created_ts": "2026-08-05T07:29:17.872241+00:00",
+  "status": "passed",
+  "candidate_name": "baseline14b-awq",
+  "source_trace": "data/eval/p0a5_baseline14b_gate300.jsonl",
+  "source_trace_hash": "3543e95daafb0548c59bcb5f7cc910d379c92803b9695ae8fbcf4e51e859f8c4",
+  "manifest": "data/capability_v2/gate300.jsonl",
+  "manifest_hash": "91d89bfce1ceae19eecdc894a1141c7816ec4dd6a4ef7115700d0c8a811741fc",
+  "output_trace": "data/eval/p0a5_baseline14b_gate300_v3.jsonl",
+  "output_trace_hash": "c593a791213cdc7b456038f9476cacf5f9ed9ac8836d52af228461be42f894ff",
+  "counts": {
+    "code": 100,
+    "math": 100,
+    "nlp": 100
+  },
+  "correct_counts": {
+    "code": 58,
+    "math": 95,
+    "nlp": 79
+  },
+  "accuracy_by_domain": {
+    "math": 0.95,
+    "code": 0.58,
+    "nlp": 0.79
+  },
+  "generation_error_count": 0,
+  "code_timeout_sec": 5,
+  "report_hash": "ddb9c537327be3161e96f412d86d623dc268203aeb0162b7ab8767172b9c64cc"
+}

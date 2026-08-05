@@ -1,0 +1,45 @@
+{
+  "gate": "P0-A15-DATA-AND-SCALED-ADAPTER",
+  "check_version": "1.0",
+  "created_by": "model_compression/build_p0a15_data.py",
+  "created_ts": "2026-08-01T12:40:53.021401+00:00",
+  "status": "passed",
+  "source": {
+    "repo": "MU-NLPC/Calc-mawps",
+    "revision": "38c10053efeafd20ab6ff4e08c3ec17de26c19b7",
+    "file": "data/test-00000-of-00001-5a59f3fc4b0d9c98.parquet",
+    "source_sha256": "2ef6313cb811d5c5ebef422a909015f7db4750020f835fd95c2ac2ccbf343d82",
+    "source_rows": 520
+  },
+  "filter": {
+    "decimal_rows": 350,
+    "fraction_rows_excluded": 170,
+    "history_overlap_excluded": 4,
+    "final_rows": 346
+  },
+  "adapter": {
+    "source": "models/checkpoints/p0a11/math-specialist/checkpoint-64",
+    "source_rank": 8,
+    "source_alpha": 16,
+    "scaled": "models/adapters/p0a15/math-step64-scale-0p5",
+    "scaled_rank": 8,
+    "scaled_alpha": 8,
+    "weights_sha256": "075bff4fcbf26017030529f08a504e2bb83f20246000e1055e81569af5fe2568",
+    "weights_same_inode": true,
+    "source_config_sha256": "f9f5f4626c1c3194f244e41fcbfca5e4bafe4b8df69522ea5b3cf9ac32d4f2fe",
+    "scaled_config_sha256": "d93e9d02781c249ec3625a9a30bba4e4887f5d875cf3c98b5a388d891407af06"
+  },
+  "separation": {
+    "validation_used_for_training": false,
+    "historical_validation_reused": false,
+    "gate300_opened": false,
+    "formal_full_opened": false
+  },
+  "output": {
+    "path": "data/p0a15/math_validation.jsonl",
+    "rows": 346,
+    "sha256": "588ab043f50fe8810940af41e34d74bc1c9ff0b5e8182e024367009fe5455698"
+  },
+  "errors": [],
+  "report_hash": "dde1cedd0b5aa9b59abac9bce80aae93d20dd8ebaca4f0f8cb41a1d2146e9656"
+}

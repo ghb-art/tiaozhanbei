@@ -1,0 +1,31 @@
+{
+  "gate": "P0-A17-CODE-NLP-GATE200-EVAL",
+  "check_version": "1.0",
+  "created_by": "scripts/evaluate_p0a17_code_nlp_gate.py",
+  "created_ts": "2026-08-01T13:05:37.408988+00:00",
+  "status": "passed",
+  "served_model_id_by_domain": {
+    "code": "p0a17-code-250",
+    "nlp": "p0a17-nlp-136"
+  },
+  "manifest": "data/capability_v2/gate300.jsonl",
+  "manifest_hash": "91d89bfce1ceae19eecdc894a1141c7816ec4dd6a4ef7115700d0c8a811741fc",
+  "math_rows_loaded": 0,
+  "counts": {
+    "code": 100,
+    "nlp": 100
+  },
+  "correct_counts": {
+    "code": 42,
+    "nlp": 62
+  },
+  "accuracy_by_domain": {
+    "code": 0.42,
+    "nlp": 0.62
+  },
+  "generation_error_count": 0,
+  "output_trace": "data/eval/p0a17_code_nlp_gate200.jsonl",
+  "output_trace_hash": "2c8a206c7a91ddd6f55cd0f52990b5d7cd1bf64f893aa213f17df58f39465cb0",
+  "formal_full_loaded": false,
+  "report_hash": "21212dd7551d6d949de603ee21441e651e644d2f9849ad82a64c3d8ba7e3b83d"
+}

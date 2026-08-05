@@ -1,0 +1,52 @@
+{
+  "protocol": "P0-A11-ACCURACY-REPAIR",
+  "authorized_date": "2026-08-01",
+  "authorization": "User explicitly authorized safe iterative optimization after P0-A10",
+  "shared_base": "models/checkpoints/p0a4/student-shared-merged",
+  "frozen_nlp_adapter": "models/checkpoints/p0a10/nlp-specialist/checkpoint-136",
+  "code": {
+    "source": "nvidia/OpenCodeInstruct",
+    "target_train_rows": 16000,
+    "shape": "HumanEval-style short Python functions with 10 independently passed tests",
+    "lora_rank": 16,
+    "lora_alpha": 32,
+    "learning_rate": 0.000003,
+    "kl_weight": 0.02,
+    "max_steps": 500,
+    "checkpoints": [250, 500],
+    "minimum_internal_gain": 0.03
+  },
+  "math": {
+    "source": "GSM8K train only",
+    "strategy": "base-error correction plus 50 percent correct replay",
+    "lora_rank": 8,
+    "lora_alpha": 16,
+    "learning_rate": 0.000001,
+    "kl_weight": 0.2,
+    "max_steps": 128,
+    "checkpoints": [64, 128],
+    "validation_rows": 300,
+    "minimum_internal_gain": 0.02
+  },
+  "common": {
+    "effective_global_batch_size": 32,
+    "gpu_count": 4,
+    "max_sequence_length": 1536,
+    "system_ram_stop_threshold_percent": 60
+  },
+  "promotion": {
+    "generation_errors": 0,
+    "nlp_selection_audit": "reports/audit/p0a10/nlp_selection.json",
+    "nlp_selected_step": 136,
+    "gate300_runs_for_p0a11": 1,
+    "student_to_14b_minimum_per_domain": 0.78,
+    "recommended_full_minimum_per_domain": 0.82
+  },
+  "forbidden": [
+    "GSM8K test, HumanEval, or CMMLU test in training or checkpoint selection",
+    "P0-A9 gate300 per-question feedback",
+    "formal full-test feedback",
+    "lowering a frozen threshold after seeing validation output",
+    "deleting or overwriting P0-A10 checkpoints and audits"
+  ]
+}

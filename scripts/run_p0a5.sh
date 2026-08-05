@@ -114,12 +114,69 @@ preflight() {
 }
 
 teacher_train() {
+  local output="models/checkpoints/p0a5/teacher"
+  local latest_checkpoint=""
+  local resume_args=()
   require_status reports/audit/gate_p0a5_protocol.json passed
   require_dir models/pretrained/Qwen--Qwen2.5-14B-Instruct
-  [[ ! -e models/checkpoints/p0a5/teacher ]] || {
-    echo "Refusing to overwrite models/checkpoints/p0a5/teacher" >&2
+  "$PYTHON_BIN" model_compression/train_p0a5_lora.py \
+    --config "$CONFIG" --role teacher --candidate-index 1 \
+    --train-data data/capability_v2/source_train.jsonl \
+    --validation-data data/capability_v2/internal_validation.jsonl \
+    --output-dir "$output" \
+    --audit reports/audit/gate_p0a5_teacher_preflight.json \
+    --deepspeed configs/deepspeed_zero3.json --dry-run
+  require_status reports/audit/gate_p0a5_teacher_preflight.json dry_run_passed
+  if [[ -d "$output" ]]; then
+    while IFS= read -r candidate; do
+      if [[
+        -s "$output/$candidate/trainer_state.json"
+        && -s "$output/$candidate/adapter_model.safetensors"
+        && -s "$output/$candidate/latest"
+      ]]; then
+        latest_checkpoint="$candidate"
+      fi
+    done < <(
+      find "$output" -mindepth 1 -maxdepth 1 -type d \
+        -name 'checkpoint-[0-9]*' -printf '%f\n' \
+        | sort -V
+    )
+    [[ -n "$latest_checkpoint" ]] || {
+      echo "No complete Teacher checkpoint in: $output" >&2
+      return 2
+    }
+    latest_checkpoint="$output/$latest_checkpoint"
+    resume_args=(--resume-from-checkpoint "$latest_checkpoint")
+    echo "Resuming Teacher from $latest_checkpoint"
+  elif [[ -e "$output" ]]; then
+    echo "Refusing non-directory Teacher output: $output" >&2
+    return 2
+  fi
+  bash scripts/run_with_memory_guard.sh \
+    env CUDA_VISIBLE_DEVICES="$GPUS" "$TORCHRUN_BIN" \
+    --standalone --nproc_per_node=4 \
+    model_compression/train_p0a5_lora.py \
+    --config "$CONFIG" --role teacher --candidate-index 1 \
+    --train-data data/capability_v2/source_train.jsonl \
+    --validation-data data/capability_v2/internal_validation.jsonl \
+    --output-dir "$output" \
+    --audit reports/audit/gate_p0a5_train_teacher.json \
+    --deepspeed configs/deepspeed_zero3.json \
+    --gradient-accumulation-steps 8 \
+    "${resume_args[@]}"
+}
+
+teacher_eval() {
+  local step="${1:-}"
+  local checkpoint="models/checkpoints/p0a5/teacher/checkpoint-$step"
+  [[ "$step" == "600" || "$step" == "800" ]] || {
+    echo "Teacher evaluation step must be 600 or 800" >&2
     return 2
   }
+  require_status reports/audit/gate_p0a5_protocol.json passed
+  require_file "$checkpoint/trainer_state.json"
+  require_file "$checkpoint/adapter_model.safetensors"
+  require_file "$checkpoint/latest"
   bash scripts/run_with_memory_guard.sh \
     env CUDA_VISIBLE_DEVICES="$GPUS" "$TORCHRUN_BIN" \
     --standalone --nproc_per_node=4 \
@@ -128,9 +185,21 @@ teacher_train() {
     --train-data data/capability_v2/source_train.jsonl \
     --validation-data data/capability_v2/internal_validation.jsonl \
     --output-dir models/checkpoints/p0a5/teacher \
-    --audit reports/audit/gate_p0a5_train_teacher.json \
+    --audit "reports/audit/p0a5_teacher_checkpoint_${step}_eval.json" \
     --deepspeed configs/deepspeed_zero3.json \
-    --gradient-accumulation-steps 8
+    --resume-from-checkpoint "$checkpoint" \
+    --evaluate-only
+}
+
+teacher_select() {
+  require_status reports/audit/p0a5_teacher_checkpoint_600_eval.json passed
+  require_status reports/audit/p0a5_teacher_checkpoint_800_eval.json passed
+  "$PYTHON_BIN" scripts/select_p0a5_teacher.py \
+    --config "$CONFIG" \
+    --evaluation reports/audit/p0a5_teacher_checkpoint_600_eval.json \
+    --evaluation reports/audit/p0a5_teacher_checkpoint_800_eval.json \
+    --output-dir models/checkpoints/p0a5/teacher \
+    --audit reports/audit/gate_p0a5_train_teacher.json
 }
 
 teacher_plan() {
@@ -179,6 +248,8 @@ student_preflight() {
 
 student_train() {
   local candidate="${1:-1}"
+  local latest_checkpoint=""
+  local resume_args=()
   require_status reports/audit/gate_p0a5_distill.json passed
   [[ "$candidate" == "1" || "$candidate" == "2" ]] || {
     echo "Candidate must be 1 or 2" >&2
@@ -188,10 +259,33 @@ student_train() {
     require_second_candidate
   fi
   local output="models/checkpoints/p0a5/student-candidate-$candidate"
-  [[ ! -e "$output" ]] || {
-    echo "Refusing to overwrite $output" >&2
+  if [[ -d "$output" ]]; then
+    while IFS= read -r checkpoint; do
+      if [[
+        -s "$output/$checkpoint/trainer_state.json"
+        && -s "$output/$checkpoint/adapter_model.safetensors"
+        && -s "$output/$checkpoint/optimizer.pt"
+        && -s "$output/$checkpoint/scheduler.pt"
+      ]]; then
+        latest_checkpoint="$checkpoint"
+      fi
+    done < <(
+      find "$output" -mindepth 1 -maxdepth 1 -type d \
+        -name 'checkpoint-[0-9]*' -printf '%f\n' \
+        | sort -V
+    )
+    if [[ -n "$latest_checkpoint" ]]; then
+      latest_checkpoint="$output/$latest_checkpoint"
+      resume_args=(--resume-from-checkpoint "$latest_checkpoint")
+      echo "Resuming Student Candidate $candidate from $latest_checkpoint"
+    elif find "$output" -mindepth 1 -print -quit | grep -q .; then
+      echo "No complete Student checkpoint in non-empty output: $output" >&2
+      return 2
+    fi
+  elif [[ -e "$output" ]]; then
+    echo "Refusing non-directory Student output: $output" >&2
     return 2
-  }
+  fi
   bash scripts/run_with_memory_guard.sh \
     env CUDA_VISIBLE_DEVICES="$GPUS" "$TORCHRUN_BIN" \
     --standalone --nproc_per_node=4 \
@@ -201,7 +295,8 @@ student_train() {
     --validation-data data/capability_v2/internal_validation.jsonl \
     --output-dir "$output" \
     --audit "reports/audit/gate_p0a5_train_student_candidate_$candidate.json" \
-    --gradient-accumulation-steps 8
+    --gradient-accumulation-steps 8 \
+    "${resume_args[@]}"
 }
 
 student_merge() {
@@ -248,6 +343,85 @@ imatrix_corpus() {
     --rows-per-stratum 128 --rows-per-source 384 --seed 20260729
 }
 
+student_quantize() {
+  local candidate="${1:-1}"
+  [[ "$candidate" == "1" || "$candidate" == "2" ]] || {
+    echo "Candidate must be 1 or 2" >&2
+    return 2
+  }
+  require_status "reports/audit/gate_p0a5_merge_student_candidate_$candidate.json" passed
+  require_status reports/audit/gate_p0a5_imatrix_calibration.json passed
+  bash scripts/run_with_memory_guard.sh \
+    "$PYTHON_BIN" scripts/prepare_p0a5_quantized_student.py \
+    --candidate "$candidate" \
+    --gpu "${P0A5_IMATRIX_GPU:-0}" \
+    --chunks "${P0A5_IMATRIX_CHUNKS:-170}"
+}
+
+baseline_plan() {
+  "$PYTHON_BIN" scripts/serve_vllm_teachers.py \
+    --gpu-group "$GPUS" --port 8001 \
+    --model-dir models/pretrained/Qwen--Qwen2.5-14B-Instruct-AWQ \
+    --quantization awq --tensor-parallel-size 4 \
+    --served-model-name "$BASELINE_MODEL_ID" \
+    --dry-run
+}
+
+baseline_serve() {
+  require_status reports/audit/gate_p0a5_protocol.json passed
+  "$PYTHON_BIN" scripts/serve_vllm_teachers.py \
+    --gpu-group "$GPUS" --port 8001 \
+    --model-dir models/pretrained/Qwen--Qwen2.5-14B-Instruct-AWQ \
+    --quantization awq --tensor-parallel-size 4 \
+    --served-model-name "$BASELINE_MODEL_ID"
+}
+
+student_plan() {
+  local candidate="${1:-1}"
+  local model="models/quantized/p0a5-student-candidate-$candidate-q4_k_m.gguf"
+  require_status "reports/audit/gate_p0a5_quantize_student_candidate_$candidate.json" passed
+  require_file "$model"
+  cat <<EOF
+CUDA_VISIBLE_DEVICES=${P0A5_STUDENT_GPU:-0} \
+$ROOT/external/llama.cpp/build/bin/llama-server \
+  --model $ROOT/$model \
+  --alias $STUDENT_MODEL_ID \
+  --host 127.0.0.1 --port 18450 \
+  --ctx-size 1536 --threads 8 --parallel 1 \
+  --batch-size 32 --ubatch-size 16 \
+  --cache-type-k q8_0 --cache-type-v q8_0 \
+  --flash-attn on --n-gpu-layers all --no-repack \
+  --cache-ram 0 --no-cache-idle-slots \
+  --reasoning off --reasoning-format none
+EOF
+}
+
+student_serve() {
+  local candidate="${1:-1}"
+  local model="models/quantized/p0a5-student-candidate-$candidate-q4_k_m.gguf"
+  local server="$ROOT/external/llama.cpp/build/bin/llama-server"
+  require_status "reports/audit/gate_p0a5_quantize_student_candidate_$candidate.json" passed
+  require_file "$model"
+  require_file "$server"
+  exec env CUDA_VISIBLE_DEVICES="${P0A5_STUDENT_GPU:-0}" \
+    "$server" \
+    --model "$ROOT/$model" \
+    --alias "$STUDENT_MODEL_ID" \
+    --host 127.0.0.1 --port 18450 \
+    --ctx-size 1536 --threads 8 --parallel 1 \
+    --batch-size 32 --ubatch-size 16 \
+    --cache-type-k q8_0 --cache-type-v q8_0 \
+    --flash-attn on --n-gpu-layers all --no-repack \
+    --cache-ram 0 --no-cache-idle-slots \
+    --reasoning off --reasoning-format none
+}
+
+gate300_pipeline() {
+  local candidate="${1:-1}"
+  require_status "reports/audit/gate_p0a5_quantize_student_candidate_$candidate.json" passed
+  bash scripts/run_p0a5_gate300_pipeline.sh "$candidate"
+}
+
 status() {
   local path
   for path in \
@@ -255,7 +429,14 @@ status() {
     reports/audit/gate_p0a5_protocol.json \
     reports/audit/gate_p0a5_teacher_preflight.json \
     reports/audit/gate_p0a5_train_teacher.json \
-    reports/audit/gate_p0a5_distill.json; do
+    reports/audit/gate_p0a5_distill.json \
+    reports/audit/gate_p0a5_train_student_candidate_1.json \
+    reports/audit/gate_p0a5_merge_student_candidate_1.json \
+    reports/audit/gate_p0a5_imatrix_calibration.json \
+    reports/audit/gate_p0a5_quantize_student_candidate_1.json \
+    reports/audit/gate_p0a5_baseline14b_gate300_eval.json \
+    reports/audit/gate_p0a5_student_candidate_1_q4_gate300_eval.json \
+    reports/audit/gate_p0a5_student_candidate_1_gate300.json; do
     if [[ -f "$path" ]]; then
       "$PYTHON_BIN" -c \
         'import json,sys; d=json.load(open(sys.argv[1])); print(sys.argv[1], d.get("status"))' \
@@ -278,6 +459,8 @@ CPU preparation:
 
 GPU stages (run manually):
   teacher-train              Four-GPU BF16 14B ZeRO-3 LoRA training.
+  teacher-eval [600|800]     Evaluate one frozen Teacher checkpoint on 2,200 internal rows.
+  teacher-select             Select the lower-loss 600/800 checkpoint and publish it.
   teacher-plan               Print the four-GPU Teacher serving command.
   teacher-serve              Serve BF16 14B + P0-A5 LoRA on port 8000.
   distill-generate           Generate verified Student targets through the Teacher endpoint.
@@ -285,11 +468,17 @@ GPU stages (run manually):
   student-train [1|2]        Four-GPU shared Student LoRA with Math KL preservation.
   student-merge [1|2]        Merge the selected shared LoRA into the v1 base.
   imatrix-corpus             Build train-only Q4_K_M calibration text.
+  student-quantize [1|2]     Convert HF, compute GPU imatrix and create Q4_K_M.
+  baseline-plan              Print the frozen four-GPU AWQ baseline service.
+  baseline-serve             Serve frozen 14B AWQ on port 8001.
+  student-plan [1|2]         Print the Q4_K_M + Q8 KV Student service.
+  student-serve [1|2]        Serve Q4_K_M + Q8 KV Student on port 18450.
+  gate300-pipeline [1|2]     Run baseline and Student services/evaluations in order.
   baseline-gate              Evaluate frozen 14B AWQ on the single 300-item gate.
   student-gate [1|2]         Evaluate Q4 Student and compute 78%/82% decisions.
 
-Quantization, Q8 KV serving, memory validation and the formal 13,065-item run are
-only authorized after a quantized candidate receives recommended_full=true.
+Memory validation and the formal 13,065-item run are only authorized after a
+Q4_K_M + Q8 KV candidate receives recommended_full=true.
 EOF
 }
 
@@ -298,6 +487,8 @@ case "${1:-help}" in
   data-build) data_build ;;
   preflight) preflight ;;
   teacher-train) teacher_train ;;
+  teacher-eval) teacher_eval "${2:-}" ;;
+  teacher-select) teacher_select ;;
   teacher-plan) teacher_plan ;;
   teacher-serve) teacher_serve ;;
   distill-generate) distill_generate ;;
@@ -305,6 +496,12 @@ case "${1:-help}" in
   student-train) student_train "${2:-1}" ;;
   student-merge) student_merge "${2:-1}" ;;
   imatrix-corpus) imatrix_corpus ;;
+  student-quantize) student_quantize "${2:-1}" ;;
+  baseline-plan) baseline_plan ;;
+  baseline-serve) baseline_serve ;;
+  student-plan) student_plan "${2:-1}" ;;
+  student-serve) student_serve "${2:-1}" ;;
+  gate300-pipeline) gate300_pipeline "${2:-1}" ;;
   baseline-gate) baseline_gate ;;
   student-gate) student_gate "${2:-1}" ;;
   status) status ;;

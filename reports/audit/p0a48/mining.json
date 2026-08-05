@@ -1,0 +1,19 @@
+{
+  "gate": "P0-A48-TRAIN-ONLY-MINING",
+  "check_version": "1.0",
+  "created_by": "scripts/mine_p0a48_nlp.py",
+  "created_ts": "2026-08-03T16:24:13.204111+00:00",
+  "status": "passed",
+  "source": "data/p0a44/nlp_train.jsonl",
+  "source_hash": "9fa2df99f98836b8762ad90b9b9ef8d49e27519e85817ee6570658313a9a6058",
+  "served_model_id": "p0a48-base",
+  "sample_count": 3939,
+  "correct_count": 2399,
+  "failure_count": 1540,
+  "accuracy": 0.609037826859609,
+  "generation_error_count": 0,
+  "trace": "reports/audit/p0a48/mining_trace.jsonl",
+  "trace_hash": "f88d21e60b7bccd11e257e0667bc9efafb864b388d7008ca88e3d215d61ae7b9",
+  "formal_test_items_loaded": 0,
+  "report_hash": "086fd4f5864457d2368a9c7610b1f0639ccf086980e13ca6671973be02889d63"
+}

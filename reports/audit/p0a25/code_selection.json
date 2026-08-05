@@ -1,0 +1,52 @@
+{
+  "gate": "P0-A25-FAILURE-REPAIR-SELECTION",
+  "check_version": "1.0",
+  "created_by": "scripts/select_p0a25_code.py",
+  "created_ts": "2026-08-01T17:13:16.219921+00:00",
+  "status": "passed",
+  "base_audit": "reports/audit/p0a25/base_code.json",
+  "base_audit_hash": "f6a0cc0f023c9759cf75980c93e6a41dd95ac8fcd45455ea1490067acc736364",
+  "base_accuracy": 0.611,
+  "base_correct_count": 611,
+  "initial_audit": "reports/audit/p0a25/initial_code.json",
+  "initial_audit_hash": "03de33f32c614524395a3c94b2c1ee1a47c384ed46170ff5b1ee953c157ef71b",
+  "initial_accuracy": 0.638,
+  "initial_correct_count": 638,
+  "minimum_gain_over_original_base": 0.03,
+  "minimum_gain_over_initial_adapter": 0.01,
+  "minimum_canonical_format_rate": 0.99,
+  "candidates": [
+    {
+      "step": 96,
+      "audit": "reports/audit/p0a25/code_96.json",
+      "audit_hash": "1c3292c10bb78a44aeac6ea2ef6bfdae8225a0e44a9e410eea8354cf6a970f29",
+      "accuracy": 0.645,
+      "correct_count": 645,
+      "canonical_format_rate": 0.991,
+      "gain_over_original_base": 0.03400000000000003,
+      "gain_over_initial_adapter": 0.007000000000000006,
+      "eligible": false,
+      "failures": [
+        "gain_over_initial=0.007000<required=0.010000"
+      ]
+    },
+    {
+      "step": 192,
+      "audit": "reports/audit/p0a25/code_192.json",
+      "audit_hash": "4b459336f8a90c5b3fac794a92ddb63729e06b031f18de0bf204e748fea3961a",
+      "accuracy": 0.652,
+      "correct_count": 652,
+      "canonical_format_rate": 0.993,
+      "gain_over_original_base": 0.041000000000000036,
+      "gain_over_initial_adapter": 0.014000000000000012,
+      "eligible": true,
+      "failures": []
+    }
+  ],
+  "selected_step": 192,
+  "selected_model_id": "p0a25-code-192",
+  "per_item_feedback_read": false,
+  "p0a24_gate_trace_loaded": false,
+  "formal_full_opened": false,
+  "report_hash": "519da1683648d1ca9d660bb95e013afe232fd414de57b7d719d6726ab16d0c2f"
+}

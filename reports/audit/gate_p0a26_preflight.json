@@ -1,0 +1,10 @@
+{
+  "gate": "P0-A26-PREFLIGHT",
+  "status": "passed",
+  "gate_rows": 100,
+  "baseline_runs": 1,
+  "candidate_runs": 1,
+  "selected_step": 192,
+  "p0a24_gate_trace_loaded": false,
+  "formal_full_opened": false
+}

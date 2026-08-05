@@ -51,6 +51,24 @@ class VllmTeacherLauncherTests(unittest.TestCase):
         tp_index = command.index("--tensor-parallel-size")
         self.assertEqual(command[tp_index + 1], "4")
 
+    def test_command_exposes_stable_served_model_name(self) -> None:
+        args = argparse.Namespace(
+            vllm_bin=".venv/bin/vllm",
+            model_dir="models/pretrained/Qwen--Qwen2.5-14B-Instruct-AWQ",
+            quantization="awq",
+            max_model_len=4096,
+            gpu_memory_utilization=0.85,
+            host="0.0.0.0",
+            disable_log_requests=True,
+            served_model_name="baseline-14b-awq",
+        )
+        teacher = launcher.TeacherSpec(
+            gpus=("0", "1", "2", "3"), port=8001, tensor_parallel_size=4
+        )
+        command = launcher.build_command(args, teacher)
+        name_index = command.index("--served-model-name")
+        self.assertEqual(command[name_index + 1], "baseline-14b-awq")
+
     def test_active_entrypoint_passes_one_gpu_group(self) -> None:
         script = (ROOT / "scripts/run_p0a.sh").read_text(encoding="utf-8")
         self.assertIn('--gpu-group "$P0A_GPUS"', script)

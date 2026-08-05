@@ -1,0 +1,42 @@
+{
+  "protocol": "P0-A25-CODE-FAILURE-MINING",
+  "authorized_date": "2026-08-02",
+  "base_model": "models/checkpoints/p0a4/student-shared-merged",
+  "initial_adapter": "models/checkpoints/p0a23/code-continuation/checkpoint-96",
+  "source": {
+    "repo": "nvidia/OpenCodeInstruct",
+    "revision": "8f3ba5bafe4d6e8db46082cf7ae6741bc370604d",
+    "independent_tests_per_task": 10,
+    "public_tests_per_prompt": 3
+  },
+  "data": {
+    "mining_pool_rows": 6000,
+    "validation_rows": 1000,
+    "new_gate_rows": 100,
+    "exclude_all_historical_ids": true
+  },
+  "curriculum": {
+    "include_all_student_failures": true,
+    "correct_replay_ratio_to_failures": 0.5,
+    "failure_training_weight": 2.0,
+    "correct_replay_training_weight": 1.0
+  },
+  "training": {
+    "rank": 16,
+    "alpha": 32,
+    "learning_rate": 6e-7,
+    "kl_weight": 0.1,
+    "global_batch_size": 32,
+    "max_steps": 192,
+    "checkpoint_steps": 96,
+    "maximum_candidates": 2
+  },
+  "selection": {
+    "minimum_gain_over_original_base": 0.03,
+    "minimum_gain_over_initial_adapter": 0.01,
+    "minimum_canonical_format_rate": 0.99,
+    "generation_error_count": 0,
+    "formal_full_opened": false
+  },
+  "system_ram_stop_threshold_percent": 60
+}

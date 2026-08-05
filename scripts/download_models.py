@@ -18,6 +18,11 @@ DEFAULT_AUDIT_COPY_PATH = ROOT / "reports" / "audit" / "model_downloads.json"
 
 MODEL_SPECS = [
     {
+        "role": "edge_student_original",
+        "repo_id": "Qwen/Qwen3-1.7B",
+        "local_name": "Qwen--Qwen3-1.7B",
+    },
+    {
         "role": "cloud_baseline",
         "repo_id": "Qwen/Qwen2.5-14B-Instruct-AWQ",
         "local_name": "Qwen--Qwen2.5-14B-Instruct-AWQ",

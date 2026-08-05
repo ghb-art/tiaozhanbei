@@ -1,0 +1,50 @@
+{
+  "protocol": "P0-A14-MATH-SELF-CONSISTENCY",
+  "authorized_date": "2026-08-01",
+  "shared_base": "models/checkpoints/p0a4/student-shared-merged",
+  "frozen_code_adapter": "models/checkpoints/p0a11/code-specialist/checkpoint-250",
+  "frozen_nlp_adapter": "models/checkpoints/p0a10/nlp-specialist/checkpoint-136",
+  "math": {
+    "thinking": true,
+    "baseline_samples": 1,
+    "candidate_samples": 3,
+    "baseline_temperature": 0.0,
+    "candidate_temperature": 0.6,
+    "candidate_top_p": 0.95,
+    "max_tokens": 768,
+    "vote": "numeric_majority_then_first",
+    "maximum_runtime_candidates": 1
+  },
+  "validation": {
+    "repo": "MU-NLPC/Calc-mawps",
+    "revision": "38c10053efeafd20ab6ff4e08c3ec17de26c19b7",
+    "file": "data/validation-00000-of-00001-2ce28573971ca59f.parquet",
+    "source_sha256": "9d2ca9e33d8efdbc2527a84f1685d6dd5ec7defb201a290a836660c071f5b607",
+    "license": "mit",
+    "source_rows": 1040,
+    "decimal_rows_before_overlap_filter": 734,
+    "excluded_fraction_rows": 306,
+    "excluded_asdiv_overlap": 7,
+    "rows": 727,
+    "minimum_gain": 0.02,
+    "minimum_canonical_format_rate": 0.95,
+    "generation_errors": 0
+  },
+  "promotion": {
+    "gate300_runs_for_p0a14": 1,
+    "student_to_14b_minimum_per_domain": 0.78,
+    "recommended_full_minimum_per_domain": 0.82
+  },
+  "safety": {
+    "system_ram_stop_threshold_percent": 60,
+    "formal_test_rows_used_for_runtime_selection": 0
+  },
+  "forbidden": [
+    "Calc-MAWPS rows in training",
+    "reference-answer-aware response selection",
+    "ASDiv or SVAMP reuse for P0-A14 selection",
+    "more than one P0-A14 runtime candidate",
+    "lowering thresholds after validation",
+    "overwriting P0-A9 through P0-A13 artifacts"
+  ]
+}

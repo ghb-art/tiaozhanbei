@@ -1,0 +1,96 @@
+{
+  "gate": "P0-A6-STUDENT-TRAIN",
+  "check_version": "1.0",
+  "created_by": "model_compression/train_p0a6_student.py",
+  "created_ts": "2026-07-31T15:43:53.178892+00:00",
+  "status": "dry_run_passed",
+  "errors": [],
+  "model_dir": "models/checkpoints/p0a4/student-shared-merged",
+  "train_data": "data/p0a7/nlp_mmlu_aux_train.jsonl",
+  "train_data_hash": "d9830f1205c8bb0520dde8518fdfae228c65199f08f58086820f7fccb4de75da",
+  "train_rows": 3000,
+  "focus": {
+    "focus_domain": "nlp_mmlu_aux",
+    "source_rows": 3000,
+    "selected_rows": 3000,
+    "source_domain_counts": {
+      "nlp": 3000
+    },
+    "selected_domain_counts": {
+      "nlp": 3000
+    },
+    "selected_dataset_counts": {
+      "mmlu_aux_chinese": 3000
+    },
+    "training_weight_mean_before": 1.0,
+    "training_weight_normalization_divisor": 1.0,
+    "training_weight_mean_after": 1.0,
+    "mcq_answer_token_weight_multiplier": 1.0,
+    "mcq_answer_token_weight_multiplied_rows": 0
+  },
+  "domain_counts": {
+    "nlp": 3000
+  },
+  "kl_weight_by_domain": {
+    "nlp": {
+      "minimum": 0.05,
+      "maximum": 0.05,
+      "mean": 0.049999999999999954
+    }
+  },
+  "answer_token_weight_rows": {},
+  "formal_test_reference_count": 0,
+  "optimization": {
+    "lora_rank": 16,
+    "lora_alpha": 32,
+    "lora_dropout": 0.05,
+    "target_modules": [
+      "q_proj",
+      "k_proj",
+      "v_proj",
+      "o_proj",
+      "gate_proj",
+      "up_proj",
+      "down_proj"
+    ],
+    "learning_rate": 3e-05,
+    "bf16": true,
+    "max_seq_length": 1536,
+    "max_steps": 188,
+    "checkpoint_steps": 94,
+    "save_total_limit": null,
+    "per_device_train_batch_size": 1,
+    "gradient_accumulation_steps": 8,
+    "expected_world_size": 4,
+    "observed_world_size": 1,
+    "effective_global_batch_size": 32,
+    "warmup_ratio": 0.03,
+    "max_grad_norm": 1.0,
+    "gradient_checkpointing": true,
+    "gradient_checkpointing_use_reentrant": false,
+    "resume_from_checkpoint": ""
+  },
+  "preservation": {
+    "method": "all_task_adapter_disabled_base_kl",
+    "direction": "KL(base||student)",
+    "temperature": 2.0,
+    "mask": "assistant_answer_tokens_only",
+    "reference_forward": "unconditional_on_every_rank_and_batch",
+    "supervised_weight": "1-kl_weight_per_row"
+  },
+  "dependencies": {
+    "torch": "2.6.0+cu124",
+    "transformers": "4.51.3",
+    "accelerate": "1.14.0",
+    "peft": "0.17.1"
+  },
+  "token_budget_scan": {
+    "status": "passed",
+    "scanned_rows": 3000,
+    "max_seq_length": 1536,
+    "maximum_observed_tokens": 794,
+    "maximum_sample_id": "p0a7/nlp/mc_test/224f0d25967c619e39c8",
+    "answer_token_weight_rows": 0
+  },
+  "report_hash": "e425c3616ba19e34f69724c26dbd91a578367cdaa36ea56fbc54bc764c055672"
+}

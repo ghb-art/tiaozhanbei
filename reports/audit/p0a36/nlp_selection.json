@@ -1,0 +1,47 @@
+{
+  "gate": "P0-A36-BALANCED-MCQ-SELECTION",
+  "check_version": "1.0",
+  "created_by": "scripts/select_p0a36_nlp.py",
+  "created_ts": "2026-08-02T07:07:42.851347+00:00",
+  "status": "failed",
+  "initial_audit": "reports/audit/p0a36/initial_nlp.json",
+  "initial_audit_hash": "a652455b5ac9495358daaa34f8fa22941004f1e20abc2ac914b866566ed35f6f",
+  "initial_correct_count": 168,
+  "initial_accuracy": 0.65625,
+  "initial_canonical_format_rate": 1.0,
+  "minimum_gain_questions": 6,
+  "candidates": [
+    {
+      "step": 64,
+      "audit": "reports/audit/p0a36/nlp_64.json",
+      "audit_hash": "c86600d951e343a889cf45d3e0e07425994f977456b798ff7dd295e52815a68a",
+      "correct_count": 168,
+      "accuracy": 0.65625,
+      "canonical_format_rate": 1.0,
+      "gain_questions": 0,
+      "eligible": false,
+      "failures": [
+        "gain_questions=0<required=6"
+      ]
+    },
+    {
+      "step": 128,
+      "audit": "reports/audit/p0a36/nlp_128.json",
+      "audit_hash": "d9d559854ab773b47285c7fa12f7567269fb39a17446fe6b14e5c67567fc97ee",
+      "correct_count": 170,
+      "accuracy": 0.6640625,
+      "canonical_format_rate": 1.0,
+      "gain_questions": 2,
+      "eligible": false,
+      "failures": [
+        "gain_questions=2<required=6"
+      ]
+    }
+  ],
+  "selected_step": null,
+  "selected_model_id": null,
+  "per_item_feedback_read": false,
+  "frozen_nlp100_opened": false,
+  "formal_full_opened": false,
+  "report_hash": "6cddddcdd2413f31d33e0293d0589f16b4b6c534346fe054ae957aa9bbfa27b0"
+}

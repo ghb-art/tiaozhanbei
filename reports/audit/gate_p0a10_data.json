@@ -1,0 +1,75 @@
+{
+  "gate": "P0-A10-FINAL-CANDIDATE-DATA",
+  "check_version": "1.0",
+  "created_by": "model_compression/build_p0a10_data.py",
+  "created_ts": "2026-08-01T01:15:07.245052+00:00",
+  "status": "passed",
+  "policy": {
+    "source_gate300_opened": false,
+    "formal_full_opened": false,
+    "p0a9_per_question_feedback_used": false,
+    "selection_feedback": "P0-A9 aggregate domain deficits only",
+    "validation_rows_per_domain": 256
+  },
+  "train_counts": {
+    "code": 19743,
+    "math": 6917,
+    "nlp": 4335
+  },
+  "validation_counts": {
+    "code": 256,
+    "math": 256,
+    "nlp": 256
+  },
+  "token_filter": {
+    "tokenizer": "models/checkpoints/p0a4/student-shared-merged",
+    "max_sequence_length": 1536,
+    "max_generation_tokens": {
+      "math": 512,
+      "code": 768,
+      "nlp": 256
+    },
+    "rejections": {
+      "code_training_sequence": 1,
+      "code_validation_prompt_budget": 12
+    },
+    "maximum_observed_training_tokens_before_filter": {
+      "math": 625,
+      "code": 1546,
+      "nlp": 794
+    }
+  },
+  "train_validation_overlap": 0,
+  "outputs": {
+    "train": {
+      "path": "data/p0a10/train.jsonl",
+      "rows": 30995,
+      "sha256": "2a176cb58d08c67f7a73389159139b57dd10aab4d85cac50547b940f08e396ba"
+    },
+    "math_validation": {
+      "path": "data/p0a10/math_validation.jsonl",
+      "rows": 256,
+      "sha256": "fe41f03dc81665ce30001f4ad0d8a955aece0e5551622f1539b4a472970a57f6"
+    },
+    "code_validation": {
+      "path": "data/p0a10/code_validation.jsonl",
+      "rows": 256,
+      "sha256": "acc59672c3bfe4156b073e6443156d1694b29797db4e64fe24f0e0e748232ac1"
+    },
+    "nlp_validation": {
+      "path": "data/p0a10/nlp_validation.jsonl",
+      "rows": 256,
+      "sha256": "df24e2c21f2aeca946db4daaa3a5a15dd3e572a17b1b085fb468a3d9963c04eb"
+    }
+  },
+  "inputs": {
+    "data/capability_v2/distill_train.jsonl": "13a57b118edc404bd78fe97c6377b1d0c2b0ff3663732b1f7d59ed696f71bceb",
+    "data/p0a7/nlp_mmlu_aux_train.jsonl": "d9830f1205c8bb0520dde8518fdfae228c65199f08f58086820f7fccb4de75da",
+    "data/p0a6/nlp_mcq_rationale_train.jsonl": "ee4afe1e8a46b48e1a8c27a28f0b562aaff23e626ea1b9295e0d4c3a9fb1ab77",
+    "data/distill/p0a7_nlp_teacher_trace.jsonl": "bd66f27e93677c25a8d75b7ab29b37d35673b13c765410163d6634ed011650ac",
+    "data/distill/p0a7_nlp_verified_train.jsonl": "af73cbfe0dcf119a5d57a3abcb9814e90f0386770d6acac71c1cee535efa5e8c",
+    "data/distill/p0a7_nlp_verified_validation.jsonl": "d79d2de504df7878e9007f04963a77188190ba6271b8cd0a022621c520519ff7"
+  },
+  "errors": [],
+  "report_hash": "9cd195f302ba9081e4e29b7a5c24431219ae5753a59de32c202f4cf2dd183410"
+}

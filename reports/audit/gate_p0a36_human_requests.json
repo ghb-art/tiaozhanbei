@@ -1,0 +1,58 @@
+{
+  "check_version": "1.0",
+  "created_by": "model_compression/build_p0a36_openqa_requests.py",
+  "created_ts": "2026-08-01T22:17:24.434381+00:00",
+  "errors": [],
+  "gate": "P0-A36-BALANCED-OPENQA-MCQ-REQUESTS",
+  "groups": [
+    "stem",
+    "humanities",
+    "social_law",
+    "general"
+  ],
+  "inputs": {
+    "data/datasets/coig_cqia/COIG-CQIA-full.jsonl": "f2a6a758362b7fa5d5c29c9ae0946f2fbf8c9318b6fb48c0e62f8b774d8ff518",
+    "data/p0a6/train.jsonl": "dc743974f40c9e7040c4ef24f4ad2fd358be50fc9765ddf0a4e752bbc4ad590b"
+  },
+  "output": "data/distill/p0a36_human_verified_openqa_mcq_requests.jsonl",
+  "output_hash": "01bf5b65370606d3e6322479a5fd736dddd8c0277a85950851df5227005b7331",
+  "policy": {
+    "formal_cmmlu_test_opened": false,
+    "option_order": "assigned deterministically after generation",
+    "p0a34_validation_reused": false,
+    "teacher_does_not_choose_final_option_letter": true,
+    "teacher_receives_trusted_human_verified_answer": true
+  },
+  "rejections": {
+    "duplicate_prompt": 993,
+    "length_or_language": 2262,
+    "source_not_human_verified": 31968,
+    "unmapped_domain": 331,
+    "unsupported_task_shape": 933
+  },
+  "request_count": 2000,
+  "requests_per_group": 500,
+  "selected_counts": {
+    "general": {
+      "fresh_source": 500,
+      "open_qa_replay_source": 0,
+      "total": 500
+    },
+    "humanities": {
+      "fresh_source": 98,
+      "open_qa_replay_source": 402,
+      "total": 500
+    },
+    "social_law": {
+      "fresh_source": 56,
+      "open_qa_replay_source": 444,
+      "total": 500
+    },
+    "stem": {
+      "fresh_source": 92,
+      "open_qa_replay_source": 408,
+      "total": 500
+    }
+  },
+  "status": "passed"
+}

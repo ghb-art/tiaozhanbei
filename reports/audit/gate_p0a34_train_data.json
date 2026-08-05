@@ -1,0 +1,31 @@
+{
+  "check_version": "1.0",
+  "created_by": "model_compression/build_p0a34_train.py",
+  "created_ts": "2026-08-01T21:48:44.102075+00:00",
+  "errors": [],
+  "gate": "P0-A34-CHINESE-EXAM-TRAIN-DATA",
+  "inputs": {
+    "data/p0a34/coig_verified_train.jsonl": "c07d3ca08999f15a6269970c702ab3cf80299289de328593ecdf823c46df6dbc",
+    "data/p0a34/nlp_validation.jsonl": "5ba7791da3a04d2aa5341baf19a80836740eb006dbd86c7a225c68a4a8f39619",
+    "data/p0a6/nlp_mcq_rationale_train.jsonl": "ee4afe1e8a46b48e1a8c27a28f0b562aaff23e626ea1b9295e0d4c3a9fb1ab77",
+    "data/p0a7/nlp_mmlu_aux_train.jsonl": "d9830f1205c8bb0520dde8518fdfae228c65199f08f58086820f7fccb4de75da",
+    "reports/audit/gate_p0a34_teacher_data.json": "32c430467317846900d1d1a3fc3381cd441ee5caf3496b3c9a206646b7615fcc"
+  },
+  "output": "data/p0a34/train.jsonl",
+  "output_hash": "5b56671be823e8b1fbfc02d1f8fd38926760b236b0ac2d3ecf8b3d5ead8fe095",
+  "policy": {
+    "formal_cmmlu_test_opened": false,
+    "mmlu_replay_selection": "deterministic hash, no evaluation feedback",
+    "p0a32_validation_reused": false,
+    "selection_manifest": "C-Eval dev only"
+  },
+  "status": "passed",
+  "train_dataset_counts": {
+    "ceval_rationale_train": 1335,
+    "coig_mcq_verified": 820,
+    "mmlu_aux_chinese": 1000
+  },
+  "train_rows": 3155,
+  "train_validation_overlap": 0,
+  "validation_rows": 260
+}

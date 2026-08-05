@@ -1,0 +1,54 @@
+{
+  "protocol": "P0-A8-OPENCODEINSTRUCT-CODE-SPECIALIST",
+  "created_date": "2026-08-01",
+  "reason": "P0-A7 fixed the NLP accuracy bottleneck; the remaining quick-300 failure is Code, so P0-A8 trains a Code-only Adapter without changing Math or NLP routing.",
+  "model_routing": {
+    "shared_base": "models/checkpoints/p0a4/student-shared-merged",
+    "math": "shared_base_without_adapter",
+    "code_candidate": "models/checkpoints/p0a8/code-specialist/checkpoint-{64,128}",
+    "nlp_frozen": "models/checkpoints/p0a7/nlp-mmlu-aux-specialist/checkpoint-188"
+  },
+  "data": {
+    "train": "data/p0a6/train.jsonl filtered to 4088 OpenCodeInstruct Code rows",
+    "internal_validation": "data/p0a8/code_internal_validation.jsonl",
+    "internal_validation_count": 86,
+    "quick_rows_excluded_from_internal_validation": 100,
+    "formal_test_loaded": false,
+    "humaneval_loaded": false
+  },
+  "training": {
+    "base_model": "models/checkpoints/p0a4/student-shared-merged",
+    "architecture": "Code-only Top-1 LoRA",
+    "lora_rank": 16,
+    "lora_alpha": 32,
+    "lora_dropout": 0.05,
+    "learning_rate": 0.00001,
+    "max_steps": 128,
+    "checkpoint_steps": 64,
+    "selection_steps": [64, 128],
+    "effective_global_batch_size": 32,
+    "gpu_count": 4,
+    "max_sequence_length": 1536
+  },
+  "selection": {
+    "first_gate": "untouched 86-row OpenCodeInstruct train-only Code validation",
+    "minimum_code_gain": 0.03,
+    "maximum_generation_errors": 0,
+    "tie_break": "higher accuracy, then earlier checkpoint",
+    "second_gate": "frozen P0-A6 quick 300 with Math/Code/NLP 100 each",
+    "second_gate_requirements": {
+      "math_minimum_gain": -0.01,
+      "code_minimum_gain": 0.03,
+      "nlp_minimum_gain": 0.03,
+      "maximum_generation_errors": 0
+    },
+    "full_646_only_after_both_gates": true
+  },
+  "forbidden": [
+    "HumanEval",
+    "CMMLU test",
+    "GSM8K test",
+    "formal 13065-item traces",
+    "per-question gate feedback for tuning"
+  ]
+}

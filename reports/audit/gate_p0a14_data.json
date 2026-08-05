@@ -1,0 +1,41 @@
+{
+  "gate": "P0-A14-CALC-MAWPS-DATA",
+  "check_version": "1.0",
+  "created_by": "model_compression/build_p0a14_data.py",
+  "created_ts": "2026-08-01T12:23:42.945329+00:00",
+  "status": "passed",
+  "source": {
+    "repo": "MU-NLPC/Calc-mawps",
+    "revision": "38c10053efeafd20ab6ff4e08c3ec17de26c19b7",
+    "file": "data/validation-00000-of-00001-2ce28573971ca59f.parquet",
+    "source_rows": 1040,
+    "source_sha256": "9d2ca9e33d8efdbc2527a84f1685d6dd5ec7defb201a290a836660c071f5b607",
+    "readme_sha256": "dc66dcea61b7cc9fa7380b31277ffef4d719f764a78f0a31b7b80dc825353c13",
+    "declared_license": "mit"
+  },
+  "filter": {
+    "decimal_rows": 734,
+    "fraction_rows_excluded": 306,
+    "asdiv_overlap_excluded": 7,
+    "p0a12_train_overlap": 0,
+    "final_rows": 727
+  },
+  "separation": {
+    "calc_mawps_used_for_training": false,
+    "asdiv_or_svamp_reused_for_selection": false,
+    "gate300_opened": false,
+    "formal_full_opened": false
+  },
+  "inputs": {
+    "configs/p0a14_math_self_consistency.json": "d659620e8997600ac9be763da5ceca499e9825b599901e8220659eaf48f7d9ab",
+    "data/p0a12/math_train.jsonl": "240576c1e62843e85924cb323adc72bd9f9bad75d0a5c88f792a5b193b30dd00",
+    "data/p0a13/math_validation.jsonl": "322741977e1b69e89ed792e04b438a9780dfa8a22522c280b91f3f2d2e6cb919"
+  },
+  "output": {
+    "path": "data/p0a14/math_validation.jsonl",
+    "rows": 727,
+    "sha256": "9347e73ebb3ac20d3b4a5e8e7fcb99daa4fb33d5ad3c6ee15c4a1da6e03770fe"
+  },
+  "errors": [],
+  "report_hash": "ca107133155c503a9c83396b3b8bbe8ce20bcd7886a05b9f451e3ff9a50d2ffe"
+}

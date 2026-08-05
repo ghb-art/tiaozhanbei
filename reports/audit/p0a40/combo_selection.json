@@ -1,0 +1,36 @@
+{
+  "gate": "P0-A40-ORIGINAL-PLUS-NLP-SELECTION",
+  "check_version": "1.0",
+  "created_by": "scripts/select_p0a40_combo.py",
+  "created_ts": "2026-08-02T07:39:58.370726+00:00",
+  "status": "failed",
+  "metrics": {
+    "synth": {
+      "reference_correct_count": 168,
+      "candidate_correct_count": 177,
+      "gain_questions": 9,
+      "candidate_accuracy": 0.69140625
+    },
+    "ceval": {
+      "reference_correct_count": 139,
+      "candidate_correct_count": 140,
+      "gain_questions": 1,
+      "candidate_accuracy": 0.5384615384615384
+    }
+  },
+  "minimum_ceval_gain_questions": 3,
+  "minimum_synth_gain_questions": -3,
+  "selected_base": null,
+  "selected_adapter": null,
+  "decision": "train_fresh_original_base_adapter",
+  "frozen_nlp100_opened": false,
+  "formal_full_opened": false,
+  "per_item_feedback_read": false,
+  "inputs": {
+    "reports/audit/p0a36/initial_nlp.json": "a652455b5ac9495358daaa34f8fa22941004f1e20abc2ac914b866566ed35f6f",
+    "reports/audit/p0a40/combo_synth.json": "99f632bc5d7160bfea1d8a4fa1eb7833470b8d6dd0da62189ab6011457401481",
+    "reports/audit/p0a37/initial_nlp.json": "f2bb75889ff88be011b35d6dc65420d021dbfb672c17af18df6c917d19610418",
+    "reports/audit/p0a40/combo_ceval.json": "37e596c3f47ca8b04447f6d32d2d5b884e7996e5b296a18b659979641a49ee2b"
+  },
+  "report_hash": "8addcf17e36773367ef8d783bf5a275484d2678490f29946a5a980d79381c3ae"
+}

@@ -1,0 +1,41 @@
+{
+  "protocol": "P0-A48-CMMLU-ALIGNED-FAILURE-REPAIR",
+  "created_date": "2026-08-04",
+  "base_model": "models/checkpoints/p0a4/student-shared-merged",
+  "source_train": "data/p0a44/nlp_train.jsonl",
+  "training": {
+    "rank": 16,
+    "alpha": 32,
+    "learning_rate": 5e-7,
+    "max_steps": 128,
+    "checkpoint_steps": 64,
+    "failure_weight": 2.0,
+    "correct_replay_weight": 1.0,
+    "correct_replay_limit": 1200,
+    "kl_weight": 0.1,
+    "answer_token_weight": 1.0,
+    "effective_global_batch_size": 32,
+    "gpu_count": 4
+  },
+  "selection": {
+    "validation_rows": 595,
+    "candidate_steps": [64, 128],
+    "maximum_generation_errors": 0,
+    "run_full_regardless_of_internal_result": true
+  },
+  "deployment": {
+    "base_gguf": "models/quantized/p0a4-qwen3-1.7b-q4_k_m.gguf",
+    "weight_type": "Q4_K_M",
+    "kv_cache_type": "q8_0",
+    "thinking": "off"
+  },
+  "formal_full": {
+    "datasets": {"gsm8k": 1319, "humaneval": 164, "cmmlu": 11582},
+    "split_dir": "data/splits/p0a44_aligned_edge_full",
+    "baseline_trace": "reports/sealed/p0a4/baseline14b_awq_full.jsonl",
+    "candidate_trace": "reports/sealed/p0a48/edge_round2_q4_full.jsonl",
+    "minimum_retention_per_domain": 0.8,
+    "minimum_capped_macro_retention": 0.8,
+    "terminal_after_this_round": true
+  }
+}

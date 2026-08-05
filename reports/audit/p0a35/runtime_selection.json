@@ -1,0 +1,26 @@
+{
+  "gate": "P0-A35-NLP-RUNTIME-SELECTION",
+  "check_version": "1.0",
+  "created_by": "scripts/select_p0a35_runtime.py",
+  "created_ts": "2026-08-01T22:09:35.601979+00:00",
+  "status": "failed",
+  "off_correct_count": 149,
+  "off_accuracy": 0.573076923076923,
+  "off_canonical_format_rate": 0.9615384615384616,
+  "on_correct_count": 146,
+  "on_accuracy": 0.5615384615384615,
+  "on_canonical_format_rate": 0.9538461538461539,
+  "gain_questions": -3,
+  "minimum_gain_questions": 6,
+  "canonical_not_worse": false,
+  "selected_thinking": "off",
+  "selected_adapter": "models/checkpoints/p0a10/nlp-specialist/checkpoint-136",
+  "frozen_nlp100_opened": false,
+  "formal_full_opened": false,
+  "per_item_feedback_read": false,
+  "inputs": {
+    "reports/audit/p0a35/thinking_off.json": "d2caf2e89cc04d01f6ed727858ed74cd2266de7b52bf03eec9c0b24e57fe1c5e",
+    "reports/audit/p0a35/thinking_on.json": "560a541d3fd6796061a99a23e0414c0ce64e39ed46681dd7bd3630f988929279"
+  },
+  "report_hash": "9d6e9767e95141e5f8728abe3ddfa8301fd4eb6e279362d1f85a703ba9c246d4"
+}

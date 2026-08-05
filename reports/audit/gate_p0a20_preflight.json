@@ -1,0 +1,11 @@
+{
+  "gate": "P0-A20-PREFLIGHT",
+  "status": "passed",
+  "candidate_count": 2,
+  "baseline_thinking": "off",
+  "candidate_thinking": "on",
+  "max_tokens": 768,
+  "server_context": 2048,
+  "formal_full_opened": false,
+  "data_audit_hash": "778421eaab27adf4073c43bcf5030be3e9031413cab85746bdf47a9b843c1dab"
+}

@@ -1,0 +1,25 @@
+{
+  "gate": "P0-A47-CODE-CURRICULUM",
+  "check_version": "1.0",
+  "created_by": "model_compression/build_p0a47_code_curriculum.py",
+  "created_ts": "2026-08-03T15:28:41.831486+00:00",
+  "status": "passed",
+  "source_rows": 11351,
+  "student_failure_rows": 4739,
+  "correct_replay_rows": 2369,
+  "curriculum_rows": 7108,
+  "failure_weight": 2.0,
+  "correct_replay_weight": 1.0,
+  "kl_weight": 0.05,
+  "inputs": {
+    "data/p0a44/code_train.jsonl": "6f25af58cf47daf118d447c38f5db971f321d26e6a112d5d85c7b89373d536a1",
+    "reports/audit/p0a47/mining_trace.jsonl": "ec7a6f98cceb2975a81935933691cc6d54a1d8d3b1f9ad9b7bde4e4d8568439f"
+  },
+  "output": {
+    "path": "data/p0a47/code_curriculum.jsonl",
+    "rows": 7108,
+    "sha256": "51f62e827d4c2083563b5ffbf6dfdb2a71b9a8693c6ca3297bd9d74d7e6443ab"
+  },
+  "formal_test_items_loaded": 0,
+  "report_hash": "8700175f9e62ba659a3cf4246db19774ff1399e70f86a02fc1c2e88e19f885f1"
+}

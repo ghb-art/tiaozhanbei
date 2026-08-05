@@ -129,7 +129,7 @@ def extract_gsm8k_prediction(text: str) -> str:
 
 
 def extract_choice(text: str) -> str:
-    stripped = text.strip().upper()
+    stripped = strip_reasoning_envelope(text).strip().upper()
     match = re.search(r"(?:答案|ANSWER|选项|OPTION)?\s*[:：]?\s*([ABCD])\b", stripped)
     if match:
         return match.group(1)
@@ -138,12 +138,23 @@ def extract_choice(text: str) -> str:
 
 
 def clean_code_completion(text: str) -> str:
-    stripped = text.strip()
+    stripped = strip_reasoning_envelope(text).strip()
     fence = re.search(r"```(?:python)?\s*(.*?)```", stripped, flags=re.IGNORECASE | re.DOTALL)
     if fence:
         stripped = fence.group(1).strip()
     stripped = re.sub(r"^python\s+", "", stripped, flags=re.IGNORECASE).strip()
     return stripped
+
+
+def strip_reasoning_envelope(text: str) -> str:
+    """Remove llama.cpp's residual Qwen think wrapper when thinking is disabled.
+
+    Some llama.cpp versions keep an empty ``<think>...</think>`` envelope in
+    ``message.content`` even with ``--reasoning off``.  It is transport markup,
+    not part of the requested Python body or multiple-choice answer.
+    """
+
+    return re.sub(r"<think>.*?</think>", "", text, flags=re.IGNORECASE | re.DOTALL).strip()
 
 
 def extract_function_block(source: str, entry_point: str) -> str:

@@ -1,0 +1,16 @@
+{
+  "protocol": "P0-A26-FRESH-CODE100-GATE",
+  "authorized_date": "2026-08-02",
+  "selection_audit": "reports/audit/p0a25/code_selection.json",
+  "gate_manifest": "data/p0a25/code_gate100.jsonl",
+  "baseline_model": "models/pretrained/Qwen--Qwen2.5-14B-Instruct-AWQ",
+  "candidate_base": "models/checkpoints/p0a4/student-shared-merged",
+  "minimum_retention": 0.78,
+  "recommended_full": 0.82,
+  "maximum_baseline_runs": 1,
+  "maximum_candidate_runs": 1,
+  "thinking": "off",
+  "max_tokens": 768,
+  "formal_full_opened": false,
+  "system_ram_stop_threshold_percent": 60
+}

@@ -1,0 +1,38 @@
+{
+  "gate": "P0-A5-GATE300-RETENTION",
+  "check_version": "1.0",
+  "created_by": "scripts/p0a5_gate.py",
+  "created_ts": "2026-08-05T03:17:39.538988+00:00",
+  "status": "failed",
+  "decision": "reject",
+  "recommended_full": false,
+  "candidate_name": "p0b1-converged-shared-q4",
+  "config": "configs/p0b1_converged_shared.json",
+  "config_hash": "51c3049d4e2b5ddbb7d88c49bd3f213f1b276a5ef3a4de248df83d842a275ad2",
+  "baseline_trace": "data/eval/p0a5_baseline14b_gate300.jsonl",
+  "baseline_trace_hash": "3543e95daafb0548c59bcb5f7cc910d379c92803b9695ae8fbcf4e51e859f8c4",
+  "student_trace": "data/eval/p0b1_converged_shared_gate300.jsonl",
+  "student_trace_hash": "764791b040d6116fa7e87eb10090702633d032e13288f92ac590df24b3807e28",
+  "prompt_mismatch_count": 0,
+  "baseline_accuracy": {
+    "math": 0.95,
+    "code": 0.58,
+    "nlp": 0.79
+  },
+  "student_accuracy": {
+    "math": 0.71,
+    "code": 0.0,
+    "nlp": 0.55
+  },
+  "retention_ratios": {
+    "math": 0.7473684210526316,
+    "code": 0.0,
+    "nlp": 0.6962025316455697
+  },
+  "capped_macro_ratio": 0.48119031756606706,
+  "initial_threshold": 0.78,
+  "recommended_full_threshold": 0.82,
+  "generation_error_count": 0,
+  "maximum_generation_errors": 0,
+  "report_hash": "d32f0f0e6c087d5835d66a521835cee43d7958679c9e528130f08ed66ec12c04"
+}

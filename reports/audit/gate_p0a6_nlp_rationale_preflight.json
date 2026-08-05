@@ -1,0 +1,98 @@
+{
+  "gate": "P0-A6-STUDENT-TRAIN",
+  "check_version": "1.0",
+  "created_by": "model_compression/train_p0a6_student.py",
+  "created_ts": "2026-07-31T12:41:19.580670+00:00",
+  "status": "dry_run_passed",
+  "errors": [],
+  "model_dir": "models/checkpoints/p0a4/student-shared-merged",
+  "train_data": "data/p0a6/nlp_mcq_rationale_train.jsonl",
+  "train_data_hash": "ee4afe1e8a46b48e1a8c27a28f0b562aaff23e626ea1b9295e0d4c3a9fb1ab77",
+  "train_rows": 1335,
+  "focus": {
+    "focus_domain": "nlp_rationale",
+    "source_rows": 1335,
+    "selected_rows": 1335,
+    "source_domain_counts": {
+      "nlp": 1335
+    },
+    "selected_domain_counts": {
+      "nlp": 1335
+    },
+    "selected_dataset_counts": {
+      "ceval_rationale_train": 1335
+    },
+    "training_weight_mean_before": 1.0,
+    "training_weight_normalization_divisor": 1.0,
+    "training_weight_mean_after": 1.0,
+    "mcq_answer_token_weight_multiplier": 4.0,
+    "mcq_answer_token_weight_multiplied_rows": 1335
+  },
+  "domain_counts": {
+    "nlp": 1335
+  },
+  "kl_weight_by_domain": {
+    "nlp": {
+      "minimum": 0.2,
+      "maximum": 0.2,
+      "mean": 0.19999999999999507
+    }
+  },
+  "answer_token_weight_rows": {
+    "nlp": 1335
+  },
+  "formal_test_reference_count": 0,
+  "optimization": {
+    "lora_rank": 16,
+    "lora_alpha": 32,
+    "lora_dropout": 0.05,
+    "target_modules": [
+      "q_proj",
+      "k_proj",
+      "v_proj",
+      "o_proj",
+      "gate_proj",
+      "up_proj",
+      "down_proj"
+    ],
+    "learning_rate": 2e-06,
+    "bf16": true,
+    "max_seq_length": 1536,
+    "max_steps": 100,
+    "checkpoint_steps": 50,
+    "save_total_limit": null,
+    "per_device_train_batch_size": 1,
+    "gradient_accumulation_steps": 8,
+    "expected_world_size": 4,
+    "observed_world_size": 1,
+    "effective_global_batch_size": 32,
+    "warmup_ratio": 0.03,
+    "max_grad_norm": 1.0,
+    "gradient_checkpointing": true,
+    "gradient_checkpointing_use_reentrant": false,
+    "resume_from_checkpoint": ""
+  },
+  "preservation": {
+    "method": "all_task_adapter_disabled_base_kl",
+    "direction": "KL(base||student)",
+    "temperature": 2.0,
+    "mask": "assistant_answer_tokens_only",
+    "reference_forward": "unconditional_on_every_rank_and_batch",
+    "supervised_weight": "1-kl_weight_per_row"
+  },
+  "dependencies": {
+    "torch": "2.6.0+cu124",
+    "transformers": "4.51.3",
+    "accelerate": "1.14.0",
+    "peft": "0.17.1"
+  },
+  "token_budget_scan": {
+    "status": "passed",
+    "scanned_rows": 1335,
+    "max_seq_length": 1536,
+    "maximum_observed_tokens": 590,
+    "maximum_sample_id": "ceval_rationale_train/val/probability_and_statistics/17",
+    "answer_token_weight_rows": 1335
+  },
+  "report_hash": "6e8b684180b5514d72912362c6a9fcd1944a7c3ab938706ede662f707233851e"
+}

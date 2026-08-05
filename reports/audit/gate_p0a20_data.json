@@ -1,0 +1,59 @@
+{
+  "gate": "P0-A20-MBPP-UNTOUCHED-DATA",
+  "check_version": "1.0",
+  "created_by": "model_compression/build_p0a20_data.py",
+  "created_ts": "2026-08-01T14:11:36.037114+00:00",
+  "status": "passed",
+  "source": {
+    "repo": "google-research-datasets/mbpp",
+    "revision": "4bb6404fdc6cacfda99d4ac4205087b89d32030c",
+    "file": "full/test-00000-of-00001.parquet",
+    "source_rows": 500,
+    "source_sha256": "566fd53060ffba5766dace1d1e2f4c38906781526de222b0dfbdbc325b696c77",
+    "readme_sha256": "6377d5c76ba46b9e650daa6d5eb592e671c9b15586e39f23f50ed9bf2ac54cf6",
+    "declared_license": "cc-by-4.0"
+  },
+  "filter": {
+    "accepted_rows": 239,
+    "rejected": {
+      "deployment_context_budget": 1,
+      "duplicate_prompt": 1,
+      "history_prompt_overlap": 2,
+      "history_task_id_overlap": 257
+    },
+    "test_count_distribution": {
+      "3": 231,
+      "4": 7,
+      "6": 1
+    }
+  },
+  "context": {
+    "maximum_prompt_tokens": 797,
+    "max_generation_tokens": 768,
+    "server_context_tokens": 2048,
+    "status": "passed"
+  },
+  "separation": {
+    "history_task_id_overlap_after_filter": 0,
+    "history_prompt_overlap_after_filter": 0,
+    "opencode_prompt_overlap_after_filter": 0,
+    "used_for_training": false,
+    "human_eval_loaded": false,
+    "gate300_loaded": false,
+    "formal_full_loaded": false
+  },
+  "inputs": {
+    "configs/p0a20_code_runtime.json": "8b882a884723cd211a05820d9214bad90a6e8e2054ddc7d07a33cb833d32d739",
+    "data/p0a19/code_train.jsonl": "4767843cb9770e6d92a696b15358f9c88678f94b66f91669b2fa71dfa6fddf1d",
+    "history:full_train": "09d125ca31edacb7800be8c67c45abff618faf0214ff551291817d06bdb914ae",
+    "history:full_validation": "3f0ec060987432d99fe8fb409d31e6c67445b208a01741c5583517c80a10fe80",
+    "history:sanitized_test": "e9e9efa2c0d59ef5e55537a9d126b8f875d5ac010a8d75628d76824884e15850"
+  },
+  "output": {
+    "path": "data/p0a20/code_validation.jsonl",
+    "rows": 239,
+    "sha256": "6dbd308068fda45e0378308cefa7805bf729784c8de90784440bba7b34cde3ee"
+  },
+  "errors": [],
+  "report_hash": "b77b87ee21b50f8b02a2ef779f31ec04e7e8ea29498c16cf1cafd6bfe3e944f7"
+}

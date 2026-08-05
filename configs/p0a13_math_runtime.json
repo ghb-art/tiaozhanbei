@@ -1,0 +1,46 @@
+{
+  "protocol": "P0-A13-MATH-RUNTIME",
+  "authorized_date": "2026-08-01",
+  "shared_base": "models/checkpoints/p0a4/student-shared-merged",
+  "frozen_code_adapter": "models/checkpoints/p0a11/code-specialist/checkpoint-250",
+  "frozen_nlp_adapter": "models/checkpoints/p0a10/nlp-specialist/checkpoint-136",
+  "math": {
+    "adapter": null,
+    "candidate": "qwen3_native_thinking",
+    "baseline_thinking": false,
+    "candidate_thinking": true,
+    "max_tokens": 768,
+    "temperature": 0,
+    "maximum_runtime_candidates": 1
+  },
+  "validation": {
+    "repo": "EleutherAI/asdiv",
+    "revision": "8f95807222d87b4c688c3c22a6ba2801e1fa03e2",
+    "file": "asdiv/validation-00000-of-00001.parquet",
+    "source_sha256": "79dbad6536fe3e8cd449e67da859d7a6f5ac0d8f852efe563742ca5faee7fb75",
+    "license": "cc-by-nc-4.0",
+    "source_rows": 2305,
+    "numeric_rows_before_dedup": 2238,
+    "numeric_rows": 2237,
+    "minimum_gain": 0.02,
+    "minimum_canonical_format_rate": 0.95,
+    "generation_errors": 0
+  },
+  "promotion": {
+    "gate300_runs_for_p0a13": 1,
+    "student_to_14b_minimum_per_domain": 0.78,
+    "recommended_full_minimum_per_domain": 0.82
+  },
+  "safety": {
+    "system_ram_stop_threshold_percent": 60,
+    "formal_test_rows_used_for_runtime_selection": 0
+  },
+  "forbidden": [
+    "ASDiv rows in training",
+    "SVAMP reuse for P0-A13 runtime selection",
+    "P0-A9 gate per-question feedback",
+    "more than one P0-A13 runtime candidate",
+    "lowering thresholds after validation",
+    "overwriting P0-A9 through P0-A12 artifacts"
+  ]
+}

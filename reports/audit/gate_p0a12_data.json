@@ -1,0 +1,76 @@
+{
+  "gate": "P0-A12-METAMATH-DATA",
+  "check_version": "1.0",
+  "created_by": "model_compression/build_p0a12_data.py",
+  "created_ts": "2026-08-01T10:47:51.296130+00:00",
+  "status": "passed",
+  "policy": {
+    "gate300_opened": false,
+    "formal_full_opened": false,
+    "formal_test_rows_used": 0,
+    "p0a11_validation_reused": false,
+    "svamp_used_for_training": false
+  },
+  "counts": {
+    "metamath_train": 16000,
+    "hard_errors": 1424,
+    "correct_replay": 712,
+    "math_train": 18136,
+    "svamp_validation": 1000
+  },
+  "metamath": {
+    "repo": "meta-math/MetaMathQA",
+    "revision": "aa4f34d3d2d3231299b5b03d9b3e5a20da45aa18",
+    "file": "MetaMathQA-395K.json",
+    "raw_file_persisted": false,
+    "accepted_types": [
+      "GSM_Rephrased",
+      "GSM_AnsAug",
+      "GSM_SV"
+    ],
+    "streamed_rows": 395000,
+    "unique_originals": 6594,
+    "candidates_before_token_scan": 16861,
+    "token_rejected_before_target": 0,
+    "selected": 16000,
+    "rejections": {
+      "exact_replay_duplicate": 19245,
+      "historical_validation": 20443,
+      "shape_or_answer": 195000
+    }
+  },
+  "svamp": {
+    "source_sha256": "5be77703a6d891ae476d7c082787ad361392aa02453b132516cdd5f4e7934e3e",
+    "license_sha256": "07ce3a34de7a865345634f9278bc26ddcacc2d0defd348c28e3f4603448b9ba4",
+    "revision": "689d7ccac74b9983a2ac7cc3b264f441b99e7c53"
+  },
+  "token_scan": {
+    "status": "passed",
+    "maximum_observed_tokens": 894,
+    "max_sequence_length": 1536
+  },
+  "history_hashes": {
+    "data/p0a6/quick_validation.jsonl": "99640b4641eaa76cb3096caec1126273488e4e34d4f755b02765af580e29346e",
+    "data/p0a6/full_validation.jsonl": "452a728d7e1ebb3bc40233b8deef8996b45febbbfbb4e2e9166a23644956077c",
+    "data/p0a10/math_validation.jsonl": "fe41f03dc81665ce30001f4ad0d8a955aece0e5551622f1539b4a472970a57f6",
+    "data/p0a11/math_validation.jsonl": "71ef8268079e6e15cef8694cb4df582ef01a78b6a81bb9dd0b9ab71a7c4aa0a4"
+  },
+  "inputs": {
+    "configs/p0a12_math_repair.json": "93d281bd7f46c0547685692fa2c526b5a1799f36f5088035667ca733a43a78e9",
+    "data/p0a11/math_train.jsonl": "9426f0739378826c0ccc8b60cc5bb8aed7111afc4094daa760fe15144e9ec265"
+  },
+  "outputs": {
+    "math_train": {
+      "path": "data/p0a12/math_train.jsonl",
+      "rows": 18136,
+      "sha256": "240576c1e62843e85924cb323adc72bd9f9bad75d0a5c88f792a5b193b30dd00"
+    },
+    "math_validation": {
+      "path": "data/p0a12/math_validation.jsonl",
+      "rows": 1000,
+      "sha256": "de0ca4bfef6a88393c1b50f55927b31ccca0d0c3977225189c73f1f759fdad03"
+    }
+  },
+  "errors": [],
+  "report_hash": "a3a1d9d10bb8db0d5cb775e15176aa610045e20d075ed52b72b598ccaf4c21b4"
+}

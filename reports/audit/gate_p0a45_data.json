@@ -1,0 +1,58 @@
+{
+  "gate": "P0-A45-SIMPLE-SHARED-DATA",
+  "check_version": "1.0",
+  "created_by": "model_compression/build_p0a45_simple_data.py",
+  "created_ts": "2026-08-03T08:23:47.691323+00:00",
+  "status": "passed",
+  "method": "one shared LoRA; supervised SFT only",
+  "train_counts": {
+    "gsm8k": 7173,
+    "opencodeinstruct": 20000,
+    "cmmlu": 10178
+  },
+  "validation_counts": {
+    "cmmlu": 595,
+    "gsm8k": 200,
+    "opencodeinstruct": 1000
+  },
+  "nlp_source_counts": {
+    "ceval_rationale_train": 1335,
+    "coig_mcq_verified": 820,
+    "coig_openqa_mcq_verified": 1024,
+    "mmlu_aux_chinese": 6999
+  },
+  "nlp_duplicate_count": 3671,
+  "task_loss_mass": {
+    "gsm8k": 0.19999999999996715,
+    "opencodeinstruct": 0.30000000000001226,
+    "cmmlu": 0.5000000000000207
+  },
+  "train_validation_overlap": 0,
+  "training_gate_identity_overlap": 0,
+  "training_gate_prompt_overlap": 0,
+  "formal_test_reference_count": 0,
+  "outputs": {
+    "train": {
+      "path": "data/p0a45/train.jsonl",
+      "rows": 37351,
+      "sha256": "5bac8bb8f2ba51b3c80ec8bf35172af0a5934219633775c36f6bffbcc2bc9d3b"
+    },
+    "validation": {
+      "path": "data/p0a45/internal_validation.jsonl",
+      "rows": 1795,
+      "sha256": "9de258fa13553cc203fbd07a3cef893f1fd25980cf10faaf1b0f977f46bbe2d2"
+    }
+  },
+  "inputs": {
+    "configs/p0a45_simple_shared.json": "029a95f2dde915813bebc09f22dbb0776a1c1376d55c9b1c9f9a631cfa37efef",
+    "data/capability_v2/distill_train.jsonl": "13a57b118edc404bd78fe97c6377b1d0c2b0ff3663732b1f7d59ed696f71bceb",
+    "data/capability_v2/internal_validation.jsonl": "74c38627e350386f70e5191c0c4bcfe54da485efc704e607df3d3e1304152a42",
+    "data/p0a32/train.jsonl": "0b3a4e257ffa31509c97cc4d0b6cc4c62e0075b9044e98ba58b8b4889bd963a3",
+    "data/p0a34/train.jsonl": "5b56671be823e8b1fbfc02d1f8fd38926760b236b0ac2d3ecf8b3d5ead8fe095",
+    "data/p0a36/train.jsonl": "2db779f02f00a8c8020d8fa230efdadb06c4956159e8f9b8ddf64615d3988836",
+    "data/p0a44/nlp_ceval_dev.jsonl": "9c6b996bbfe08b47302fcf69b5ecc38eaac5f50ef5f0e3e7ab2fad9f737dc83e",
+    "data/p0a44/nlp_cmmlu_dev.jsonl": "797ade5ce8be1c72176cee8324dec3bc16bad569cdb138001bfc3d2d29074014",
+    "data/capability_v2/gate300.jsonl": "91d89bfce1ceae19eecdc894a1141c7816ec4dd6a4ef7115700d0c8a811741fc"
+  },
+  "report_hash": "40cb98c62c326f0629f9762bf12233edbc63869e00ce63909465dbe96704097b"
+}

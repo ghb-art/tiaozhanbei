@@ -1,0 +1,22 @@
+{
+  "gate": "P0-A44-ALIGNED-INTERNAL-VALIDATION",
+  "check_version": "1.0",
+  "created_by": "scripts/evaluate_p0a44_aligned.py",
+  "created_ts": "2026-08-03T04:34:50.127216+00:00",
+  "status": "passed",
+  "dataset": "ceval",
+  "candidate_name": "p0a44-q4-nlp-candidate",
+  "served_model_id": "p0a44-q4-nlp-candidate",
+  "manifest": "data/p0a44/nlp_ceval_dev.jsonl",
+  "manifest_hash": "9c6b996bbfe08b47302fcf69b5ecc38eaac5f50ef5f0e3e7ab2fad9f737dc83e",
+  "sample_count": 260,
+  "correct_count": 0,
+  "accuracy": 0.0,
+  "generation_error_count": 0,
+  "workers": 8,
+  "mean_latency_ms": 1387.3576685987734,
+  "trace": "reports/audit/p0a44/q4_nlp_candidate_ceval_trace.jsonl",
+  "trace_hash": "028e6c201fd3dbc4a903f4f424eb564ec377749fb226d475d1fc86f34c6611fa",
+  "formal_full_loaded": false,
+  "report_hash": "749e9e9f80041fa5866da2f055abfa030f71d07b45b725399974c7cac863f3d4"
+}

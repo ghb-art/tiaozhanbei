@@ -1,0 +1,8 @@
+{
+  "gate": "P0-A48-GGUF-PREPARE",
+  "status": "passed",
+  "selected_step": 64,
+  "path": "models/adapters/p0a48/nlp-step-64-f16.gguf",
+  "bytes": 34892672,
+  "sha256": "14a063caf4aaa2d899501390ec4457f579736f7d3af24487d6e7e581b71db4f7"
+}

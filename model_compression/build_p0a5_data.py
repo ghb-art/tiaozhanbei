@@ -22,6 +22,8 @@ from typing import Any, Iterable
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_CONFIG = ROOT / "configs/p0a5_capability.json"
+DEFAULT_TEACHER_MODEL = ROOT / "models/pretrained/Qwen--Qwen2.5-14B-Instruct"
+SYSTEM_PROMPT = "Give a concise, verifiable answer in the requested format."
 ALLOWED_IMPORTS = {
     "bisect",
     "collections",
@@ -107,6 +109,20 @@ def stable_order(seed: int, identity: str) -> str:
 
 def normalize_text(value: str) -> str:
     return re.sub(r"\W+", "", value, flags=re.UNICODE).casefold()
+
+
+def deduplicate_repeated_units(value: str) -> str:
+    units = re.split(r"(?<=[。！？!?；;\n])", value)
+    seen: set[str] = set()
+    retained: list[str] = []
+    for unit in units:
+        normalized = re.sub(r"\s+", " ", unit).strip()
+        if len(normalized) >= 12:
+            if normalized in seen:
+                continue
+            seen.add(normalized)
+        retained.append(unit)
+    return "".join(retained).strip()
 
 
 def word_ngrams(value: str, width: int = 4) -> set[tuple[str, ...]]:
@@ -198,10 +214,7 @@ def training_row(
         "messages": [
             {
                 "role": "system",
-                "content": (
-                    "You are a compact edge reasoning model. Give a concise, verifiable "
-                    "answer and follow the requested output format."
-                ),
+                "content": SYSTEM_PROMPT,
             },
             {"role": "user", "content": prompt.strip()},
         ],
@@ -210,6 +223,36 @@ def training_row(
     if metadata:
         row["metadata"] = metadata
     return row
+
+
+def training_token_count(tokenizer: Any, prompt: str, answer: str) -> int:
+    messages = [
+        {"role": "system", "content": SYSTEM_PROMPT},
+        {"role": "user", "content": prompt.strip()},
+        {"role": "assistant", "content": answer.strip()},
+    ]
+    token_ids = tokenizer.apply_chat_template(
+        messages,
+        tokenize=True,
+        add_generation_prompt=False,
+        enable_thinking=False,
+    )
+    return len(token_ids)
+
+
+def within_training_token_budget(
+    tokenizer: Any, prompt: str, answer: str, max_length: int
+) -> bool:
+    return training_token_count(tokenizer, prompt, answer) <= max_length
+
+
+def within_all_training_token_budgets(
+    tokenizers: list[Any], prompt: str, answer: str, max_length: int
+) -> bool:
+    return all(
+        within_training_token_budget(tokenizer, prompt, answer, max_length)
+        for tokenizer in tokenizers
+    )
 
 
 def build_math(
@@ -415,7 +458,11 @@ def load_code_execution_cache(path: Path) -> dict[str, str]:
 
 
 def build_code(
-    config: dict[str, Any], seed: int, workers: int
+    config: dict[str, Any],
+    seed: int,
+    workers: int,
+    tokenizers: list[Any],
+    max_length: int,
 ) -> tuple[list[dict[str, Any]], list[dict[str, Any]], list[dict[str, Any]], dict[str, Any]]:
     try:
         import pyarrow.parquet as parquet
@@ -496,7 +543,15 @@ def build_code(
                     cache_hits += 1
                 result = execution_cache[fingerprint]
                 if result == "passed":
-                    accepted.append(row)
+                    if within_all_training_token_budgets(
+                        tokenizers,
+                        str(row["input"]),
+                        str(row["output"]),
+                        max_length,
+                    ):
+                        accepted.append(row)
+                    else:
+                        reject_counts["token_budget"] += 1
                 else:
                     reject_counts[result] += 1
             print(
@@ -707,7 +762,7 @@ def select_cmmlu_gate(seed: int, count: int) -> list[dict[str, Any]]:
 
 
 def build_nlp(
-    config: dict[str, Any], seed: int
+    config: dict[str, Any], seed: int, tokenizers: list[Any], max_length: int
 ) -> tuple[list[dict[str, Any]], list[dict[str, Any]], list[dict[str, Any]], dict[str, Any]]:
     path = ROOT / "data/datasets/coig_cqia/COIG-CQIA-full.jsonl"
     if not path.is_file():
@@ -721,6 +776,7 @@ def build_nlp(
     rows = read_jsonl(path)
     pools: dict[str, list[dict[str, Any]]] = {key: [] for key in NLP_QUOTA_KEYS}
     rejected: Counter[str] = Counter()
+    normalized_counts: Counter[str] = Counter()
     unique: set[str] = set()
     for row in rows:
         instruction = str(row.get("instruction", "")).strip()
@@ -732,15 +788,20 @@ def build_nlp(
         if row.get("human_verified") is not True:
             rejected["not_human_verified"] += 1
             continue
-        if (
-            not combined
-            or not answer
-            or len(combined) > 3500
-            or len(answer) > 2500
-            or len(combined) + len(answer) > 5000
-        ):
-            rejected["length_or_empty"] += 1
+        if not combined or not answer:
+            rejected["empty"] += 1
             continue
+        if not within_all_training_token_budgets(
+            tokenizers, combined, answer, max_length
+        ):
+            deduplicated = deduplicate_repeated_units(combined)
+            if deduplicated == combined or not within_all_training_token_budgets(
+                tokenizers, deduplicated, answer, max_length
+            ):
+                rejected["token_budget"] += 1
+                continue
+            combined = deduplicated
+            normalized_counts["repeated_units_removed"] += 1
         if any(marker in domain + " " + major for marker in ("代码", "javascript", "vue.js")):
             rejected["code"] += 1
             continue
@@ -850,6 +911,7 @@ def build_nlp(
         "validation_category_counts": dict(
             Counter(row["metadata"]["nlp_category"] for row in validation)
         ),
+        "normalizations": dict(sorted(normalized_counts.items())),
         "rejections": dict(sorted(rejected.items())),
     }
 
@@ -880,11 +942,38 @@ def rows_hash(rows: list[dict[str, Any]]) -> str:
 def build_all(config_path: Path, workers: int) -> dict[str, Any]:
     config = json.loads(config_path.read_text(encoding="utf-8"))
     seed = int(config["seed"])
+    max_length = int(config["teacher_training"]["max_seq_length"])
+    if not DEFAULT_TEACHER_MODEL.is_dir():
+        raise DataBuildError(
+            f"Missing Teacher tokenizer: {display_path(DEFAULT_TEACHER_MODEL)}"
+        )
+    try:
+        from transformers import AutoTokenizer
+    except ImportError as exc:
+        raise DataBuildError("transformers is required for token-budget filtering") from exc
+    tokenizer = AutoTokenizer.from_pretrained(
+        DEFAULT_TEACHER_MODEL,
+        local_files_only=True,
+        trust_remote_code=True,
+    )
+    student_model = resolve_path(config["policy"]["student_base"])
+    if not student_model.is_dir():
+        raise DataBuildError(f"Missing Student tokenizer: {display_path(student_model)}")
+    student_tokenizer = AutoTokenizer.from_pretrained(
+        student_model,
+        local_files_only=True,
+        trust_remote_code=True,
+    )
+    tokenizers = [tokenizer, student_tokenizer]
     math_train, math_validation, math_gate, math_stats = build_math(config, seed)
     print("Math data prepared", flush=True)
-    code_train, code_validation, code_gate, code_stats = build_code(config, seed, workers)
+    code_train, code_validation, code_gate, code_stats = build_code(
+        config, seed, workers, tokenizers, max_length
+    )
     print("Code data prepared", flush=True)
-    nlp_train, nlp_validation, nlp_gate, nlp_stats = build_nlp(config, seed)
+    nlp_train, nlp_validation, nlp_gate, nlp_stats = build_nlp(
+        config, seed, tokenizers, max_length
+    )
     print("NLP data prepared", flush=True)
 
     train = math_train + code_train + nlp_train
@@ -943,6 +1032,14 @@ def build_all(config_path: Path, workers: int) -> dict[str, Any]:
             "gsm8k": "official test 1319; never loaded by this builder",
             "humaneval": "official 164 used only for decontamination",
             "cmmlu": "official test 11582 used only for exact decontamination",
+        },
+        "token_budget": {
+            "tokenizers": [
+                display_path(DEFAULT_TEACHER_MODEL),
+                display_path(student_model),
+            ],
+            "max_seq_length": max_length,
+            "complete_sequence_required": True,
         },
         "source_stats": {
             "math": math_stats,

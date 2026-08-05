@@ -1,0 +1,43 @@
+{
+  "gate": "P0-A10-DOMAIN-CHECKPOINT-SELECTION",
+  "check_version": "1.0",
+  "created_by": "scripts/select_p0a10_domain.py",
+  "created_ts": "2026-08-01T02:42:39.283305+00:00",
+  "status": "failed",
+  "domain": "code",
+  "allowed_steps": [
+    128,
+    256
+  ],
+  "minimum_gain": 0.03,
+  "base_audit": "reports/audit/p0a10/p0a10_base_code.json",
+  "base_accuracy": 0.46484375,
+  "candidates": [
+    {
+      "step": 128,
+      "audit": "reports/audit/p0a10/p0a10_code_128_code.json",
+      "audit_hash": "868eba842407037f28b1e8b30906484a30a6e502f3d3461492e32991b9db663f",
+      "accuracy": 0.484375,
+      "canonical_format_rate": 0.99609375,
+      "gain": 0.01953125,
+      "eligible": false,
+      "failures": [
+        "gain=0.019531<required=0.030000"
+      ]
+    },
+    {
+      "step": 256,
+      "audit": "reports/audit/p0a10/p0a10_code_256_code.json",
+      "audit_hash": "9601b98086da216dd091dffcc079b265a0decaaaa30afd65ad3ead6b2f01f436",
+      "accuracy": 0.48828125,
+      "canonical_format_rate": 0.99609375,
+      "gain": 0.0234375,
+      "eligible": false,
+      "failures": [
+        "gain=0.023438<required=0.030000"
+      ]
+    }
+  ],
+  "selected_step": null,
+  "report_hash": "bce1d43aa7e35b0a79565ad3f362888da1fc80042cffe43b3822aa2edb3ae589"
+}

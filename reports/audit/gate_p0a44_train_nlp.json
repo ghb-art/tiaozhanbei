@@ -1,0 +1,216 @@
+{
+  "gate": "P0-A6-STUDENT-TRAIN",
+  "check_version": "1.0",
+  "created_by": "model_compression/train_p0a6_student.py",
+  "created_ts": "2026-08-03T04:15:57.291043+00:00",
+  "status": "passed",
+  "errors": [],
+  "model_dir": "models/checkpoints/p0a4/student-shared-merged",
+  "train_data": "data/p0a44/nlp_train.jsonl",
+  "train_data_hash": "9fa2df99f98836b8762ad90b9b9ef8d49e27519e85817ee6570658313a9a6058",
+  "train_rows": 3939,
+  "focus": {
+    "focus_domain": "nlp",
+    "source_rows": 3939,
+    "selected_rows": 3939,
+    "source_domain_counts": {
+      "nlp": 3939
+    },
+    "selected_domain_counts": {
+      "nlp": 3939
+    },
+    "selected_dataset_counts": {
+      "nlp": 3939
+    },
+    "training_weight_mean_before": 1.0,
+    "training_weight_normalization_divisor": 1.0,
+    "training_weight_mean_after": 1.0,
+    "mcq_answer_token_weight_multiplier": 1.0,
+    "mcq_answer_token_weight_multiplied_rows": 0
+  },
+  "domain_counts": {
+    "nlp": 3939
+  },
+  "kl_weight_by_domain": {
+    "nlp": {
+      "minimum": 0.12,
+      "maximum": 0.12,
+      "mean": 0.12000000000000377
+    }
+  },
+  "answer_token_weight_rows": {},
+  "formal_test_reference_count": 0,
+  "optimization": {
+    "lora_rank": 16,
+    "lora_alpha": 32,
+    "lora_dropout": 0.05,
+    "target_modules": [
+      "q_proj",
+      "k_proj",
+      "v_proj",
+      "o_proj",
+      "gate_proj",
+      "up_proj",
+      "down_proj"
+    ],
+    "learning_rate": 1e-06,
+    "bf16": true,
+    "max_seq_length": 1536,
+    "max_steps": 128,
+    "checkpoint_steps": 64,
+    "save_total_limit": null,
+    "per_device_train_batch_size": 1,
+    "gradient_accumulation_steps": 8,
+    "expected_world_size": 4,
+    "observed_world_size": 4,
+    "effective_global_batch_size": 32,
+    "warmup_ratio": 0.03,
+    "max_grad_norm": 1.0,
+    "gradient_checkpointing": true,
+    "gradient_checkpointing_use_reentrant": false,
+    "resume_from_checkpoint": "",
+    "init_adapter": "",
+    "init_adapter_file_hashes": {}
+  },
+  "preservation": {
+    "method": "all_task_adapter_disabled_base_kl",
+    "direction": "KL(base||student)",
+    "temperature": 2.0,
+    "mask": "assistant_answer_tokens_only",
+    "reference_forward": "unconditional_on_every_rank_and_batch",
+    "supervised_weight": "1-kl_weight_per_row"
+  },
+  "dependencies": {
+    "torch": "2.6.0+cu124",
+    "transformers": "4.51.3",
+    "accelerate": "1.14.0",
+    "peft": "0.17.1"
+  },
+  "token_budget_scan": {},
+  "report_hash": "b5169e36a4e97fa522d818ed24a742d81367672da09724a705c195423f63207f",
+  "global_step": 128,
+  "final_checkpoint": "models/checkpoints/p0a44/nlp/checkpoint-128",
+  "published_files": [
+    "adapter_config.json",
+    "adapter_model.safetensors",
+    "README.md"
+  ],
+  "train_metrics": {
+    "train_runtime": 631.074,
+    "train_samples_per_second": 6.491,
+    "train_steps_per_second": 0.203,
+    "total_flos": 5703135691538432.0,
+    "train_loss": 2.50983165204525,
+    "epoch": 1.03248730964467
+  },
+  "domain_loss_summary": {
+    "math": {
+      "examples_seen": 0,
+      "mean_sft_loss": null,
+      "mean_kl_base_to_student": null,
+      "mean_combined_loss": null
+    },
+    "code": {
+      "examples_seen": 0,
+      "mean_sft_loss": null,
+      "mean_kl_base_to_student": null,
+      "mean_combined_loss": null
+    },
+    "nlp": {
+      "examples_seen": 4068,
+      "mean_sft_loss": 0.35464847031374136,
+      "mean_kl_base_to_student": 0.0016105569969454491,
+      "mean_combined_loss": 0.3122839190449598
+    }
+  },
+  "domain_loss_log": [
+    {
+      "step": 10,
+      "nlp_sft_loss": 0.37722593453618175,
+      "nlp_kl_base_to_student": 0.0009788928327936334,
+      "nlp_combined_loss": 0.3320762876313893,
+      "nlp_examples": 320
+    },
+    {
+      "step": 20,
+      "nlp_sft_loss": 0.3653562424970914,
+      "nlp_kl_base_to_student": 0.0012802495960386295,
+      "nlp_combined_loss": 0.32166712201997144,
+      "nlp_examples": 320
+    },
+    {
+      "step": 30,
+      "nlp_sft_loss": 0.34175000928062216,
+      "nlp_kl_base_to_student": 0.001296877106778993,
+      "nlp_combined_loss": 0.3008956306690379,
+      "nlp_examples": 320
+    },
+    {
+      "step": 40,
+      "nlp_sft_loss": 0.3666730037430625,
+      "nlp_kl_base_to_student": 0.001328582396308775,
+      "nlp_combined_loss": 0.3228316708501552,
+      "nlp_examples": 320
+    },
+    {
+      "step": 50,
+      "nlp_sft_loss": 0.3609777458114422,
+      "nlp_kl_base_to_student": 0.0013996639320794201,
+      "nlp_combined_loss": 0.3178283744633973,
+      "nlp_examples": 320
+    },
+    {
+      "step": 60,
+      "nlp_sft_loss": 0.3746769532266626,
+      "nlp_kl_base_to_student": 0.0015216116878946195,
+      "nlp_combined_loss": 0.3298983111815687,
+      "nlp_examples": 320
+    },
+    {
+      "step": 70,
+      "nlp_sft_loss": 0.4042529532556728,
+      "nlp_kl_base_to_student": 0.0016119497388899617,
+      "nlp_combined_loss": 0.355936030614339,
+      "nlp_examples": 320
+    },
+    {
+      "step": 80,
+      "nlp_sft_loss": 0.32495267516583226,
+      "nlp_kl_base_to_student": 0.0017101166395150358,
+      "nlp_combined_loss": 0.286163566335199,
+      "nlp_examples": 320
+    },
+    {
+      "step": 90,
+      "nlp_sft_loss": 0.322741144502379,
+      "nlp_kl_base_to_student": 0.0018821678214408165,
+      "nlp_combined_loss": 0.2842380665370001,
+      "nlp_examples": 320
+    },
+    {
+      "step": 100,
+      "nlp_sft_loss": 0.3550094067313694,
+      "nlp_kl_base_to_student": 0.002037411830133351,
+      "nlp_combined_loss": 0.3126527665439426,
+      "nlp_examples": 320
+    },
+    {
+      "step": 110,
+      "nlp_sft_loss": 0.3142605641416594,
+      "nlp_kl_base_to_student": 0.001964072640566883,
+      "nlp_combined_loss": 0.27678498526693146,
+      "nlp_examples": 320
+    },
+    {
+      "step": 120,
+      "nlp_sft_loss": 0.35529807027014615,
+      "nlp_kl_base_to_student": 0.0019489001733745681,
+      "nlp_combined_loss": 0.3128961680404245,
+      "nlp_examples": 320
+    }
+  ],
+  "retained_checkpoints": [
+    "models/checkpoints/p0a44/nlp/checkpoint-64",
+    "models/checkpoints/p0a44/nlp/checkpoint-128"
+  ]
+}

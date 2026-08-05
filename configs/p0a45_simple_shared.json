@@ -1,0 +1,56 @@
+{
+  "config_version": "1.0",
+  "route": "P0-A45 simple shared LoRA",
+  "seed": 20260803,
+  "policy": {
+    "student_base": "models/checkpoints/p0a4/student-shared-merged",
+    "single_shared_lora": true,
+    "runtime_adapters": false,
+    "formal_feedback_for_training": false
+  },
+  "artifacts": {
+    "distill_train": "data/p0a45/train.jsonl",
+    "source_validation": "data/p0a45/internal_validation.jsonl",
+    "gate_manifest": "data/capability_v2/gate300.jsonl"
+  },
+  "student_training": {
+    "lora_rank": 16,
+    "lora_alpha": 32,
+    "lora_dropout": 0.05,
+    "learning_rate": 0.000001,
+    "epochs": 1,
+    "max_seq_length": 1536,
+    "checkpoint_steps": 200,
+    "task_loss_mass": {
+      "gsm8k": 0.2,
+      "opencodeinstruct": 0.3,
+      "cmmlu": 0.5
+    },
+    "math_preservation": {
+      "enabled": false,
+      "method": "gsm8k_supervised_replay",
+      "kl_weight": 0.0,
+      "supervised_weight": 1.0,
+      "temperature": 1.0
+    },
+    "candidate_overrides": {}
+  },
+  "gate300": {
+    "expected_counts": {
+      "math": 100,
+      "code": 100,
+      "nlp": 100
+    },
+    "initial_ratio": 0.78,
+    "recommended_full_ratio": 0.82,
+    "recommended_full_capped_macro": 0.82,
+    "maximum_generation_errors": 0
+  },
+  "quantization": {
+    "weight_type": "Q4_K_M",
+    "kv_cache_type": "q8_0",
+    "imatrix_source": "training_only",
+    "memory_dev_mb_decimal": 1400,
+    "memory_formal_mb_decimal": 1500
+  }
+}

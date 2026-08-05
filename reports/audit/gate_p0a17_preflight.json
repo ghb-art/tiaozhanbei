@@ -1,0 +1,9 @@
+{
+  "gate": "P0-A17-PREFLIGHT",
+  "status": "passed",
+  "math_full_retention": 0.8214876033057851,
+  "code_rows": 100,
+  "nlp_rows": 100,
+  "maximum_runs": 1,
+  "formal_full_opened": false
+}

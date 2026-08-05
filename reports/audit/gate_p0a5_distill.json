@@ -1,0 +1,40 @@
+{
+  "gate": "P0-A5-DISTILL",
+  "check_version": "1.0",
+  "created_by": "model_compression/generate_p0a5_distill.py",
+  "created_ts": "2026-07-31T02:21:11.780201+00:00",
+  "status": "passed",
+  "config": "configs/p0a5_capability.json",
+  "config_hash": "a62d3b973267e2fc98d8bd7bb79c2b1f49510d5c6fe6985c99d6a5a475622605",
+  "source": "data/capability_v2/source_train.jsonl",
+  "source_hash": "9ed92268853259406f356582e29816c1fa243a5f1869a2bfe1f7892e67d2c94c",
+  "output": "data/capability_v2/distill_train.jsonl",
+  "output_hash": "13a57b118edc404bd78fe97c6377b1d0c2b0ff3663732b1f7d59ed696f71bceb",
+  "trace": "data/capability_v2/teacher_trace.jsonl",
+  "trace_hash": "65461317db28bd7f373d368e18d67642895b75df117a11b693ded86d498a3916",
+  "rows": 36673,
+  "counts": {
+    "cmmlu": 9500,
+    "gsm8k": 7173,
+    "opencodeinstruct": 20000
+  },
+  "validation_counts": {
+    "human_reference_fallback": 19,
+    "source_verified_fallback": 7463,
+    "source_verified_token_budget_fallback": 66,
+    "teacher_rationale_human_reference": 9415,
+    "teacher_verified": 19710
+  },
+  "teacher_request_error_count": 0,
+  "fallbacks_are_source_verified": true,
+  "formal_test_reference_count": 0,
+  "student_token_budget": {
+    "status": "passed",
+    "max_seq_length": 1536,
+    "maximum_before_tokens": 1536,
+    "maximum_after_tokens": 1536,
+    "repaired_rows": 0,
+    "repaired_sample_ids_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+  },
+  "report_hash": "6e15103e7d94ec0dcdc490322458b325be2bc3dee30fbfee50dacd5c35bfaa2d"
+}

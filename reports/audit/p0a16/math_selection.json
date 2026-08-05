@@ -1,0 +1,24 @@
+{
+  "gate": "P0-A16-MATH-JOINT-RUNTIME-SELECTION",
+  "check_version": "1.0",
+  "created_by": "scripts/select_p0a16_math.py",
+  "created_ts": "2026-08-01T13:00:04.230812+00:00",
+  "status": "failed",
+  "base_audit": "reports/audit/p0a16/base_no_thinking.json",
+  "base_audit_hash": "9748372575aa3f46c635e39e63fa28fe403c5eea5a21163d30d7ec2e0c2c14d7",
+  "candidate_audit": "reports/audit/p0a16/step64_thinking.json",
+  "candidate_audit_hash": "d2638079292d8f99468d29e99cd96a039c9e5605b0a88ec345c0067e98f9dd56",
+  "base_accuracy": 0.9135446685878963,
+  "candidate_accuracy": 0.8847262247838616,
+  "gain": -0.028818443804034644,
+  "minimum_gain": 0.02,
+  "candidate_canonical_format_rate": 0.9769452449567724,
+  "selected_model_id": null,
+  "selected_runtime": null,
+  "failures": [
+    "gain=-0.028818<required=0.020000"
+  ],
+  "gate300_opened": false,
+  "formal_full_opened": false,
+  "report_hash": "4a6f702c00674b2e92b9e3db59651a7872a5789036eef31ec69d0b93086061a3"
+}

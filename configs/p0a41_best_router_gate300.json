@@ -1,0 +1,21 @@
+{
+  "protocol": "P0-A41-BEST-ROUTER-GATE300",
+  "authorized_date": "2026-08-02",
+  "base_model": "models/checkpoints/p0a4/student-shared-merged",
+  "math_route": "shared_base",
+  "code_adapter": "models/checkpoints/p0a25/code-failure-repair/checkpoint-192",
+  "nlp_adapter": "models/checkpoints/p0a10/nlp-specialist/checkpoint-136",
+  "gate_manifest": "data/capability_v2/gate300.jsonl",
+  "baseline_trace": "data/eval/p0a5_baseline14b_gate300.jsonl",
+  "expected_counts": {
+    "math": 100,
+    "code": 100,
+    "nlp": 100
+  },
+  "initial_retention": 0.78,
+  "recommended_retention": 0.82,
+  "maximum_generation_errors": 0,
+  "maximum_runs": 1,
+  "system_ram_stop_threshold_percent": 60,
+  "formal_full_opened": false
+}

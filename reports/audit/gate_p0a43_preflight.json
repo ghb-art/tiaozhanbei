@@ -1,0 +1,32 @@
+{
+  "gate": "P0-A43-EDGE-OFFICIAL-FULL-PREFLIGHT",
+  "check_version": "1.0",
+  "created_by": "scripts/prepare_p0a43_edge_full.py",
+  "created_ts": "2026-08-03T02:29:16.481283+00:00",
+  "status": "passed",
+  "config": "configs/p0a43_edge_full.json",
+  "config_hash": "a228019ed9305998e3c8c5d2fb6a2e4c88b74772b5a03df564f41520279ec132",
+  "selection": "reports/audit/gate_p0a42_domain_selection.json",
+  "selection_hash": "2d4ccd40d72e9236f9f2ef299de8d15da93f8816abb0780abd581593d26de67d",
+  "selected_routes": {
+    "math": "original-base",
+    "code": "p0a25-code-192",
+    "nlp": "p0a10-nlp-136"
+  },
+  "split_dir": "data/splits/p0a43_edge_best_full",
+  "split_manifest_hash": "7c607ebd5846649ab563c50cd85d3693183f99352b509bb9b9232e3739cc2b77",
+  "sample_count": 13065,
+  "dataset_counts": {
+    "gsm8k": 1319,
+    "humaneval": 164,
+    "cmmlu": 11582
+  },
+  "baseline_trace_hash": "e8ebd0c86f4800d18b9237fa8f85ff724287b2cf603017cf5024a5a907a42ab2",
+  "prompt_mismatch_count": 0,
+  "base_gguf_hash": "2e50331cd28df7918fdbaf8068136c24a49a1e4af0863ff0954e861649b50a2f",
+  "code_gguf_adapter_hash": "aec4c537a99a8e132b4c3cfb5763c64e3915cb61c25217024e9a5a45f2d14d60",
+  "nlp_hf_adapter_hash": "c6e1804eb931e098f6b04bcc17c9366e755c3697988acccd01dc9fb981a8d0aa",
+  "formal_full_opened": false,
+  "item_level_feedback_allowed_for_training": false,
+  "report_hash": "323fa71cd6b9ad77e8c87f1cff845c01157adae6b82474159c080ab6f5e67ca3"
+}

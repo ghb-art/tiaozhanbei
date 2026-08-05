@@ -129,6 +129,11 @@ def build_command(args: argparse.Namespace, spec: TeacherSpec) -> list[str]:
         "--port",
         str(spec.port),
     ]
+    served_model_name = str(
+        getattr(args, "served_model_name", "") or ""
+    ).strip()
+    if served_model_name:
+        command.extend(["--served-model-name", served_model_name])
     quantization = str(getattr(args, "quantization", "")).strip()
     if quantization and quantization.lower() not in {"none", "null", "bf16"}:
         command.extend(["--quantization", quantization])
@@ -211,6 +216,11 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--vllm-bin", default=str(DEFAULT_VLLM_BIN), help="vLLM executable.")
     parser.add_argument("--host", default="0.0.0.0")
     parser.add_argument("--quantization", default="awq")
+    parser.add_argument(
+        "--served-model-name",
+        default="",
+        help="Optional stable OpenAI-compatible model id exposed by vLLM.",
+    )
     parser.add_argument(
         "--lora-module",
         action="append",

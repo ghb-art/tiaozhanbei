@@ -1,0 +1,43 @@
+{
+  "check_version": "1.0",
+  "cmmlu_loaded": false,
+  "created_by": "model_compression/generate_p0a6_mcq_rationales.py",
+  "created_ts": "2026-07-31T12:40:39.990472+00:00",
+  "dry_run": false,
+  "forbidden_formal_or_cmmlu_sources_read": false,
+  "formal_test_loaded": false,
+  "gate": "P0-A6-NLP-MCQ-RATIONALE",
+  "human_label_lock_validated": true,
+  "max_attempts": 3,
+  "newly_processed_rows": 45,
+  "output": "data/p0a6/nlp_mcq_rationale_train.jsonl",
+  "output_hash": "ee4afe1e8a46b48e1a8c27a28f0b562aaff23e626ea1b9295e0d4c3a9fb1ab77",
+  "output_rows": 1335,
+  "output_schema": {
+    "answer_token_weight": 2.0,
+    "dataset_key": "ceval_rationale_train",
+    "domain": "nlp",
+    "kl_weight": 0.2,
+    "training_weight": 1.0
+  },
+  "report_hash": "12ed3e92b2eb0f616da32302102c35c403ab717ae11a860a52f7d983c036566f",
+  "resumed_accepted_rows": 1290,
+  "retry_count": 169,
+  "selected_rows": 1335,
+  "source": "data/p0a6/train.jsonl",
+  "source_dataset_key": "ceval",
+  "source_hash": "dc743974f40c9e7040c4ef24f4ad2fd358be50fc9765ddf0a4e752bbc4ad590b",
+  "source_partition": "C-Eval labelled val repurposed as auxiliary train",
+  "source_split_role": "train",
+  "status": "passed",
+  "status_counts": {
+    "accepted": 1335
+  },
+  "teacher_endpoint": "http://127.0.0.1:8000",
+  "teacher_may_replace_human_label": false,
+  "teacher_model_id": "p0a5-teacher",
+  "trace": "data/p0a6/nlp_mcq_rationale_trace.jsonl",
+  "trace_hash": "124d25963c63c552541c3191008b555b97d0edb9ef1d1ad029203c7082075891",
+  "trace_rows": 1335,
+  "workers": 16
+}

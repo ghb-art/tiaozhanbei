@@ -1,0 +1,37 @@
+{
+  "gate": "P0-A5-GATE300-EVAL",
+  "check_version": "1.0",
+  "created_by": "scripts/evaluate_p0a5_gate.py",
+  "created_ts": "2026-07-31T04:01:16.418256+00:00",
+  "status": "passed",
+  "candidate_name": "baseline-14b-awq",
+  "endpoint": "http://127.0.0.1:8001",
+  "served_model_id": "baseline-14b-awq",
+  "manifest": "data/capability_v2/gate300.jsonl",
+  "manifest_hash": "91d89bfce1ceae19eecdc894a1141c7816ec4dd6a4ef7115700d0c8a811741fc",
+  "output_trace": "data/eval/p0a5_baseline14b_gate300.jsonl",
+  "output_trace_hash": "d35059b36b82e6508c4541bbb53acfac4cdec7b7804cff8ea158f673135a7a2a",
+  "counts": {
+    "code": 100,
+    "math": 100,
+    "nlp": 100
+  },
+  "correct_counts": {
+    "code": 58,
+    "math": 94,
+    "nlp": 72
+  },
+  "accuracy_by_domain": {
+    "math": 0.94,
+    "code": 0.58,
+    "nlp": 0.72
+  },
+  "generation_error_count": 0,
+  "max_tokens": {
+    "math": 512,
+    "code": 768,
+    "nlp": 256
+  },
+  "code_timeout_sec": 5,
+  "report_hash": "c6f4c81b89f1b9955f96d72560e9c6115f7a76e74fdb0aeb1f81374da32b0bd9"
+}

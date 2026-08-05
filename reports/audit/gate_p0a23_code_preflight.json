@@ -1,0 +1,101 @@
+{
+  "gate": "P0-A6-STUDENT-TRAIN",
+  "check_version": "1.0",
+  "created_by": "model_compression/train_p0a6_student.py",
+  "created_ts": "2026-08-01T15:31:59.108750+00:00",
+  "status": "dry_run_passed",
+  "errors": [],
+  "model_dir": "models/checkpoints/p0a4/student-shared-merged",
+  "train_data": "data/p0a23/code_train.jsonl",
+  "train_data_hash": "286c7b1f3a6782a87e01b847677e633b0ea404642ed7790db32fb29457dd0d11",
+  "train_rows": 6000,
+  "focus": {
+    "focus_domain": "code",
+    "source_rows": 6000,
+    "selected_rows": 6000,
+    "source_domain_counts": {
+      "code": 6000
+    },
+    "selected_domain_counts": {
+      "code": 6000
+    },
+    "selected_dataset_counts": {
+      "opencodeinstruct": 6000
+    },
+    "training_weight_mean_before": 1.0,
+    "training_weight_normalization_divisor": 1.0,
+    "training_weight_mean_after": 1.0,
+    "mcq_answer_token_weight_multiplier": 1.0,
+    "mcq_answer_token_weight_multiplied_rows": 0
+  },
+  "domain_counts": {
+    "code": 6000
+  },
+  "kl_weight_by_domain": {
+    "code": {
+      "minimum": 0.08,
+      "maximum": 0.08,
+      "mean": 0.0799999999999955
+    }
+  },
+  "answer_token_weight_rows": {},
+  "formal_test_reference_count": 0,
+  "optimization": {
+    "lora_rank": 16,
+    "lora_alpha": 32,
+    "lora_dropout": 0.05,
+    "target_modules": [
+      "q_proj",
+      "k_proj",
+      "v_proj",
+      "o_proj",
+      "gate_proj",
+      "up_proj",
+      "down_proj"
+    ],
+    "learning_rate": 8e-07,
+    "bf16": true,
+    "max_seq_length": 1536,
+    "max_steps": 192,
+    "checkpoint_steps": 96,
+    "save_total_limit": null,
+    "per_device_train_batch_size": 1,
+    "gradient_accumulation_steps": 8,
+    "expected_world_size": 4,
+    "observed_world_size": 1,
+    "effective_global_batch_size": 32,
+    "warmup_ratio": 0.03,
+    "max_grad_norm": 1.0,
+    "gradient_checkpointing": true,
+    "gradient_checkpointing_use_reentrant": false,
+    "resume_from_checkpoint": "",
+    "init_adapter": "models/checkpoints/p0a21/code-execution-specialist/checkpoint-384",
+    "init_adapter_file_hashes": {
+      "adapter_config.json": "a66eb444c7b209cad2db1f40ace124a25d842c0d5536b871e20366c1524a6c73",
+      "adapter_model.safetensors": "016ae614d38a787466f7c8e7c9d925340d6de6d9a91a5a23809af9d6e8f6a25f"
+    }
+  },
+  "preservation": {
+    "method": "all_task_adapter_disabled_base_kl",
+    "direction": "KL(base||student)",
+    "temperature": 2.0,
+    "mask": "assistant_answer_tokens_only",
+    "reference_forward": "unconditional_on_every_rank_and_batch",
+    "supervised_weight": "1-kl_weight_per_row"
+  },
+  "dependencies": {
+    "torch": "2.6.0+cu124",
+    "transformers": "4.51.3",
+    "accelerate": "1.14.0",
+    "peft": "0.17.1"
+  },
+  "token_budget_scan": {
+    "status": "passed",
+    "scanned_rows": 6000,
+    "max_seq_length": 1536,
+    "maximum_observed_tokens": 1467,
+    "maximum_sample_id": "opencodeinstruct/train/eb34bf4d92e42821f0d1b002935e0edd",
+    "answer_token_weight_rows": 0
+  },
+  "report_hash": "650f7dbc968fd2a8ba6817439860d32dcf60991111ac98f01cc6d67fef7cf10c"
+}

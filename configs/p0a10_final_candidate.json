@@ -1,0 +1,30 @@
+{
+  "protocol": "P0-A10-FINAL-ROUTER-CANDIDATE",
+  "created_date": "2026-08-01",
+  "candidate_limit": "second and final gate300 candidate",
+  "shared_base": "models/checkpoints/p0a4/student-shared-merged",
+  "training": {
+    "math": {"rows": 6917, "learning_rate": 0.00001, "max_steps": 224, "checkpoints": [112, 224], "minimum_internal_gain": 0.02},
+    "code": {"rows": 19743, "learning_rate": 0.000005, "max_steps": 256, "checkpoints": [128, 256], "minimum_internal_gain": 0.03},
+    "nlp": {"rows": 4335, "learning_rate": 0.00001, "max_steps": 136, "checkpoints": [68, 136], "minimum_internal_gain": 0.03}
+  },
+  "common": {
+    "lora_rank": 16,
+    "lora_alpha": 32,
+    "effective_global_batch_size": 32,
+    "gpu_count": 4,
+    "validation_rows_per_domain": 256
+  },
+  "gate300": {
+    "student_to_14b_minimum_per_domain": 0.78,
+    "recommended_full_minimum_per_domain": 0.82,
+    "maximum_generation_errors": 0,
+    "maximum_runs_for_this_candidate": 1
+  },
+  "forbidden": [
+    "P0-A9 per-question trace feedback",
+    "gate300 rows in training or checkpoint selection",
+    "formal GSM8K/HumanEval/CMMLU test data",
+    "a third gate300 candidate"
+  ]
+}

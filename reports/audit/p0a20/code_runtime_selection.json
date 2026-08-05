@@ -1,0 +1,53 @@
+{
+  "gate": "P0-A20-CODE-THINKING-SELECTION",
+  "check_version": "1.0",
+  "created_by": "scripts/select_p0a20_code.py",
+  "created_ts": "2026-08-01T14:14:43.777980+00:00",
+  "status": "failed",
+  "base_audit": "reports/audit/p0a20/base_off.json",
+  "base_audit_hash": "cf28eebe89e4e995ea2f0325c397fd71e54a72834133b82d62efe4fbd26de8ad",
+  "base_accuracy": 0.4225941422594142,
+  "base_correct_count": 101,
+  "base_canonical_format_rate": 0.02092050209205021,
+  "minimum_absolute_gain": 0.03,
+  "candidates": [
+    {
+      "name": "base-thinking",
+      "audit": "reports/audit/p0a20/base_thinking.json",
+      "audit_hash": "dcd8ee39d844180d02bd39e2bd6a7c048ee2d1af963f5fb6fb736afbd3823ef0",
+      "served_model_id": "p0a20-base",
+      "accuracy": 0.008368200836820083,
+      "correct_count": 2,
+      "canonical_format_rate": 0.0,
+      "gain": -0.4142259414225941,
+      "mean_latency_ms": 589.5352805762504,
+      "eligible": false,
+      "failures": [
+        "gain=-0.414226<required=0.030000",
+        "canonical=0.000000<base=0.020921"
+      ]
+    },
+    {
+      "name": "step256-thinking",
+      "audit": "reports/audit/p0a20/step256_thinking.json",
+      "audit_hash": "986c8c0c7fcd0e591a51ce13bec4c9a19a59663ff435f3b1a1af09227e94c421",
+      "served_model_id": "p0a20-step256",
+      "accuracy": 0.30962343096234307,
+      "correct_count": 74,
+      "canonical_format_rate": 0.0,
+      "gain": -0.11297071129707115,
+      "mean_latency_ms": 788.1230470211982,
+      "eligible": false,
+      "failures": [
+        "gain=-0.112971<required=0.030000",
+        "canonical=0.000000<base=0.020921"
+      ]
+    }
+  ],
+  "selected_runtime": null,
+  "selected_model_id": null,
+  "per_item_feedback_read": false,
+  "gate300_opened": false,
+  "formal_full_opened": false,
+  "report_hash": "1c65c78478080cc7aabcbf4f424edb2450d2b3dcc95a22dc8a7cc78f32e2ce06"
+}

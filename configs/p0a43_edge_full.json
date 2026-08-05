@@ -1,0 +1,50 @@
+{
+  "stage": "P0-A43",
+  "objective": "Run exactly one aggregate-only official-full edge evaluation for the best pre-registered routed candidate.",
+  "candidate": {
+    "base_hf": "models/checkpoints/p0a4/student-shared-merged",
+    "base_gguf": "models/quantized/p0a4-qwen3-1.7b-q4_k_m.gguf",
+    "weight_type": "Q4_K_M",
+    "kv_cache_type": "q8_0",
+    "thinking": "off",
+    "math_route": "shared-base",
+    "code_route": "models/checkpoints/p0a25/code-failure-repair/checkpoint-192",
+    "code_gguf_adapter": "models/adapters/p0a25/code-failure-repair-checkpoint-192-f16.gguf",
+    "nlp_route": "models/checkpoints/p0a10/nlp-specialist/checkpoint-136",
+    "nlp_gguf_adapter": "models/adapters/p0a10/nlp-specialist-checkpoint-136-f16.gguf"
+  },
+  "formal_test": {
+    "baseline_trace": "reports/sealed/p0a4/baseline14b_awq_full.jsonl",
+    "baseline_audit": "reports/audit/gate_p0a4_baseline14b_awq_full.json",
+    "split_dir": "data/splits/p0a43_edge_best_full",
+    "counts": {
+      "gsm8k": 1319,
+      "humaneval": 164,
+      "cmmlu": 11582
+    },
+    "prompt_style": "v15",
+    "max_new_tokens": {
+      "gsm8k": 512,
+      "humaneval": 512,
+      "cmmlu": 16
+    },
+    "minimum_retention_per_domain": 0.8,
+    "minimum_capped_macro_retention": 0.8,
+    "item_level_feedback_for_training": false,
+    "repeat_after_completion": false
+  },
+  "runtime": {
+    "ctx_size": 2048,
+    "gpu_layers": "all",
+    "parallel": 1,
+    "batch_size": 32,
+    "ubatch_size": 16,
+    "host_memory_guard_percent": 60,
+    "routes": {
+      "gsm8k": {"gpu": 0, "port": 18520},
+      "humaneval": {"gpu": 1, "port": 18521},
+      "cmmlu_shard_0": {"gpu": 2, "port": 18522},
+      "cmmlu_shard_1": {"gpu": 3, "port": 18523}
+    }
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "gate": "CH2-CAPABILITY-EVAL",
+  "check_version": "1.4",
+  "created_by": "scripts/evaluate_chapter2_capability.py",
+  "created_ts": "2026-08-05T03:17:45.990994+00:00",
+  "status": "passed",
+  "probe_backend": "openai_compatible",
+  "student_url": "http://127.0.0.1:18611",
+  "student_endpoint_health_status": 200,
+  "student_model_id": "p0b1-code",
+  "served_model_id": "p0b1-code",
+  "local_model_dir": "models/checkpoints/p0a4/student-shared-merged",
+  "dtype": "float16",
+  "disable_thinking": true,
+  "kv_cache_type": "q8_0",
+  "device": "cuda",
+  "output_trace_path": "reports/sealed/p0b1/shards/code.jsonl",
+  "capability_eval_trace_hash": "c34fe2ed23f10cb96f2a8b6a2fbb54e652369d519547f78e5e6c12b6bb602754",
+  "selected_dataset_keys": [
+    "humaneval"
+  ],
+  "use_frozen_final": true,
+  "split_dir": "data/splits/p0a43_edge_best_full",
+  "split_manifest_hash": "7c607ebd5846649ab563c50cd85d3693183f99352b509bb9b9232e3739cc2b77",
+  "sample_limit_per_dataset": 0,
+  "num_shards": 1,
+  "shard_index": 0,
+  "unsharded_sample_count": 164,
+  "unsharded_sample_ids_hash": "02b13d6fabddc54be8e3e22499bdeaf3d9cb8efb82571582899c264972633943",
+  "sample_count": 164,
+  "dataset_counts": {
+    "humaneval": 164
+  },
+  "correct_counts": {
+    "humaneval": 73
+  },
+  "accuracy_by_dataset": {
+    "humaneval": 0.4451219512195122
+  },
+  "overall_accuracy": 0.4451219512195122,
+  "min_accuracy": 0.0,
+  "peak_memory_mb": 0.0,
+  "max_new_tokens": 160,
+  "max_new_tokens_map": {
+    "cmmlu": 16,
+    "gsm8k": 512,
+    "humaneval": 512
+  },
+  "request_extra_map_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+  "fail_fast_min_accuracy_map": {},
+  "fail_fast_reason": "",
+  "humaneval_timeout_sec": 10.0,
+  "generation_config": {
+    "do_sample": false,
+    "temperature": 0.0,
+    "num_candidates": 1
+  },
+  "prompt_style": "v15",
+  "prompt_style_map": {},
+  "prompt_template_hash": "d1019473f72612c1bef19c930b0518203cb5aa86549790d0ab40766e11621a76",
+  "humaneval_exec_preamble_hash": "45574eb37eb1cc75cd0dc9f4eca05b2f430f8cc89eac47361e31e55090876417",
+  "errors": [],
+  "report_hash": "7fdea7324761f7de73941397c8a0ab8b800451a55b46448832e91a7a3c96e929"
+}

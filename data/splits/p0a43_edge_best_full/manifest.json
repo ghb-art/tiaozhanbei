@@ -1,0 +1,24 @@
+{
+  "stage": "P0-A43",
+  "created_by": "scripts/prepare_p0a43_edge_full.py",
+  "created_ts": "2026-08-03T02:29:16.450620+00:00",
+  "source_baseline_trace": "reports/sealed/p0a4/baseline14b_awq_full.jsonl",
+  "source_baseline_trace_hash": "e8ebd0c86f4800d18b9237fa8f85ff724287b2cf603017cf5024a5a907a42ab2",
+  "source_baseline_audit": "reports/audit/gate_p0a4_baseline14b_awq_full.json",
+  "source_baseline_audit_hash": "a7196d0939ea4e84d6b4a2205042bb97905f54ff894400443fb5632ef18ca580",
+  "counts": {
+    "gsm8k": 1319,
+    "humaneval": 164,
+    "cmmlu": 11582
+  },
+  "split_hashes": {
+    "gsm8k": "9fe37582ab4a11297d31b547e82abfcf61ada48d92377ae5fca987e9a782b329",
+    "humaneval": "02b13d6fabddc54be8e3e22499bdeaf3d9cb8efb82571582899c264972633943",
+    "cmmlu": "e4047215612be2c88bec0df899ec7fb6af9c3d716bb92a4b4c4a5627b4872bb8"
+  },
+  "ordered_sample_ids_hash": "c5ac9b1b4438849ee0036a83e0e8fa13f88f103bbe757fb11a9b28ca2ca2b5a0",
+  "ordered_prompt_hashes_hash": "95bd431cc903af7e82d3a8fe90760be5ab24667598d46f03b3ecd6f380b3c38a",
+  "prompt_style": "v15",
+  "feedback_policy": "aggregate_only_no_retraining",
+  "manifest_hash": "5b9d06912e4255fada630f7c108baaecd6662b21c01d67df9c509588f577af0a"
+}

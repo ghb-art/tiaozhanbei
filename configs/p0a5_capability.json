@@ -49,11 +49,11 @@
       "formal_dataset": "CMMLU-test",
       "formal_rows": 11582,
       "category_train_quotas": {
-        "exam": 300,
-        "science_encyclopedia": 1700,
-        "humanities_social_science": 1240,
-        "law_economics_management": 670,
-        "language_reasoning": 5590
+        "exam": 301,
+        "science_encyclopedia": 1690,
+        "humanities_social_science": 1246,
+        "law_economics_management": 758,
+        "language_reasoning": 5505
       }
     }
   },
@@ -76,6 +76,10 @@
     "learning_rate": 0.00001,
     "epochs": 1,
     "max_seq_length": 1536,
+    "checkpoint_steps": 50,
+    "eval_steps": 100,
+    "early_stopping_patience": 2,
+    "early_stopping_threshold": 0.001,
     "tensor_parallel_or_zero3_gpus": 4
   },
   "student_training": {
@@ -85,6 +89,7 @@
     "learning_rate": 0.00001,
     "epochs": 1,
     "max_seq_length": 1536,
+    "checkpoint_steps": 50,
     "task_loss_mass": {
       "gsm8k": 0.3,
       "opencodeinstruct": 0.35,

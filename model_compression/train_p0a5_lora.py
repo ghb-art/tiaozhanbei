@@ -72,6 +72,58 @@ def dependency_versions() -> dict[str, str]:
     return versions
 
 
+def gradient_checkpointing_config(role: str) -> dict[str, bool]:
+    if role not in {"teacher", "student"}:
+        raise TrainingError(f"Unknown training role: {role}")
+    return {
+        "enabled": True,
+        "use_reentrant": role == "teacher",
+    }
+
+
+def checkpoint_due(global_step: int, interval: int) -> bool:
+    return interval > 0 and global_step > 0 and global_step % interval == 0
+
+
+def synchronize_distributed_stop(
+    local_stop: bool, torch_module: Any, device: Any
+) -> bool:
+    """Return the MAX-reduced early-stop decision across all initialized ranks."""
+    if not torch_module.distributed.is_initialized():
+        return bool(local_stop)
+    stop = torch_module.tensor(
+        int(local_stop), device=device, dtype=torch_module.int32
+    )
+    torch_module.distributed.all_reduce(
+        stop, op=torch_module.distributed.ReduceOp.MAX
+    )
+    return bool(stop.item())
+
+
+def early_stopping_config(settings: dict[str, Any]) -> dict[str, Any]:
+    default_enabled = all(
+        key in settings
+        for key in ("eval_steps", "early_stopping_patience", "early_stopping_threshold")
+    )
+    if not bool(settings.get("early_stopping_enabled", default_enabled)):
+        return {"enabled": False}
+    eval_steps = int(settings.get("eval_steps", 0))
+    patience = int(settings.get("early_stopping_patience", 0))
+    threshold = float(settings.get("early_stopping_threshold", 0.0))
+    if eval_steps <= 0 or patience <= 0 or threshold < 0:
+        raise TrainingError(
+            "Early stopping requires eval_steps > 0, patience > 0, "
+            "and threshold >= 0"
+        )
+    return {
+        "enabled": True,
+        "metric": "eval_loss",
+        "eval_steps": eval_steps,
+        "patience": patience,
+        "threshold": threshold,
+    }
+
+
 def validate_zero3(path: Path) -> dict[str, Any]:
     config = json.loads(path.read_text(encoding="utf-8"))
     zero = config.get("zero_optimization")
@@ -135,8 +187,14 @@ def render(tokenizer: Any, row: dict[str, Any], max_length: int) -> dict[str, An
         prompt_ids = prompt_ids.tolist()
     if hasattr(full_ids, "tolist"):
         full_ids = full_ids.tolist()
-    full_ids = list(full_ids)[:max_length]
-    prompt_length = min(len(list(prompt_ids)), len(full_ids))
+    prompt_ids = list(prompt_ids)
+    full_ids = list(full_ids)
+    if len(full_ids) > max_length:
+        raise TrainingError(
+            f"Sequence exceeds max length: {row.get('sample_id')} "
+            f"{len(full_ids)} > {max_length}"
+        )
+    prompt_length = min(len(prompt_ids), len(full_ids))
     labels = [-100] * prompt_length + full_ids[prompt_length:]
     if not any(value != -100 for value in labels):
         raise TrainingError(f"Answer was fully truncated: {row.get('sample_id')}")
@@ -146,6 +204,30 @@ def render(tokenizer: Any, row: dict[str, Any], max_length: int) -> dict[str, An
         "labels": labels,
         "sample_weight": float(row.get("training_weight", 1.0)),
         "preserve_math": bool(row.get("preserve_math", False)),
+        "kl_weight": float(row.get("kl_weight", 0.0)),
+    }
+
+
+def scan_token_budget(
+    tokenizer: Any,
+    train_rows: list[dict[str, Any]],
+    validation_rows: list[dict[str, Any]],
+    max_length: int,
+) -> dict[str, Any]:
+    maximum = 0
+    maximum_sample = ""
+    for row in [*train_rows, *validation_rows]:
+        rendered = render(tokenizer, row, max_length)
+        length = len(rendered["input_ids"])
+        if length > maximum:
+            maximum = length
+            maximum_sample = str(row.get("sample_id", ""))
+    return {
+        "status": "passed",
+        "scanned_rows": len(train_rows) + len(validation_rows),
+        "max_seq_length": max_length,
+        "maximum_observed_tokens": maximum,
+        "maximum_sample_id": maximum_sample,
     }
 
 
@@ -186,6 +268,9 @@ class Collator:
             "preserve_math": torch.tensor(
                 [feature["preserve_math"] for feature in features], dtype=torch.bool
             ),
+            "kl_weight": torch.tensor(
+                [feature["kl_weight"] for feature in features], dtype=torch.float32
+            ),
         }
 
 
@@ -213,6 +298,23 @@ def publish_adapter(checkpoint: Path, output: Path) -> list[str]:
     return published
 
 
+def read_checkpoint_state(checkpoint: Path) -> dict[str, Any]:
+    state_path = checkpoint / "trainer_state.json"
+    adapter_path = checkpoint / "adapter_model.safetensors"
+    if not state_path.is_file() or not adapter_path.is_file():
+        raise TrainingError(
+            f"Incomplete checkpoint for evaluation: {display_path(checkpoint)}"
+        )
+    state = json.loads(state_path.read_text(encoding="utf-8"))
+    global_step = int(state.get("global_step", -1))
+    if global_step < 1 or checkpoint.name != f"checkpoint-{global_step}":
+        raise TrainingError(
+            f"Checkpoint step mismatch: {display_path(checkpoint)} "
+            f"state={global_step}"
+        )
+    return state
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="P0-A5 shared Teacher/Student LoRA trainer.")
     parser.add_argument("--config", default=str(DEFAULT_CONFIG))
@@ -226,6 +328,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--deepspeed", default="")
     parser.add_argument("--per-device-train-batch-size", type=int, default=1)
     parser.add_argument("--gradient-accumulation-steps", type=int, default=8)
+    parser.add_argument("--resume-from-checkpoint", default="")
+    parser.add_argument("--evaluate-only", action="store_true")
     parser.add_argument("--dry-run", action="store_true")
     return parser.parse_args()
 
@@ -284,7 +388,33 @@ def main() -> int:
         learning_rate = float(settings["learning_rate"])
         epochs = float(settings["epochs"])
         max_length = int(settings["max_seq_length"])
+        checkpoint_steps = int(settings.get("checkpoint_steps", 0))
+        if checkpoint_steps < 0:
+            raise TrainingError("checkpoint_steps must be non-negative")
+        early_stopping = early_stopping_config(settings)
+        resume_checkpoint = (
+            resolve_path(args.resume_from_checkpoint)
+            if args.resume_from_checkpoint
+            else None
+        )
+        if resume_checkpoint is not None and not resume_checkpoint.is_dir():
+            raise TrainingError(
+                f"Missing resume checkpoint: {display_path(resume_checkpoint)}"
+            )
+        if args.evaluate_only:
+            if resume_checkpoint is None:
+                raise TrainingError("--evaluate-only requires --resume-from-checkpoint")
+            checkpoint_state = read_checkpoint_state(resume_checkpoint)
+        else:
+            checkpoint_state = {}
         math_config = dict(config["student_training"]["math_preservation"])
+        base_preservation = dict(
+            settings.get(
+                "base_preservation",
+                {"enabled": False, "temperature": 1.0},
+            )
+        )
+        checkpointing = gradient_checkpointing_config(args.role)
         if args.role == "student" and "math_kl_weight" in settings:
             math_config["kl_weight"] = float(settings["math_kl_weight"])
             math_config["supervised_weight"] = 1.0 - float(settings["math_kl_weight"])
@@ -308,6 +438,25 @@ def main() -> int:
         else:
             observed_mass = {}
         dependencies = dependency_versions()
+        token_budget_scan: dict[str, Any] = {}
+        if args.dry_run:
+            if dependencies.get("transformers") == "missing":
+                raise TrainingError("transformers is required for token-budget preflight")
+            if not model_dir.is_dir():
+                raise TrainingError(f"Missing model directory: {display_path(model_dir)}")
+            from transformers import AutoTokenizer
+
+            dry_run_tokenizer = AutoTokenizer.from_pretrained(
+                model_dir,
+                local_files_only=True,
+                trust_remote_code=True,
+            )
+            token_budget_scan = scan_token_budget(
+                dry_run_tokenizer,
+                train_rows,
+                validation_rows,
+                max_length,
+            )
         audit = {
             "gate": "P0-A5-LORA-TRAIN",
             "check_version": "1.0",
@@ -315,6 +464,7 @@ def main() -> int:
             "created_ts": datetime.now(timezone.utc).isoformat(),
             "status": "dry_run_passed" if args.dry_run else "running",
             "role": args.role,
+            "mode": "checkpoint_evaluation" if args.evaluate_only else "training",
             "candidate_index": args.candidate_index,
             "config": display_path(config_path),
             "config_hash": sha256_file(config_path),
@@ -343,10 +493,26 @@ def main() -> int:
                     int(zero_config["zero_optimization"]["stage"]) if zero_config else 0
                 ),
                 "cpu_offload": False,
+                "gradient_checkpointing": checkpointing["enabled"],
+                "gradient_checkpointing_use_reentrant": checkpointing["use_reentrant"],
+                "checkpoint_steps": checkpoint_steps,
+                "save_total_limit": 2,
+                "resume_from_checkpoint": (
+                    display_path(resume_checkpoint) if resume_checkpoint else ""
+                ),
+                "early_stopping": early_stopping,
+                "weight_decay": float(settings.get("weight_decay", 0.0)),
+                "warmup_ratio": float(settings.get("warmup_ratio", 0.03)),
+                "max_grad_norm": float(settings.get("max_grad_norm", 1.0)),
+                "label_smoothing": float(settings.get("label_smoothing", 0.0)),
             },
             "math_preservation": math_config if args.role == "student" else {"enabled": False},
+            "base_preservation": (
+                base_preservation if args.role == "student" else {"enabled": False}
+            ),
             "formal_test_reference_count": 0,
             "dependencies": dependencies,
+            "token_budget_scan": token_budget_scan,
             "errors": [],
         }
         if args.dry_run:
@@ -375,9 +541,87 @@ def main() -> int:
         import torch
         import torch.nn.functional as functional
         from peft import LoraConfig, TaskType, get_peft_model
-        from transformers import AutoModelForCausalLM, AutoTokenizer, Trainer, TrainingArguments
+        from transformers import (
+            AutoModelForCausalLM,
+            AutoTokenizer,
+            EarlyStoppingCallback,
+            Trainer,
+            TrainerCallback,
+            TrainingArguments,
+        )
+
+        class FixedStepCheckpointCallback(TrainerCallback):
+            def __init__(self, interval: int):
+                self.interval = interval
+
+            def on_step_end(self, args: Any, state: Any, control: Any, **kwargs: Any) -> Any:
+                del args, kwargs
+                if checkpoint_due(state.global_step, self.interval):
+                    control.should_save = True
+                return control
+
+        class ResumeMetricBaselineCallback(TrainerCallback):
+            def __init__(self, checkpoint: Path):
+                self.checkpoint = checkpoint
+
+            def on_evaluate(
+                self,
+                args: Any,
+                state: Any,
+                control: Any,
+                metrics: dict[str, Any],
+                **kwargs: Any,
+            ) -> Any:
+                del args, kwargs
+                if state.best_metric is None and "eval_loss" in metrics:
+                    state.best_metric = float(metrics["eval_loss"])
+                    state.best_global_step = int(state.global_step)
+                    state.best_model_checkpoint = str(self.checkpoint)
+                return control
 
         class PreservationTrainer(Trainer):
+            def _save_checkpoint(self, model: Any, trial: Any) -> None:
+                for callback in self.callback_handler.callbacks:
+                    if isinstance(callback, EarlyStoppingCallback):
+                        self.state.stateful_callbacks.setdefault(
+                            callback.__class__.__name__,
+                            callback.state(),
+                        )
+                super()._save_checkpoint(model, trial)
+
+            def _maybe_log_save_evaluate(
+                self,
+                tr_loss: Any,
+                grad_norm: Any,
+                model: Any,
+                trial: Any,
+                epoch: Any,
+                ignore_keys_for_eval: Any,
+                start_time: Any,
+                learning_rate: Any = None,
+            ) -> None:
+                super()._maybe_log_save_evaluate(
+                    tr_loss,
+                    grad_norm,
+                    model,
+                    trial,
+                    epoch,
+                    ignore_keys_for_eval,
+                    start_time,
+                    learning_rate,
+                )
+                # EarlyStoppingCallback updates TrainerControl independently on
+                # every DDP rank. A rank-local difference here can make one rank
+                # enter the terminal barrier while another starts the next DDP
+                # forward, producing an ALLREDUCE/ALLGATHER mismatch. Reduce the
+                # stop flag so all ranks leave at the same checkpoint boundary.
+                if early_stopping["enabled"]:
+                    self.control.should_training_stop = synchronize_distributed_stop(
+                        self.control.should_training_stop,
+                        torch,
+                        self.accelerator.device,
+                    )
+
             def compute_loss(
                 self,
                 model: Any,
@@ -387,32 +631,84 @@ def main() -> int:
             ) -> Any:
                 weights = inputs.pop("sample_weight")
                 preserve_math = inputs.pop("preserve_math")
+                kl_weights = inputs.pop("kl_weight")
                 labels = inputs.pop("labels")
                 outputs = model(**inputs)
                 shift_logits = outputs.logits[..., :-1, :].contiguous()
                 shift_labels = labels[..., 1:].contiguous()
-                token_loss = functional.cross_entropy(
-                    shift_logits.view(-1, shift_logits.size(-1)),
-                    shift_labels.reshape(-1),
-                    ignore_index=-100,
-                    reduction="none",
-                ).view_as(shift_labels)
                 valid = shift_labels.ne(-100)
-                supervised = (token_loss * valid).sum(dim=1) / valid.sum(dim=1).clamp_min(1)
+                if not bool(valid.any()):
+                    raise TrainingError("Batch has no assistant answer tokens")
+                batch_size = int(shift_labels.size(0))
+                batch_indices = (
+                    torch.arange(batch_size, device=shift_labels.device)
+                    .unsqueeze(1)
+                    .expand_as(shift_labels)[valid]
+                )
+                token_loss = functional.cross_entropy(
+                    shift_logits[valid].float(),
+                    shift_labels[valid],
+                    reduction="none",
+                    label_smoothing=float(settings.get("label_smoothing", 0.0)),
+                )
+                supervised_sum = torch.zeros(
+                    batch_size, device=token_loss.device, dtype=token_loss.dtype
+                )
+                supervised_count = torch.zeros_like(supervised_sum)
+                supervised_sum.scatter_add_(0, batch_indices, token_loss)
+                supervised_count.scatter_add_(
+                    0, batch_indices, torch.ones_like(token_loss)
+                )
+                supervised = supervised_sum / supervised_count.clamp_min(1)
                 per_example = supervised
-                if args.role == "student" and math_config.get("enabled") and preserve_math.any():
+                if args.role == "student" and base_preservation.get("enabled"):
+                    if bool((kl_weights < 0).any() or (kl_weights >= 1).any()):
+                        raise TrainingError("All-task KL weights must be in [0, 1)")
+                    peft_model = model.module if hasattr(model, "module") else model
+                    if not hasattr(peft_model, "disable_adapter"):
+                        raise TrainingError(
+                            "All-task KL requires a PEFT model with disable_adapter"
+                        )
+                    # Every rank performs this reference forward for every batch.
+                    # That invariant prevents the mixed-domain DDP deadlock caused
+                    # by the former conditional Math-only reference pass.
+                    with torch.no_grad(), peft_model.disable_adapter():
+                        reference = peft_model(**inputs).logits[..., :-1, :].contiguous()
+                    temperature = float(base_preservation.get("temperature", 2.0))
+                    kl_tokens = functional.kl_div(
+                        functional.log_softmax(
+                            shift_logits[valid].float() / temperature, dim=-1
+                        ),
+                        functional.softmax(
+                            reference[valid].float() / temperature, dim=-1
+                        ),
+                        reduction="none",
+                    ).sum(dim=-1) * (temperature * temperature)
+                    kl_sum = torch.zeros_like(supervised)
+                    kl_sum.scatter_add_(0, batch_indices, kl_tokens)
+                    kl = kl_sum / supervised_count.clamp_min(1)
+                    local_kl = kl_weights.to(
+                        device=supervised.device, dtype=supervised.dtype
+                    )
+                    per_example = (1.0 - local_kl) * supervised + local_kl * kl
+                elif args.role == "student" and math_config.get("enabled") and preserve_math.any():
                     peft_model = model.module if hasattr(model, "module") else model
                     if not hasattr(peft_model, "disable_adapter"):
                         raise TrainingError("Math KL requires a PEFT model with disable_adapter")
                     with torch.no_grad(), peft_model.disable_adapter():
-                        reference = model(**inputs).logits[..., :-1, :].contiguous()
+                        # Run the conditional reference pass on the local PEFT module.
+                        # Calling the DDP wrapper here deadlocks when different ranks
+                        # receive different task types and only some ranks enter KL.
+                        reference = peft_model(**inputs).logits[..., :-1, :].contiguous()
                     temperature = float(math_config["temperature"])
                     kl_tokens = functional.kl_div(
-                        functional.log_softmax(shift_logits / temperature, dim=-1),
-                        functional.softmax(reference / temperature, dim=-1),
+                        functional.log_softmax(shift_logits[valid] / temperature, dim=-1),
+                        functional.softmax(reference[valid] / temperature, dim=-1),
                         reduction="none",
                     ).sum(dim=-1) * (temperature * temperature)
-                    kl = (kl_tokens * valid).sum(dim=1) / valid.sum(dim=1).clamp_min(1)
+                    kl_sum = torch.zeros_like(supervised)
+                    kl_sum.scatter_add_(0, batch_indices, kl_tokens)
+                    kl = kl_sum / supervised_count.clamp_min(1)
                     combined_math = (
                         float(math_config["supervised_weight"]) * supervised
                         + float(math_config["kl_weight"]) * kl
@@ -424,7 +720,9 @@ def main() -> int:
                 ).mean()
                 return (loss, outputs) if return_outputs else loss
 
-        load_best = args.role == "teacher"
+        configured_eval_steps = (
+            int(early_stopping["eval_steps"]) if early_stopping["enabled"] else None
+        )
         training_args = TrainingArguments(
             output_dir=str(output_dir),
             num_train_epochs=epochs,
@@ -432,15 +730,30 @@ def main() -> int:
             per_device_eval_batch_size=1,
             gradient_accumulation_steps=args.gradient_accumulation_steps,
             learning_rate=learning_rate,
+            weight_decay=float(settings.get("weight_decay", 0.0)),
             optim="adamw_torch",
             lr_scheduler_type="cosine",
-            warmup_ratio=0.03,
+            warmup_ratio=float(settings.get("warmup_ratio", 0.03)),
+            max_grad_norm=float(settings.get("max_grad_norm", 1.0)),
             bf16=True,
             logging_steps=10,
-            eval_strategy="epoch",
-            save_strategy="epoch",
+            eval_strategy=(
+                "no"
+                if args.evaluate_only
+                else ("steps" if early_stopping["enabled"] else "epoch")
+            ),
+            eval_steps=configured_eval_steps,
+            eval_on_start=bool(
+                not args.evaluate_only and early_stopping["enabled"] and resume_checkpoint
+            ),
+            save_strategy=(
+                "no"
+                if args.evaluate_only
+                else ("steps" if early_stopping["enabled"] else "epoch")
+            ),
+            save_steps=configured_eval_steps or 500,
             save_total_limit=2,
-            load_best_model_at_end=load_best,
+            load_best_model_at_end=False,
             metric_for_best_model="eval_loss",
             greater_is_better=False,
             report_to=[],
@@ -448,8 +761,13 @@ def main() -> int:
             label_names=["labels"],
             dataloader_num_workers=0,
             ddp_find_unused_parameters=False,
-            gradient_checkpointing=True,
-            gradient_checkpointing_kwargs={"use_reentrant": False},
+            gradient_checkpointing=(
+                checkpointing["enabled"] and not args.evaluate_only
+            ),
+            gradient_checkpointing_kwargs={
+                "use_reentrant": checkpointing["use_reentrant"]
+            },
+            restore_callback_states_from_checkpoint=True,
             seed=int(config["seed"]) + args.candidate_index,
             deepspeed=args.deepspeed or None,
         )
@@ -481,33 +799,83 @@ def main() -> int:
                 task_type=TaskType.CAUSAL_LM,
             ),
         )
+        if checkpointing["use_reentrant"]:
+            model.enable_input_require_grads()
+        callbacks: list[Any] = []
+        if checkpoint_steps and not args.evaluate_only:
+            callbacks.append(FixedStepCheckpointCallback(checkpoint_steps))
+        if early_stopping["enabled"] and not args.evaluate_only:
+            callbacks.append(
+                EarlyStoppingCallback(
+                    early_stopping_patience=int(early_stopping["patience"]),
+                    early_stopping_threshold=float(early_stopping["threshold"]),
+                )
+            )
+        if (
+            resume_checkpoint is not None
+            and early_stopping["enabled"]
+            and not args.evaluate_only
+        ):
+            callbacks.append(ResumeMetricBaselineCallback(resume_checkpoint))
         trainer = PreservationTrainer(
             model=model,
             args=training_args,
             train_dataset=TokenizedRows(train_rows, tokenizer, max_length),
             eval_dataset=TokenizedRows(validation_rows, tokenizer, max_length),
             data_collator=Collator(tokenizer),
+            callbacks=callbacks or None,
         )
-        result = trainer.train()
+        if args.evaluate_only:
+            trainer._load_from_checkpoint(str(resume_checkpoint), model=model)
+            metrics = trainer.evaluate()
+            is_main = trainer.is_world_process_zero()
+            if is_main:
+                audit.update(
+                    {
+                        "status": "passed",
+                        "checkpoint": display_path(resume_checkpoint),
+                        "checkpoint_step": int(checkpoint_state["global_step"]),
+                        "checkpoint_state_hash": sha256_file(
+                            resume_checkpoint / "trainer_state.json"
+                        ),
+                        "adapter_hash": sha256_file(
+                            resume_checkpoint / "adapter_model.safetensors"
+                        ),
+                        "evaluation_metrics": metrics,
+                        "evaluated_rows": len(validation_rows),
+                    }
+                )
+                audit["report_hash"] = sha256_text(
+                    json.dumps(audit, ensure_ascii=False, sort_keys=True, default=str)
+                )
+                audit_path.parent.mkdir(parents=True, exist_ok=True)
+                audit_path.write_text(
+                    json.dumps(audit, ensure_ascii=False, indent=2, default=str) + "\n",
+                    encoding="utf-8",
+                )
+                print(
+                    "P0-A5 checkpoint evaluation completed: "
+                    f"{display_path(resume_checkpoint)}"
+                )
+                print(f"eval_loss={metrics.get('eval_loss')}")
+                print(f"Audit: {display_path(audit_path)}")
+            return 0
+        result = trainer.train(
+            resume_from_checkpoint=str(resume_checkpoint) if resume_checkpoint else None
+        )
         is_main = trainer.is_world_process_zero()
         if is_main:
             checkpoint = Path(trainer.state.best_model_checkpoint or "")
-            if load_best:
-                output_dir.mkdir(parents=True, exist_ok=True)
-                model.save_pretrained(output_dir)
-                tokenizer.save_pretrained(output_dir)
-                published = sorted(path.name for path in output_dir.iterdir())
-            else:
-                if not checkpoint.is_dir():
-                    checkpoints = sorted(
-                        output_dir.glob("checkpoint-*"),
-                        key=lambda path: int(path.name.rsplit("-", 1)[-1]),
-                    )
-                    if not checkpoints:
-                        raise TrainingError("Student training produced no checkpoint")
-                    checkpoint = checkpoints[-1]
-                published = publish_adapter(checkpoint, output_dir)
-                tokenizer.save_pretrained(output_dir)
+            if not checkpoint.is_dir():
+                checkpoints = sorted(
+                    output_dir.glob("checkpoint-*"),
+                    key=lambda path: int(path.name.rsplit("-", 1)[-1]),
+                )
+                if not checkpoints:
+                    raise TrainingError("Student training produced no checkpoint")
+                checkpoint = checkpoints[-1]
+            published = publish_adapter(checkpoint, output_dir)
+            tokenizer.save_pretrained(output_dir)
             audit.update(
                 {
                     "status": "passed",

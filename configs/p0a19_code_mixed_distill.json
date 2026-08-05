@@ -1,0 +1,55 @@
+{
+  "protocol": "P0-A19-CODE-MIXED-DISTILL",
+  "authorized_date": "2026-08-01",
+  "shared_base": "models/checkpoints/p0a4/student-shared-merged",
+  "training": {
+    "opencode_source": "data/p0a11/code_train.jsonl",
+    "opencode_short_function_rows": 8000,
+    "mbpp_repo": "google-research-datasets/mbpp",
+    "mbpp_revision": "4bb6404fdc6cacfda99d4ac4205087b89d32030c",
+    "mbpp_config": "full",
+    "mbpp_split": "train",
+    "mbpp_rows_before_separation": 374,
+    "mbpp_rows_after_separation": 373,
+    "opencode_training_weight": 1.0,
+    "mbpp_training_weight": 8.0,
+    "kl_weight": 0.05,
+    "lora_rank": 16,
+    "lora_alpha": 32,
+    "learning_rate": 0.000001,
+    "max_steps": 256,
+    "checkpoints": [128, 256]
+  },
+  "validation": {
+    "repo": "google-research-datasets/mbpp",
+    "revision": "4bb6404fdc6cacfda99d4ac4205087b89d32030c",
+    "config": "sanitized",
+    "split": "test",
+    "source_rows": 257,
+    "rows_after_separation_and_dedup": 255,
+    "minimum_absolute_gain": 0.03,
+    "candidate_canonical_not_below_base": true,
+    "generation_errors": 0,
+    "maximum_candidate_evaluations": 2
+  },
+  "common": {
+    "effective_global_batch_size": 32,
+    "gpu_count": 4,
+    "max_sequence_length": 1536,
+    "thinking": "off",
+    "max_generation_tokens": 768,
+    "system_ram_stop_threshold_percent": 60
+  },
+  "frozen_domains": {
+    "math": "original Q4 route; full retention 0.8214876033057851",
+    "nlp": "P0-A10 step136; P0-A17 retention 0.7848101265822784"
+  },
+  "forbidden": [
+    "MBPP full validation or sanitized test in training",
+    "HumanEval or gate300 per-item feedback in training or checkpoint selection",
+    "P0-A18 per-item feedback in candidate design",
+    "changing Math or NLP weights",
+    "more than two checkpoint evaluations",
+    "lowering thresholds after validation"
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "gate": "P0-A16-CALC-MAWPS-DATA",
+  "check_version": "1.0",
+  "created_by": "model_compression/build_p0a16_data.py",
+  "created_ts": "2026-08-01T12:52:32.410675+00:00",
+  "status": "passed",
+  "source": {
+    "repo": "MU-NLPC/Calc-mawps",
+    "revision": "38c10053efeafd20ab6ff4e08c3ec17de26c19b7",
+    "file": "data/train-00000-of-00001-4bb1451333aad61c.parquet",
+    "sha256": "7a8dd8f7680b5e5ddb908cdfa33867c298d9225d1d7595a17d4771c09e482140",
+    "rows": 1089
+  },
+  "filter": {
+    "decimal_rows": 1044,
+    "fraction_rows_excluded": 45,
+    "history_overlap_excluded": 3,
+    "final_rows": 1041
+  },
+  "separation": {
+    "validation_used_for_training": false,
+    "historical_validation_reused": false,
+    "gate300_opened": false,
+    "formal_full_opened": false
+  },
+  "history_hashes": {
+    "data/p0a12/math_validation.jsonl": "de0ca4bfef6a88393c1b50f55927b31ccca0d0c3977225189c73f1f759fdad03",
+    "data/p0a13/math_validation.jsonl": "322741977e1b69e89ed792e04b438a9780dfa8a22522c280b91f3f2d2e6cb919",
+    "data/p0a14/math_validation.jsonl": "9347e73ebb3ac20d3b4a5e8e7fcb99daa4fb33d5ad3c6ee15c4a1da6e03770fe",
+    "data/p0a15/math_validation.jsonl": "588ab043f50fe8810940af41e34d74bc1c9ff0b5e8182e024367009fe5455698"
+  },
+  "output": {
+    "path": "data/p0a16/math_validation.jsonl",
+    "rows": 1041,
+    "sha256": "1417162e81b3f54ce69cb46e0be4c948437b4125130619d47159fded26879d24"
+  },
+  "errors": [],
+  "report_hash": "a7f1e12a34106075dac8d11b27ea6731699435b4223e1f76f3f6fabe08bec39f"
+}

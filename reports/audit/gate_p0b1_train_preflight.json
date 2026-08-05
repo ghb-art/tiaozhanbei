@@ -1,0 +1,106 @@
+{
+  "gate": "P0-A5-LORA-TRAIN",
+  "check_version": "1.0",
+  "created_by": "model_compression/train_p0a5_lora.py",
+  "created_ts": "2026-08-04T12:03:15.758704+00:00",
+  "status": "dry_run_passed",
+  "role": "student",
+  "mode": "training",
+  "candidate_index": 1,
+  "config": "configs/p0b1_converged_shared.json",
+  "config_hash": "51c3049d4e2b5ddbb7d88c49bd3f213f1b276a5ef3a4de248df83d842a275ad2",
+  "model_dir": "models/checkpoints/p0a4/student-shared-merged",
+  "train_data": "data/p0b1/train.jsonl",
+  "train_data_hash": "6523c848d4864fa0eeebd19fd5621eca2fa0d06a2eba1dd7ee894465b1cc00b7",
+  "validation_data": "data/p0b1/internal_validation.jsonl",
+  "validation_data_hash": "4f44375d9f8d04932d05a3e513c26850a05d52a4a0ff07efd152134dc1edb200",
+  "train_counts": {
+    "cmmlu": 30000,
+    "gsm8k": 7173,
+    "opencodeinstruct": 20000
+  },
+  "validation_counts": {
+    "cmmlu": 300,
+    "gsm8k": 200,
+    "opencodeinstruct": 300
+  },
+  "weighted_task_mass": {
+    "gsm8k": 0.29999999999995647,
+    "opencodeinstruct": 0.35000000000001463,
+    "cmmlu": 0.3500000000000289
+  },
+  "lora": {
+    "rank": 64,
+    "alpha": 128,
+    "dropout": 0.1,
+    "target_modules": [
+      "q_proj",
+      "k_proj",
+      "v_proj",
+      "o_proj",
+      "gate_proj",
+      "up_proj",
+      "down_proj"
+    ]
+  },
+  "optimization": {
+    "learning_rate": 2e-06,
+    "epochs": 4.0,
+    "max_seq_length": 1536,
+    "per_device_train_batch_size": 1,
+    "gradient_accumulation_steps": 8,
+    "deepspeed": "",
+    "deepspeed_stage": 0,
+    "cpu_offload": false,
+    "gradient_checkpointing": true,
+    "gradient_checkpointing_use_reentrant": false,
+    "checkpoint_steps": 250,
+    "save_total_limit": 2,
+    "resume_from_checkpoint": "",
+    "early_stopping": {
+      "enabled": true,
+      "metric": "eval_loss",
+      "eval_steps": 250,
+      "patience": 4,
+      "threshold": 0.002
+    },
+    "weight_decay": 0.05,
+    "warmup_ratio": 0.05,
+    "max_grad_norm": 1.0,
+    "label_smoothing": 0.02
+  },
+  "math_preservation": {
+    "enabled": false,
+    "method": "superseded_by_all_task_base_kl",
+    "kl_weight": 0.0,
+    "supervised_weight": 1.0,
+    "temperature": 2.0
+  },
+  "base_preservation": {
+    "enabled": true,
+    "method": "unconditional_adapter_disabled_base_kl",
+    "temperature": 2.0,
+    "kl_weight_by_dataset": {
+      "gsm8k": 0.25,
+      "opencodeinstruct": 0.12,
+      "cmmlu": 0.12
+    }
+  },
+  "formal_test_reference_count": 0,
+  "dependencies": {
+    "torch": "2.6.0+cu124",
+    "transformers": "4.51.3",
+    "accelerate": "1.14.0",
+    "deepspeed": "0.17.6",
+    "peft": "0.17.1"
+  },
+  "token_budget_scan": {
+    "status": "passed",
+    "scanned_rows": 57973,
+    "max_seq_length": 1536,
+    "maximum_observed_tokens": 1440,
+    "maximum_sample_id": "p0a44/code/ef803e571d97f198e3c97b2b"
+  },
+  "errors": [],
+  "report_hash": "7d6a363e415c03f1a50837a879c69c90ffdf7587404d707d649b121858e781b4"
+}

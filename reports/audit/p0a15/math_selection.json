@@ -1,0 +1,45 @@
+{
+  "gate": "P0-A15-MATH-SCALED-ADAPTER-SELECTION",
+  "check_version": "1.0",
+  "created_by": "scripts/select_p0a15_math.py",
+  "created_ts": "2026-08-01T12:46:48.834205+00:00",
+  "status": "failed",
+  "base_audit": "reports/audit/p0a15/base.json",
+  "base_audit_hash": "b50225095e925ad417434384f053e7ce46be33290387ea747f08980761c330ef",
+  "base_accuracy": 0.8439306358381503,
+  "minimum_gain": 0.02,
+  "minimum_canonical_format_rate": 0.95,
+  "candidates": [
+    {
+      "scale": 0.5,
+      "served_model_id": "p0a15-math-0p5",
+      "audit": "reports/audit/p0a15/scale_0p5.json",
+      "audit_hash": "2396476a591159c988cd85d9f293718feb37071d3d0a23c297265e83d76def07",
+      "accuracy": 0.8439306358381503,
+      "gain": 0.0,
+      "canonical_format_rate": 0.9884393063583815,
+      "eligible": false,
+      "failures": [
+        "gain=0.000000<required=0.020000"
+      ]
+    },
+    {
+      "scale": 1.0,
+      "served_model_id": "p0a15-math-1p0",
+      "audit": "reports/audit/p0a15/scale_1p0.json",
+      "audit_hash": "3a3a53c5927e9b990ca91469e36ca2fa94b106eb2555d018c2b9a67ce4d1b11b",
+      "accuracy": 0.8554913294797688,
+      "gain": 0.011560693641618491,
+      "canonical_format_rate": 0.9884393063583815,
+      "eligible": false,
+      "failures": [
+        "gain=0.011561<required=0.020000"
+      ]
+    }
+  ],
+  "selected_scale": null,
+  "selected_model_id": null,
+  "gate300_opened": false,
+  "formal_full_opened": false,
+  "report_hash": "b0bab0dfbb26046421fd1f13b9fcfca296c6d5f1788739226e9a574f16d5672a"
+}

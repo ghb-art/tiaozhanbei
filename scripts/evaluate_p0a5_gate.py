@@ -8,6 +8,7 @@ import subprocess
 import sys
 import tempfile
 import time
+import textwrap
 from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path
@@ -22,6 +23,9 @@ if str(MODEL_COMPRESSION) not in sys.path:
     sys.path.insert(0, str(MODEL_COMPRESSION))
 
 from build_p0a5_data import extract_code, safe_python, sandbox_limits, sha256_file, sha256_text
+
+
+EMPTY_THINK_ENVELOPE = re.compile(r"<think>\s*</think>", flags=re.DOTALL)
 
 
 class EvaluationError(RuntimeError):
@@ -97,6 +101,7 @@ def generate(
     messages: list[dict[str, str]],
     max_tokens: int,
     timeout: float,
+    enable_thinking: bool = False,
 ) -> tuple[str, float]:
     started = time.perf_counter()
     payload = request_json(
@@ -108,7 +113,7 @@ def generate(
             "top_p": 1,
             "max_tokens": max_tokens,
             "stream": False,
-            "chat_template_kwargs": {"enable_thinking": False},
+            "chat_template_kwargs": {"enable_thinking": bool(enable_thinking)},
         },
         timeout,
     )
@@ -127,7 +132,14 @@ def normalize_number(value: str) -> str:
 
 def extract_number(value: str) -> str:
     if "####" in value:
-        value = value.rsplit("####", 1)[1]
+        suffix = value.rsplit("####", 1)[1]
+        suffix_matches = re.findall(r"-?\d+(?:\.\d+)?", suffix.replace(",", ""))
+        if suffix_matches:
+            return normalize_number(suffix_matches[-1])
+        if re.search(r"<\s*(?:number|数字)\s*>", suffix, flags=re.IGNORECASE):
+            value = value.rsplit("####", 1)[0]
+        else:
+            value = suffix
     matches = re.findall(r"-?\d+(?:\.\d+)?", value.replace(",", ""))
     return normalize_number(matches[-1]) if matches else ""
 
@@ -135,17 +147,41 @@ def extract_number(value: str) -> str:
 def extract_choice(value: str) -> str:
     upper = value.strip().upper()
     matches = re.findall(
-        r"(?:最终答案|答案|ANSWER|OPTION|选项)\s*[:：]?\s*([ABCD])\b",
+        r"(?:最终答案|正确答案|答案|ANSWER|OPTION|选项)"
+        r"\s*(?:是|为|选择)?\s*[:：]?\s*([ABCD])(?![A-Z])",
         upper,
     )
     if matches:
         return matches[-1]
-    fallback = re.findall(r"\b([ABCD])\b", upper)
+    selected = re.findall(
+        r"(?:故选|应选|选择|选)\s*[:：]?\s*([ABCD])(?![A-Z])",
+        upper,
+    )
+    if selected:
+        return selected[-1]
+    fallback = re.findall(r"(?<![A-Z])([ABCD])(?![A-Z])", upper)
     return fallback[-1] if fallback else ""
 
 
+def normalize_code_response(value: str) -> str:
+    """P0-A5 gate protocol v3 normalization for code responses.
+
+    llama.cpp with `--reasoning off` can still emit an empty
+    `<think></think>` transport envelope before the real body, and models
+    trained for the HumanEval-v15 body-only contract may indent the body as
+    if it were still nested. Both artifacts are transport-level and are
+    removed/dedented deterministically, identically for every evaluated
+    model (baseline and student). No logits, prompts, tests or answers are
+    modified.
+    """
+    stripped = EMPTY_THINK_ENVELOPE.sub("", value)
+    # Dedent before stripping leading whitespace so the first body statement
+    # still defines the common indentation baseline for the whole block.
+    return textwrap.dedent(stripped).strip()
+
+
 def score_code(response: str, tests: list[str], timeout: float) -> tuple[bool, str]:
-    code = extract_code(response)
+    code = extract_code(normalize_code_response(response))
     source = code + "\n\n" + "\n".join(str(test) for test in tests) + "\n"
     if not safe_python(source):
         return False, "unsafe_or_invalid_python"
@@ -177,7 +213,10 @@ def score_code(response: str, tests: list[str], timeout: float) -> tuple[bool, s
 def build_messages(row: dict[str, Any]) -> list[dict[str, str]]:
     domain = str(row["domain"])
     if domain == "math":
-        instruction = "Solve the problem concisely. End with `#### <number>`."
+        instruction = (
+            "Solve the problem concisely. End with one line in the form `#### 42`, "
+            "replacing 42 with the actual numeric answer. Never output a placeholder."
+        )
     elif domain == "code":
         instruction = (
             "Return only a complete Python function implementation in one python code block. "
@@ -185,8 +224,8 @@ def build_messages(row: dict[str, Any]) -> list[dict[str, str]]:
         )
     elif domain == "nlp":
         instruction = (
-            "请简要分析这道中文选择题，并在最后一行严格输出“最终答案：X”，"
-            "其中X只能是A、B、C或D。"
+            "请简要分析这道中文选择题，并在最后一行按“最终答案：A”的格式作答；"
+            "请将A替换为实际选项，只能使用A、B、C或D，禁止输出占位符。"
         )
     else:
         raise EvaluationError(f"Unsupported domain: {domain}")
@@ -215,6 +254,14 @@ def score(row: dict[str, Any], response: str, code_timeout: float) -> tuple[bool
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Evaluate the single P0-A5 300-item gate.")
     parser.add_argument("--manifest", default="data/capability_v2/gate300.jsonl")
+    parser.add_argument(
+        "--rescore-trace",
+        action="store_true",
+        help="Deterministically re-score an existing gate trace with the current "
+        "protocol (v3: strip empty think envelope + dedent code) without re-running "
+        "the endpoint.",
+    )
+    parser.add_argument("--trace", help="Input gate trace to re-score.")
     parser.add_argument("--endpoint", required=True)
     parser.add_argument("--model-id", default="")
     parser.add_argument("--candidate-name", required=True)
@@ -228,9 +275,90 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
+def rescore_trace(args: argparse.Namespace) -> int:
+    """Deterministic re-score of an existing trace under protocol v3."""
+    if not args.trace:
+        raise EvaluationError("--rescore-trace requires --trace")
+    manifest_rows = read_jsonl(resolve_path(args.manifest))
+    manifest_by_id = {str(row["sample_id"]): row for row in manifest_rows}
+    trace_path = resolve_path(args.trace)
+    trace_rows = read_jsonl(trace_path)
+    created_ts = datetime.now(timezone.utc).isoformat()
+    rescored: list[dict[str, Any]] = []
+    for row in trace_rows:
+        manifest_row = manifest_by_id.get(str(row["sample_id"]))
+        if manifest_row is None:
+            raise EvaluationError(
+                f"Trace row not found in manifest: {row.get('sample_id')}"
+            )
+        scoring_row = {"domain": row["domain"], **manifest_row}
+        correct, prediction, detail = score(
+            scoring_row,
+            str(row.get("response_text", "")),
+            args.code_timeout_sec,
+        )
+        updated = dict(row)
+        updated["capability_eval_version"] = "p0a5-gate300-v3"
+        updated["created_ts"] = created_ts
+        updated["prediction"] = prediction
+        updated["correct"] = correct
+        updated["score_detail"] = detail
+        updated["rescore_protocol"] = "think-strip+dedent"
+        updated["row_hash"] = sha256_text(
+            json.dumps(updated, ensure_ascii=False, sort_keys=True)
+        )
+        rescored.append(updated)
+
+    output_path = resolve_path(args.output_trace)
+    write_jsonl(output_path, rescored)
+    correct_counts = Counter(
+        str(row["domain"]) for row in rescored if row["correct"] is True
+    )
+    generation_errors = sum(bool(row["generation_error"]) for row in rescored)
+    accuracy = {
+        domain: correct_counts[domain] / 100 for domain in ("math", "code", "nlp")
+    }
+    audit = {
+        "gate": "P0-A5-GATE300-RESCORE",
+        "check_version": "1.2",
+        "protocol": "p0a5-gate300-v3",
+        "rescore_protocol": "think-strip+dedent",
+        "created_by": "scripts/evaluate_p0a5_gate.py",
+        "created_ts": created_ts,
+        "status": "passed" if generation_errors == 0 else "failed",
+        "candidate_name": args.candidate_name,
+        "source_trace": display_path(trace_path),
+        "source_trace_hash": sha256_file(trace_path),
+        "manifest": display_path(resolve_path(args.manifest)),
+        "manifest_hash": sha256_file(resolve_path(args.manifest)),
+        "output_trace": display_path(output_path),
+        "output_trace_hash": sha256_file(output_path),
+        "counts": dict(sorted(Counter(str(r["domain"]) for r in rescored).items())),
+        "correct_counts": dict(sorted(correct_counts.items())),
+        "accuracy_by_domain": accuracy,
+        "generation_error_count": generation_errors,
+        "code_timeout_sec": args.code_timeout_sec,
+    }
+    audit["report_hash"] = sha256_text(
+        json.dumps(audit, ensure_ascii=False, sort_keys=True)
+    )
+    audit_path = resolve_path(args.audit)
+    audit_path.parent.mkdir(parents=True, exist_ok=True)
+    audit_path.write_text(
+        json.dumps(audit, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
+    print(f"Wrote {display_path(output_path)}")
+    print(f"Wrote {display_path(audit_path)}")
+    print(f"rescore accuracy={accuracy} generation_errors={generation_errors}")
+    return 0 if audit["status"] == "passed" else 1
+
+
 def main() -> int:
     args = parse_args()
     try:
+        if args.rescore_trace:
+            return rescore_trace(args)
         manifest_path = resolve_path(args.manifest)
         rows = read_jsonl(manifest_path)
         counts = Counter(str(row.get("domain", "")) for row in rows)
@@ -266,7 +394,7 @@ def main() -> int:
                 detail = str(exc)
                 generation_error = f"{type(exc).__name__}: {exc}"
             result = {
-                "capability_eval_version": "p0a5-gate300-v1",
+                "capability_eval_version": "p0a5-gate300-v3",
                 "created_ts": created_ts,
                 "candidate_name": args.candidate_name,
                 "served_model_id": model_id,
@@ -299,7 +427,8 @@ def main() -> int:
         accuracy = {domain: correct_counts[domain] / 100 for domain in ("math", "code", "nlp")}
         audit = {
             "gate": "P0-A5-GATE300-EVAL",
-            "check_version": "1.0",
+            "check_version": "1.2",
+            "protocol": "p0a5-gate300-v3",
             "created_by": "scripts/evaluate_p0a5_gate.py",
             "created_ts": created_ts,
             "status": "passed" if generation_errors == 0 else "failed",

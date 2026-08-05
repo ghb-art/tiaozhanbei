@@ -1,0 +1,37 @@
+{
+  "gate": "P0-A30-NLP-SCALE-DATA",
+  "check_version": "1.0",
+  "created_by": "model_compression/build_p0a30_nlp_scale_data.py",
+  "created_ts": "2026-08-01T17:46:54.149317+00:00",
+  "status": "passed",
+  "source_split": "CMMLU dev only",
+  "formal_test_opened": false,
+  "frozen_gate_rows_excluded": 100,
+  "validation_rows": 235,
+  "validation_subjects": 67,
+  "minimum_rows_per_subject": 2,
+  "validation": "data/p0a30/nlp_validation.jsonl",
+  "validation_hash": "706a4082891e40283d11e69257ac77dd9749f58ddc8793e414a1ee6cb045075a",
+  "source_adapter": "models/checkpoints/p0a10/nlp-specialist/checkpoint-136",
+  "source_adapter_weights_hash": "c6e1804eb931e098f6b04bcc17c9366e755c3697988acccd01dc9fb981a8d0aa",
+  "variants": {
+    "scale_0p75": {
+      "path": "models/adapters/p0a30/nlp-step136-scale-0p75",
+      "rank": 16,
+      "alpha": 24,
+      "scale": 0.75,
+      "weights_hash": "c6e1804eb931e098f6b04bcc17c9366e755c3697988acccd01dc9fb981a8d0aa",
+      "config_hash": "c6df3065e478a1a536e5d96c5ec3975d77dae614d98f56a848d73bf969c999d6"
+    },
+    "scale_1p25": {
+      "path": "models/adapters/p0a30/nlp-step136-scale-1p25",
+      "rank": 16,
+      "alpha": 40,
+      "scale": 1.25,
+      "weights_hash": "c6e1804eb931e098f6b04bcc17c9366e755c3697988acccd01dc9fb981a8d0aa",
+      "config_hash": "ad84f5b232b4e5dca887c2eb80c14c916a18c4691eb65897739dca009eec81d0"
+    }
+  },
+  "errors": [],
+  "report_hash": "313c6bff45014fc6e90b6833d9bd7d4a86e487d50510652309d8498fe381c884"
+}

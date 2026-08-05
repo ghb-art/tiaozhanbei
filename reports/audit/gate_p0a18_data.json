@@ -1,0 +1,43 @@
+{
+  "gate": "P0-A18-MBPP-DATA",
+  "check_version": "1.0",
+  "created_by": "model_compression/build_p0a18_data.py",
+  "created_ts": "2026-08-01T13:17:56.936737+00:00",
+  "status": "passed",
+  "source": {
+    "repo": "google-research-datasets/mbpp",
+    "revision": "4bb6404fdc6cacfda99d4ac4205087b89d32030c",
+    "file": "full/validation-00000-of-00001.parquet",
+    "source_rows": 90,
+    "source_sha256": "3f0ec060987432d99fe8fb409d31e6c67445b208a01741c5583517c80a10fe80",
+    "readme_sha256": "6377d5c76ba46b9e650daa6d5eb592e671c9b15586e39f23f50ed9bf2ac54cf6",
+    "declared_license": "cc-by-4.0"
+  },
+  "protocol": {
+    "public_tests_in_prompt": 3,
+    "tests_executed_per_problem": 3,
+    "reference_code_written_to_manifest": false,
+    "mbpp_validation_used_for_training": false,
+    "maximum_candidate_evaluations": 2
+  },
+  "separation": {
+    "p0a11_train_description_overlap": 0,
+    "p0a11_train_full_prompt_overlap": 0,
+    "p0a11_validation_description_overlap": 0,
+    "p0a11_validation_full_prompt_overlap": 0,
+    "gate300_loaded": false,
+    "formal_full_loaded": false
+  },
+  "inputs": {
+    "configs/p0a18_code_transfer.json": "d0f330950eebd807a704874c3781d13878a8aadd1e309dd6873b647d383daff3",
+    "data/p0a11/code_train.jsonl": "0a195ee51b1937341d4b967685a50f7bffd2434c93dff1deb0c0b0326bf3e6e7",
+    "data/p0a11/code_validation.jsonl": "780a353068bb97b202dce7d62ed03996acf1bd5ad6ee5da0421515d0c3017dcf"
+  },
+  "output": {
+    "path": "data/p0a18/code_validation.jsonl",
+    "rows": 90,
+    "sha256": "05c9a664de68107347bd8b2c2b7480862aba7c22039dd39d488354e85628ffef"
+  },
+  "errors": [],
+  "report_hash": "e93860e354eaf4e2ef60b4f3ad62c9986975e25f9e55979316afc1787c1a9c7e"
+}

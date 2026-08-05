@@ -1,0 +1,38 @@
+{
+  "stage": "P0-A44",
+  "created_ts": "2026-08-03T04:45:09.673966+00:00",
+  "source_split_manifest_hash": "7c607ebd5846649ab563c50cd85d3693183f99352b509bb9b9232e3739cc2b77",
+  "source_ordered_sample_ids_hash": "c5ac9b1b4438849ee0036a83e0e8fa13f88f103bbe757fb11a9b28ca2ca2b5a0",
+  "counts": {
+    "gsm8k": 1319,
+    "humaneval": 164,
+    "cmmlu": 11582
+  },
+  "split_hashes": {
+    "gsm8k": "9fe37582ab4a11297d31b547e82abfcf61ada48d92377ae5fca987e9a782b329",
+    "humaneval": "02b13d6fabddc54be8e3e22499bdeaf3d9cb8efb82571582899c264972633943",
+    "cmmlu": "e4047215612be2c88bec0df899ec7fb6af9c3d716bb92a4b4c4a5627b4872bb8"
+  },
+  "prompt_style": "v15",
+  "feedback_policy": "aggregate_only_no_retraining",
+  "selected_routes": {
+    "math": {
+      "step": 0,
+      "adapter": ""
+    },
+    "code": {
+      "step": 0,
+      "adapter": "",
+      "base_correct": 596,
+      "candidate_correct": 467
+    },
+    "nlp": {
+      "step": 0,
+      "adapter": "",
+      "base_correct": 334,
+      "candidate_correct": 332,
+      "not_worse_each_validation": false
+    }
+  },
+  "manifest_hash": "4053f64a15a3b3a7acbbdc8ad07914083e13357fe1f29dbdb4829d3151534243"
+}

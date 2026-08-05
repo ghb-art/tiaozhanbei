@@ -1,0 +1,21 @@
+{
+  "gate": "P0-A44-GGUF-ADAPTER-PREPARE",
+  "created_ts": "2026-08-03T04:36:26.871625+00:00",
+  "status": "passed",
+  "outputs": {
+    "code": {
+      "step": 176,
+      "path": "models/adapters/p0a44/code-step-176-f16.gguf",
+      "bytes": 34892672,
+      "sha256": "fe68037585b2d33c2a09f8e6bbc07a9ed0a2a95c0ce6e4d9ad1a0db3faf0571f"
+    },
+    "nlp": {
+      "step": 64,
+      "path": "models/adapters/p0a44/nlp-step-64-f16.gguf",
+      "bytes": 34892672,
+      "sha256": "18bf7eac74b66713028dc4de2359df70742a920a8a67a2cbe72e695af2425985"
+    }
+  },
+  "formal_test_items_loaded": 0,
+  "report_hash": "d904cae712ebc1702c0016cb0eca3a2d196826cb0a711180fe7401e019f7b80e"
+}

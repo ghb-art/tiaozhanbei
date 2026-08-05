@@ -1,0 +1,74 @@
+{
+  "gate": "P0-A6-INTERNAL-EVAL",
+  "check_version": "1.0",
+  "created_by": "scripts/evaluate_p0a6_internal.py",
+  "created_ts": "2026-07-31T16:50:58.773736+00:00",
+  "status": "passed",
+  "candidate_name": "p0a8-router-step-128-full",
+  "endpoint": "http://127.0.0.1:18462",
+  "served_model_id": "domain_routed",
+  "served_model_id_by_domain": {
+    "math": "p0a8-base",
+    "code": "p0a8-code-128",
+    "nlp": "p0a7-nlp-188"
+  },
+  "manifest": "data/p0a6/full_validation.jsonl",
+  "manifest_hash": "452a728d7e1ebb3bc40233b8deef8996b45febbbfbb4e2e9166a23644956077c",
+  "sidecar_manifest": "data/p0a6/manifest.json",
+  "sidecar_manifest_hash": "799201e840c3ccfc030d62ada993fb5c8a59245d31444dad797295e5874d979a",
+  "declared_manifest_hash": "452a728d7e1ebb3bc40233b8deef8996b45febbbfbb4e2e9166a23644956077c",
+  "expected_counts_source": "data/p0a6/manifest.json:validation.full",
+  "expected_counts": {
+    "math": 200,
+    "code": 186,
+    "nlp": 260
+  },
+  "actual_counts": {
+    "math": 200,
+    "code": 186,
+    "nlp": 260
+  },
+  "correct_counts": {
+    "math": 154,
+    "code": 103,
+    "nlp": 143
+  },
+  "accuracy_by_domain": {
+    "math": 0.77,
+    "code": 0.553763440860215,
+    "nlp": 0.55
+  },
+  "macro_accuracy": 0.6245878136200717,
+  "canonical_format_counts": {
+    "math": 197,
+    "code": 185,
+    "nlp": 259
+  },
+  "canonical_format_rate_by_domain": {
+    "math": 0.985,
+    "code": 0.9946236559139785,
+    "nlp": 0.9961538461538462
+  },
+  "macro_canonical_format_rate": 0.9919258340226083,
+  "generation_error_count": 0,
+  "generation_error_count_by_domain": {
+    "math": 0,
+    "code": 0,
+    "nlp": 0
+  },
+  "mean_latency_ms_by_domain": {
+    "math": 1122.6867110046442,
+    "code": 1265.0419512262283,
+    "nlp": 355.8436285527513
+  },
+  "max_tokens": {
+    "math": 512,
+    "code": 768,
+    "nlp": 256
+  },
+  "request_timeout_sec": 120,
+  "code_timeout_sec": 5,
+  "output_trace": "reports/audit/p0a6/p0a8_router_full_trace.jsonl",
+  "output_trace_hash": "7b9b67e1ffdaa7abe6dfe9d640222b87ddfb47fc91e6f295cd72bc11511521a1",
+  "report_hash": "d9c8d5ca0e700d77831bde79727e86db72a4941d60399fedf1d98817f06a2fc0"
+}

@@ -1,0 +1,34 @@
+{
+  "accepted_count": 1112,
+  "check_version": "1.0",
+  "created_by": "model_compression/generate_p0a34_coig_mcq.py",
+  "created_ts": "2026-08-01T21:44:21.799080+00:00",
+  "errors": [],
+  "gate": "P0-A34-COIG-MCQ-TEACHER-DATA",
+  "law_cap": 680,
+  "output": "data/p0a34/coig_verified_train.jsonl",
+  "output_hash": "c07d3ca08999f15a6269970c702ab3cf80299289de328593ecdf823c46df6dbc",
+  "policy": {
+    "acceptance": "teacher final exactly matches parsed source human label",
+    "formal_cmmlu_test_opened": false,
+    "teacher_prompt_contains_source_label": false
+  },
+  "rejection_counts": {
+    "invalid_final": 1,
+    "teacher_label_mismatch": 327
+  },
+  "request_count": 1440,
+  "requests": "data/distill/p0a34_coig_mcq_requests.jsonl",
+  "requests_hash": "e813ab250cf999e6489ab8f8cc0f93995898315917070c406cbb0281af196854",
+  "selected_count": 820,
+  "selected_group_counts": {
+    "humanities": 14,
+    "law": 680,
+    "science_technical": 59,
+    "social_science": 67
+  },
+  "status": "passed",
+  "teacher_model_id": "p0a34-teacher14b",
+  "trace": "data/distill/p0a34_coig_mcq_trace.jsonl",
+  "trace_hash": "1e2ebef5708a5755ebc6b49ffb1b6dc5ddc5b6f05f10454ea514b38dc7218972"
+}

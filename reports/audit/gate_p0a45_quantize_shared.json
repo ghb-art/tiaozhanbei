@@ -1,0 +1,127 @@
+{
+  "gate": "P0-A45-SIMPLE-SHARED-QUANTIZATION",
+  "check_version": "1.0",
+  "created_by": "scripts/prepare_p0a5_quantized_student.py",
+  "created_ts": "2026-08-03T09:43:22.172051+00:00",
+  "status": "passed",
+  "candidate": 1,
+  "inputs": {
+    "config": "configs/p0a45_simple_shared.json",
+    "config_hash": "029a95f2dde915813bebc09f22dbb0776a1c1376d55c9b1c9f9a631cfa37efef",
+    "train_audit": "reports/audit/gate_p0a45_train_shared.json",
+    "train_audit_hash": "806818b22fef7ac977b22ab006fef5ce2290bc33a5566b60a2e7237db6a31abc",
+    "merge_audit": "reports/audit/gate_p0a45_merge_shared.json",
+    "merge_audit_hash": "b93285e1725a6314757413f680f04224a9e099fd1272fc444626aed82c85b570",
+    "merged_hf": "models/checkpoints/p0a45/shared-merged",
+    "merged_hf_hash": "c377248654c6a8e0f66982451ea5ebc4f8d47f4f31179513dc80d19c5ba5a6d1",
+    "corpus_audit": "reports/audit/gate_p0a45_imatrix_calibration.json",
+    "corpus_audit_hash": "a0d7eebbef41042fe5bc7cefcaee817b871f5fc0040384d7f8d7f6b769e17687",
+    "corpus": "data/p0a45/imatrix_calibration.txt",
+    "corpus_hash": "c79c62666524f1f9ff6b393b11fa1a688275012bf1c55baf5682263764e5ca53"
+  },
+  "settings": {
+    "weight_type": "Q4_K_M",
+    "kv_cache_type_for_runtime": "q8_0",
+    "imatrix_gpu": "0",
+    "imatrix_chunks": 170,
+    "imatrix_ctx_size": 512,
+    "imatrix_batch_size": 2048,
+    "imatrix_ubatch_size": 512,
+    "imatrix_threads": 8,
+    "max_q4_bytes": 1200000000
+  },
+  "tools": {
+    "llama_cpp_head": "2d973636e292ee6f75fadcf08d29cb33511f509f",
+    "convert_script": "external/llama.cpp/convert_hf_to_gguf.py",
+    "convert_script_hash": "c819f18fb22927b49fabc3b35d1c9e21ee638b3817eccd1bd4efbcc7116eeb4d",
+    "imatrix_bin": "external/llama.cpp/build/bin/llama-imatrix",
+    "imatrix_bin_hash": "8039c9b5ec87916605aac0d1770ae7f75cfd8480674c50419dc1bfaea1a6d19c",
+    "quantize_bin": "external/llama.cpp/build/bin/llama-quantize",
+    "quantize_bin_hash": "fe4a78d1321df296ded11c3df4bae2087f4cd5346fff009d018d536f80c19e74"
+  },
+  "stages": {
+    "f16": {
+      "status": "passed",
+      "path": "models/quantized/p0a45-simple-shared-f16.gguf",
+      "bytes": 3447348960,
+      "sha256": "ed5c988577bfaef24184b2eabcbcc2c3025b8b933a9082eeb15360d57252fcc5"
+    },
+    "imatrix": {
+      "status": "passed",
+      "path": "models/quantized/p0a45-simple-shared-imatrix.gguf",
+      "bytes": 2094624,
+      "sha256": "b7d4e3c73c25c64d0a3383b806f742fe489aaf08dbae6f51198e3bbd4bdb5921"
+    },
+    "q4_k_m": {
+      "status": "passed",
+      "path": "models/quantized/p0a45-simple-shared-q4_k_m.gguf",
+      "bytes": 1107408960,
+      "sha256": "a89e75a0a6727456655109ec205344a13c9489db1bbbebcb47d49c4150b71d49",
+      "within_size_limit": true
+    }
+  },
+  "commands": [
+    {
+      "stage": "f16",
+      "command": [
+        "/workspace/project_tiaozhanbei/tiaozhanbei/.venv/bin/python",
+        "/workspace/project_tiaozhanbei/tiaozhanbei/external/llama.cpp/convert_hf_to_gguf.py",
+        "/workspace/project_tiaozhanbei/tiaozhanbei/models/checkpoints/p0a45/shared-merged",
+        "--outfile",
+        "/workspace/project_tiaozhanbei/tiaozhanbei/models/quantized/p0a45-simple-shared-f16.gguf.partial",
+        "--outtype",
+        "f16"
+      ],
+      "started_ts": "2026-08-03T09:43:22.749987+00:00",
+      "finished_ts": "2026-08-03T09:43:43.180286+00:00",
+      "returncode": 0
+    },
+    {
+      "stage": "imatrix",
+      "command": [
+        "/workspace/project_tiaozhanbei/tiaozhanbei/external/llama.cpp/build/bin/llama-imatrix",
+        "--model",
+        "/workspace/project_tiaozhanbei/tiaozhanbei/models/quantized/p0a45-simple-shared-f16.gguf",
+        "--file",
+        "/workspace/project_tiaozhanbei/tiaozhanbei/data/p0a45/imatrix_calibration.txt",
+        "--output",
+        "/workspace/project_tiaozhanbei/tiaozhanbei/models/quantized/p0a45-simple-shared-imatrix.gguf.partial",
+        "--output-format",
+        "gguf",
+        "--chunks",
+        "170",
+        "--ctx-size",
+        "512",
+        "--batch-size",
+        "2048",
+        "--ubatch-size",
+        "512",
+        "--threads",
+        "8",
+        "--n-gpu-layers",
+        "all",
+        "--no-ppl"
+      ],
+      "started_ts": "2026-08-03T09:43:52.251505+00:00",
+      "finished_ts": "2026-08-03T09:45:39.823119+00:00",
+      "returncode": 0
+    },
+    {
+      "stage": "q4_k_m",
+      "command": [
+        "/workspace/project_tiaozhanbei/tiaozhanbei/external/llama.cpp/build/bin/llama-quantize",
+        "--imatrix",
+        "/workspace/project_tiaozhanbei/tiaozhanbei/models/quantized/p0a45-simple-shared-imatrix.gguf",
+        "/workspace/project_tiaozhanbei/tiaozhanbei/models/quantized/p0a45-simple-shared-f16.gguf",
+        "/workspace/project_tiaozhanbei/tiaozhanbei/models/quantized/p0a45-simple-shared-q4_k_m.gguf.partial",
+        "Q4_K_M"
+      ],
+      "started_ts": "2026-08-03T09:45:39.840229+00:00",
+      "finished_ts": "2026-08-03T09:46:09.836971+00:00",
+      "returncode": 0
+    }
+  ],
+  "errors": [],
+  "updated_ts": "2026-08-03T09:46:12.784859+00:00",
+  "report_hash": "d961394fe5276be8977b78a8db6125cf1e275ee8c5294d005aee563b309ef4a3"
+}

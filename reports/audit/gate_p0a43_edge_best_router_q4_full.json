@@ -1,0 +1,53 @@
+{
+  "gate": "CAPABILITY-STUDENT-OFFICIAL-FULL",
+  "check_version": "2.0",
+  "created_by": "scripts/merge_capability_shards.py",
+  "created_ts": "2026-08-03T02:43:48.797208+00:00",
+  "status": "passed",
+  "role": "student",
+  "model_name": "Edge-Best-Router-Q4_K_M-Q8KV-CodeP0A25-NLPP0A10",
+  "split_manifest": "data/splits/p0a43_edge_best_full/manifest.json",
+  "split_manifest_hash": "7c607ebd5846649ab563c50cd85d3693183f99352b509bb9b9232e3739cc2b77",
+  "input_shards": [
+    {
+      "path": "reports/sealed/p0a43/shards/math.jsonl",
+      "sha256": "a7f155d1e63940561d36273e0f208e81e95c6a0e3e802a8b0aa004660257b76c"
+    },
+    {
+      "path": "reports/sealed/p0a43/shards/code.jsonl",
+      "sha256": "5b65a98bf20d2a1372dabfc44bb60b37de742202bb898fa73d7fe93c04ef11c3"
+    },
+    {
+      "path": "reports/sealed/p0a43/shards/nlp_shard_0.jsonl",
+      "sha256": "0552d30c00faed132a2699a7522bae4121cd03386e5f04146d604bb67e6475a6"
+    },
+    {
+      "path": "reports/sealed/p0a43/shards/nlp_shard_1.jsonl",
+      "sha256": "ad06d9797ea3f200c0cbcc9c27adc073f35b3612bf54de8a50d1739b7e1a87a5"
+    }
+  ],
+  "sealed_trace": "reports/sealed/p0a43/edge_best_router_q4_full.jsonl",
+  "sealed_trace_hash": "2bb2c4789abdee1e3e7b0bc7830012b3fb9cb50347d5e784d151b15765181507",
+  "sample_count": 13065,
+  "dataset_counts": {
+    "gsm8k": 1319,
+    "humaneval": 164,
+    "cmmlu": 11582
+  },
+  "correct_counts": {
+    "gsm8k": 999,
+    "cmmlu": 5451
+  },
+  "accuracy_by_dataset": {
+    "gsm8k": 0.7573919636087946,
+    "humaneval": 0.0,
+    "cmmlu": 0.47064410291832154
+  },
+  "macro_accuracy": 0.4093453555090387,
+  "generation_error_count": 0,
+  "duplicate_sample_count": 0,
+  "missing_sample_count": 0,
+  "extra_sample_count": 0,
+  "item_level_feedback_allowed_for_training": false,
+  "report_hash": "48b537d00c586782172ff6afde301dd45bd0a8215436ebf31e5a0b378920079b"
+}

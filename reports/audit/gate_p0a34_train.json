@@ -1,0 +1,223 @@
+{
+  "gate": "P0-A6-STUDENT-TRAIN",
+  "check_version": "1.0",
+  "created_by": "model_compression/train_p0a6_student.py",
+  "created_ts": "2026-08-01T21:49:21.037897+00:00",
+  "status": "passed",
+  "errors": [],
+  "model_dir": "models/checkpoints/p0a4/student-shared-merged",
+  "train_data": "data/p0a34/train.jsonl",
+  "train_data_hash": "5b56671be823e8b1fbfc02d1f8fd38926760b236b0ac2d3ecf8b3d5ead8fe095",
+  "train_rows": 3155,
+  "focus": {
+    "focus_domain": "nlp",
+    "source_rows": 3155,
+    "selected_rows": 3155,
+    "source_domain_counts": {
+      "nlp": 3155
+    },
+    "selected_domain_counts": {
+      "nlp": 3155
+    },
+    "selected_dataset_counts": {
+      "ceval_rationale_train": 1335,
+      "coig_mcq_verified": 820,
+      "mmlu_aux_chinese": 1000
+    },
+    "training_weight_mean_before": 1.5198098256735342,
+    "training_weight_normalization_divisor": 1.5198098256735342,
+    "training_weight_mean_after": 0.9999999999999262,
+    "mcq_answer_token_weight_multiplier": 1.0,
+    "mcq_answer_token_weight_multiplied_rows": 0
+  },
+  "domain_counts": {
+    "nlp": 3155
+  },
+  "kl_weight_by_domain": {
+    "nlp": {
+      "minimum": 0.1,
+      "maximum": 0.2,
+      "mean": 0.1423137876386704
+    }
+  },
+  "answer_token_weight_rows": {
+    "nlp": 3155
+  },
+  "formal_test_reference_count": 0,
+  "optimization": {
+    "lora_rank": 16,
+    "lora_alpha": 32,
+    "lora_dropout": 0.05,
+    "target_modules": [
+      "q_proj",
+      "k_proj",
+      "v_proj",
+      "o_proj",
+      "gate_proj",
+      "up_proj",
+      "down_proj"
+    ],
+    "learning_rate": 4e-07,
+    "bf16": true,
+    "max_seq_length": 1536,
+    "max_steps": 128,
+    "checkpoint_steps": 64,
+    "save_total_limit": null,
+    "per_device_train_batch_size": 1,
+    "gradient_accumulation_steps": 8,
+    "expected_world_size": 4,
+    "observed_world_size": 4,
+    "effective_global_batch_size": 32,
+    "warmup_ratio": 0.03,
+    "max_grad_norm": 1.0,
+    "gradient_checkpointing": true,
+    "gradient_checkpointing_use_reentrant": false,
+    "resume_from_checkpoint": "",
+    "init_adapter": "models/checkpoints/p0a32/nlp-continuation/checkpoint-128",
+    "init_adapter_file_hashes": {
+      "adapter_config.json": "2b3a8276f552d0dae60cc8dc39bde673da18882af84c270b9bbc1e3b873bb3cd",
+      "adapter_model.safetensors": "779c433024e1b06319c491c1f7b7f4c3d7b5e16faa5f2a5ca18215ef1b0e9534"
+    }
+  },
+  "preservation": {
+    "method": "all_task_adapter_disabled_base_kl",
+    "direction": "KL(base||student)",
+    "temperature": 2.0,
+    "mask": "assistant_answer_tokens_only",
+    "reference_forward": "unconditional_on_every_rank_and_batch",
+    "supervised_weight": "1-kl_weight_per_row"
+  },
+  "dependencies": {
+    "torch": "2.6.0+cu124",
+    "transformers": "4.51.3",
+    "accelerate": "1.14.0",
+    "peft": "0.17.1"
+  },
+  "token_budget_scan": {},
+  "report_hash": "52ea410e93a13a85a1d54de8ffb6f9b84bbcf619146f09d877e040cc0c08762b",
+  "global_step": 128,
+  "final_checkpoint": "models/checkpoints/p0a34/nlp-chinese-exam/checkpoint-128",
+  "published_files": [
+    "adapter_config.json",
+    "adapter_model.safetensors",
+    "README.md"
+  ],
+  "train_metrics": {
+    "train_runtime": 598.1076,
+    "train_samples_per_second": 6.848,
+    "train_steps_per_second": 0.214,
+    "total_flos": 7102200618680320.0,
+    "train_loss": 5.946968108415604,
+    "epoch": 1.3041825095057034
+  },
+  "domain_loss_summary": {
+    "math": {
+      "examples_seen": 0,
+      "mean_sft_loss": null,
+      "mean_kl_base_to_student": null,
+      "mean_combined_loss": null
+    },
+    "code": {
+      "examples_seen": 0,
+      "mean_sft_loss": null,
+      "mean_kl_base_to_student": null,
+      "mean_combined_loss": null
+    },
+    "nlp": {
+      "examples_seen": 4108,
+      "mean_sft_loss": 0.8592458031491215,
+      "mean_kl_base_to_student": 0.23190853827403535,
+      "mean_combined_loss": 0.755675276710553
+    }
+  },
+  "domain_loss_log": [
+    {
+      "step": 10,
+      "nlp_sft_loss": 0.8493398991879075,
+      "nlp_kl_base_to_student": 0.23092571843299084,
+      "nlp_combined_loss": 0.7460925937397406,
+      "nlp_examples": 320
+    },
+    {
+      "step": 20,
+      "nlp_sft_loss": 0.8655377107905224,
+      "nlp_kl_base_to_student": 0.22974807195714675,
+      "nlp_combined_loss": 0.7615046484861523,
+      "nlp_examples": 320
+    },
+    {
+      "step": 30,
+      "nlp_sft_loss": 0.8476400745566934,
+      "nlp_kl_base_to_student": 0.21830380915198475,
+      "nlp_combined_loss": 0.7415474229026586,
+      "nlp_examples": 320
+    },
+    {
+      "step": 40,
+      "nlp_sft_loss": 0.8573951088590548,
+      "nlp_kl_base_to_student": 0.23964942357852123,
+      "nlp_combined_loss": 0.7562914692331105,
+      "nlp_examples": 320
+    },
+    {
+      "step": 50,
+      "nlp_sft_loss": 0.8561295632272958,
+      "nlp_kl_base_to_student": 0.2349356432852801,
+      "nlp_combined_loss": 0.7566123151220381,
+      "nlp_examples": 320
+    },
+    {
+      "step": 60,
+      "nlp_sft_loss": 0.8809327053604648,
+      "nlp_kl_base_to_student": 0.22694499887293204,
+      "nlp_combined_loss": 0.7720393869094551,
+      "nlp_examples": 320
+    },
+    {
+      "step": 70,
+      "nlp_sft_loss": 0.8415495839668438,
+      "nlp_kl_base_to_student": 0.22315076788072474,
+      "nlp_combined_loss": 0.7350368673913181,
+      "nlp_examples": 320
+    },
+    {
+      "step": 80,
+      "nlp_sft_loss": 0.8889361003413796,
+      "nlp_kl_base_to_student": 0.22373862167587505,
+      "nlp_combined_loss": 0.779084576945752,
+      "nlp_examples": 320
+    },
+    {
+      "step": 90,
+      "nlp_sft_loss": 0.8673187954816968,
+      "nlp_kl_base_to_student": 0.2364537459157873,
+      "nlp_combined_loss": 0.7648389851208777,
+      "nlp_examples": 320
+    },
+    {
+      "step": 100,
+      "nlp_sft_loss": 0.8554465032171413,
+      "nlp_kl_base_to_student": 0.24459166388891368,
+      "nlp_combined_loss": 0.7563280758100102,
+      "nlp_examples": 332
+    },
+    {
+      "step": 110,
+      "nlp_sft_loss": 0.8527207302162424,
+      "nlp_kl_base_to_student": 0.2464198249625042,
+      "nlp_combined_loss": 0.7541936643654481,
+      "nlp_examples": 320
+    },
+    {
+      "step": 120,
+      "nlp_sft_loss": 0.8597953306278214,
+      "nlp_kl_base_to_student": 0.23170706795644946,
+      "nlp_combined_loss": 0.7553558507934213,
+      "nlp_examples": 320
+    }
+  ],
+  "retained_checkpoints": [
+    "models/checkpoints/p0a34/nlp-chinese-exam/checkpoint-64",
+    "models/checkpoints/p0a34/nlp-chinese-exam/checkpoint-128"
+  ]
+}

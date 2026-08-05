@@ -1,0 +1,26 @@
+{
+  "gate": "P0-A48-NLP-CURRICULUM",
+  "check_version": "1.0",
+  "created_by": "model_compression/build_p0a48_nlp_curriculum.py",
+  "created_ts": "2026-08-03T16:25:21.865853+00:00",
+  "status": "passed",
+  "source_rows": 3939,
+  "student_failure_rows": 1540,
+  "correct_replay_rows": 770,
+  "curriculum_rows": 2310,
+  "failure_weight": 2.0,
+  "correct_replay_weight": 1.0,
+  "kl_weight": 0.1,
+  "answer_token_weight": 1.0,
+  "inputs": {
+    "data/p0a44/nlp_train.jsonl": "9fa2df99f98836b8762ad90b9b9ef8d49e27519e85817ee6570658313a9a6058",
+    "reports/audit/p0a48/mining_trace.jsonl": "f88d21e60b7bccd11e257e0667bc9efafb864b388d7008ca88e3d215d61ae7b9"
+  },
+  "output": {
+    "path": "data/p0a48/nlp_curriculum.jsonl",
+    "rows": 2310,
+    "sha256": "fc3de2eefb509a6705a82bfc0828f7f288f1622279adf9a1c4e8e2b0a62d78f9"
+  },
+  "formal_test_items_loaded": 0,
+  "report_hash": "aa3f46fecd4e4fe460874b5944e48d9f91b2a24631a3eecf21405cc3ea0c707c"
+}

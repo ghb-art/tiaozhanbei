@@ -1,0 +1,15 @@
+{
+  "gate": "P0-A41-PREFLIGHT",
+  "status": "passed",
+  "counts": {
+    "code": 100,
+    "math": 100,
+    "nlp": 100
+  },
+  "math_route": "shared_base",
+  "code_step": 192,
+  "nlp_step": 136,
+  "manifest_hash": "91d89bfce1ceae19eecdc894a1141c7816ec4dd6a4ef7115700d0c8a811741fc",
+  "maximum_runs": 1,
+  "formal_full_opened": false
+}

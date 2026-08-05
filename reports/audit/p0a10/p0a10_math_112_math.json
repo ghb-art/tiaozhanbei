@@ -1,0 +1,23 @@
+{
+  "gate": "P0-A10-TRAIN-ONLY-VALIDATION",
+  "check_version": "1.0",
+  "created_by": "scripts/evaluate_p0a10_domain.py",
+  "created_ts": "2026-08-01T02:16:43.115210+00:00",
+  "status": "passed",
+  "domain": "math",
+  "candidate_name": "p0a10-math-112",
+  "served_model_id": "p0a10-math-112",
+  "manifest": "data/p0a10/math_validation.jsonl",
+  "manifest_hash": "fe41f03dc81665ce30001f4ad0d8a955aece0e5551622f1539b4a472970a57f6",
+  "sample_count": 256,
+  "correct_count": 182,
+  "accuracy": 0.7109375,
+  "canonical_format_rate": 0.99609375,
+  "generation_error_count": 0,
+  "mean_latency_ms": 981.5111330315176,
+  "trace": "reports/audit/p0a10/p0a10_math_112_math_trace.jsonl",
+  "trace_hash": "827772c7da87f436f58056aa986395c0bd8b77a653fdc680fa9ae3ab8b4d3722",
+  "gate300_loaded": false,
+  "formal_full_loaded": false,
+  "report_hash": "4e004eb9e074e4fcb0be2f7ebc999152e86a1bb2e95dce7e62383ea659ba5a42"
+}

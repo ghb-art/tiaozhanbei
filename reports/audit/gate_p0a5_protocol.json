@@ -2,10 +2,10 @@
   "gate": "P0-A5-PROTOCOL",
   "check_version": "1.0",
   "created_by": "scripts/p0a5_protocol.py",
-  "created_ts": "2026-07-29T05:09:21.067469+00:00",
+  "created_ts": "2026-07-30T02:25:48.234106+00:00",
   "status": "passed",
   "config": "configs/p0a5_capability.json",
-  "config_hash": "065819f8382bf5a9b73b27a4f0af047bd7d6d00b495edc5cad3d7832406f5489",
+  "config_hash": "a5e5a2d82889d8f84b046d53217138d38706b13dca6f6d084ca4dc72b627e1d1",
   "counts": {
     "train": {
       "opencodeinstruct": 20000,
@@ -29,14 +29,14 @@
     "validation_gate": 0
   },
   "artifact_hashes": {
-    "manifest": "bf978aaca8e293c8a287bb20cba5458a0884d3fdfe6bb90f7a8cc69d3902e351",
-    "train": "6374684593e6c43a3d5da4d107d1a88d8d3aaa422caf99a19edd8cd544e25bb8",
-    "validation": "b928468a07a232461e07a8bca80be2f169824a7e8e71c956da19dd6f0598c1d9",
+    "manifest": "c5fa0d173e79213d92bed72fd136f5d0e58ebc897c98a09a7e4aec53ed39c7ad",
+    "train": "9ed92268853259406f356582e29816c1fa243a5f1869a2bfe1f7892e67d2c94c",
+    "validation": "74c38627e350386f70e5191c0c4bcfe54da485efc704e607df3d3e1304152a42",
     "gate": "91d89bfce1ceae19eecdc894a1141c7816ec4dd6a4ef7115700d0c8a811741fc"
   },
   "active_gate_count": 1,
   "active_gate_name": "gate300",
   "formal_test_reference_count": 0,
   "errors": [],
-  "report_hash": "445732e93451d2a59de70ca0792446dbb6f78616c2a31a7a67783b0d30cca180"
+  "report_hash": "b2ee61e2669e74ed94bce50034d41e6ec93b9ff88de347082ddd20ed51f56b11"
 }

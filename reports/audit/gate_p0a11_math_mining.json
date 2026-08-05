@@ -1,0 +1,20 @@
+{
+  "gate": "P0-A11-MATH-TRAIN-ONLY-MINING",
+  "check_version": "1.0",
+  "created_by": "scripts/mine_p0a11_math.py",
+  "created_ts": "2026-08-01T09:11:40.042003+00:00",
+  "status": "passed",
+  "served_model_id": "p0a11-base",
+  "manifest": "data/p0a11/math_mining_pool.jsonl",
+  "manifest_hash": "346d875b82c059351bb9f02f547c631c4bc8e973bde4a600f8aec90a6f8ca2c6",
+  "sample_count": 6617,
+  "correct_count": 5193,
+  "accuracy": 0.7847967356808221,
+  "generation_error_count": 0,
+  "workers": 8,
+  "trace": "reports/audit/p0a11/math_mining_trace.jsonl",
+  "trace_hash": "79ea1a30615b62918109ef26fa0b223617af389525ecd1abe92f2a5182585bb4",
+  "gate300_loaded": false,
+  "formal_full_loaded": false,
+  "report_hash": "d85db354f154dc263647c1720c8f55c76eac07127de4d79d970d45b18a2e2f2a"
+}

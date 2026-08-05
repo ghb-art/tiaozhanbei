@@ -1,0 +1,276 @@
+{
+  "gate": "P0-A6-STUDENT-TRAIN",
+  "check_version": "1.0",
+  "created_by": "model_compression/train_p0a6_student.py",
+  "created_ts": "2026-07-31T06:59:51.634995+00:00",
+  "status": "passed",
+  "errors": [],
+  "model_dir": "models/checkpoints/p0a4/student-shared-merged",
+  "train_data": "data/p0a6/train.jsonl",
+  "train_data_hash": "dc743974f40c9e7040c4ef24f4ad2fd358be50fc9765ddf0a4e752bbc4ad590b",
+  "train_rows": 22096,
+  "domain_counts": {
+    "code": 4088,
+    "math": 7173,
+    "nlp": 10835
+  },
+  "kl_weight_by_domain": {
+    "math": {
+      "minimum": 0.6,
+      "maximum": 0.6,
+      "mean": 0.5999999999999566
+    },
+    "code": {
+      "minimum": 0.15,
+      "maximum": 0.15,
+      "mean": 0.14999999999998845
+    },
+    "nlp": {
+      "minimum": 0.2,
+      "maximum": 0.2,
+      "mean": 0.2000000000000203
+    }
+  },
+  "answer_token_weight_rows": {
+    "nlp": 1335
+  },
+  "formal_test_reference_count": 0,
+  "optimization": {
+    "lora_rank": 16,
+    "lora_alpha": 32,
+    "lora_dropout": 0.05,
+    "target_modules": [
+      "q_proj",
+      "k_proj",
+      "v_proj",
+      "o_proj",
+      "gate_proj",
+      "up_proj",
+      "down_proj"
+    ],
+    "learning_rate": 2e-06,
+    "bf16": true,
+    "max_seq_length": 1536,
+    "max_steps": 300,
+    "checkpoint_steps": 100,
+    "save_total_limit": null,
+    "per_device_train_batch_size": 1,
+    "gradient_accumulation_steps": 8,
+    "expected_world_size": 4,
+    "observed_world_size": 4,
+    "effective_global_batch_size": 32,
+    "warmup_ratio": 0.03,
+    "max_grad_norm": 1.0,
+    "gradient_checkpointing": true,
+    "gradient_checkpointing_use_reentrant": false,
+    "resume_from_checkpoint": "models/checkpoints/p0a6/student-pilot/checkpoint-200"
+  },
+  "preservation": {
+    "method": "all_task_adapter_disabled_base_kl",
+    "direction": "KL(base||student)",
+    "temperature": 2.0,
+    "mask": "assistant_answer_tokens_only",
+    "reference_forward": "unconditional_on_every_rank_and_batch",
+    "supervised_weight": "1-kl_weight_per_row"
+  },
+  "dependencies": {
+    "torch": "2.6.0+cu124",
+    "transformers": "4.51.3",
+    "accelerate": "1.14.0",
+    "peft": "0.17.1"
+  },
+  "token_budget_scan": {},
+  "report_hash": "9b920ebe7b16ae1bbbd2a6146311f9241ec836e4f81fdd652aa4abf96b584c19",
+  "global_step": 300,
+  "final_checkpoint": "models/checkpoints/p0a6/student-pilot/checkpoint-300",
+  "published_files": [
+    "adapter_config.json",
+    "adapter_model.safetensors",
+    "README.md"
+  ],
+  "train_metrics": {
+    "train_runtime": 523.756,
+    "train_samples_per_second": 18.329,
+    "train_steps_per_second": 0.573,
+    "total_flos": 3.0198670301331456e+16,
+    "train_loss": 2.2527442677815754,
+    "epoch": 0.4344677769732078
+  },
+  "domain_loss_summary": {
+    "math": {
+      "examples_seen": 1054,
+      "mean_sft_loss": 0.8864922424039646,
+      "mean_kl_base_to_student": 0.008288094778306627,
+      "mean_combined_loss": 0.35956973260519515
+    },
+    "code": {
+      "examples_seen": 621,
+      "mean_sft_loss": 0.3137455552024542,
+      "mean_kl_base_to_student": 0.008446134064472527,
+      "mean_combined_loss": 0.2679506493207433
+    },
+    "nlp": {
+      "examples_seen": 1525,
+      "mean_sft_loss": 2.7353483747458847,
+      "mean_kl_base_to_student": 0.008146852382580887,
+      "mean_combined_loss": 2.189908110343042
+    }
+  },
+  "domain_loss_log": [
+    {
+      "step": 210,
+      "math_sft_loss": 0.9259724877439104,
+      "math_kl_base_to_student": 0.007504333825865845,
+      "math_combined_loss": 0.3748915739827328,
+      "math_examples": 111,
+      "code_sft_loss": 0.31404693303413167,
+      "code_kl_base_to_student": 0.007614706512973752,
+      "code_combined_loss": 0.2680821046233177,
+      "code_examples": 43,
+      "nlp_sft_loss": 2.8048591333699515,
+      "nlp_kl_base_to_student": 0.007132251376667655,
+      "nlp_combined_loss": 2.245313797370497,
+      "nlp_examples": 166
+    },
+    {
+      "step": 220,
+      "math_sft_loss": 0.8645092159220316,
+      "math_kl_base_to_student": 0.007377387187217624,
+      "math_combined_loss": 0.3502300992174056,
+      "math_examples": 103,
+      "code_sft_loss": 0.31990715861320496,
+      "code_kl_base_to_student": 0.007572496664665994,
+      "code_combined_loss": 0.27305696798222406,
+      "code_examples": 63,
+      "nlp_sft_loss": 2.7356242638129693,
+      "nlp_kl_base_to_student": 0.0087976248197064,
+      "nlp_combined_loss": 2.190258976701018,
+      "nlp_examples": 154
+    },
+    {
+      "step": 230,
+      "math_sft_loss": 0.8865644861670101,
+      "math_kl_base_to_student": 0.008043572213044208,
+      "math_combined_loss": 0.35945191994017245,
+      "math_examples": 102,
+      "code_sft_loss": 0.31259512515472515,
+      "code_kl_base_to_student": 0.007719371513563341,
+      "code_combined_loss": 0.26686376998467104,
+      "code_examples": 56,
+      "nlp_sft_loss": 2.686704606829602,
+      "nlp_kl_base_to_student": 0.008129589764090875,
+      "nlp_combined_loss": 2.150989648644571,
+      "nlp_examples": 162
+    },
+    {
+      "step": 240,
+      "math_sft_loss": 0.8483255253869946,
+      "math_kl_base_to_student": 0.008411126870646322,
+      "math_combined_loss": 0.34437686311347143,
+      "math_examples": 119,
+      "code_sft_loss": 0.316759636425055,
+      "code_kl_base_to_student": 0.008562782016367867,
+      "code_combined_loss": 0.27053011575570474,
+      "code_examples": 65,
+      "nlp_sft_loss": 2.7039154601447724,
+      "nlp_kl_base_to_student": 0.00819085848514292,
+      "nlp_combined_loss": 2.164770586306558,
+      "nlp_examples": 136
+    },
+    {
+      "step": 250,
+      "math_sft_loss": 0.9345272746682167,
+      "math_kl_base_to_student": 0.008167991801165043,
+      "math_combined_loss": 0.3787116814404726,
+      "math_examples": 100,
+      "code_sft_loss": 0.3228066090879769,
+      "code_kl_base_to_student": 0.009199813666657126,
+      "code_combined_loss": 0.27576559525111627,
+      "code_examples": 58,
+      "nlp_sft_loss": 2.661717338050589,
+      "nlp_kl_base_to_student": 0.00747747129737687,
+      "nlp_combined_loss": 2.130869399710202,
+      "nlp_examples": 162
+    },
+    {
+      "step": 260,
+      "math_sft_loss": 0.8408989329105137,
+      "math_kl_base_to_student": 0.008263925240300167,
+      "math_combined_loss": 0.3413179114289667,
+      "math_examples": 87,
+      "code_sft_loss": 0.3131144152660119,
+      "code_kl_base_to_student": 0.009116131959384993,
+      "code_combined_loss": 0.2675146800220797,
+      "code_examples": 76,
+      "nlp_sft_loss": 2.7247637905133,
+      "nlp_kl_base_to_student": 0.008544838860494553,
+      "nlp_combined_loss": 2.1815200429053823,
+      "nlp_examples": 157
+    },
+    {
+      "step": 270,
+      "math_sft_loss": 0.886620197997049,
+      "math_kl_base_to_student": 0.008499257266521454,
+      "math_combined_loss": 0.35974761222799617,
+      "math_examples": 108,
+      "code_sft_loss": 0.3064851773935452,
+      "code_kl_base_to_student": 0.008969244824951155,
+      "code_combined_loss": 0.2618577943036431,
+      "code_examples": 57,
+      "nlp_sft_loss": 2.708305546449077,
+      "nlp_kl_base_to_student": 0.008787251196260894,
+      "nlp_combined_loss": 2.168401923775673,
+      "nlp_examples": 155
+    },
+    {
+      "step": 280,
+      "math_sft_loss": 0.8700893068065246,
+      "math_kl_base_to_student": 0.008967362853043058,
+      "math_combined_loss": 0.35341611977114723,
+      "math_examples": 108,
+      "code_sft_loss": 0.30960334377984206,
+      "code_kl_base_to_student": 0.0086063268672054,
+      "code_combined_loss": 0.26445379902919136,
+      "code_examples": 60,
+      "nlp_sft_loss": 2.7488179900928547,
+      "nlp_kl_base_to_student": 0.008807464076916835,
+      "nlp_combined_loss": 2.200815914884994,
+      "nlp_examples": 152
+    },
+    {
+      "step": 290,
+      "math_sft_loss": 0.9110816306712335,
+      "math_kl_base_to_student": 0.008856468993288121,
+      "math_combined_loss": 0.3697465100701441,
+      "math_examples": 114,
+      "code_sft_loss": 0.30882557670149624,
+      "code_kl_base_to_student": 0.008874482481115603,
+      "code_combined_loss": 0.26383292052564744,
+      "code_examples": 79,
+      "nlp_sft_loss": 2.8329784559217965,
+      "nlp_kl_base_to_student": 0.007377952177766857,
+      "nlp_combined_loss": 2.2678583984769234,
+      "nlp_examples": 127
+    },
+    {
+      "step": 300,
+      "math_sft_loss": 0.8917279015569126,
+      "math_kl_base_to_student": 0.00872194493992948,
+      "math_combined_loss": 0.36192430438948614,
+      "math_examples": 102,
+      "code_sft_loss": 0.3143837829120457,
+      "code_kl_base_to_student": 0.007758719431876671,
+      "code_combined_loss": 0.26839003060013056,
+      "code_examples": 64,
+      "nlp_sft_loss": 2.760732388728625,
+      "nlp_kl_base_to_student": 0.008204955739942803,
+      "nlp_combined_loss": 2.210226943740597,
+      "nlp_examples": 154
+    }
+  ],
+  "retained_checkpoints": [
+    "models/checkpoints/p0a6/student-pilot/checkpoint-100",
+    "models/checkpoints/p0a6/student-pilot/checkpoint-200",
+    "models/checkpoints/p0a6/student-pilot/checkpoint-300"
+  ]
+}

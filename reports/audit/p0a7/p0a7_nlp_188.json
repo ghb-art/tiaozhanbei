@@ -1,0 +1,22 @@
+{
+  "gate": "P0-A7-NLP-TRAIN-ONLY-VALIDATION",
+  "check_version": "1.0",
+  "created_by": "scripts/evaluate_p0a7_nlp.py",
+  "created_ts": "2026-07-31T16:03:18.995471+00:00",
+  "status": "passed",
+  "candidate_name": "p0a7-nlp-188",
+  "served_model_id": "p0a7-nlp-188",
+  "manifest": "data/p0a7/nlp_mmlu_aux_validation.jsonl",
+  "manifest_hash": "8e403a0d10ae23945208983d3d4bcd211118abe987db778906f7b114332e36d6",
+  "sample_count": 256,
+  "correct_count": 196,
+  "accuracy": 0.765625,
+  "canonical_format_rate": 1.0,
+  "generation_error_count": 0,
+  "mean_latency_ms": 273.86604707976403,
+  "trace": "reports/audit/p0a7/p0a7_nlp_188_trace.jsonl",
+  "trace_hash": "0ce2d931a3a1805b0f6732d188ddbe9289b1fd0e64d3cb564225657b0f9778e7",
+  "formal_test_loaded": false,
+  "cmmlu_test_loaded": false,
+  "report_hash": "b44ff53d53ff0eb577ad31884519ea648b0620d44218f27ed1e04127f2e7820a"
+}

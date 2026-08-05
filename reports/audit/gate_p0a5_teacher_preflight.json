@@ -2,17 +2,17 @@
   "gate": "P0-A5-LORA-TRAIN",
   "check_version": "1.0",
   "created_by": "model_compression/train_p0a5_lora.py",
-  "created_ts": "2026-07-29T05:09:29.110626+00:00",
+  "created_ts": "2026-07-30T05:05:17.949081+00:00",
   "status": "dry_run_passed",
   "role": "teacher",
   "candidate_index": 1,
   "config": "configs/p0a5_capability.json",
-  "config_hash": "065819f8382bf5a9b73b27a4f0af047bd7d6d00b495edc5cad3d7832406f5489",
+  "config_hash": "a5e5a2d82889d8f84b046d53217138d38706b13dca6f6d084ca4dc72b627e1d1",
   "model_dir": "models/pretrained/Qwen--Qwen2.5-14B-Instruct",
   "train_data": "data/capability_v2/source_train.jsonl",
-  "train_data_hash": "6374684593e6c43a3d5da4d107d1a88d8d3aaa422caf99a19edd8cd544e25bb8",
+  "train_data_hash": "9ed92268853259406f356582e29816c1fa243a5f1869a2bfe1f7892e67d2c94c",
   "validation_data": "data/capability_v2/internal_validation.jsonl",
-  "validation_data_hash": "b928468a07a232461e07a8bca80be2f169824a7e8e71c956da19dd6f0598c1d9",
+  "validation_data_hash": "74c38627e350386f70e5191c0c4bcfe54da485efc704e607df3d3e1304152a42",
   "train_counts": {
     "cmmlu": 9500,
     "gsm8k": 7173,
@@ -46,7 +46,19 @@
     "gradient_accumulation_steps": 8,
     "deepspeed": "configs/deepspeed_zero3.json",
     "deepspeed_stage": 3,
-    "cpu_offload": false
+    "cpu_offload": false,
+    "gradient_checkpointing": true,
+    "gradient_checkpointing_use_reentrant": true,
+    "checkpoint_steps": 50,
+    "save_total_limit": 2,
+    "resume_from_checkpoint": "",
+    "early_stopping": {
+      "enabled": true,
+      "metric": "eval_loss",
+      "eval_steps": 100,
+      "patience": 2,
+      "threshold": 0.001
+    }
   },
   "math_preservation": {
     "enabled": false
@@ -59,6 +71,13 @@
     "deepspeed": "0.17.6",
     "peft": "0.17.1"
   },
+  "token_budget_scan": {
+    "status": "passed",
+    "scanned_rows": 38873,
+    "max_seq_length": 1536,
+    "maximum_observed_tokens": 1532,
+    "maximum_sample_id": "coig_cqia/train/d2401198c30710d35024"
+  },
   "errors": [],
-  "report_hash": "ab3260e0aa43d99abba800740412ad0ecfc96455812c46d981c2ad9bf68acf40"
+  "report_hash": "1557a5bbb93f11b2d7d2a33c84edb980f060d2313d482752a5c232d1d4c1d0f0"
 }

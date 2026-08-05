@@ -1,0 +1,74 @@
+{
+  "gate": "P0-A6-INTERNAL-EVAL",
+  "check_version": "1.0",
+  "created_by": "scripts/evaluate_p0a6_internal.py",
+  "created_ts": "2026-07-31T08:19:11.197855+00:00",
+  "status": "passed",
+  "candidate_name": "p0a6-base",
+  "endpoint": "http://127.0.0.1:18460",
+  "served_model_id": "p0a6-base",
+  "served_model_id_by_domain": {
+    "math": "p0a6-base",
+    "code": "p0a6-base",
+    "nlp": "p0a6-base"
+  },
+  "manifest": "data/p0a6/quick_validation.jsonl",
+  "manifest_hash": "99640b4641eaa76cb3096caec1126273488e4e34d4f755b02765af580e29346e",
+  "sidecar_manifest": "data/p0a6/manifest.json",
+  "sidecar_manifest_hash": "799201e840c3ccfc030d62ada993fb5c8a59245d31444dad797295e5874d979a",
+  "declared_manifest_hash": "99640b4641eaa76cb3096caec1126273488e4e34d4f755b02765af580e29346e",
+  "expected_counts_source": "data/p0a6/manifest.json:validation.quick",
+  "expected_counts": {
+    "math": 100,
+    "code": 100,
+    "nlp": 100
+  },
+  "actual_counts": {
+    "math": 100,
+    "code": 100,
+    "nlp": 100
+  },
+  "correct_counts": {
+    "math": 73,
+    "code": 49,
+    "nlp": 46
+  },
+  "accuracy_by_domain": {
+    "math": 0.73,
+    "code": 0.49,
+    "nlp": 0.46
+  },
+  "macro_accuracy": 0.56,
+  "canonical_format_counts": {
+    "math": 99,
+    "code": 54,
+    "nlp": 64
+  },
+  "canonical_format_rate_by_domain": {
+    "math": 0.99,
+    "code": 0.54,
+    "nlp": 0.64
+  },
+  "macro_canonical_format_rate": 0.7233333333333334,
+  "generation_error_count": 0,
+  "generation_error_count_by_domain": {
+    "math": 0,
+    "code": 0,
+    "nlp": 0
+  },
+  "mean_latency_ms_by_domain": {
+    "math": 1291.6384706809185,
+    "code": 596.1082201369572,
+    "nlp": 642.3600178392371
+  },
+  "max_tokens": {
+    "math": 512,
+    "code": 768,
+    "nlp": 256
+  },
+  "request_timeout_sec": 120,
+  "code_timeout_sec": 5,
+  "output_trace": "reports/audit/p0a6/base_quick_trace.jsonl",
+  "output_trace_hash": "b88efb09ddf6fa5090f4b6df0c0d5bd6dea80385f1edfc22605fd48527e8cee6",
+  "report_hash": "0dbc1f60fc95a5810f53f5749df99fab1fe6a6cee9afd83fd46bff3036b7f672"
+}

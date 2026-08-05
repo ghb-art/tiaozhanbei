@@ -1,0 +1,59 @@
+{
+  "gate": "P0-A44-ALIGNED-TRAIN-DATA",
+  "check_version": "1.0",
+  "created_by": "model_compression/build_p0a44_aligned_data.py",
+  "created_ts": "2026-08-03T03:44:08.286037+00:00",
+  "status": "passed",
+  "formal_test_rows_loaded": 0,
+  "code": {
+    "train_rows": 11351,
+    "validation_rows": 1000,
+    "rejections": {
+      "not_function_or_untransformable": 1708,
+      "transformed_execution_failed": 3941
+    },
+    "contract": "humaneval_v15_body_only"
+  },
+  "nlp": {
+    "train_rows": 3939,
+    "source_counts": {
+      "C-Eval-labelled": 1335,
+      "MMLU-aux-Chinese-verified": 1000,
+      "COIG-CQIA-human-labelled-MCQ": 1605
+    },
+    "ceval_dev_rows": 260,
+    "cmmlu_dev_rows": 335,
+    "contract": "cmmlu_v15_single_letter"
+  },
+  "outputs": {
+    "data/p0a44/code_train.jsonl": {
+      "rows": 11351,
+      "sha256": "6f25af58cf47daf118d447c38f5db971f321d26e6a112d5d85c7b89373d536a1"
+    },
+    "data/p0a44/code_validation.jsonl": {
+      "rows": 1000,
+      "sha256": "c5a31c9f6f0e9b5bb761fbbb6e6673623bd82bb1453d3c2c558245274d06243a"
+    },
+    "data/p0a44/nlp_train.jsonl": {
+      "rows": 3939,
+      "sha256": "9fa2df99f98836b8762ad90b9b9ef8d49e27519e85817ee6570658313a9a6058"
+    },
+    "data/p0a44/nlp_ceval_dev.jsonl": {
+      "rows": 260,
+      "sha256": "9c6b996bbfe08b47302fcf69b5ecc38eaac5f50ef5f0e3e7ab2fad9f737dc83e"
+    },
+    "data/p0a44/nlp_cmmlu_dev.jsonl": {
+      "rows": 335,
+      "sha256": "797ade5ce8be1c72176cee8324dec3bc16bad569cdb138001bfc3d2d29074014"
+    }
+  },
+  "inputs": {
+    "configs/p0a44_aligned_retrain.json": "490d0959444186ce26d2e8d3b4c55276b914395bbdaa9a443355bb115606e52d",
+    "data/p0a21/code_train.jsonl": "79046ce0cc2aa484e5c571ce4f92efe279b6e4d60038c7f00033feaaf200d589",
+    "data/p0a23/code_train.jsonl": "286c7b1f3a6782a87e01b847677e633b0ea404642ed7790db32fb29457dd0d11",
+    "data/p0a25/code_train_pool.jsonl": "f748c3f01660ba646ccb7416a21d1310cf08a251859adba9d5d21e43a9e07649",
+    "data/p0a34/train.jsonl": "5b56671be823e8b1fbfc02d1f8fd38926760b236b0ac2d3ecf8b3d5ead8fe095",
+    "data/datasets/coig_cqia/COIG-CQIA-full.jsonl": "f2a6a758362b7fa5d5c29c9ae0946f2fbf8c9318b6fb48c0e62f8b774d8ff518"
+  },
+  "report_hash": "5d3cef2f13827c8f1b83318b5ab6b1cb6a7d5a916f587b4d6d997f7640da1cd5"
+}

@@ -1,0 +1,226 @@
+{
+  "gate": "P0-A6-STUDENT-TRAIN",
+  "check_version": "1.0",
+  "created_by": "model_compression/train_p0a6_student.py",
+  "created_ts": "2026-08-01T01:57:51.460807+00:00",
+  "status": "passed",
+  "errors": [],
+  "model_dir": "models/checkpoints/p0a4/student-shared-merged",
+  "train_data": "data/p0a10/train.jsonl",
+  "train_data_hash": "2a176cb58d08c67f7a73389159139b57dd10aab4d85cac50547b940f08e396ba",
+  "train_rows": 4335,
+  "focus": {
+    "focus_domain": "nlp_mixed_mcq",
+    "source_rows": 30995,
+    "selected_rows": 4335,
+    "source_domain_counts": {
+      "code": 19743,
+      "math": 6917,
+      "nlp": 4335
+    },
+    "selected_domain_counts": {
+      "nlp": 4335
+    },
+    "selected_dataset_counts": {
+      "ceval_rationale_train": 1335,
+      "mmlu_aux_chinese": 3000
+    },
+    "training_weight_mean_before": 1.0,
+    "training_weight_normalization_divisor": 1.0,
+    "training_weight_mean_after": 1.0,
+    "mcq_answer_token_weight_multiplier": 1.0,
+    "mcq_answer_token_weight_multiplied_rows": 0
+  },
+  "domain_counts": {
+    "nlp": 4335
+  },
+  "kl_weight_by_domain": {
+    "nlp": {
+      "minimum": 0.05,
+      "maximum": 0.2,
+      "mean": 0.09619377162630037
+    }
+  },
+  "answer_token_weight_rows": {
+    "nlp": 1335
+  },
+  "formal_test_reference_count": 0,
+  "optimization": {
+    "lora_rank": 16,
+    "lora_alpha": 32,
+    "lora_dropout": 0.05,
+    "target_modules": [
+      "q_proj",
+      "k_proj",
+      "v_proj",
+      "o_proj",
+      "gate_proj",
+      "up_proj",
+      "down_proj"
+    ],
+    "learning_rate": 1e-05,
+    "bf16": true,
+    "max_seq_length": 1536,
+    "max_steps": 136,
+    "checkpoint_steps": 68,
+    "save_total_limit": null,
+    "per_device_train_batch_size": 1,
+    "gradient_accumulation_steps": 8,
+    "expected_world_size": 4,
+    "observed_world_size": 4,
+    "effective_global_batch_size": 32,
+    "warmup_ratio": 0.03,
+    "max_grad_norm": 1.0,
+    "gradient_checkpointing": true,
+    "gradient_checkpointing_use_reentrant": false,
+    "resume_from_checkpoint": ""
+  },
+  "preservation": {
+    "method": "all_task_adapter_disabled_base_kl",
+    "direction": "KL(base||student)",
+    "temperature": 2.0,
+    "mask": "assistant_answer_tokens_only",
+    "reference_forward": "unconditional_on_every_rank_and_batch",
+    "supervised_weight": "1-kl_weight_per_row"
+  },
+  "dependencies": {
+    "torch": "2.6.0+cu124",
+    "transformers": "4.51.3",
+    "accelerate": "1.14.0",
+    "peft": "0.17.1"
+  },
+  "token_budget_scan": {},
+  "report_hash": "92be95dbff09c9e966d217b7bc67cb0aff93a52405c59dbb333b1d275a996a00",
+  "global_step": 136,
+  "final_checkpoint": "models/checkpoints/p0a10/nlp-specialist/checkpoint-136",
+  "published_files": [
+    "adapter_config.json",
+    "adapter_model.safetensors",
+    "README.md"
+  ],
+  "train_metrics": {
+    "train_runtime": 690.1312,
+    "train_samples_per_second": 6.306,
+    "train_steps_per_second": 0.197,
+    "total_flos": 8173822138122240.0,
+    "train_loss": 6.959506623885211,
+    "epoch": 1.0
+  },
+  "domain_loss_summary": {
+    "math": {
+      "examples_seen": 0,
+      "mean_sft_loss": null,
+      "mean_kl_base_to_student": null,
+      "mean_combined_loss": null
+    },
+    "code": {
+      "examples_seen": 0,
+      "mean_sft_loss": null,
+      "mean_kl_base_to_student": null,
+      "mean_combined_loss": null
+    },
+    "nlp": {
+      "examples_seen": 4336,
+      "mean_sft_loss": 0.953984258853662,
+      "mean_kl_base_to_student": 0.18100246310908288,
+      "mean_combined_loss": 0.8732877036305728
+    }
+  },
+  "domain_loss_log": [
+    {
+      "step": 10,
+      "nlp_sft_loss": 1.4061025114730001,
+      "nlp_kl_base_to_student": 0.0012160084405185316,
+      "nlp_combined_loss": 1.2886889825575054,
+      "nlp_examples": 320
+    },
+    {
+      "step": 20,
+      "nlp_sft_loss": 1.33055464271456,
+      "nlp_kl_base_to_student": 0.0059396907654445386,
+      "nlp_combined_loss": 1.2099073700606824,
+      "nlp_examples": 320
+    },
+    {
+      "step": 30,
+      "nlp_sft_loss": 1.2341307163238526,
+      "nlp_kl_base_to_student": 0.030589034695003646,
+      "nlp_combined_loss": 1.1228656692430377,
+      "nlp_examples": 320
+    },
+    {
+      "step": 40,
+      "nlp_sft_loss": 1.0703843452036381,
+      "nlp_kl_base_to_student": 0.07323058987676631,
+      "nlp_combined_loss": 0.9632200100459158,
+      "nlp_examples": 320
+    },
+    {
+      "step": 50,
+      "nlp_sft_loss": 1.0045270284637808,
+      "nlp_kl_base_to_student": 0.14058570833294654,
+      "nlp_combined_loss": 0.9275444697588682,
+      "nlp_examples": 320
+    },
+    {
+      "step": 60,
+      "nlp_sft_loss": 0.8962920043151825,
+      "nlp_kl_base_to_student": 0.19163249786943198,
+      "nlp_combined_loss": 0.8196872738189995,
+      "nlp_examples": 320
+    },
+    {
+      "step": 70,
+      "nlp_sft_loss": 0.8261297138407826,
+      "nlp_kl_base_to_student": 0.2400079124025069,
+      "nlp_combined_loss": 0.7523275893880055,
+      "nlp_examples": 320
+    },
+    {
+      "step": 80,
+      "nlp_sft_loss": 0.783967944374308,
+      "nlp_kl_base_to_student": 0.260773753549438,
+      "nlp_combined_loss": 0.7215798104647547,
+      "nlp_examples": 320
+    },
+    {
+      "step": 90,
+      "nlp_sft_loss": 0.8095355891622603,
+      "nlp_kl_base_to_student": 0.25915298976469786,
+      "nlp_combined_loss": 0.7426726758945733,
+      "nlp_examples": 320
+    },
+    {
+      "step": 100,
+      "nlp_sft_loss": 0.8012116425205023,
+      "nlp_kl_base_to_student": 0.2717967903474346,
+      "nlp_combined_loss": 0.7405306701082737,
+      "nlp_examples": 320
+    },
+    {
+      "step": 110,
+      "nlp_sft_loss": 0.8159134123125114,
+      "nlp_kl_base_to_student": 0.27315304409712554,
+      "nlp_combined_loss": 0.748909201985225,
+      "nlp_examples": 320
+    },
+    {
+      "step": 120,
+      "nlp_sft_loss": 0.7474591928068548,
+      "nlp_kl_base_to_student": 0.27523079523816707,
+      "nlp_combined_loss": 0.6883012123871595,
+      "nlp_examples": 320
+    },
+    {
+      "step": 130,
+      "nlp_sft_loss": 0.7790335859870539,
+      "nlp_kl_base_to_student": 0.27432544230832717,
+      "nlp_combined_loss": 0.7148371262010187,
+      "nlp_examples": 320
+    }
+  ],
+  "retained_checkpoints": [
+    "models/checkpoints/p0a10/nlp-specialist/checkpoint-68",
+    "models/checkpoints/p0a10/nlp-specialist/checkpoint-136"
+  ]
+}

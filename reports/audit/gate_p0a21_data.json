@@ -1,0 +1,79 @@
+{
+  "gate": "P0-A21-FRESH-EXECUTION-DATA",
+  "check_version": "1.0",
+  "created_by": "model_compression/build_p0a21_data.py",
+  "created_ts": "2026-08-01T14:32:28.230829+00:00",
+  "status": "passed",
+  "source": {
+    "repo": "nvidia/OpenCodeInstruct",
+    "revision": "8f3ba5bafe4d6e8db46082cf7ae6741bc370604d",
+    "shards": [
+      0,
+      17,
+      33
+    ],
+    "shard_hashes": {
+      "data/datasets/opencodeinstruct/data/train-00000-of-00050.parquet": "342757e0c6b706c8f68cf0a867ead5c417d0273726453dbcfc934f5c3c6ca891",
+      "data/datasets/opencodeinstruct/data/train-00017-of-00050.parquet": "7bf03f8606c18a93ca5e07b6af252e30de46b5609b2aa60133d8fe78c4c30154",
+      "data/datasets/opencodeinstruct/data/train-00033-of-00050.parquet": "98a8b473a6dc7db7cb9c4d741c1789504b9935885876f30ada09729d562b6409"
+    },
+    "declared_license": "cc-by-4.0"
+  },
+  "selection": {
+    "raw_rows": 300000,
+    "previously_used_ids": 21100,
+    "fresh_prefiltered_unique": 44695,
+    "execution_cache_hits": 787,
+    "fresh_execution_count": 7388,
+    "accepted_rows": 7000,
+    "rejections": {
+      "answer_too_long": 46,
+      "execution_execution_failed": 14,
+      "execution_unsafe_or_invalid": 864,
+      "not_function_style": 9171,
+      "previously_used_id": 21100,
+      "reported_test_score": 222166,
+      "short_function_budget": 674,
+      "training_token_budget": 3,
+      "unsafe_text": 1879
+    },
+    "independent_execution_required": true,
+    "tests_per_row": 10,
+    "public_tests_per_prompt": 3
+  },
+  "separation": {
+    "train_rows": 6000,
+    "validation_rows": 1000,
+    "train_validation_id_overlap": 0,
+    "previous_id_overlap": 0,
+    "p0a18_p0a20_per_item_feedback_used": false,
+    "human_eval_prompts_used_only_for_contamination_exclusion": true,
+    "human_eval_answers_tests_or_results_loaded": false,
+    "formal_full_opened": false
+  },
+  "inputs": {
+    "configs/p0a21_code_execution_distill.json": "dd9e6354b8b97dc9e8ded16fd8876869d950db96df025e1e39124a380c9262a4",
+    "configs/p0a5_capability.json": "a62d3b973267e2fc98d8bd7bb79c2b1f49510d5c6fe6985c99d6a5a475622605",
+    "data/capability_v2/distill_train.jsonl": "13a57b118edc404bd78fe97c6377b1d0c2b0ff3663732b1f7d59ed696f71bceb",
+    "data/capability_v2/internal_validation.jsonl": "74c38627e350386f70e5191c0c4bcfe54da485efc704e607df3d3e1304152a42",
+    "data/capability_v2/gate300.jsonl": "91d89bfce1ceae19eecdc894a1141c7816ec4dd6a4ef7115700d0c8a811741fc"
+  },
+  "outputs": {
+    "train": {
+      "path": "data/p0a21/code_train.jsonl",
+      "rows": 6000,
+      "sha256": "79046ce0cc2aa484e5c571ce4f92efe279b6e4d60038c7f00033feaaf200d589"
+    },
+    "validation": {
+      "path": "data/p0a21/code_validation.jsonl",
+      "rows": 1000,
+      "sha256": "c36c9ad379508566b7c73745d0244f6ba25988c3c4378f98f4fe6bdd019544aa"
+    },
+    "execution_cache": {
+      "path": "data/p0a21/code_execution_cache.jsonl",
+      "sha256": "e5401fc2baa3131927f649461198ce1473a275526ee839c89a63e7338ae785ed"
+    }
+  },
+  "errors": [],
+  "report_hash": "84daae375814b99cf23969c713de1da64c7cef668e81c288d3a54b016b0ff4c2"
+}

@@ -1,0 +1,43 @@
+{
+  "gate": "P0-A12-MATH-CHECKPOINT-SELECTION",
+  "check_version": "1.0",
+  "created_by": "scripts/select_p0a11_domain.py",
+  "created_ts": "2026-08-01T11:44:42.705457+00:00",
+  "status": "failed",
+  "domain": "math",
+  "allowed_steps": [
+    288,
+    576
+  ],
+  "minimum_gain": 0.02,
+  "base_audit": "reports/audit/p0a12/p0a12_base_math.json",
+  "base_accuracy": 0.841,
+  "candidates": [
+    {
+      "step": 288,
+      "audit": "reports/audit/p0a12/p0a12_math_288_math.json",
+      "audit_hash": "762117a8bd3f8471e930240d9def2851114ea89b14cd2577124123548815db4e",
+      "accuracy": 0.825,
+      "canonical_format_rate": 0.993,
+      "gain": -0.016000000000000014,
+      "eligible": false,
+      "failures": [
+        "gain=-0.016000<required=0.020000"
+      ]
+    },
+    {
+      "step": 576,
+      "audit": "reports/audit/p0a12/p0a12_math_576_math.json",
+      "audit_hash": "0266acb28b9be7a708349f16dedd90d52338f9cddde27c4ef9bc99f0f49a96fa",
+      "accuracy": 0.823,
+      "canonical_format_rate": 0.996,
+      "gain": -0.018000000000000016,
+      "eligible": false,
+      "failures": [
+        "gain=-0.018000<required=0.020000"
+      ]
+    }
+  ],
+  "selected_step": null,
+  "report_hash": "1cb53509e153e89a74cf30dd742257625faf2cd4688c76b07f533c4780cb44d6"
+}

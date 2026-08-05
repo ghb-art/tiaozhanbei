@@ -1,0 +1,74 @@
+{
+  "gate": "P0-A6-INTERNAL-EVAL",
+  "check_version": "1.0",
+  "created_by": "scripts/evaluate_p0a6_internal.py",
+  "created_ts": "2026-07-31T16:42:49.177269+00:00",
+  "status": "passed",
+  "candidate_name": "p0a8-base-full",
+  "endpoint": "http://127.0.0.1:18462",
+  "served_model_id": "p0a8-base",
+  "served_model_id_by_domain": {
+    "math": "p0a8-base",
+    "code": "p0a8-base",
+    "nlp": "p0a8-base"
+  },
+  "manifest": "data/p0a6/full_validation.jsonl",
+  "manifest_hash": "452a728d7e1ebb3bc40233b8deef8996b45febbbfbb4e2e9166a23644956077c",
+  "sidecar_manifest": "data/p0a6/manifest.json",
+  "sidecar_manifest_hash": "799201e840c3ccfc030d62ada993fb5c8a59245d31444dad797295e5874d979a",
+  "declared_manifest_hash": "452a728d7e1ebb3bc40233b8deef8996b45febbbfbb4e2e9166a23644956077c",
+  "expected_counts_source": "data/p0a6/manifest.json:validation.full",
+  "expected_counts": {
+    "math": 200,
+    "code": 186,
+    "nlp": 260
+  },
+  "actual_counts": {
+    "math": 200,
+    "code": 186,
+    "nlp": 260
+  },
+  "correct_counts": {
+    "math": 153,
+    "code": 94,
+    "nlp": 111
+  },
+  "accuracy_by_domain": {
+    "math": 0.765,
+    "code": 0.5053763440860215,
+    "nlp": 0.4269230769230769
+  },
+  "macro_accuracy": 0.5657664736696995,
+  "canonical_format_counts": {
+    "math": 195,
+    "code": 81,
+    "nlp": 160
+  },
+  "canonical_format_rate_by_domain": {
+    "math": 0.975,
+    "code": 0.43548387096774194,
+    "nlp": 0.6153846153846154
+  },
+  "macro_canonical_format_rate": 0.6752894954507858,
+  "generation_error_count": 0,
+  "generation_error_count_by_domain": {
+    "math": 0,
+    "code": 0,
+    "nlp": 0
+  },
+  "mean_latency_ms_by_domain": {
+    "math": 1122.7262442588108,
+    "code": 583.5329375022607,
+    "nlp": 557.3075073224923
+  },
+  "max_tokens": {
+    "math": 512,
+    "code": 768,
+    "nlp": 256
+  },
+  "request_timeout_sec": 120,
+  "code_timeout_sec": 5,
+  "output_trace": "reports/audit/p0a6/p0a8_base_full_trace.jsonl",
+  "output_trace_hash": "ddd0017cd0344f544dcd32d3342a49eaf71bdf7ecc2db1a4987ef583b0d7bead",
+  "report_hash": "807fe2bc131b4e387d550786c525b0213911e753a38d564b4d128cddd6785160"
+}

@@ -1,0 +1,58 @@
+{
+  "gate": "P0-A7-NLP-CHINESE-DATA",
+  "check_version": "1.0",
+  "created_by": "model_compression/generate_p0a7_mmlu_chinese.py",
+  "created_ts": "2026-07-31T15:43:09.637971+00:00",
+  "status": "passed",
+  "policy": {
+    "source_split": "MMLU auxiliary_train only",
+    "teacher_prompt_contains_source_label": false,
+    "acceptance": "teacher final must match train label",
+    "required_language": "Chinese",
+    "minimum_domain_equal_quota_ratio": 0.8,
+    "formal_test_labels_used": false
+  },
+  "teacher_endpoint": "http://127.0.0.1:8000",
+  "teacher_model_id": "p0a5-teacher",
+  "teacher_fallback_model_id": "p0a5-teacher-base",
+  "requests": "data/distill/p0a7_nlp_teacher_requests.jsonl",
+  "requests_hash": "d5acdb966e1932cb2d3a17d4803f70cb8470406b9d97dd83a2dcd9bc55ea26a7",
+  "request_count": 4397,
+  "accepted_count": 3512,
+  "accepted_candidate_counts": {
+    "train": 3228,
+    "new_train_only_validation": 284
+  },
+  "rejection_counts": {
+    "label_verification_failed": 264
+  },
+  "train": "data/distill/p0a7_nlp_verified_train.jsonl",
+  "train_hash": "af73cbfe0dcf119a5d57a3abcb9814e90f0386770d6acac71c1cee535efa5e8c",
+  "train_unique_groups": 3000,
+  "train_domain_counts": {
+    "arc_easy": 386,
+    "arc_hard": 386,
+    "aux_law_90s": 303,
+    "mc_test": 385,
+    "obqa": 385,
+    "race": 385,
+    "science_elementary": 385,
+    "science_middle": 385
+  },
+  "validation": "data/distill/p0a7_nlp_verified_validation.jsonl",
+  "validation_hash": "d79d2de504df7878e9007f04963a77188190ba6271b8cd0a022621c520519ff7",
+  "validation_unique_groups": 256,
+  "validation_domain_counts": {
+    "arc_easy": 32,
+    "arc_hard": 32,
+    "aux_law_90s": 32,
+    "mc_test": 32,
+    "obqa": 32,
+    "race": 32,
+    "science_elementary": 32,
+    "science_middle": 32
+  },
+  "train_validation_overlap": 0,
+  "errors": [],
+  "report_hash": "59a29f69f239cd2a900f57a3f96620014afdb699274a2bf9b613cbcea9c8319d"
+}

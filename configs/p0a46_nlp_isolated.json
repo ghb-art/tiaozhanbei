@@ -1,0 +1,49 @@
+{
+  "config_version": "1.0",
+  "protocol": "P0-A46 isolated NLP repair",
+  "seed": 20260803,
+  "policy": {
+    "base_model": "models/checkpoints/p0a4/student-shared-merged",
+    "train_one_domain_only": "nlp",
+    "math_route": "shared_base_frozen",
+    "code_route": "p0a25_checkpoint_192_frozen",
+    "formal_test_feedback_for_training": false
+  },
+  "training": {
+    "train_data": "data/p0a46/nlp_train.jsonl",
+    "rows": 10178,
+    "lora_rank": 16,
+    "lora_alpha": 32,
+    "learning_rate": 4e-7,
+    "max_steps": 318,
+    "checkpoint_steps": 159,
+    "kl_weight": 0.05,
+    "answer_token_weight": 2.0,
+    "effective_global_batch_size": 32,
+    "gpu_count": 4
+  },
+  "internal_validation": {
+    "ceval": "data/p0a44/nlp_ceval_dev.jsonl",
+    "cmmlu": "data/p0a44/nlp_cmmlu_dev.jsonl",
+    "rows": 595,
+    "minimum_hf_gain_items": 6,
+    "minimum_q4_gain_items": 3,
+    "require_not_worse_each_dataset": true,
+    "maximum_generation_errors": 0
+  },
+  "deployment": {
+    "base_weight_type": "Q4_K_M",
+    "kv_cache_type": "q8_0",
+    "thinking": "off"
+  },
+  "gate300": {
+    "manifest": "data/capability_v2/gate300.jsonl",
+    "baseline_trace": "data/eval/p0a5_baseline14b_gate300.jsonl",
+    "expected_counts": {"math": 100, "code": 100, "nlp": 100},
+    "initial_ratio": 0.78,
+    "recommended_full_ratio": 0.82,
+    "recommended_full_capped_macro": 0.82,
+    "maximum_generation_errors": 0,
+    "maximum_runs": 1
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "protocol": "P0-A42-ONE-ROUND-THREE-DOMAIN",
+  "created_date": "2026-08-02",
+  "base_model": "models/pretrained/Qwen--Qwen3-1.7B",
+  "training": {
+    "math": {"rows": 6917, "rank": 8, "alpha": 16, "learning_rate": 0.000002, "max_steps": 216, "checkpoint_steps": 108},
+    "code": {"rows": 6000, "rank": 16, "alpha": 32, "learning_rate": 0.000005, "max_steps": 192, "checkpoint_steps": 96},
+    "nlp": {"rows": 3155, "rank": 16, "alpha": 32, "learning_rate": 0.000005, "max_steps": 100, "checkpoint_steps": 50, "answer_token_weight_multiplier": 2.0}
+  },
+  "validation": {
+    "math": "data/p0a10/math_validation.jsonl",
+    "code": "data/p0a25/code_validation.jsonl",
+    "nlp": "data/p0a34/nlp_validation.jsonl",
+    "selection_feedback": "aggregate_accuracy_only"
+  },
+  "final_test": {
+    "manifest": "data/capability_v2/gate300.jsonl",
+    "baseline_trace": "data/eval/p0a5_baseline14b_gate300.jsonl",
+    "maximum_runs": 1,
+    "post_test_tuning": false
+  },
+  "system_ram_stop_threshold_percent": 60
+}

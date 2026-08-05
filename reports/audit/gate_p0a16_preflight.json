@@ -1,0 +1,8 @@
+{
+  "gate": "P0-A16-PREFLIGHT",
+  "status": "passed",
+  "validation_rows": 1041,
+  "candidate_count": 1,
+  "gate300_opened": false,
+  "formal_full_opened": false
+}

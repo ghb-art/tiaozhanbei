@@ -1,0 +1,97 @@
+{
+  "gate": "P0-A6-STUDENT-TRAIN",
+  "check_version": "1.0",
+  "created_by": "model_compression/train_p0a6_student.py",
+  "created_ts": "2026-08-01T10:51:30.879316+00:00",
+  "status": "dry_run_passed",
+  "errors": [],
+  "model_dir": "models/checkpoints/p0a4/student-shared-merged",
+  "train_data": "data/p0a12/math_train.jsonl",
+  "train_data_hash": "240576c1e62843e85924cb323adc72bd9f9bad75d0a5c88f792a5b193b30dd00",
+  "train_rows": 18136,
+  "focus": {
+    "focus_domain": "math",
+    "source_rows": 18136,
+    "selected_rows": 18136,
+    "source_domain_counts": {
+      "math": 18136
+    },
+    "selected_domain_counts": {
+      "math": 18136
+    },
+    "selected_dataset_counts": {
+      "gsm8k": 2136,
+      "metamathqa": 16000
+    },
+    "training_weight_mean_before": 1.0588883987648876,
+    "training_weight_normalization_divisor": 1.0588883987648876,
+    "training_weight_mean_after": 1.0000000000002773,
+    "mcq_answer_token_weight_multiplier": 1.0,
+    "mcq_answer_token_weight_multiplied_rows": 0
+  },
+  "domain_counts": {
+    "math": 18136
+  },
+  "kl_weight_by_domain": {
+    "math": {
+      "minimum": 0.15,
+      "maximum": 0.15,
+      "mean": 0.15000000000005068
+    }
+  },
+  "answer_token_weight_rows": {},
+  "formal_test_reference_count": 0,
+  "optimization": {
+    "lora_rank": 16,
+    "lora_alpha": 32,
+    "lora_dropout": 0.05,
+    "target_modules": [
+      "q_proj",
+      "k_proj",
+      "v_proj",
+      "o_proj",
+      "gate_proj",
+      "up_proj",
+      "down_proj"
+    ],
+    "learning_rate": 2e-06,
+    "bf16": true,
+    "max_seq_length": 1536,
+    "max_steps": 576,
+    "checkpoint_steps": 288,
+    "save_total_limit": null,
+    "per_device_train_batch_size": 1,
+    "gradient_accumulation_steps": 8,
+    "expected_world_size": 4,
+    "observed_world_size": 1,
+    "effective_global_batch_size": 32,
+    "warmup_ratio": 0.03,
+    "max_grad_norm": 1.0,
+    "gradient_checkpointing": true,
+    "gradient_checkpointing_use_reentrant": false,
+    "resume_from_checkpoint": ""
+  },
+  "preservation": {
+    "method": "all_task_adapter_disabled_base_kl",
+    "direction": "KL(base||student)",
+    "temperature": 2.0,
+    "mask": "assistant_answer_tokens_only",
+    "reference_forward": "unconditional_on_every_rank_and_batch",
+    "supervised_weight": "1-kl_weight_per_row"
+  },
+  "dependencies": {
+    "torch": "2.6.0+cu124",
+    "transformers": "4.51.3",
+    "accelerate": "1.14.0",
+    "peft": "0.17.1"
+  },
+  "token_budget_scan": {
+    "status": "passed",
+    "scanned_rows": 18136,
+    "max_seq_length": 1536,
+    "maximum_observed_tokens": 894,
+    "maximum_sample_id": "metamathqa/GSM_SV/25c80fbdd32b2e1aaa240539",
+    "answer_token_weight_rows": 0
+  },
+  "report_hash": "b3a41738996ed9952fbf0d3851fce8c5264aa3d1c07bf1223f66a8e4680021f9"
+}

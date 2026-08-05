@@ -1,0 +1,8 @@
+{
+  "gate": "P0-A47-GGUF-PREPARE",
+  "status": "passed",
+  "selected_step": 128,
+  "path": "models/adapters/p0a47/code-step-128-f16.gguf",
+  "bytes": 34892672,
+  "sha256": "dfe93ec49a2ef2bda5fa22b890b4d2b887bd174969bc0cb527fdecb5faa7857c"
+}

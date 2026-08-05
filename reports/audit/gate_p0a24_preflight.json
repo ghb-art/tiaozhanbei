@@ -1,0 +1,11 @@
+{
+  "gate": "P0-A24-PREFLIGHT",
+  "status": "passed",
+  "selected_step": 96,
+  "selected_adapter": "models/checkpoints/p0a23/code-continuation/checkpoint-96",
+  "math_full_retention": 0.8214876033057851,
+  "nlp_frozen_retention": 0.7848101265822784,
+  "code_rows": 100,
+  "maximum_runs": 1,
+  "formal_full_opened": false
+}

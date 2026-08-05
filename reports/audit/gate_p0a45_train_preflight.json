@@ -1,0 +1,88 @@
+{
+  "gate": "P0-A5-LORA-TRAIN",
+  "check_version": "1.0",
+  "created_by": "model_compression/train_p0a5_lora.py",
+  "created_ts": "2026-08-03T08:25:03.003987+00:00",
+  "status": "dry_run_passed",
+  "role": "student",
+  "mode": "training",
+  "candidate_index": 1,
+  "config": "configs/p0a45_simple_shared.json",
+  "config_hash": "029a95f2dde915813bebc09f22dbb0776a1c1376d55c9b1c9f9a631cfa37efef",
+  "model_dir": "models/checkpoints/p0a4/student-shared-merged",
+  "train_data": "data/p0a45/train.jsonl",
+  "train_data_hash": "5bac8bb8f2ba51b3c80ec8bf35172af0a5934219633775c36f6bffbcc2bc9d3b",
+  "validation_data": "data/p0a45/internal_validation.jsonl",
+  "validation_data_hash": "9de258fa13553cc203fbd07a3cef893f1fd25980cf10faaf1b0f977f46bbe2d2",
+  "train_counts": {
+    "cmmlu": 10178,
+    "gsm8k": 7173,
+    "opencodeinstruct": 20000
+  },
+  "validation_counts": {
+    "cmmlu": 595,
+    "gsm8k": 200,
+    "opencodeinstruct": 1000
+  },
+  "weighted_task_mass": {
+    "cmmlu": 0.5000000000000207,
+    "opencodeinstruct": 0.30000000000001226,
+    "gsm8k": 0.19999999999996715
+  },
+  "lora": {
+    "rank": 16,
+    "alpha": 32,
+    "dropout": 0.05,
+    "target_modules": [
+      "q_proj",
+      "k_proj",
+      "v_proj",
+      "o_proj",
+      "gate_proj",
+      "up_proj",
+      "down_proj"
+    ]
+  },
+  "optimization": {
+    "learning_rate": 1e-06,
+    "epochs": 1.0,
+    "max_seq_length": 1536,
+    "per_device_train_batch_size": 1,
+    "gradient_accumulation_steps": 8,
+    "deepspeed": "",
+    "deepspeed_stage": 0,
+    "cpu_offload": false,
+    "gradient_checkpointing": true,
+    "gradient_checkpointing_use_reentrant": false,
+    "checkpoint_steps": 200,
+    "save_total_limit": 2,
+    "resume_from_checkpoint": "",
+    "early_stopping": {
+      "enabled": false
+    }
+  },
+  "math_preservation": {
+    "enabled": false,
+    "method": "gsm8k_supervised_replay",
+    "kl_weight": 0.0,
+    "supervised_weight": 1.0,
+    "temperature": 1.0
+  },
+  "formal_test_reference_count": 0,
+  "dependencies": {
+    "torch": "2.6.0+cu124",
+    "transformers": "4.51.3",
+    "accelerate": "1.14.0",
+    "deepspeed": "0.17.6",
+    "peft": "0.17.1"
+  },
+  "token_budget_scan": {
+    "status": "passed",
+    "scanned_rows": 39146,
+    "max_seq_length": 1536,
+    "maximum_observed_tokens": 1529,
+    "maximum_sample_id": "opencodeinstruct/train/d447346ef689eba77817d5b3a977cdcb"
+  },
+  "errors": [],
+  "report_hash": "16cd93f269033da1e39ac3bbbe5c3b743736f74439b849955b39e91119439d73"
+}

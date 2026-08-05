@@ -1,0 +1,36 @@
+{
+  "gate": "P0-A5-GATE300-EVAL",
+  "check_version": "1.1",
+  "created_by": "scripts/evaluate_p0a5_gate.py",
+  "created_ts": "2026-08-05T03:15:55.749795+00:00",
+  "status": "passed",
+  "candidate_name": "p0b1-converged-shared-q4",
+  "endpoint": "http://127.0.0.1:18601",
+  "served_model_id": "p0b1-converged-shared-q4",
+  "manifest": "data/capability_v2/gate300.jsonl",
+  "manifest_hash": "91d89bfce1ceae19eecdc894a1141c7816ec4dd6a4ef7115700d0c8a811741fc",
+  "output_trace": "data/eval/p0b1_converged_shared_gate300.jsonl",
+  "output_trace_hash": "764791b040d6116fa7e87eb10090702633d032e13288f92ac590df24b3807e28",
+  "counts": {
+    "code": 100,
+    "math": 100,
+    "nlp": 100
+  },
+  "correct_counts": {
+    "math": 71,
+    "nlp": 55
+  },
+  "accuracy_by_domain": {
+    "math": 0.71,
+    "code": 0.0,
+    "nlp": 0.55
+  },
+  "generation_error_count": 0,
+  "max_tokens": {
+    "math": 512,
+    "code": 768,
+    "nlp": 256
+  },
+  "code_timeout_sec": 5,
+  "report_hash": "5a206c1064dd21675982e484cc69b214102a3f7a38a10c8bdbcd013c1a93189f"
+}

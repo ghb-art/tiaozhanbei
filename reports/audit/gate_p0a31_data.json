@@ -1,0 +1,12 @@
+{
+  "gate": "P0-A31-NLP100-DATA",
+  "created_by": "model_compression/build_p0a31_nlp_gate.py",
+  "created_ts": "2026-08-01T17:51:17.783992+00:00",
+  "status": "passed",
+  "source": "data/capability_v2/gate300.jsonl",
+  "source_hash": "91d89bfce1ceae19eecdc894a1141c7816ec4dd6a4ef7115700d0c8a811741fc",
+  "output": "data/p0a31/nlp_gate100.jsonl",
+  "output_hash": "9196a30678f82824e780fbacf4b365b56aa7d01db1c36724a4e79d255d5f1e28",
+  "rows": 100,
+  "formal_test_opened": false
+}

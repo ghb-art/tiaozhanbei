@@ -1,0 +1,37 @@
+{
+  "protocol": "P0-A16-MATH-JOINT-RUNTIME",
+  "authorized_date": "2026-08-01",
+  "shared_base": "models/checkpoints/p0a4/student-shared-merged",
+  "math_adapter": "models/checkpoints/p0a11/math-specialist/checkpoint-64",
+  "frozen_code_adapter": "models/checkpoints/p0a11/code-specialist/checkpoint-250",
+  "frozen_nlp_adapter": "models/checkpoints/p0a10/nlp-specialist/checkpoint-136",
+  "math": {
+    "baseline": {"adapter": null, "thinking": false},
+    "candidate": {"adapter": "p0a11_step64", "thinking": true},
+    "temperature": 0.0,
+    "max_tokens": 768,
+    "maximum_candidates": 1
+  },
+  "validation": {
+    "repo": "MU-NLPC/Calc-mawps",
+    "revision": "38c10053efeafd20ab6ff4e08c3ec17de26c19b7",
+    "file": "data/train-00000-of-00001-4bb1451333aad61c.parquet",
+    "source_sha256": "7a8dd8f7680b5e5ddb908cdfa33867c298d9225d1d7595a17d4771c09e482140",
+    "source_rows": 1089,
+    "excluded_fraction_rows": 45,
+    "excluded_history_overlap": 3,
+    "rows": 1041,
+    "minimum_gain": 0.02,
+    "minimum_canonical_format_rate": 0.95,
+    "generation_errors": 0
+  },
+  "promotion": {
+    "gate300_runs_for_p0a16": 1,
+    "student_to_14b_minimum_per_domain": 0.78,
+    "recommended_full_minimum_per_domain": 0.82
+  },
+  "safety": {
+    "system_ram_stop_threshold_percent": 60,
+    "formal_test_rows_used_for_selection": 0
+  }
+}

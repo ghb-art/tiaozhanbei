@@ -1,0 +1,29 @@
+{
+  "gate": "P0-A44-HF-SELECTION",
+  "check_version": "1.0",
+  "created_by": "scripts/select_p0a44_hf.py",
+  "created_ts": "2026-08-03T04:34:36.114462+00:00",
+  "status": "passed",
+  "selected": {
+    "math": {
+      "adapter": "",
+      "reason": "formal Math frozen"
+    },
+    "code": {
+      "step": 176,
+      "adapter": "models/checkpoints/p0a44/code/checkpoint-176",
+      "base_correct": 603,
+      "candidate_correct": 604
+    },
+    "nlp": {
+      "step": 64,
+      "adapter": "models/checkpoints/p0a44/nlp/checkpoint-64",
+      "base_correct": 350,
+      "candidate_correct": 353,
+      "candidate_not_worse_each_validation": true
+    }
+  },
+  "formal_test_items_loaded": 0,
+  "policy": "aggregate train-only validation only; base fallback is allowed",
+  "report_hash": "322bb07ace46ff3da7284f96c27912001850ef8a84683c14be8cd8309e4deeac"
+}

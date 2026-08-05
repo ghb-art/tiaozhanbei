@@ -1,0 +1,93 @@
+{
+  "config_version": "1.0",
+  "protocol": "P0-B1-CONVERGED-SHARED-STUDENT",
+  "seed": 20260804,
+  "policy": {
+    "student_base": "models/checkpoints/p0a4/student-shared-merged",
+    "single_shared_lora": true,
+    "runtime_adapters": false,
+    "formal_feedback_for_training": "aggregate_domain_characteristics_only",
+    "formal_item_outputs_used": false
+  },
+  "artifacts": {
+    "source_train": "data/p0b1/train.jsonl",
+    "distill_train": "data/p0b1/train.jsonl",
+    "source_validation": "data/p0b1/internal_validation.jsonl",
+    "gate_manifest": "data/capability_v2/gate300.jsonl"
+  },
+  "student_training": {
+    "lora_rank": 64,
+    "lora_alpha": 128,
+    "lora_dropout": 0.10,
+    "learning_rate": 0.000002,
+    "epochs": 4,
+    "max_seq_length": 1536,
+    "checkpoint_steps": 250,
+    "early_stopping_enabled": true,
+    "eval_steps": 250,
+    "early_stopping_patience": 4,
+    "early_stopping_threshold": 0.002,
+    "weight_decay": 0.05,
+    "warmup_ratio": 0.05,
+    "max_grad_norm": 1.0,
+    "label_smoothing": 0.02,
+    "task_loss_mass": {
+      "gsm8k": 0.30,
+      "opencodeinstruct": 0.35,
+      "cmmlu": 0.35
+    },
+    "base_preservation": {
+      "enabled": true,
+      "method": "unconditional_adapter_disabled_base_kl",
+      "temperature": 2.0,
+      "kl_weight_by_dataset": {
+        "gsm8k": 0.25,
+        "opencodeinstruct": 0.12,
+        "cmmlu": 0.12
+      }
+    },
+    "math_preservation": {
+      "enabled": false,
+      "method": "superseded_by_all_task_base_kl",
+      "kl_weight": 0.0,
+      "supervised_weight": 1.0,
+      "temperature": 2.0
+    },
+    "candidate_overrides": {}
+  },
+  "data": {
+    "train_counts": {
+      "gsm8k": 7173,
+      "opencodeinstruct": 20000,
+      "cmmlu": 30000
+    },
+    "validation_counts": {
+      "gsm8k": 200,
+      "opencodeinstruct": 300,
+      "cmmlu": 300
+    },
+    "code_contract": "humaneval_v15_body_only_execution_verified",
+    "nlp_contract": "chinese_four_choice_single_letter",
+    "formal_test_rows_loaded_for_training": 0
+  },
+  "gate300": {
+    "expected_counts": {"math": 100, "code": 100, "nlp": 100},
+    "initial_ratio": 0.78,
+    "recommended_full_ratio": 0.82,
+    "recommended_full_capped_macro": 0.82,
+    "maximum_generation_errors": 0
+  },
+  "quantization": {
+    "weight_type": "Q4_K_M",
+    "kv_cache_type": "q8_0",
+    "imatrix_source": "training_only",
+    "memory_dev_mb_decimal": 1400,
+    "memory_formal_mb_decimal": 1500
+  },
+  "formal_full": {
+    "datasets": {"gsm8k": 1319, "humaneval": 164, "cmmlu": 11582},
+    "baseline_trace": "reports/sealed/p0a4/baseline14b_awq_full.jsonl",
+    "candidate_trace": "reports/sealed/p0b1/edge_converged_q4_full.jsonl",
+    "feedback_after_run": "aggregate_domain_metrics_only"
+  }
+}

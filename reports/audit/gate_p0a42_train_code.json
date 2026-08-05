@@ -1,0 +1,265 @@
+{
+  "gate": "P0-A6-STUDENT-TRAIN",
+  "check_version": "1.0",
+  "created_by": "model_compression/train_p0a6_student.py",
+  "created_ts": "2026-08-02T14:21:43.795977+00:00",
+  "status": "passed",
+  "errors": [],
+  "model_dir": "models/pretrained/Qwen--Qwen3-1.7B",
+  "train_data": "data/p0a42/code_train.jsonl",
+  "train_data_hash": "9d6ae44fe07a08fd4245062da024bd691a9932f11b94eb4012adf02cf87bbd47",
+  "train_rows": 6000,
+  "focus": {
+    "focus_domain": "code",
+    "source_rows": 6000,
+    "selected_rows": 6000,
+    "source_domain_counts": {
+      "code": 6000
+    },
+    "selected_domain_counts": {
+      "code": 6000
+    },
+    "selected_dataset_counts": {
+      "opencodeinstruct": 6000
+    },
+    "training_weight_mean_before": 1.0,
+    "training_weight_normalization_divisor": 1.0,
+    "training_weight_mean_after": 1.0,
+    "mcq_answer_token_weight_multiplier": 1.0,
+    "mcq_answer_token_weight_multiplied_rows": 0
+  },
+  "domain_counts": {
+    "code": 6000
+  },
+  "kl_weight_by_domain": {
+    "code": {
+      "minimum": 0.1,
+      "maximum": 0.1,
+      "mean": 0.10000000000001132
+    }
+  },
+  "answer_token_weight_rows": {},
+  "formal_test_reference_count": 0,
+  "optimization": {
+    "lora_rank": 16,
+    "lora_alpha": 32,
+    "lora_dropout": 0.05,
+    "target_modules": [
+      "q_proj",
+      "k_proj",
+      "v_proj",
+      "o_proj",
+      "gate_proj",
+      "up_proj",
+      "down_proj"
+    ],
+    "learning_rate": 5e-06,
+    "bf16": true,
+    "max_seq_length": 1536,
+    "max_steps": 192,
+    "checkpoint_steps": 96,
+    "save_total_limit": null,
+    "per_device_train_batch_size": 1,
+    "gradient_accumulation_steps": 8,
+    "expected_world_size": 4,
+    "observed_world_size": 4,
+    "effective_global_batch_size": 32,
+    "warmup_ratio": 0.03,
+    "max_grad_norm": 1.0,
+    "gradient_checkpointing": true,
+    "gradient_checkpointing_use_reentrant": false,
+    "resume_from_checkpoint": "",
+    "init_adapter": "",
+    "init_adapter_file_hashes": {}
+  },
+  "preservation": {
+    "method": "all_task_adapter_disabled_base_kl",
+    "direction": "KL(base||student)",
+    "temperature": 2.0,
+    "mask": "assistant_answer_tokens_only",
+    "reference_forward": "unconditional_on_every_rank_and_batch",
+    "supervised_weight": "1-kl_weight_per_row"
+  },
+  "dependencies": {
+    "torch": "2.6.0+cu124",
+    "transformers": "4.51.3",
+    "accelerate": "1.14.0",
+    "peft": "0.17.1"
+  },
+  "token_budget_scan": {},
+  "report_hash": "574c0b454fae3fe60d49ca4041ddac563e717c55745df5de9b155b3663a03e6e",
+  "global_step": 192,
+  "final_checkpoint": "models/checkpoints/p0a42/code/checkpoint-192",
+  "published_files": [
+    "adapter_config.json",
+    "adapter_model.safetensors",
+    "README.md"
+  ],
+  "train_metrics": {
+    "train_runtime": 997.1628,
+    "train_samples_per_second": 6.161,
+    "train_steps_per_second": 0.193,
+    "total_flos": 2.867931394342912e+16,
+    "train_loss": 3.0119648377100625,
+    "epoch": 1.0213333333333334
+  },
+  "domain_loss_summary": {
+    "math": {
+      "examples_seen": 0,
+      "mean_sft_loss": null,
+      "mean_kl_base_to_student": null,
+      "mean_combined_loss": null
+    },
+    "code": {
+      "examples_seen": 6128,
+      "mean_sft_loss": 0.38081976191375366,
+      "mean_kl_base_to_student": 0.3482737464124571,
+      "mean_combined_loss": 0.37756515219661724
+    },
+    "nlp": {
+      "examples_seen": 0,
+      "mean_sft_loss": null,
+      "mean_kl_base_to_student": null,
+      "mean_combined_loss": null
+    }
+  },
+  "domain_loss_log": [
+    {
+      "step": 10,
+      "code_sft_loss": 0.781372999958694,
+      "code_kl_base_to_student": 0.0009750303947535713,
+      "code_combined_loss": 0.7033331852406264,
+      "code_examples": 320
+    },
+    {
+      "step": 20,
+      "code_sft_loss": 0.734845420345664,
+      "code_kl_base_to_student": 0.003115353283010336,
+      "code_combined_loss": 0.6616723949089647,
+      "code_examples": 320
+    },
+    {
+      "step": 30,
+      "code_sft_loss": 0.6468174612848088,
+      "code_kl_base_to_student": 0.028485175263267593,
+      "code_combined_loss": 0.584984220052138,
+      "code_examples": 320
+    },
+    {
+      "step": 40,
+      "code_sft_loss": 0.5374555165180936,
+      "code_kl_base_to_student": 0.11985791433253326,
+      "code_combined_loss": 0.49569574487395585,
+      "code_examples": 320
+    },
+    {
+      "step": 50,
+      "code_sft_loss": 0.440631979634054,
+      "code_kl_base_to_student": 0.20322533826110883,
+      "code_combined_loss": 0.4168913053581491,
+      "code_examples": 320
+    },
+    {
+      "step": 60,
+      "code_sft_loss": 0.3539654638734646,
+      "code_kl_base_to_student": 0.2629293951671571,
+      "code_combined_loss": 0.34486185022396965,
+      "code_examples": 320
+    },
+    {
+      "step": 70,
+      "code_sft_loss": 0.33540566023439167,
+      "code_kl_base_to_student": 0.39774737276602534,
+      "code_combined_loss": 0.3416398244909942,
+      "code_examples": 320
+    },
+    {
+      "step": 80,
+      "code_sft_loss": 0.3013699528761208,
+      "code_kl_base_to_student": 0.4812770890071988,
+      "code_combined_loss": 0.3193606604356319,
+      "code_examples": 320
+    },
+    {
+      "step": 90,
+      "code_sft_loss": 0.2999593543470837,
+      "code_kl_base_to_student": 0.48023597004357726,
+      "code_combined_loss": 0.3179870102321729,
+      "code_examples": 320
+    },
+    {
+      "step": 100,
+      "code_sft_loss": 0.2879121744539589,
+      "code_kl_base_to_student": 0.48326495294459165,
+      "code_combined_loss": 0.307447446975857,
+      "code_examples": 320
+    },
+    {
+      "step": 110,
+      "code_sft_loss": 0.2973268735629972,
+      "code_kl_base_to_student": 0.46881987983360884,
+      "code_combined_loss": 0.31447616853984073,
+      "code_examples": 320
+    },
+    {
+      "step": 120,
+      "code_sft_loss": 0.2862430622219108,
+      "code_kl_base_to_student": 0.46849505773279815,
+      "code_combined_loss": 0.30446825545514,
+      "code_examples": 320
+    },
+    {
+      "step": 130,
+      "code_sft_loss": 0.27299488603603095,
+      "code_kl_base_to_student": 0.4533901965012774,
+      "code_combined_loss": 0.2910344110336155,
+      "code_examples": 320
+    },
+    {
+      "step": 140,
+      "code_sft_loss": 0.2784896713797934,
+      "code_kl_base_to_student": 0.458653873577714,
+      "code_combined_loss": 0.29650608645752075,
+      "code_examples": 320
+    },
+    {
+      "step": 150,
+      "code_sft_loss": 0.27820459839422257,
+      "code_kl_base_to_student": 0.47972057056613265,
+      "code_combined_loss": 0.29835618936922403,
+      "code_examples": 320
+    },
+    {
+      "step": 160,
+      "code_sft_loss": 0.28063934615347536,
+      "code_kl_base_to_student": 0.45664961903821677,
+      "code_combined_loss": 0.2982403671485372,
+      "code_examples": 320
+    },
+    {
+      "step": 170,
+      "code_sft_loss": 0.27916415720246734,
+      "code_kl_base_to_student": 0.4612805650802329,
+      "code_combined_loss": 0.29737579219508914,
+      "code_examples": 320
+    },
+    {
+      "step": 180,
+      "code_sft_loss": 0.2809400344500318,
+      "code_kl_base_to_student": 0.4483491533435881,
+      "code_combined_loss": 0.29768094047904015,
+      "code_examples": 320
+    },
+    {
+      "step": 190,
+      "code_sft_loss": 0.27799964330992416,
+      "code_kl_base_to_student": 0.4425484572880362,
+      "code_combined_loss": 0.2944545177007584,
+      "code_examples": 304
+    }
+  ],
+  "retained_checkpoints": [
+    "models/checkpoints/p0a42/code/checkpoint-96",
+    "models/checkpoints/p0a42/code/checkpoint-192"
+  ]
+}

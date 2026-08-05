@@ -1,0 +1,42 @@
+{
+  "gate": "P0-A46-HF-NLP-SELECTION",
+  "check_version": "1.0",
+  "created_by": "scripts/select_p0a46_nlp.py",
+  "created_ts": "2026-08-03T10:26:22.092480+00:00",
+  "status": "failed",
+  "base_correct_by_dataset": {
+    "ceval": 143,
+    "cmmlu": 206
+  },
+  "base_correct_total": 349,
+  "minimum_gain_items": 6,
+  "candidates": [
+    {
+      "step": 159,
+      "correct_by_dataset": {
+        "ceval": 143,
+        "cmmlu": 207
+      },
+      "correct_total": 350,
+      "gain_items": 1,
+      "not_worse_each_dataset": true,
+      "eligible": false
+    },
+    {
+      "step": 318,
+      "correct_by_dataset": {
+        "ceval": 144,
+        "cmmlu": 206
+      },
+      "correct_total": 350,
+      "gain_items": 1,
+      "not_worse_each_dataset": true,
+      "eligible": false
+    }
+  ],
+  "selected": null,
+  "selected_adapter": "",
+  "formal_test_items_loaded": 0,
+  "policy": "aggregate train-only validation; no gate300 feedback",
+  "report_hash": "97321acd190f1bf0afdac5b19a8cce3e7b5501545c140e00ee5ed9cd3e90c9fe"
+}

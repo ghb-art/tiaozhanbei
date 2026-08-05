@@ -1,0 +1,62 @@
+{
+  "protocol": "P0-A7-MMLU-AUX-CHINESE-NLP-SPECIALIST",
+  "created_date": "2026-07-31",
+  "reason": "P0-A6 answer-first C-Eval plus CMMLU-dev supervision reduced NLP quick accuracy to 42%/41%; the historical MMLU auxiliary_train Chinese Teacher route previously produced a reproducible 10.55-point train-only NLP gain.",
+  "model_routing": {
+    "math": "models/checkpoints/p0a4/student-shared-merged",
+    "code": "models/checkpoints/p0a6/student-pilot/checkpoint-200",
+    "nlp_base": "models/checkpoints/p0a4/student-shared-merged",
+    "nlp_candidate": "models/checkpoints/p0a7/nlp-mmlu-aux-specialist/checkpoint-{94,188}"
+  },
+  "data": {
+    "source": "Hendrycks MMLU data/auxiliary_train only",
+    "source_archive": "data/datasets/mmlu/data.tar",
+    "source_archive_sha256": "bec563ba4bac1d6aaf04141cd7d1605d7a5ca833e38f994051e818489592989b",
+    "teacher_request_count": 4397,
+    "teacher_requests": "data/distill/p0a7_nlp_teacher_requests.jsonl",
+    "teacher_requests_sha256": "d5acdb966e1932cb2d3a17d4803f70cb8470406b9d97dd83a2dcd9bc55ea26a7",
+    "verified_train_target": 3000,
+    "untouched_internal_validation_target": 256,
+    "required_domains": 8,
+    "teacher_acceptance": "translated Chinese MCQ plus independently solved choice must match the source auxiliary_train label",
+    "formal_test_loaded": false,
+    "cmmlu_test_loaded": false
+  },
+  "training": {
+    "base_model": "models/checkpoints/p0a4/student-shared-merged",
+    "architecture": "NLP-only Top-1 LoRA",
+    "lora_rank": 16,
+    "lora_alpha": 32,
+    "lora_dropout": 0.05,
+    "learning_rate": 0.00003,
+    "kl_base_to_student": 0.05,
+    "max_steps": 188,
+    "checkpoint_steps": 94,
+    "selection_steps": [94, 188],
+    "effective_global_batch_size": 32,
+    "gpu_count": 4,
+    "max_sequence_length": 1536
+  },
+  "selection": {
+    "first_gate": "untouched 256-row MMLU-aux Chinese train-only validation",
+    "minimum_nlp_gain": 0.03,
+    "maximum_generation_errors": 0,
+    "tie_break": "higher accuracy, then earlier checkpoint",
+    "second_gate": "frozen P0-A6 quick 300 with Math/Code/NLP 100 each",
+    "second_gate_requirements": {
+      "math_minimum_gain": -0.01,
+      "code_minimum_gain": 0.03,
+      "nlp_minimum_gain": 0.03,
+      "maximum_generation_errors": 0
+    },
+    "full_646_only_after_both_gates": true
+  },
+  "forbidden": [
+    "MMLU test",
+    "CMMLU test",
+    "GSM8K test",
+    "HumanEval",
+    "formal 13065-item traces",
+    "per-question gate feedback for tuning"
+  ]
+}

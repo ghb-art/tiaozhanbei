@@ -1,0 +1,23 @@
+{
+  "gate": "P0-A24-CODE-GATE100-EVAL",
+  "check_version": "1.0",
+  "created_by": "scripts/evaluate_p0a24_code_gate.py",
+  "created_ts": "2026-08-01T16:06:34.300857+00:00",
+  "status": "passed",
+  "served_model_id": "p0a24-code-96",
+  "selected_step": 96,
+  "manifest": "data/capability_v2/gate300.jsonl",
+  "manifest_hash": "91d89bfce1ceae19eecdc894a1141c7816ec4dd6a4ef7115700d0c8a811741fc",
+  "code_rows_loaded": 100,
+  "math_rows_loaded": 0,
+  "nlp_rows_loaded": 0,
+  "correct_count": 45,
+  "accuracy": 0.45,
+  "generation_error_count": 0,
+  "thinking": "off",
+  "max_tokens": 768,
+  "output_trace": "data/eval/p0a24_code_gate100.jsonl",
+  "output_trace_hash": "ab1d66ee60b99b8986e961c95129b376e00e64f7532837fe340bd5ebe5c63967",
+  "formal_full_loaded": false,
+  "report_hash": "406bd7209cee3f19eae05300598cdebe7dddcb80e86f2c908b4b0e752a2dc5ab"
+}

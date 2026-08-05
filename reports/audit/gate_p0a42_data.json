@@ -1,0 +1,64 @@
+{
+  "gate": "P0-A42-TRAIN-DATA",
+  "check_version": "1.0",
+  "created_by": "model_compression/build_p0a42_data.py",
+  "created_ts": "2026-08-02T13:30:12.634256+00:00",
+  "status": "passed",
+  "base_model": "models/pretrained/Qwen--Qwen3-1.7B",
+  "outputs": {
+    "math": {
+      "path": "data/p0a42/math_train.jsonl",
+      "rows": 6917,
+      "sha256": "08d0fdbaeb62b6c86afb1c95a0b80507f3e162b7b814787671f16b6097bad2e1",
+      "dataset_counts": {
+        "gsm8k": 6917
+      }
+    },
+    "code": {
+      "path": "data/p0a42/code_train.jsonl",
+      "rows": 6000,
+      "sha256": "9d6ae44fe07a08fd4245062da024bd691a9932f11b94eb4012adf02cf87bbd47",
+      "dataset_counts": {
+        "opencodeinstruct": 6000
+      }
+    },
+    "nlp": {
+      "path": "data/p0a42/nlp_train.jsonl",
+      "rows": 3155,
+      "sha256": "a4b7af123b22e2e310d1c7dd4be2cd50d20eb94a192937d92a47cf464244b2c8",
+      "dataset_counts": {
+        "ceval_rationale_train": 1335,
+        "coig_mcq_verified": 820,
+        "mmlu_aux_chinese": 1000
+      }
+    }
+  },
+  "validation_counts": {
+    "math": 256,
+    "code": 1000,
+    "nlp": 260
+  },
+  "train_validation_overlap": {
+    "math": 0,
+    "code": 0,
+    "nlp": 0
+  },
+  "formal_or_gate_rows_loaded": 0,
+  "nlp_policy": {
+    "native_chinese_rows": 2155,
+    "translated_mmlu_rows": 1000,
+    "openqa_to_synthetic_mcq_rows": 0,
+    "label_source": "human label; teacher rationale only"
+  },
+  "math_format_repairs_from_locked_train_label": 29,
+  "inputs": {
+    "configs/p0a42_one_round.json": "007561c59548adf6bc302cb35e32962849e6d9ce0191d30729508e7c8ac61f55",
+    "data/p0a10/train.jsonl": "2a176cb58d08c67f7a73389159139b57dd10aab4d85cac50547b940f08e396ba",
+    "data/p0a25/code_train_pool.jsonl": "f748c3f01660ba646ccb7416a21d1310cf08a251859adba9d5d21e43a9e07649",
+    "data/p0a34/train.jsonl": "5b56671be823e8b1fbfc02d1f8fd38926760b236b0ac2d3ecf8b3d5ead8fe095",
+    "data/p0a10/math_validation.jsonl": "fe41f03dc81665ce30001f4ad0d8a955aece0e5551622f1539b4a472970a57f6",
+    "data/p0a25/code_validation.jsonl": "e17bcfe799a0ee3d8d029b3fa0cc978c19770e1ff4b2ab4cfeb917460e8453f9",
+    "data/p0a34/nlp_validation.jsonl": "5ba7791da3a04d2aa5341baf19a80836740eb006dbd86c7a225c68a4a8f39619"
+  },
+  "report_hash": "7c5f6a66fefb6c679bd763f0ac6f4063c6dba2c8754f09eb59c935aa1fa6462d"
+}

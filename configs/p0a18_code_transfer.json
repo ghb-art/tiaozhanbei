@@ -1,0 +1,42 @@
+{
+  "protocol": "P0-A18-CODE-TRANSFER-AUDIT",
+  "authorized_date": "2026-08-01",
+  "shared_base": "models/checkpoints/p0a4/student-shared-merged",
+  "candidates": {
+    "250": "models/checkpoints/p0a11/code-specialist/checkpoint-250",
+    "500": "models/checkpoints/p0a11/code-specialist/checkpoint-500"
+  },
+  "validation": {
+    "repo": "google-research-datasets/mbpp",
+    "revision": "4bb6404fdc6cacfda99d4ac4205087b89d32030c",
+    "config": "full",
+    "split": "validation",
+    "rows": 90,
+    "public_tests_per_problem": 3,
+    "minimum_absolute_gain": 0.03,
+    "candidate_canonical_not_below_base": true,
+    "generation_errors": 0,
+    "maximum_candidate_evaluations": 2
+  },
+  "runtime": {
+    "thinking": "off",
+    "max_tokens": 768,
+    "code_timeout_seconds": 5,
+    "system_ram_stop_threshold_percent": 60
+  },
+  "frozen_domains": {
+    "math_full_retention": 0.8214876033057851,
+    "nlp_gate_retention": 0.7848101265822784
+  },
+  "promotion": {
+    "minimum_code_retention": 0.78,
+    "recommended_full_minimum": 0.82
+  },
+  "forbidden": [
+    "MBPP validation in training",
+    "per-item MBPP feedback for candidate design",
+    "HumanEval or gate300 per-item feedback for training",
+    "modifying the frozen Math or NLP routes",
+    "lowering the preregistered gain threshold after evaluation"
+  ]
+}

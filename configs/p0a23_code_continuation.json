@@ -1,0 +1,43 @@
+{
+  "protocol": "P0-A23-FRESH-CODE-CONTINUATION",
+  "authorized_date": "2026-08-01",
+  "base_model": "models/checkpoints/p0a4/student-shared-merged",
+  "initial_adapter": "models/checkpoints/p0a21/code-execution-specialist/checkpoint-384",
+  "required_evidence": {
+    "p0a21_training": "reports/audit/gate_p0a21_train_code.json",
+    "p0a21_selection": "reports/audit/p0a21/code_selection.json"
+  },
+  "source": {
+    "repo": "nvidia/OpenCodeInstruct",
+    "revision": "8f3ba5bafe4d6e8db46082cf7ae6741bc370604d",
+    "license": "cc-by-4.0",
+    "independent_tests_per_task": 10,
+    "public_tests_per_prompt": 3
+  },
+  "data": {
+    "train_rows": 6000,
+    "validation_rows": 1000,
+    "exclude_all_p0a21_ids": true,
+    "formal_test_training_rows": 0
+  },
+  "training": {
+    "new_optimizer_stage": true,
+    "rank": 16,
+    "alpha": 32,
+    "learning_rate": 8e-7,
+    "kl_weight": 0.08,
+    "global_batch_size": 32,
+    "max_steps": 192,
+    "checkpoint_steps": 96,
+    "maximum_candidates": 2
+  },
+  "selection": {
+    "minimum_gain_over_original_base": 0.03,
+    "minimum_gain_over_initial_adapter": 0.0,
+    "minimum_canonical_format_rate": 0.99,
+    "generation_error_count": 0,
+    "thinking": "off",
+    "formal_full_opened": false
+  },
+  "system_ram_stop_threshold_percent": 60
+}

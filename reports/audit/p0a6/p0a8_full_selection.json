@@ -1,0 +1,70 @@
+{
+  "gate": "P0-A6-CHECKPOINT-SELECTION",
+  "check_version": "1.0",
+  "created_by": "scripts/select_p0a6_checkpoint.py",
+  "created_ts": "2026-07-31T17:00:21.025634+00:00",
+  "status": "passed",
+  "selection_policy": {
+    "math_minimum_gain": -0.01,
+    "code_minimum_gain": 0.03,
+    "nlp_minimum_gain": 0.03,
+    "ranking": [
+      "macro_accuracy_desc",
+      "step_asc"
+    ]
+  },
+  "manifest": "data/p0a6/full_validation.jsonl",
+  "validation_scope": "full",
+  "manifest_hash": "452a728d7e1ebb3bc40233b8deef8996b45febbbfbb4e2e9166a23644956077c",
+  "expected_counts": {
+    "math": 200,
+    "code": 186,
+    "nlp": 260
+  },
+  "base_audit": "reports/audit/p0a6/p0a8_base_full.json",
+  "base_audit_hash": "386d510082557b7b0106804df6d1dbec33c068fc0f5bf69462e62a5761848b73",
+  "base_accuracy_by_domain": {
+    "math": 0.765,
+    "code": 0.5053763440860215,
+    "nlp": 0.4269230769230769
+  },
+  "base_macro_accuracy": 0.5657664736696995,
+  "candidate_count": 1,
+  "eligible_candidate_count": 1,
+  "candidates": [
+    {
+      "step": 128,
+      "audit": "reports/audit/p0a6/p0a8_router_full.json",
+      "audit_hash": "726c75b48e10718338f8eb121ca432dfb9342ee5980987dc93a18b856a8428fb",
+      "candidate_name": "p0a8-router-step-128-full",
+      "served_model_id": "domain_routed",
+      "accuracy_by_domain": {
+        "math": 0.77,
+        "code": 0.553763440860215,
+        "nlp": 0.55
+      },
+      "macro_accuracy": 0.6245878136200717,
+      "gain_by_domain": {
+        "math": 0.0050000000000000044,
+        "code": 0.048387096774193505,
+        "nlp": 0.12307692307692314
+      },
+      "eligible": true,
+      "failures": []
+    }
+  ],
+  "selected_step": 128,
+  "selected_path": "reports/audit/p0a6/p0a8_router_full.json",
+  "selected_accuracy_by_domain": {
+    "math": 0.77,
+    "code": 0.553763440860215,
+    "nlp": 0.55
+  },
+  "selected_macro_accuracy": 0.6245878136200717,
+  "selected_gain_by_domain": {
+    "math": 0.0050000000000000044,
+    "code": 0.048387096774193505,
+    "nlp": 0.12307692307692314
+  },
+  "report_hash": "7d74d79bd8a8b8132f9b82a5b4e66888fbb91d3d135b3054ce3bc890bb25cf13"
+}

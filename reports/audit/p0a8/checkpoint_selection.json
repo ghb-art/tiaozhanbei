@@ -1,0 +1,35 @@
+{
+  "gate": "P0-A8-CODE-CHECKPOINT-SELECTION",
+  "check_version": "1.0",
+  "created_by": "scripts/select_p0a8_code.py",
+  "created_ts": "2026-07-31T16:37:58.567148+00:00",
+  "status": "passed",
+  "base_audit": "reports/audit/p0a8/p0a8_base.json",
+  "base_audit_hash": "0c8baf9ec8f75ef94ffbce5aa23ba4a7d7fe39eb5f94c8b0a9153ed7382fb978",
+  "base_accuracy": 0.5116279069767442,
+  "minimum_gain": 0.03,
+  "candidates": [
+    {
+      "step": 64,
+      "audit": "reports/audit/p0a8/p0a8_code_64.json",
+      "audit_hash": "f4fbb7be6aae8aa8574cf9a66a6f57562605a10fd604dadf857a13b7dfdbdec0",
+      "accuracy": 0.5930232558139535,
+      "canonical_format_rate": 1.0,
+      "gain": 0.08139534883720934,
+      "eligible": true,
+      "failures": []
+    },
+    {
+      "step": 128,
+      "audit": "reports/audit/p0a8/p0a8_code_128.json",
+      "audit_hash": "0b3c640edd26cf7f875816c4052f11bf979a0daab4b08d7e904d32e5be396691",
+      "accuracy": 0.6046511627906976,
+      "canonical_format_rate": 0.9883720930232558,
+      "gain": 0.09302325581395343,
+      "eligible": true,
+      "failures": []
+    }
+  ],
+  "selected_step": 128,
+  "report_hash": "ecb1f2747711a958a11a7d50434ead197597a6490e39e25abea40142fa7449dc"
+}

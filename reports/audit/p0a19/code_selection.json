@@ -1,0 +1,48 @@
+{
+  "gate": "P0-A19-CODE-MIXED-SELECTION",
+  "check_version": "1.0",
+  "created_by": "scripts/select_p0a19_code.py",
+  "created_ts": "2026-08-01T14:00:55.679906+00:00",
+  "status": "failed",
+  "base_audit": "reports/audit/p0a19/base_code.json",
+  "base_audit_hash": "ad2af66aaae0fd782f9deddcb562df111ee537d33477e2b4727c6d460cbae5ca",
+  "base_accuracy": 0.5803921568627451,
+  "base_correct_count": 148,
+  "base_canonical_format_rate": 0.0196078431372549,
+  "minimum_absolute_gain": 0.03,
+  "candidates": [
+    {
+      "step": 128,
+      "audit": "reports/audit/p0a19/code_128.json",
+      "audit_hash": "0c1bf0842d8c15368753556b5a4f92e94e7758dc085b0dd851f3ecea1fe5f4a4",
+      "accuracy": 0.5882352941176471,
+      "correct_count": 150,
+      "canonical_format_rate": 0.592156862745098,
+      "gain": 0.007843137254901933,
+      "eligible": false,
+      "failures": [
+        "gain=0.007843<required=0.030000"
+      ]
+    },
+    {
+      "step": 256,
+      "audit": "reports/audit/p0a19/code_256.json",
+      "audit_hash": "7ad3e3db0c0569ef0c6180b04ec8a79d030f73a9825ba1732ef1dc50588d51fd",
+      "accuracy": 0.5882352941176471,
+      "correct_count": 150,
+      "canonical_format_rate": 0.9333333333333333,
+      "gain": 0.007843137254901933,
+      "eligible": false,
+      "failures": [
+        "gain=0.007843<required=0.030000"
+      ]
+    }
+  ],
+  "selected_step": null,
+  "selected_model_id": null,
+  "p0a18_per_item_feedback_read": false,
+  "validation_per_item_feedback_read": false,
+  "gate300_opened": false,
+  "formal_full_opened": false,
+  "report_hash": "068ed01086712a83cf45bab1bf319801779d4b7f6adcd2c450ceb54ee1c95a96"
+}

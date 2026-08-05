@@ -1,0 +1,16 @@
+{
+  "gate": "P0-A18-PREFLIGHT",
+  "check_version": "1.0",
+  "status": "passed",
+  "data_audit": "reports/audit/gate_p0a18_data.json",
+  "data_audit_sha256": "3955929f9379c8f800278e79692e554f587147f8a07ae321988b98366205b08a",
+  "base": "models/checkpoints/p0a4/student-shared-merged",
+  "candidate_steps": [
+    250,
+    500
+  ],
+  "math_route_frozen": true,
+  "nlp_route_frozen": true,
+  "mbpp_validation_used_for_training": false,
+  "formal_full_opened": false
+}

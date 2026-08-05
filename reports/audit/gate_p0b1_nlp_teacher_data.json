@@ -1,0 +1,64 @@
+{
+  "gate": "P0-A7-NLP-CHINESE-DATA",
+  "check_version": "1.0",
+  "created_by": "model_compression/generate_p0a7_mmlu_chinese.py",
+  "created_ts": "2026-08-04T10:38:37.055534+00:00",
+  "status": "passed",
+  "policy": {
+    "source_split": "MMLU auxiliary_train only",
+    "teacher_prompt_contains_source_label": false,
+    "acceptance": "teacher final must match train label",
+    "required_language": "Chinese",
+    "minimum_domain_equal_quota_ratio": 0.05,
+    "formal_test_labels_used": false
+  },
+  "teacher_endpoint": "http://127.0.0.1:18600",
+  "teacher_model_id": "p0b1-teacher14b",
+  "teacher_fallback_model_id": "p0b1-teacher14b",
+  "requests": "data/distill/p0b1_nlp_teacher_requests.jsonl",
+  "requests_hash": "b20ca9d86b530a01da108fc9600c52b829eb6fa16181ed2931b6b22f7e7bdf9e",
+  "request_count": 32000,
+  "accepted_count": 21688,
+  "accepted_candidate_counts": {
+    "train": 20014,
+    "new_train_only_validation": 1674
+  },
+  "rejection_counts": {
+    "label_verification_failed": 2357,
+    "invalid_options": 616,
+    "Expecting ',' delimiter: line 8 column 4 (char 1367)": 1,
+    "teacher_response_not_json": 26,
+    "HTTPError:HTTP Error 400: Bad Request": 13,
+    "Expecting ',' delimiter: line 8 column 4 (char 1240)": 1,
+    "Expecting ',' delimiter: line 8 column 4 (char 1198)": 1,
+    "missing_translation_field": 6,
+    "reason_length_out_of_range": 6,
+    "Expecting ',' delimiter: line 8 column 4 (char 1217)": 1,
+    "Invalid control character at: line 2 column 292 (char 293)": 1,
+    "Expecting ',' delimiter: line 8 column 4 (char 1179)": 1,
+    "Expecting ',' delimiter: line 8 column 4 (char 1222)": 1,
+    "Expecting ',' delimiter: line 8 column 4 (char 1291)": 1,
+    "Expecting ',' delimiter: line 8 column 4 (char 1197)": 1,
+    "Expecting ',' delimiter: line 8 column 4 (char 1203)": 1,
+    "Expecting ',' delimiter: line 8 column 4 (char 1252)": 1,
+    "Expecting ',' delimiter: line 8 column 4 (char 1278)": 1,
+    "Expecting ',' delimiter: line 8 column 4 (char 1122)": 1
+  },
+  "train": "data/p0b1/nlp_new_train.jsonl",
+  "train_hash": "64ae9bead44fc302e79152fd3b5a64b0c9dce0f1c6b1e13765cabd99749ca03f",
+  "train_unique_groups": 20000,
+  "train_domain_counts": {
+    "obqa": 1718,
+    "race": 18282
+  },
+  "validation": "data/p0b1/nlp_new_validation.jsonl",
+  "validation_hash": "f3a91806a20f8fe20ef21e6c06e34233f0dda409411bc2809bfd79891c2e9d4c",
+  "validation_unique_groups": 1500,
+  "validation_domain_counts": {
+    "obqa": 213,
+    "race": 1287
+  },
+  "train_validation_overlap": 0,
+  "errors": [],
+  "report_hash": "d239fbca26b23c6b73c9538fe09e92c3c99ee3a13f605182af5062b1c8aec78e"
+}

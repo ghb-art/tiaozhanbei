@@ -1,0 +1,47 @@
+{
+  "protocol": "P0-A15-MATH-SCALED-ADAPTER",
+  "authorized_date": "2026-08-01",
+  "shared_base": "models/checkpoints/p0a4/student-shared-merged",
+  "source_math_adapter": "models/checkpoints/p0a11/math-specialist/checkpoint-64",
+  "frozen_code_adapter": "models/checkpoints/p0a11/code-specialist/checkpoint-250",
+  "frozen_nlp_adapter": "models/checkpoints/p0a10/nlp-specialist/checkpoint-136",
+  "math": {
+    "thinking": true,
+    "max_tokens": 768,
+    "temperature": 0.0,
+    "source_rank": 8,
+    "source_alpha": 16,
+    "candidate_scales": [0.5, 1.0],
+    "candidate_alphas": [8, 16]
+  },
+  "validation": {
+    "repo": "MU-NLPC/Calc-mawps",
+    "revision": "38c10053efeafd20ab6ff4e08c3ec17de26c19b7",
+    "file": "data/test-00000-of-00001-5a59f3fc4b0d9c98.parquet",
+    "source_sha256": "2ef6313cb811d5c5ebef422a909015f7db4750020f835fd95c2ac2ccbf343d82",
+    "source_rows": 520,
+    "excluded_fraction_rows": 170,
+    "excluded_history_overlap": 4,
+    "rows": 346,
+    "minimum_gain": 0.02,
+    "minimum_canonical_format_rate": 0.95,
+    "generation_errors": 0
+  },
+  "promotion": {
+    "gate300_runs_for_p0a15": 1,
+    "student_to_14b_minimum_per_domain": 0.78,
+    "recommended_full_minimum_per_domain": 0.82
+  },
+  "safety": {
+    "system_ram_stop_threshold_percent": 60,
+    "formal_test_rows_used_for_selection": 0
+  },
+  "forbidden": [
+    "Calc-MAWPS test rows in training",
+    "more than two P0-A15 scale candidates",
+    "adapter weight modification other than frozen alpha scaling",
+    "ASDiv, SVAMP, or Calc-MAWPS validation reuse",
+    "lowering thresholds after validation",
+    "overwriting prior artifacts"
+  ]
+}

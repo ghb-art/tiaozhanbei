@@ -1,0 +1,28 @@
+{
+  "gate": "P0-A38-NLP-LONG-OUTPUT-RETENTION",
+  "check_version": "1.0",
+  "created_by": "scripts/p0a38_retention_gate.py",
+  "created_ts": "2026-08-02T07:20:35.747911+00:00",
+  "status": "failed",
+  "runtime": {
+    "thinking": "off",
+    "max_tokens": 768
+  },
+  "baseline_correct_count": 78,
+  "baseline_accuracy": 0.78,
+  "student_correct_count": 59,
+  "student_accuracy": 0.59,
+  "nlp_retention": 0.7564102564102564,
+  "minimum_retention": 0.8,
+  "recommended_retention": 0.82,
+  "recommended_line_met": false,
+  "same_manifest_prompt_scorer_runtime": true,
+  "generation_error_count": 0,
+  "formal_full_opened": false,
+  "per_item_feedback_read": false,
+  "inputs": {
+    "reports/audit/p0a38/baseline14b.json": "938ff969fe23db2606445164f246f97e69100cd49a3f821fbc6f830dc543a6df",
+    "reports/audit/p0a38/student17b.json": "19571d303aae6d326b31122735ae2e43b293193dc2a8feb7968e6fc7aea17d0e"
+  },
+  "report_hash": "27291245dcba799c9fc043baa2e9b8f3cb8feb99aa41334b10363375eafd13ec"
+}

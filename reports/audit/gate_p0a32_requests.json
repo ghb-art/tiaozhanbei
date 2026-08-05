@@ -1,0 +1,33 @@
+{
+  "gate": "P0-A32-MMLU-REQUESTS",
+  "created_by": "model_compression/build_p0a32_mmlu_requests.py",
+  "created_ts": "2026-08-01T17:58:39.131661+00:00",
+  "status": "passed",
+  "source_split": "MMLU auxiliary_train only",
+  "historical_request_count": 4397,
+  "historical_overlap": 0,
+  "request_count": 6075,
+  "split_counts": {
+    "train": 5400,
+    "new_train_only_validation": 675
+  },
+  "domain_counts": {
+    "arc_easy": 900,
+    "arc_hard": 200,
+    "aux_law_90s": 500,
+    "mc_test": 900,
+    "obqa": 1600,
+    "race": 1975
+  },
+  "available_counts": {
+    "arc_easy": 948,
+    "arc_hard": 235,
+    "aux_law_90s": 565,
+    "mc_test": 928,
+    "obqa": 4402,
+    "race": 87165
+  },
+  "requests": "data/distill/p0a32_nlp_teacher_requests.jsonl",
+  "requests_hash": "89d3f888585f93b8e5640fdfcb5dffd643c09b58aeeb36be7454c51a1c3c11c2",
+  "formal_test_opened": false
+}

@@ -1,0 +1,34 @@
+{
+  "protocol": "P0-A20-CODE-THINKING-RUNTIME",
+  "authorized_date": "2026-08-01",
+  "shared_base": "models/checkpoints/p0a4/student-shared-merged",
+  "frozen_adapter": "models/checkpoints/p0a19/code-mixed-specialist/checkpoint-256",
+  "validation": {
+    "repo": "google-research-datasets/mbpp",
+    "revision": "4bb6404fdc6cacfda99d4ac4205087b89d32030c",
+    "config": "full",
+    "source_split": "test",
+    "source_rows": 500,
+    "rows_after_history_and_context_separation": 239,
+    "minimum_absolute_gain": 0.03,
+    "generation_errors": 0,
+    "maximum_candidate_evaluations": 2
+  },
+  "candidates": [
+    {"name": "base-thinking", "adapter": null, "thinking": "on"},
+    {"name": "step256-thinking", "adapter": "p0a19-step256", "thinking": "on"}
+  ],
+  "runtime": {
+    "baseline_thinking": "off",
+    "max_tokens": 768,
+    "server_context": 2048,
+    "system_ram_stop_threshold_percent": 60
+  },
+  "forbidden": [
+    "P0-A18 or P0-A19 per-item feedback",
+    "MBPP tasks already present in full train, full validation, or sanitized test",
+    "more than two runtime candidate evaluations",
+    "HumanEval or gate300 per-item feedback",
+    "lowering the threshold after evaluation"
+  ]
+}

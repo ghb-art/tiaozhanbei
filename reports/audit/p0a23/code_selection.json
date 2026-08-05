@@ -1,0 +1,50 @@
+{
+  "gate": "P0-A23-CONTINUED-CODE-SELECTION",
+  "check_version": "1.0",
+  "created_by": "scripts/select_p0a23_code.py",
+  "created_ts": "2026-08-01T16:03:19.450042+00:00",
+  "status": "passed",
+  "base_audit": "reports/audit/p0a23/base_code.json",
+  "base_audit_hash": "37a4636280f7ff4a0489bdffac696c4d3b3218ee13da246b45c9d58f444fa1c0",
+  "base_accuracy": 0.593,
+  "base_correct_count": 593,
+  "initial_audit": "reports/audit/p0a23/initial_code.json",
+  "initial_audit_hash": "ff8548a9bc4ae5fd7b1b34ad6721966b98c0378e8d19070707a9eac01206bad1",
+  "initial_accuracy": 0.628,
+  "initial_correct_count": 628,
+  "minimum_gain_over_original_base": 0.03,
+  "minimum_gain_over_initial_adapter": 0.0,
+  "minimum_canonical_format_rate": 0.99,
+  "candidates": [
+    {
+      "step": 96,
+      "audit": "reports/audit/p0a23/code_96.json",
+      "audit_hash": "120f39578b57ea463263c7808c8c954e31616040713a2f0d193eb7d8d6077ee7",
+      "accuracy": 0.628,
+      "correct_count": 628,
+      "canonical_format_rate": 0.994,
+      "gain_over_original_base": 0.03500000000000003,
+      "gain_over_initial_adapter": 0.0,
+      "eligible": true,
+      "failures": []
+    },
+    {
+      "step": 192,
+      "audit": "reports/audit/p0a23/code_192.json",
+      "audit_hash": "4a81916dba1f914e1626da7b6e1044bead2e6cb2236571d789cdfe944448dd10",
+      "accuracy": 0.628,
+      "correct_count": 628,
+      "canonical_format_rate": 0.992,
+      "gain_over_original_base": 0.03500000000000003,
+      "gain_over_initial_adapter": 0.0,
+      "eligible": true,
+      "failures": []
+    }
+  ],
+  "selected_step": 96,
+  "selected_model_id": "p0a23-code-96",
+  "per_item_feedback_read": false,
+  "gate300_opened": false,
+  "formal_full_opened": false,
+  "report_hash": "978b8d3c136fb4f99f96795ce14971c08c14336b64e0091e40a9e3e009513620"
+}

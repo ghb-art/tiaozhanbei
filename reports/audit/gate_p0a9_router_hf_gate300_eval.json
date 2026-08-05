@@ -1,0 +1,42 @@
+{
+  "gate": "P0-A9-ROUTER-GATE300-EVAL",
+  "check_version": "1.0",
+  "created_by": "scripts/evaluate_p0a9_router_gate.py",
+  "created_ts": "2026-07-31T17:05:24.289494+00:00",
+  "status": "passed",
+  "candidate_name": "p0a9-router-hf",
+  "endpoint": "http://127.0.0.1:18463",
+  "served_model_id_by_domain": {
+    "math": "p0a9-base",
+    "code": "p0a8-code-128",
+    "nlp": "p0a7-nlp-188"
+  },
+  "manifest": "data/capability_v2/gate300.jsonl",
+  "manifest_hash": "91d89bfce1ceae19eecdc894a1141c7816ec4dd6a4ef7115700d0c8a811741fc",
+  "output_trace": "data/eval/p0a9_router_hf_gate300.jsonl",
+  "output_trace_hash": "ebec2f895acea5aeedb7771eb89fdcdabce4972a1655ee3fbd766166e88d9769",
+  "counts": {
+    "code": 100,
+    "math": 100,
+    "nlp": 100
+  },
+  "correct_counts": {
+    "code": 43,
+    "math": 73,
+    "nlp": 57
+  },
+  "accuracy_by_domain": {
+    "math": 0.73,
+    "code": 0.43,
+    "nlp": 0.57
+  },
+  "generation_error_count": 0,
+  "max_tokens": {
+    "math": 512,
+    "code": 768,
+    "nlp": 256
+  },
+  "code_timeout_sec": 5,
+  "formal_full_loaded": false,
+  "report_hash": "f883344e6ffd63172ecc6eef360e27c1f79af0007c7d88cd527efd01c824bf12"
+}

@@ -1,0 +1,83 @@
+{
+  "gate": "P0-A23-FRESH-EXECUTION-DATA",
+  "check_version": "1.0",
+  "created_by": "model_compression/build_p0a23_data.py",
+  "created_ts": "2026-08-01T15:31:17.986185+00:00",
+  "status": "passed",
+  "source": {
+    "repo": "nvidia/OpenCodeInstruct",
+    "revision": "8f3ba5bafe4d6e8db46082cf7ae6741bc370604d",
+    "shards": [
+      0,
+      17,
+      33
+    ],
+    "shard_hashes": {
+      "data/datasets/opencodeinstruct/data/train-00000-of-00050.parquet": "342757e0c6b706c8f68cf0a867ead5c417d0273726453dbcfc934f5c3c6ca891",
+      "data/datasets/opencodeinstruct/data/train-00017-of-00050.parquet": "7bf03f8606c18a93ca5e07b6af252e30de46b5609b2aa60133d8fe78c4c30154",
+      "data/datasets/opencodeinstruct/data/train-00033-of-00050.parquet": "98a8b473a6dc7db7cb9c4d741c1789504b9935885876f30ada09729d562b6409"
+    },
+    "declared_license": "cc-by-4.0"
+  },
+  "selection": {
+    "raw_rows": 300000,
+    "previously_used_ids": 28100,
+    "fresh_prefiltered_unique": 37721,
+    "execution_cache_hits": 610,
+    "fresh_execution_count": 7581,
+    "accepted_rows": 7000,
+    "rejections": {
+      "answer_too_long": 46,
+      "execution_execution_failed": 25,
+      "execution_unsafe_or_invalid": 1153,
+      "not_function_style": 9171,
+      "previously_used_id": 28100,
+      "reported_test_score": 222166,
+      "short_function_budget": 674,
+      "training_token_budget": 6,
+      "unsafe_text": 1879
+    },
+    "independent_execution_required": true,
+    "tests_per_row": 10,
+    "public_tests_per_prompt": 3
+  },
+  "separation": {
+    "train_rows": 6000,
+    "validation_rows": 1000,
+    "train_validation_id_overlap": 0,
+    "all_historical_id_overlap": 0,
+    "p0a21_per_item_feedback_used": false,
+    "human_eval_prompts_used_only_for_contamination_exclusion": true,
+    "human_eval_answers_tests_or_results_loaded": false,
+    "formal_full_opened": false
+  },
+  "inputs": {
+    "configs/p0a23_code_continuation.json": "dcd88248a8fb679f9bfc2cc8e0ad2593664f35c75c3c6c061756d46321b33a99",
+    "configs/p0a5_capability.json": "a62d3b973267e2fc98d8bd7bb79c2b1f49510d5c6fe6985c99d6a5a475622605",
+    "reports/audit/gate_p0a21_data.json": "faa45ce83a1e25631e75e183b8a11a75d6826e3d5c416f61aeb74604f494ce4c",
+    "reports/audit/p0a21/code_selection.json": "5bfa6cae901cc15a217aa4062c61c8d56bb65cc66ba66f66d558de57057568a7",
+    "data/capability_v2/distill_train.jsonl": "13a57b118edc404bd78fe97c6377b1d0c2b0ff3663732b1f7d59ed696f71bceb",
+    "data/capability_v2/internal_validation.jsonl": "74c38627e350386f70e5191c0c4bcfe54da485efc704e607df3d3e1304152a42",
+    "data/capability_v2/gate300.jsonl": "91d89bfce1ceae19eecdc894a1141c7816ec4dd6a4ef7115700d0c8a811741fc",
+    "data/p0a21/code_train.jsonl": "79046ce0cc2aa484e5c571ce4f92efe279b6e4d60038c7f00033feaaf200d589",
+    "data/p0a21/code_validation.jsonl": "c36c9ad379508566b7c73745d0244f6ba25988c3c4378f98f4fe6bdd019544aa"
+  },
+  "outputs": {
+    "train": {
+      "path": "data/p0a23/code_train.jsonl",
+      "rows": 6000,
+      "sha256": "286c7b1f3a6782a87e01b847677e633b0ea404642ed7790db32fb29457dd0d11"
+    },
+    "validation": {
+      "path": "data/p0a23/code_validation.jsonl",
+      "rows": 1000,
+      "sha256": "b84f6055ce9942dfb64f324015d80c4d8ed2db3e2bbead505e7b0c36c1ea3e5b"
+    },
+    "execution_cache": {
+      "path": "data/p0a23/code_execution_cache.jsonl",
+      "sha256": "a61b7cd4143a67b07f9053833459a3018c249f92ff59f69fff6ea52127704e85"
+    }
+  },
+  "errors": [],
+  "report_hash": "ae12e939ba0d8a296d1e4494ce6f2f48d732b60c327e9f86321b43f07840c0fe"
+}

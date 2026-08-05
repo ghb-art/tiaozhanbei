@@ -1,0 +1,13 @@
+{
+  "gate": "LORA-ADAPTER-MERGE",
+  "check_version": "2.0",
+  "created_by": "model_compression/merge_lora_adapter.py",
+  "created_ts": "2026-07-31T07:20:30.607871+00:00",
+  "status": "passed",
+  "base_model": "models/checkpoints/p0a4/student-shared-merged",
+  "base_hash": "c07347b188f3441b8de079b053eed0a54f38555ae9df30dc5f576cc74be8cb81",
+  "adapter": "models/checkpoints/p0a6/student-pilot/checkpoint-200",
+  "adapter_hash": "406b3d5b162b3607c016a6bb396be29e50418e1aac055c346ddf011d87a34205",
+  "output": "models/checkpoints/p0a6/student-step-200-merged",
+  "output_hash": "d688088178940635d47196fbc633ace6783470f0d16ce19e2f90aef954bee9d5"
+}

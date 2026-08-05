@@ -1,0 +1,37 @@
+{
+  "available_counts": {
+    "obqa": 2802,
+    "race": 85190
+  },
+  "check_version": "1.0",
+  "created_by": "model_compression/build_p0b1_nlp_requests.py",
+  "created_ts": "2026-08-04T02:53:55.752983+00:00",
+  "domain_counts": {
+    "obqa": 2800,
+    "race": 29200
+  },
+  "errors": [],
+  "gate": "P0-B1-FRESH-NLP-REQUESTS",
+  "historical_overlap": 0,
+  "historical_request_count": 10472,
+  "inputs": {
+    "data/distill/p0a32_nlp_teacher_requests.jsonl": "89d3f888585f93b8e5640fdfcb5dffd643c09b58aeeb36be7454c51a1c3c11c2",
+    "data/distill/p0a7_nlp_teacher_requests.jsonl": "d5acdb966e1932cb2d3a17d4803f70cb8470406b9d97dd83a2dcd9bc55ea26a7"
+  },
+  "output": "data/distill/p0b1_nlp_teacher_requests.jsonl",
+  "output_hash": "b20ca9d86b530a01da108fc9600c52b829eb6fa16181ed2931b6b22f7e7bdf9e",
+  "policy": {
+    "formal_cmmlu_test_opened": false,
+    "selection_basis": "Chinese four-choice aggregate task shape only",
+    "source_label_sent_to_teacher": false,
+    "teacher_must_independently_match_train_label": true
+  },
+  "report_hash": "5209297ce150cff805a802ac09eb8a8cb4f8a006b44188fd7853e9621b835a90",
+  "request_count": 32000,
+  "source_split": "MMLU auxiliary_train only",
+  "split_counts": {
+    "new_train_only_validation": 2400,
+    "train": 29600
+  },
+  "status": "passed"
+}

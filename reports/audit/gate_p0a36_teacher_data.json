@@ -1,0 +1,62 @@
+{
+  "accepted_count": 1770,
+  "check_version": "1.0",
+  "created_by": "model_compression/generate_p0a36_openqa_mcq.py",
+  "created_ts": "2026-08-02T06:49:20.169629+00:00",
+  "errors": [],
+  "gate": "P0-A36-BALANCED-OPENQA-MCQ-TEACHER-DATA",
+  "inputs": {
+    "data/distill/p0a36_human_verified_openqa_mcq_requests.jsonl": "01bf5b65370606d3e6322479a5fd736dddd8c0277a85950851df5227005b7331"
+  },
+  "policy": {
+    "correct_content_origin": "COIG human_verified answer transformed by 14B",
+    "correct_label_origin": "deterministic sha256 option placement",
+    "formal_cmmlu_test_opened": false,
+    "group_and_label_balance": "exact",
+    "p0a34_validation_reused": false
+  },
+  "rejection_counts": {
+    "HTTPError:HTTP Error 400: Bad Request": 3,
+    "distractors_not_three": 73,
+    "options_not_distinct": 18,
+    "question_or_correct_length": 2,
+    "teacher_response_not_json": 134
+  },
+  "request_count": 2000,
+  "status": "passed",
+  "teacher_model_id": "p0a36-teacher14b",
+  "trace": "data/distill/p0a36_openqa_mcq_trace.jsonl",
+  "trace_hash": "bd3511366c09dcbcd85d44380e0ee1a9e2dade5780c31bf7e1b347222d3001d1",
+  "trace_rows": 2000,
+  "train_group_counts": {
+    "general": 256,
+    "humanities": 256,
+    "social_law": 256,
+    "stem": 256
+  },
+  "train_label_counts": {
+    "A": 265,
+    "B": 268,
+    "C": 247,
+    "D": 244
+  },
+  "train_output": "data/p0a36/nlp_train.jsonl",
+  "train_output_hash": "032ace7beb9a5df77d9c78622044744c7d156a9fa80bab019903514355c3b372",
+  "train_rows": 1024,
+  "train_validation_overlap": 0,
+  "validation_group_counts": {
+    "general": 64,
+    "humanities": 64,
+    "social_law": 64,
+    "stem": 64
+  },
+  "validation_label_counts": {
+    "A": 64,
+    "B": 64,
+    "C": 64,
+    "D": 64
+  },
+  "validation_output": "data/p0a36/nlp_validation.jsonl",
+  "validation_output_hash": "bd86cae5c432ce7be1e585a98a5c677ab8c4183228c5ca8fcf1fd0706b37ebbb",
+  "validation_rows": 256
+}

@@ -1,0 +1,64 @@
+{
+  "gate": "CH2-CAPABILITY-EVAL",
+  "check_version": "1.4",
+  "created_by": "scripts/evaluate_chapter2_capability.py",
+  "created_ts": "2026-08-03T16:39:34.530461+00:00",
+  "status": "passed",
+  "probe_backend": "openai_compatible",
+  "student_url": "http://127.0.0.1:18630",
+  "student_endpoint_health_status": 200,
+  "student_model_id": "p0a48-math",
+  "served_model_id": "p0a48-math",
+  "local_model_dir": "models/checkpoints/p0a4/student-shared-merged",
+  "dtype": "float16",
+  "disable_thinking": true,
+  "kv_cache_type": "q8_0",
+  "device": "cuda",
+  "output_trace_path": "reports/sealed/p0a48/shards/math.jsonl",
+  "capability_eval_trace_hash": "ce99ede4e6e098de1bce7e6fd91c84bee22dfdb042858125fdafbbbcfbf4f6ff",
+  "selected_dataset_keys": [
+    "gsm8k"
+  ],
+  "use_frozen_final": true,
+  "split_dir": "data/splits/p0a44_aligned_edge_full",
+  "split_manifest_hash": "e2fe1317215806fe91043c8756ab41b9866dbaf063d228aadd9db4711a75a27b",
+  "sample_limit_per_dataset": 0,
+  "num_shards": 1,
+  "shard_index": 0,
+  "unsharded_sample_count": 1319,
+  "unsharded_sample_ids_hash": "9fe37582ab4a11297d31b547e82abfcf61ada48d92377ae5fca987e9a782b329",
+  "sample_count": 1319,
+  "dataset_counts": {
+    "gsm8k": 1319
+  },
+  "correct_counts": {
+    "gsm8k": 999
+  },
+  "accuracy_by_dataset": {
+    "gsm8k": 0.7573919636087946
+  },
+  "overall_accuracy": 0.7573919636087946,
+  "min_accuracy": 0.0,
+  "peak_memory_mb": 0.0,
+  "max_new_tokens": 160,
+  "max_new_tokens_map": {
+    "cmmlu": 16,
+    "gsm8k": 512,
+    "humaneval": 512
+  },
+  "request_extra_map_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+  "fail_fast_min_accuracy_map": {},
+  "fail_fast_reason": "",
+  "humaneval_timeout_sec": 10.0,
+  "generation_config": {
+    "do_sample": false,
+    "temperature": 0.0,
+    "num_candidates": 1
+  },
+  "prompt_style": "v15",
+  "prompt_style_map": {},
+  "prompt_template_hash": "d1019473f72612c1bef19c930b0518203cb5aa86549790d0ab40766e11621a76",
+  "humaneval_exec_preamble_hash": "45574eb37eb1cc75cd0dc9f4eca05b2f430f8cc89eac47361e31e55090876417",
+  "errors": [],
+  "report_hash": "a1d0bd24e1fc08b19df4489da15a0a9416feffdd69ac685829e2f47b6c011e3c"
+}

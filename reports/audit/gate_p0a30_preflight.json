@@ -1,0 +1,12 @@
+{
+  "gate": "P0-A30-PREFLIGHT",
+  "status": "passed",
+  "validation_rows": 235,
+  "candidate_scales": [
+    0.75,
+    1.25
+  ],
+  "reference_scale": 1.0,
+  "minimum_gain_questions": 3,
+  "formal_test_opened": false
+}

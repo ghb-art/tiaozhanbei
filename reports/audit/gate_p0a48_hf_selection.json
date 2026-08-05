@@ -1,0 +1,45 @@
+{
+  "gate": "P0-A48-HF-NLP-SELECTION",
+  "check_version": "1.0",
+  "created_by": "scripts/select_p0a48_nlp.py",
+  "created_ts": "2026-08-03T16:38:24.888278+00:00",
+  "status": "passed",
+  "base_correct_by_dataset": {
+    "ceval": 144,
+    "cmmlu": 207
+  },
+  "base_correct_total": 351,
+  "candidates": [
+    {
+      "step": 64,
+      "correct_by_dataset": {
+        "ceval": 143,
+        "cmmlu": 209
+      },
+      "correct_total": 352,
+      "gain_items": 1
+    },
+    {
+      "step": 128,
+      "correct_by_dataset": {
+        "ceval": 143,
+        "cmmlu": 207
+      },
+      "correct_total": 350,
+      "gain_items": -1
+    }
+  ],
+  "selected": {
+    "step": 64,
+    "correct_by_dataset": {
+      "ceval": 143,
+      "cmmlu": 209
+    },
+    "correct_total": 352,
+    "gain_items": 1
+  },
+  "selected_adapter": "models/checkpoints/p0a48/nlp/checkpoint-64",
+  "mandatory_second_full_authorized": true,
+  "formal_test_items_loaded": 0,
+  "report_hash": "d665edd0936942e822828f9d1012fef5c0f50ba267c99ab65a104c64c78936bc"
+}

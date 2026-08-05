@@ -1,0 +1,19 @@
+{
+  "gate": "P0-A47-TRAIN-ONLY-MINING",
+  "check_version": "1.0",
+  "created_by": "scripts/mine_p0a47_code.py",
+  "created_ts": "2026-08-03T15:04:23.128826+00:00",
+  "status": "passed",
+  "source": "data/p0a44/code_train.jsonl",
+  "source_hash": "6f25af58cf47daf118d447c38f5db971f321d26e6a112d5d85c7b89373d536a1",
+  "served_model_id": "p0a47-initial",
+  "sample_count": 11351,
+  "correct_count": 6612,
+  "failure_count": 4739,
+  "accuracy": 0.5825037441635098,
+  "generation_error_count": 0,
+  "trace": "reports/audit/p0a47/mining_trace.jsonl",
+  "trace_hash": "ec7a6f98cceb2975a81935933691cc6d54a1d8d3b1f9ad9b7bde4e4d8568439f",
+  "formal_test_items_loaded": 0,
+  "report_hash": "5821c8370d433bb93befa0050ef6ad67a58958613a4f2b80aaebc77eeaf97d68"
+}

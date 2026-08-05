@@ -1,0 +1,23 @@
+{
+  "gate": "P0-A10-TRAIN-ONLY-VALIDATION",
+  "check_version": "1.0",
+  "created_by": "scripts/evaluate_p0a10_domain.py",
+  "created_ts": "2026-08-01T02:43:34.995352+00:00",
+  "status": "passed",
+  "domain": "nlp",
+  "candidate_name": "p0a10-nlp-68",
+  "served_model_id": "p0a10-nlp-68",
+  "manifest": "data/p0a10/nlp_validation.jsonl",
+  "manifest_hash": "df24e2c21f2aeca946db4daaa3a5a15dd3e572a17b1b085fb468a3d9963c04eb",
+  "sample_count": 256,
+  "correct_count": 4,
+  "accuracy": 0.015625,
+  "canonical_format_rate": 0.0,
+  "generation_error_count": 0,
+  "mean_latency_ms": 234.41803264768168,
+  "trace": "reports/audit/p0a10/p0a10_nlp_68_nlp_trace.jsonl",
+  "trace_hash": "41d06462493be01e2a4e27cf42ee7c377975c0280334c6bf5f658d14f60d38a7",
+  "gate300_loaded": false,
+  "formal_full_loaded": false,
+  "report_hash": "834c8b677e93e87ed3d2fccee930b38f256ab39b0f6cdcb3c68f98eb6db307f1"
+}

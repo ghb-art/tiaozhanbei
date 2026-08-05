@@ -17,9 +17,14 @@ data/distill/
 data/eval/
 data/datasets/**
 data/capability_v2/
+data/p0a*/
+data/p0a6/
+data/p0b1/
 !data/datasets/
 !data/datasets/**/
 !data/datasets/**/.gitkeep
+data/datasets/ceval/
+data/datasets/ceval_exam/
 results/
 reports/final/
 reports/sealed/

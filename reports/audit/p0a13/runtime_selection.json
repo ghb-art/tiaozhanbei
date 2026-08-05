@@ -1,0 +1,27 @@
+{
+  "gate": "P0-A13-MATH-RUNTIME-SELECTION",
+  "check_version": "1.0",
+  "created_by": "scripts/select_p0a13_runtime.py",
+  "created_ts": "2026-08-01T12:14:01.616126+00:00",
+  "status": "failed",
+  "decision": "keep_base_and_close_gate",
+  "base_audit": "reports/audit/p0a13/base_thinking_off.json",
+  "base_audit_hash": "5cf7000d78c8808c1a7e2efbaf76baca9094dc0a1afe48bf5b5da914510eef2a",
+  "candidate_audit": "reports/audit/p0a13/base_thinking_on.json",
+  "candidate_audit_hash": "3e5e27a545c6b278f69d014d5212668a07831f0f35b49cc6abc992a3848d5a44",
+  "base_accuracy": 0.8623156012516764,
+  "candidate_accuracy": 0.8752793920429146,
+  "gain": 0.012963790791238217,
+  "minimum_gain": 0.02,
+  "candidate_canonical_format_rate": 0.9105945462673223,
+  "minimum_canonical_format_rate": 0.95,
+  "generation_error_count": 0,
+  "selected_runtime": null,
+  "failures": [
+    "gain=0.012964<required=0.020000",
+    "canonical_format_rate=0.910595<required=0.950000"
+  ],
+  "gate300_opened": false,
+  "formal_full_opened": false,
+  "report_hash": "6f7265820767592d1a2c065ba70bdf7db08ea22fa2ea6fb99a7fda02b94be290"
+}

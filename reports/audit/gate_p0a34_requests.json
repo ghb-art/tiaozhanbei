@@ -1,0 +1,37 @@
+{
+  "check_version": "1.0",
+  "created_by": "model_compression/build_p0a34_coig_requests.py",
+  "created_ts": "2026-08-01T21:32:12.754503+00:00",
+  "errors": [],
+  "gate": "P0-A34-FRESH-CHINESE-MCQ-REQUESTS",
+  "historical_coig_prompt_count": 9500,
+  "inputs": {
+    "data/datasets/coig_cqia/COIG-CQIA-full.jsonl": "f2a6a758362b7fa5d5c29c9ae0946f2fbf8c9318b6fb48c0e62f8b774d8ff518",
+    "data/p0a6/train.jsonl": "dc743974f40c9e7040c4ef24f4ad2fd358be50fc9765ddf0a4e752bbc4ad590b"
+  },
+  "policy": {
+    "formal_cmmlu_test_opened": false,
+    "p0a32_validation_reused": false,
+    "selection_manifest": "C-Eval dev only",
+    "teacher_prompt_contains_source_label": false
+  },
+  "rejections": {
+    "duplicate_prompt": 48,
+    "historical_prompt_overlap": 133,
+    "not_exactly_four_options": 2752,
+    "source_label_ambiguous": 279
+  },
+  "request_count": 1440,
+  "request_group_counts": {
+    "humanities": 24,
+    "law": 1232,
+    "science_technical": 91,
+    "social_science": 93
+  },
+  "requests": "data/distill/p0a34_coig_mcq_requests.jsonl",
+  "requests_hash": "e813ab250cf999e6489ab8f8cc0f93995898315917070c406cbb0281af196854",
+  "status": "passed",
+  "validation": "data/p0a34/nlp_validation.jsonl",
+  "validation_hash": "5ba7791da3a04d2aa5341baf19a80836740eb006dbd86c7a225c68a4a8f39619",
+  "validation_rows": 260
+}

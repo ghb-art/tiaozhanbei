@@ -1,0 +1,11 @@
+{
+  "gate": "P0-A47-Q4-CODE-VALIDATION",
+  "status": "passed",
+  "selected_step": 128,
+  "adapter": "models/adapters/p0a47/code-step-128-f16.gguf",
+  "base_correct": 596,
+  "candidate_correct": 584,
+  "candidate_gain": -12,
+  "mandatory_full_authorized": true,
+  "report_hash": "5e71fe6f7f203d95503f8e98ef81a770f5ed8c219b1e8095632e59c0fe6baec3"
+}

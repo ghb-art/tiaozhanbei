@@ -1,0 +1,22 @@
+{
+  "gate": "P0-A44-ALIGNED-INTERNAL-VALIDATION",
+  "check_version": "1.0",
+  "created_by": "scripts/evaluate_p0a44_aligned.py",
+  "created_ts": "2026-08-03T10:26:03.949377+00:00",
+  "status": "passed",
+  "dataset": "cmmlu",
+  "candidate_name": "p0a46-nlp-159",
+  "served_model_id": "p0a46-nlp-159",
+  "manifest": "data/p0a44/nlp_cmmlu_dev.jsonl",
+  "manifest_hash": "797ade5ce8be1c72176cee8324dec3bc16bad569cdb138001bfc3d2d29074014",
+  "sample_count": 335,
+  "correct_count": 207,
+  "accuracy": 0.6179104477611941,
+  "generation_error_count": 0,
+  "workers": 8,
+  "mean_latency_ms": 100.60251757794462,
+  "trace": "reports/audit/p0a44/p0a46_hf_159_cmmlu_trace.jsonl",
+  "trace_hash": "ef7399ebf070ca46fee410ebc6b8033df0fc469c9190117b7dae9174fbfbf83f",
+  "formal_full_loaded": false,
+  "report_hash": "9debc2f27867856b89e41d1c871ca74fcadc42c9a4be3a4fe122595a48b64c58"
+}

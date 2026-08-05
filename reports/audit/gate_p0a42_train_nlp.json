@@ -1,0 +1,206 @@
+{
+  "gate": "P0-A6-STUDENT-TRAIN",
+  "check_version": "1.0",
+  "created_by": "model_compression/train_p0a6_student.py",
+  "created_ts": "2026-08-02T14:38:50.322265+00:00",
+  "status": "passed",
+  "errors": [],
+  "model_dir": "models/pretrained/Qwen--Qwen3-1.7B",
+  "train_data": "data/p0a42/nlp_train.jsonl",
+  "train_data_hash": "a4b7af123b22e2e310d1c7dd4be2cd50d20eb94a192937d92a47cf464244b2c8",
+  "train_rows": 3155,
+  "focus": {
+    "focus_domain": "nlp",
+    "source_rows": 3155,
+    "selected_rows": 3155,
+    "source_domain_counts": {
+      "nlp": 3155
+    },
+    "selected_domain_counts": {
+      "nlp": 3155
+    },
+    "selected_dataset_counts": {
+      "ceval_rationale_train": 1335,
+      "coig_mcq_verified": 820,
+      "mmlu_aux_chinese": 1000
+    },
+    "training_weight_mean_before": 1.0,
+    "training_weight_normalization_divisor": 1.0,
+    "training_weight_mean_after": 1.0,
+    "mcq_answer_token_weight_multiplier": 2.0,
+    "mcq_answer_token_weight_multiplied_rows": 3155
+  },
+  "domain_counts": {
+    "nlp": 3155
+  },
+  "kl_weight_by_domain": {
+    "nlp": {
+      "minimum": 0.05,
+      "maximum": 0.1,
+      "mean": 0.08415213946117231
+    }
+  },
+  "answer_token_weight_rows": {
+    "nlp": 3155
+  },
+  "formal_test_reference_count": 0,
+  "optimization": {
+    "lora_rank": 16,
+    "lora_alpha": 32,
+    "lora_dropout": 0.05,
+    "target_modules": [
+      "q_proj",
+      "k_proj",
+      "v_proj",
+      "o_proj",
+      "gate_proj",
+      "up_proj",
+      "down_proj"
+    ],
+    "learning_rate": 5e-06,
+    "bf16": true,
+    "max_seq_length": 1536,
+    "max_steps": 100,
+    "checkpoint_steps": 50,
+    "save_total_limit": null,
+    "per_device_train_batch_size": 1,
+    "gradient_accumulation_steps": 8,
+    "expected_world_size": 4,
+    "observed_world_size": 4,
+    "effective_global_batch_size": 32,
+    "warmup_ratio": 0.03,
+    "max_grad_norm": 1.0,
+    "gradient_checkpointing": true,
+    "gradient_checkpointing_use_reentrant": false,
+    "resume_from_checkpoint": "",
+    "init_adapter": "",
+    "init_adapter_file_hashes": {}
+  },
+  "preservation": {
+    "method": "all_task_adapter_disabled_base_kl",
+    "direction": "KL(base||student)",
+    "temperature": 2.0,
+    "mask": "assistant_answer_tokens_only",
+    "reference_forward": "unconditional_on_every_rank_and_batch",
+    "supervised_weight": "1-kl_weight_per_row"
+  },
+  "dependencies": {
+    "torch": "2.6.0+cu124",
+    "transformers": "4.51.3",
+    "accelerate": "1.14.0",
+    "peft": "0.17.1"
+  },
+  "token_budget_scan": {},
+  "report_hash": "57db40b8e05f7a52d5d72e835ece9ef2a7d64d31c3121cd7cd7c02e7955ad979",
+  "global_step": 100,
+  "final_checkpoint": "models/checkpoints/p0a42/nlp/checkpoint-100",
+  "published_files": [
+    "adapter_config.json",
+    "adapter_model.safetensors",
+    "README.md"
+  ],
+  "train_metrics": {
+    "train_runtime": 509.505,
+    "train_samples_per_second": 6.281,
+    "train_steps_per_second": 0.196,
+    "total_flos": 5528746983424000.0,
+    "train_loss": 18.92443344116211,
+    "epoch": 1.020278833967047
+  },
+  "domain_loss_summary": {
+    "math": {
+      "examples_seen": 0,
+      "mean_sft_loss": null,
+      "mean_kl_base_to_student": null,
+      "mean_combined_loss": null
+    },
+    "code": {
+      "examples_seen": 0,
+      "mean_sft_loss": null,
+      "mean_kl_base_to_student": null,
+      "mean_combined_loss": null
+    },
+    "nlp": {
+      "examples_seen": 3212,
+      "mean_sft_loss": 2.510558879084115,
+      "mean_kl_base_to_student": 0.6992402921555353,
+      "mean_combined_loss": 2.35671646209204
+    }
+  },
+  "domain_loss_log": [
+    {
+      "step": 10,
+      "nlp_sft_loss": 3.745378936268389,
+      "nlp_kl_base_to_student": 0.004059411289543051,
+      "nlp_combined_loss": 3.439895703829825,
+      "nlp_examples": 320
+    },
+    {
+      "step": 20,
+      "nlp_sft_loss": 3.5806971818208693,
+      "nlp_kl_base_to_student": 0.017974733641312923,
+      "nlp_combined_loss": 3.288062574341893,
+      "nlp_examples": 320
+    },
+    {
+      "step": 30,
+      "nlp_sft_loss": 3.1453854998573663,
+      "nlp_kl_base_to_student": 0.07753920613758965,
+      "nlp_combined_loss": 2.8908115714788436,
+      "nlp_examples": 320
+    },
+    {
+      "step": 40,
+      "nlp_sft_loss": 2.8589942494407294,
+      "nlp_kl_base_to_student": 0.31437446750933307,
+      "nlp_combined_loss": 2.648085234127939,
+      "nlp_examples": 320
+    },
+    {
+      "step": 50,
+      "nlp_sft_loss": 2.4257508842274547,
+      "nlp_kl_base_to_student": 0.7317445454886183,
+      "nlp_combined_loss": 2.2845019420608876,
+      "nlp_examples": 320
+    },
+    {
+      "step": 60,
+      "nlp_sft_loss": 2.1579825127497316,
+      "nlp_kl_base_to_student": 0.9114286076743155,
+      "nlp_combined_loss": 2.050657621771097,
+      "nlp_examples": 320
+    },
+    {
+      "step": 70,
+      "nlp_sft_loss": 1.9074342165142297,
+      "nlp_kl_base_to_student": 1.0382382363080978,
+      "nlp_combined_loss": 1.8252710774540901,
+      "nlp_examples": 320
+    },
+    {
+      "step": 80,
+      "nlp_sft_loss": 1.8455570385791362,
+      "nlp_kl_base_to_student": 1.1891508993227036,
+      "nlp_combined_loss": 1.7819656305015088,
+      "nlp_examples": 320
+    },
+    {
+      "step": 90,
+      "nlp_sft_loss": 1.7586619834415615,
+      "nlp_kl_base_to_student": 1.300540056731552,
+      "nlp_combined_loss": 1.7120532873086631,
+      "nlp_examples": 320
+    },
+    {
+      "step": 100,
+      "nlp_sft_loss": 1.7097756587058666,
+      "nlp_kl_base_to_student": 1.381758330995778,
+      "nlp_combined_loss": 1.6715535859027542,
+      "nlp_examples": 332
+    }
+  ],
+  "retained_checkpoints": [
+    "models/checkpoints/p0a42/nlp/checkpoint-50",
+    "models/checkpoints/p0a42/nlp/checkpoint-100"
+  ]
+}

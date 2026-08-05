@@ -1,0 +1,9 @@
+{
+  "gate": "P0-A14-PREFLIGHT",
+  "status": "passed",
+  "validation_rows": 727,
+  "runtime_candidates": 1,
+  "math_runtime": "thinking_vote3",
+  "gate300_opened": false,
+  "formal_full_opened": false
+}

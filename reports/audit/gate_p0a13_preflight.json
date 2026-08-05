@@ -1,0 +1,13 @@
+{
+  "gate": "P0-A13-PREFLIGHT",
+  "status": "passed",
+  "runtime_candidates": 1,
+  "math_model": "base",
+  "math_thinking_candidate": true,
+  "math_max_tokens": 768,
+  "code_adapter_step": 250,
+  "nlp_adapter_step": 136,
+  "validation_rows": 2237,
+  "gate300_opened": false,
+  "formal_full_opened": false
+}

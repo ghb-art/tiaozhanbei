@@ -1,0 +1,22 @@
+{
+  "gate": "P0-A8-CODE-TRAIN-ONLY-VALIDATION",
+  "check_version": "1.0",
+  "created_by": "scripts/evaluate_p0a8_code.py",
+  "created_ts": "2026-07-31T16:32:58.436421+00:00",
+  "status": "passed",
+  "candidate_name": "p0a6-step-200",
+  "served_model_id": "p0a6-step-200",
+  "manifest": "data/p0a8/code_internal_validation.jsonl",
+  "manifest_hash": "61be93814b097b92f779699f3dd7f09aff564e79ebf3a3a8e7ed7062d0fce4ca",
+  "sample_count": 86,
+  "correct_count": 44,
+  "accuracy": 0.5116279069767442,
+  "canonical_format_rate": 0.5581395348837209,
+  "generation_error_count": 0,
+  "mean_latency_ms": 792.744485594381,
+  "trace": "reports/audit/p0a8/p0a6_step_200_trace.jsonl",
+  "trace_hash": "f2d47ac6b8d8d1cfb02865c445c1bb917f427268d56a37d309c696b464badf32",
+  "formal_test_loaded": false,
+  "humaneval_loaded": false,
+  "report_hash": "0f4abad111d7e1596e48b565495c7917ad013033a2025fc0c2ea2acfcb9be174"
+}

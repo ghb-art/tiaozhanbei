@@ -1,0 +1,30 @@
+{
+  "gate": "P0-A46-NLP-DATA",
+  "check_version": "1.0",
+  "created_by": "model_compression/build_p0a46_nlp_data.py",
+  "created_ts": "2026-08-03T09:57:56.908477+00:00",
+  "status": "passed",
+  "source": "data/p0a45/train.jsonl",
+  "source_hash": "5bac8bb8f2ba51b3c80ec8bf35172af0a5934219633775c36f6bffbcc2bc9d3b",
+  "source_audit": "reports/audit/gate_p0a45_data.json",
+  "train_rows": 10178,
+  "source_counts": {
+    "p0a45_verified_mcq/ceval_rationale_train": 1335,
+    "p0a45_verified_mcq/coig_mcq_verified": 820,
+    "p0a45_verified_mcq/coig_openqa_mcq_verified": 1024,
+    "p0a45_verified_mcq/mmlu_aux_chinese": 6999
+  },
+  "validation_counts": {
+    "nlp_ceval_dev": 260,
+    "nlp_cmmlu_dev": 335
+  },
+  "train_validation_prompt_overlap": 0,
+  "formal_test_rows_loaded": 0,
+  "settings": {
+    "kl_weight": 0.05,
+    "answer_token_weight": 2.0
+  },
+  "output": "data/p0a46/nlp_train.jsonl",
+  "output_hash": "06893859c3553adb00c52b4efe3293d2feac6c532095e4fb20ccb6ddd4271e7e",
+  "report_hash": "80674d228bc64b13f4ebf2668fb898796900250f6a15d7786327e804a624f6b6"
+}

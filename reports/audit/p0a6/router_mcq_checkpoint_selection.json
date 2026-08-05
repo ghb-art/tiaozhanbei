@@ -1,0 +1,86 @@
+{
+  "gate": "P0-A6-CHECKPOINT-SELECTION",
+  "check_version": "1.0",
+  "created_by": "scripts/select_p0a6_checkpoint.py",
+  "created_ts": "2026-07-31T10:05:38.339036+00:00",
+  "status": "failed",
+  "selection_policy": {
+    "math_minimum_gain": -0.01,
+    "code_minimum_gain": 0.03,
+    "nlp_minimum_gain": 0.03,
+    "ranking": [
+      "macro_accuracy_desc",
+      "step_asc"
+    ]
+  },
+  "manifest": "data/p0a6/quick_validation.jsonl",
+  "validation_scope": "quick",
+  "manifest_hash": "99640b4641eaa76cb3096caec1126273488e4e34d4f755b02765af580e29346e",
+  "expected_counts": {
+    "math": 100,
+    "code": 100,
+    "nlp": 100
+  },
+  "base_audit": "reports/audit/p0a6/base_quick.json",
+  "base_audit_hash": "778a996cf24dd35c55e340d2402c51963c786ccef0a0c8642d7d007c6268f34f",
+  "base_accuracy_by_domain": {
+    "math": 0.73,
+    "code": 0.49,
+    "nlp": 0.46
+  },
+  "base_macro_accuracy": 0.56,
+  "candidate_count": 2,
+  "eligible_candidate_count": 0,
+  "candidates": [
+    {
+      "step": 50,
+      "audit": "reports/audit/p0a6/router_mcq_50_quick.json",
+      "audit_hash": "43830cf494be453898d0cd8892b6c88b54963db09bdfcadbc95c08aa9d8dd960",
+      "candidate_name": "p0a6-router-mcq-step-50",
+      "served_model_id": "domain_routed",
+      "accuracy_by_domain": {
+        "math": 0.72,
+        "code": 0.54,
+        "nlp": 0.47
+      },
+      "macro_accuracy": 0.5766666666666667,
+      "gain_by_domain": {
+        "math": -0.010000000000000009,
+        "code": 0.050000000000000044,
+        "nlp": 0.009999999999999953
+      },
+      "eligible": false,
+      "failures": [
+        "nlp_gain=0.01<required=0.03"
+      ]
+    },
+    {
+      "step": 100,
+      "audit": "reports/audit/p0a6/router_mcq_100_quick.json",
+      "audit_hash": "ea1bae2b5626719a92816240068d5c21ef997a92de1e7f2f56d751bd0a950199",
+      "candidate_name": "p0a6-router-mcq-step-100",
+      "served_model_id": "domain_routed",
+      "accuracy_by_domain": {
+        "math": 0.72,
+        "code": 0.54,
+        "nlp": 0.44
+      },
+      "macro_accuracy": 0.5666666666666667,
+      "gain_by_domain": {
+        "math": -0.010000000000000009,
+        "code": 0.050000000000000044,
+        "nlp": -0.020000000000000018
+      },
+      "eligible": false,
+      "failures": [
+        "nlp_gain=-0.02<required=0.03"
+      ]
+    }
+  ],
+  "selected_step": null,
+  "selected_path": "",
+  "selected_accuracy_by_domain": {},
+  "selected_macro_accuracy": null,
+  "selected_gain_by_domain": {},
+  "report_hash": "e43fec58985af9476a34831727274de9190cadf6c439ecebf7508dd13f60cec6"
+}

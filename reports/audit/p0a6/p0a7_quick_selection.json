@@ -1,0 +1,64 @@
+{
+  "gate": "P0-A6-CHECKPOINT-SELECTION",
+  "check_version": "1.0",
+  "created_by": "scripts/select_p0a6_checkpoint.py",
+  "created_ts": "2026-07-31T16:10:59.633388+00:00",
+  "status": "failed",
+  "selection_policy": {
+    "math_minimum_gain": -0.01,
+    "code_minimum_gain": 0.03,
+    "nlp_minimum_gain": 0.03,
+    "ranking": [
+      "macro_accuracy_desc",
+      "step_asc"
+    ]
+  },
+  "manifest": "data/p0a6/quick_validation.jsonl",
+  "validation_scope": "quick",
+  "manifest_hash": "99640b4641eaa76cb3096caec1126273488e4e34d4f755b02765af580e29346e",
+  "expected_counts": {
+    "math": 100,
+    "code": 100,
+    "nlp": 100
+  },
+  "base_audit": "reports/audit/p0a6/base_quick.json",
+  "base_audit_hash": "778a996cf24dd35c55e340d2402c51963c786ccef0a0c8642d7d007c6268f34f",
+  "base_accuracy_by_domain": {
+    "math": 0.73,
+    "code": 0.49,
+    "nlp": 0.46
+  },
+  "base_macro_accuracy": 0.56,
+  "candidate_count": 1,
+  "eligible_candidate_count": 0,
+  "candidates": [
+    {
+      "step": 188,
+      "audit": "reports/audit/p0a6/p0a7_router_quick.json",
+      "audit_hash": "01229ed259bba79ea9e81dec0ab8886084f1b80dc9efcf762b79f26cff108ba4",
+      "candidate_name": "p0a7-router-step-188-quick",
+      "served_model_id": "domain_routed",
+      "accuracy_by_domain": {
+        "math": 0.73,
+        "code": 0.5,
+        "nlp": 0.51
+      },
+      "macro_accuracy": 0.58,
+      "gain_by_domain": {
+        "math": 0.0,
+        "code": 0.010000000000000009,
+        "nlp": 0.04999999999999999
+      },
+      "eligible": false,
+      "failures": [
+        "code_gain=0.01<required=0.03"
+      ]
+    }
+  ],
+  "selected_step": null,
+  "selected_path": "",
+  "selected_accuracy_by_domain": {},
+  "selected_macro_accuracy": null,
+  "selected_gain_by_domain": {},
+  "report_hash": "edf5b8c6cdfe8271414164c188e5e23aab271e16f8ffb2680a2593d80f5fad04"
+}

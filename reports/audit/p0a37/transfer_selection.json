@@ -1,0 +1,35 @@
+{
+  "gate": "P0-A37-NLP-TRANSFER-SELECTION",
+  "check_version": "1.0",
+  "created_by": "scripts/select_p0a37_transfer.py",
+  "created_ts": "2026-08-02T07:13:31.449823+00:00",
+  "status": "failed",
+  "initial_correct_count": 139,
+  "initial_accuracy": 0.5346153846153846,
+  "candidates": [
+    {
+      "step": 64,
+      "correct_count": 137,
+      "accuracy": 0.5269230769230769,
+      "gain_questions": -2,
+      "audit": "reports/audit/p0a37/nlp_64.json",
+      "audit_hash": "0346e57e0ac05a82acdaf6615a4ff0c69d48a9b6ee3431e3187acc109d5d76a5"
+    },
+    {
+      "step": 128,
+      "correct_count": 137,
+      "accuracy": 0.5269230769230769,
+      "gain_questions": -2,
+      "audit": "reports/audit/p0a37/nlp_128.json",
+      "audit_hash": "8e3c61b2ccd70fede3c57c7a9f0995072dd6387b0b347cac7e9a2b40dfea7a52"
+    }
+  ],
+  "minimum_gain_questions": 3,
+  "best_step": 64,
+  "best_gain_questions": -2,
+  "decision": "weak_training_does_not_transfer",
+  "frozen_nlp100_opened": false,
+  "formal_full_opened": false,
+  "per_item_feedback_read": false,
+  "report_hash": "f91e23060b499d298e3a80ac7021d4722b6423b715a6a1bf51878c458fda1ee1"
+}

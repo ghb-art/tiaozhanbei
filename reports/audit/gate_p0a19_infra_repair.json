@@ -1,0 +1,21 @@
+{
+  "gate": "P0-A19-INFRASTRUCTURE-REPAIR",
+  "check_version": "1.0",
+  "created_by": "scripts/repair_p0a19_infra.py",
+  "created_ts": "2026-08-01T13:56:50.594361+00:00",
+  "status": "passed",
+  "reason": "one prompt plus max_tokens exceeded vLLM context 1536",
+  "old_context_tokens": 1536,
+  "new_context_tokens": 2048,
+  "max_tokens_unchanged": 768,
+  "prompt_and_weights_unchanged": true,
+  "archived_audit": "reports/audit/p0a19/infra_invalid_http400_ctx1536/base_code.json",
+  "archived_audit_hash": "a470a0f86eb40813df2fe0ab8a1fe5c2ae2437606563079347986155bd47927b",
+  "archived_trace": "reports/audit/p0a19/infra_invalid_http400_ctx1536/base_code_trace.jsonl",
+  "archived_trace_hash": "82032aa37346b275aba17e53f7e6ea83601947bc004dd2a583becc624fac4247",
+  "valid_rows_reused": 254,
+  "rows_retried": 1,
+  "candidate_evaluations_started": 0,
+  "formal_full_opened": false,
+  "report_hash": "62edb34003e7ec5a583c41b449006b6632955b9381fc1c4a1605a4975171dc97"
+}

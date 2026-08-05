@@ -1,0 +1,40 @@
+{
+  "gate": "P0-A13-ASDIV-DATA",
+  "check_version": "1.0",
+  "created_by": "model_compression/build_p0a13_data.py",
+  "created_ts": "2026-08-01T11:57:39.687580+00:00",
+  "status": "passed",
+  "source": {
+    "repo": "EleutherAI/asdiv",
+    "revision": "8f95807222d87b4c688c3c22a6ba2801e1fa03e2",
+    "file": "asdiv/validation-00000-of-00001.parquet",
+    "source_rows": 2305,
+    "source_sha256": "79dbad6536fe3e8cd449e67da859d7a6f5ac0d8f852efe563742ca5faee7fb75",
+    "readme_sha256": "78e51745c443bc98917621e76d414327e9f66045fef967a90deb3b25b9def70b",
+    "declared_license": "cc-by-nc-4.0"
+  },
+  "filter": {
+    "policy": "leading finite decimal; fractions, percentages and categorical answers excluded",
+    "accepted_numeric_rows": 2237,
+    "rejected_non_numeric_rows": 67,
+    "rejected_duplicate_prompt_rows": 1
+  },
+  "separation": {
+    "p0a12_train_prompt_overlap": 0,
+    "asdiv_used_for_training": false,
+    "svamp_reused": false,
+    "gate300_opened": false,
+    "formal_full_opened": false
+  },
+  "inputs": {
+    "configs/p0a13_math_runtime.json": "64f7feb651dcf4f8e0c6b2a111f97ebd4b9ce8b576129290e73180e2c84c2e86",
+    "data/p0a12/math_train.jsonl": "240576c1e62843e85924cb323adc72bd9f9bad75d0a5c88f792a5b193b30dd00"
+  },
+  "output": {
+    "path": "data/p0a13/math_validation.jsonl",
+    "rows": 2237,
+    "sha256": "322741977e1b69e89ed792e04b438a9780dfa8a22522c280b91f3f2d2e6cb919"
+  },
+  "errors": [],
+  "report_hash": "b531e725ee8e631367dcadc5f2bc2633b7898d3aa9c806dc6dc109e3935f261b"
+}

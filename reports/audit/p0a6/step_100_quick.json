@@ -1,0 +1,69 @@
+{
+  "gate": "P0-A6-INTERNAL-EVAL",
+  "check_version": "1.0",
+  "created_by": "scripts/evaluate_p0a6_internal.py",
+  "created_ts": "2026-07-31T06:45:47.560097+00:00",
+  "status": "passed",
+  "candidate_name": "p0a6-student-step-100",
+  "endpoint": "http://127.0.0.1:18460",
+  "served_model_id": "p0a6-step-100",
+  "manifest": "data/p0a6/quick_validation.jsonl",
+  "manifest_hash": "99640b4641eaa76cb3096caec1126273488e4e34d4f755b02765af580e29346e",
+  "sidecar_manifest": "data/p0a6/manifest.json",
+  "sidecar_manifest_hash": "799201e840c3ccfc030d62ada993fb5c8a59245d31444dad797295e5874d979a",
+  "declared_manifest_hash": "99640b4641eaa76cb3096caec1126273488e4e34d4f755b02765af580e29346e",
+  "expected_counts_source": "data/p0a6/manifest.json:validation.quick",
+  "expected_counts": {
+    "math": 100,
+    "code": 100,
+    "nlp": 100
+  },
+  "actual_counts": {
+    "math": 100,
+    "code": 100,
+    "nlp": 100
+  },
+  "correct_counts": {
+    "math": 72,
+    "code": 50,
+    "nlp": 46
+  },
+  "accuracy_by_domain": {
+    "math": 0.72,
+    "code": 0.5,
+    "nlp": 0.46
+  },
+  "macro_accuracy": 0.56,
+  "canonical_format_counts": {
+    "math": 98,
+    "code": 60,
+    "nlp": 70
+  },
+  "canonical_format_rate_by_domain": {
+    "math": 0.98,
+    "code": 0.6,
+    "nlp": 0.7
+  },
+  "macro_canonical_format_rate": 0.76,
+  "generation_error_count": 0,
+  "generation_error_count_by_domain": {
+    "math": 0,
+    "code": 0,
+    "nlp": 0
+  },
+  "mean_latency_ms_by_domain": {
+    "math": 1412.0958358974895,
+    "code": 731.8731417751405,
+    "nlp": 727.0959479501471
+  },
+  "max_tokens": {
+    "math": 512,
+    "code": 768,
+    "nlp": 256
+  },
+  "request_timeout_sec": 120,
+  "code_timeout_sec": 5,
+  "output_trace": "reports/audit/p0a6/step_100_quick_trace.jsonl",
+  "output_trace_hash": "15dd0745205996881fc0855325688d42226f274aac02bccb3b9446cf378d9105",
+  "report_hash": "ae1d706c5f8f96c44fc0c6d41d3fecbb897b0631cec6a7afcfcebaed41e2429b"
+}

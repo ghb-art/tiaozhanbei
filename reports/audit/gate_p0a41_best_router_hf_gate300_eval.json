@@ -1,0 +1,42 @@
+{
+  "gate": "P0-A41-BEST-ROUTER-GATE300-EVAL",
+  "check_version": "1.0",
+  "created_by": "scripts/evaluate_p0a41_best_router_gate.py",
+  "created_ts": "2026-08-02T07:47:09.424035+00:00",
+  "status": "passed",
+  "candidate_name": "p0a41-best-router-hf",
+  "served_model_id_by_domain": {
+    "math": "p0a41-math-base",
+    "code": "p0a41-code-192",
+    "nlp": "p0a41-nlp-136"
+  },
+  "manifest": "data/capability_v2/gate300.jsonl",
+  "manifest_hash": "91d89bfce1ceae19eecdc894a1141c7816ec4dd6a4ef7115700d0c8a811741fc",
+  "counts": {
+    "code": 100,
+    "math": 100,
+    "nlp": 100
+  },
+  "correct_counts": {
+    "code": 46,
+    "math": 73,
+    "nlp": 61
+  },
+  "accuracy_by_domain": {
+    "math": 0.73,
+    "code": 0.46,
+    "nlp": 0.61
+  },
+  "generation_error_count": 0,
+  "max_tokens": {
+    "math": 512,
+    "code": 768,
+    "nlp": 256
+  },
+  "thinking": "off",
+  "code_timeout_sec": 5,
+  "output_trace": "data/eval/p0a41_best_router_hf_gate300.jsonl",
+  "output_trace_hash": "139fba107f8c9d47589a00f39b75c826b42918a31b08c1721ad181bb9cbb9dd7",
+  "formal_full_loaded": false,
+  "report_hash": "1359f56d1372b4a9299444d4d51887ab58993e7e62ce734d4538c65cb4a1f1b9"
+}

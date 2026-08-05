@@ -1,0 +1,12 @@
+{
+  "gate": "P0-A48-Q4-NLP-SELECTION",
+  "status": "passed",
+  "selected_step": 64,
+  "base_correct_total": 334,
+  "candidate_correct_total": 332,
+  "candidate_gain": -2,
+  "selected_route": "base",
+  "adapter": "",
+  "mandatory_second_full_authorized": true,
+  "report_hash": "9ded2ba146f89b832a740661eb1462c40db12d5ab0175f6304cd475ab8abc737"
+}

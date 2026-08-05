@@ -1,0 +1,29 @@
+{
+  "gate": "P0-B1-CODE-SOURCE-DOWNLOAD",
+  "check_version": "1.0",
+  "created_by": "model_compression/download_p0b1_code.py",
+  "created_ts": "2026-08-04T11:57:07.993412+00:00",
+  "status": "passed",
+  "repo": "nvidia/OpenCodeInstruct",
+  "declared_license": "CC BY 4.0",
+  "additional_shards": [
+    8,
+    25,
+    42
+  ],
+  "outputs": {
+    "data/datasets/opencodeinstruct/data/train-00008-of-00050.parquet": {
+      "bytes": 121029590,
+      "sha256": "068b8d894e8a4c4ac98c50eb47677fa457a316481ca9e9fb35957c8a065cd0e3"
+    },
+    "data/datasets/opencodeinstruct/data/train-00025-of-00050.parquet": {
+      "bytes": 145021888,
+      "sha256": "e24337755630b41911f8303882c52aa46dfec3a499616110d38e5b34825d7a37"
+    },
+    "data/datasets/opencodeinstruct/data/train-00042-of-00050.parquet": {
+      "bytes": 131590828,
+      "sha256": "ddd46d5c10495eb1ef526e9a41cb8ac0aead98962ee49cde82a3d7d32fa8c91d"
+    }
+  },
+  "errors": []
+}

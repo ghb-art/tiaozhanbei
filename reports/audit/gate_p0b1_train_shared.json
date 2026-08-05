@@ -1,0 +1,154 @@
+{
+  "adapter_hash": "0feeddd32c72d813565c149fe4e248972d724a54316ff73f8ec73545d4652e09",
+  "base_preservation": {
+    "enabled": true,
+    "kl_weight_by_dataset": {
+      "cmmlu": 0.12,
+      "gsm8k": 0.25,
+      "opencodeinstruct": 0.12
+    },
+    "method": "unconditional_adapter_disabled_base_kl",
+    "temperature": 2.0
+  },
+  "best_checkpoint": "models/checkpoints/p0b1/shared/checkpoint-4000",
+  "best_metric": 0.7058236598968506,
+  "candidate_index": 1,
+  "check_version": "1.0",
+  "config": "configs/p0b1_converged_shared.json",
+  "config_hash": "51c3049d4e2b5ddbb7d88c49bd3f213f1b276a5ef3a4de248df83d842a275ad2",
+  "created_by": "scripts/finalize_p0b1_early_stop.py",
+  "created_ts": "2026-08-05T03:11:01.742966+00:00",
+  "dependencies": {
+    "accelerate": "1.14.0",
+    "deepspeed": "0.17.6",
+    "peft": "0.17.1",
+    "torch": "2.6.0+cu124",
+    "transformers": "4.51.3"
+  },
+  "early_stop_recovery": {
+    "checkpoint_files": {
+      "adapter_config.json": {
+        "bytes": 1000,
+        "sha256": "a04c1c989f1263487471b0b62ac9f61277f08cf5716aa17755623708f6297d23"
+      },
+      "adapter_model.safetensors": {
+        "bytes": 278973888,
+        "sha256": "0feeddd32c72d813565c149fe4e248972d724a54316ff73f8ec73545d4652e09"
+      },
+      "optimizer.pt": {
+        "bytes": 558173226,
+        "sha256": "4e4fec7b13c49d895263712bb11db6398633458618095eb56b4a6448d7dccb4f"
+      },
+      "scheduler.pt": {
+        "bytes": 1064,
+        "sha256": "ee0b82a371461b56ffc1467bd05731567265deda4b1bf8928a79da40e1622ede"
+      },
+      "trainer_state.json": {
+        "bytes": 73950,
+        "sha256": "f881a4fc571febfa1d8c91f615fd6243c9139ef501f4b619e77f33329fd7c7dc"
+      }
+    },
+    "failure_audit": "reports/runtime/memory_watchdog_20260804_200317_627213_1857486.json",
+    "failure_audit_hash": "7fbab435cc15dcb501b1b1e86f502cb9794aa4ef3193632466775daa08eea4db",
+    "failure_was_memory_threshold": false,
+    "independent_eval_loss": 0.7058236598968506,
+    "patience": 4,
+    "patience_counter": 4,
+    "should_training_stop": true,
+    "validation_audit": "reports/audit/gate_p0b1_checkpoint_4000_validation.json",
+    "validation_audit_hash": "defe7ff2386f8b5929c8704ba76958c58b5b8278d1f61db70c6072a061b80f39"
+  },
+  "errors": [],
+  "finalizer_hash": "3d968d283ada89501185e6f44821608396b605bc89e7f942bec69b3734dd50d6",
+  "formal_test_reference_count": 0,
+  "gate": "P0-B1-RECOVERED-EARLY-STOP-TRAIN",
+  "global_step": 4000,
+  "lora": {
+    "alpha": 128,
+    "dropout": 0.1,
+    "rank": 64,
+    "target_modules": [
+      "q_proj",
+      "k_proj",
+      "v_proj",
+      "o_proj",
+      "gate_proj",
+      "up_proj",
+      "down_proj"
+    ]
+  },
+  "math_preservation": {
+    "enabled": false,
+    "kl_weight": 0.0,
+    "method": "superseded_by_all_task_base_kl",
+    "supervised_weight": 1.0,
+    "temperature": 2.0
+  },
+  "mode": "recovered_early_stop_finalization",
+  "model_dir": "models/checkpoints/p0a4/student-shared-merged",
+  "optimization": {
+    "checkpoint_steps": 250,
+    "cpu_offload": false,
+    "deepspeed": "",
+    "deepspeed_stage": 0,
+    "early_stopping": {
+      "enabled": true,
+      "eval_steps": 250,
+      "metric": "eval_loss",
+      "patience": 4,
+      "threshold": 0.002
+    },
+    "epochs": 4.0,
+    "gradient_accumulation_steps": 8,
+    "gradient_checkpointing": true,
+    "gradient_checkpointing_use_reentrant": false,
+    "label_smoothing": 0.02,
+    "learning_rate": 2e-06,
+    "max_grad_norm": 1.0,
+    "max_seq_length": 1536,
+    "per_device_train_batch_size": 1,
+    "resume_from_checkpoint": "models/checkpoints/p0b1/shared/checkpoint-4000",
+    "save_total_limit": 2,
+    "warmup_ratio": 0.05,
+    "weight_decay": 0.05
+  },
+  "published_files": [
+    "README.md",
+    "adapter_config.json",
+    "adapter_model.safetensors",
+    "added_tokens.json",
+    "merges.txt",
+    "special_tokens_map.json",
+    "tokenizer.json",
+    "tokenizer_config.json",
+    "vocab.json"
+  ],
+  "report_hash": "c27a5f62d6c5ba946296dfa7b066f393cb238f04e586d7c90620c12f79b8ffd4",
+  "role": "student",
+  "status": "passed",
+  "token_budget_scan": {},
+  "train_counts": {
+    "cmmlu": 30000,
+    "gsm8k": 7173,
+    "opencodeinstruct": 20000
+  },
+  "train_data": "data/p0b1/train.jsonl",
+  "train_data_hash": "6523c848d4864fa0eeebd19fd5621eca2fa0d06a2eba1dd7ee894465b1cc00b7",
+  "train_metrics": {
+    "completed_fraction": 0.5599104143337066,
+    "early_stopped": true,
+    "epoch": 2.239541066181615
+  },
+  "validation_counts": {
+    "cmmlu": 300,
+    "gsm8k": 200,
+    "opencodeinstruct": 300
+  },
+  "validation_data": "data/p0b1/internal_validation.jsonl",
+  "validation_data_hash": "4f44375d9f8d04932d05a3e513c26850a05d52a4a0ff07efd152134dc1edb200",
+  "weighted_task_mass": {
+    "cmmlu": 0.3500000000000289,
+    "gsm8k": 0.29999999999995647,
+    "opencodeinstruct": 0.35000000000001463
+  }
+}

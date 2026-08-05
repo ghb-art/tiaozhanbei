@@ -1,0 +1,98 @@
+{
+  "gate": "P0-A6-STUDENT-TRAIN",
+  "check_version": "1.0",
+  "created_by": "model_compression/train_p0a6_student.py",
+  "created_ts": "2026-08-03T16:25:21.993357+00:00",
+  "status": "dry_run_passed",
+  "errors": [],
+  "model_dir": "models/checkpoints/p0a4/student-shared-merged",
+  "train_data": "data/p0a48/nlp_curriculum.jsonl",
+  "train_data_hash": "fc3de2eefb509a6705a82bfc0828f7f288f1622279adf9a1c4e8e2b0a62d78f9",
+  "train_rows": 2310,
+  "focus": {
+    "focus_domain": "nlp",
+    "source_rows": 2310,
+    "selected_rows": 2310,
+    "source_domain_counts": {
+      "nlp": 2310
+    },
+    "selected_domain_counts": {
+      "nlp": 2310
+    },
+    "selected_dataset_counts": {
+      "nlp": 2310
+    },
+    "training_weight_mean_before": 1.6666666666666667,
+    "training_weight_normalization_divisor": 1.6666666666666667,
+    "training_weight_mean_after": 0.9999999999999901,
+    "mcq_answer_token_weight_multiplier": 1.0,
+    "mcq_answer_token_weight_multiplied_rows": 0
+  },
+  "domain_counts": {
+    "nlp": 2310
+  },
+  "kl_weight_by_domain": {
+    "nlp": {
+      "minimum": 0.1,
+      "maximum": 0.1,
+      "mean": 0.09999999999999618
+    }
+  },
+  "answer_token_weight_rows": {},
+  "formal_test_reference_count": 0,
+  "optimization": {
+    "lora_rank": 16,
+    "lora_alpha": 32,
+    "lora_dropout": 0.05,
+    "target_modules": [
+      "q_proj",
+      "k_proj",
+      "v_proj",
+      "o_proj",
+      "gate_proj",
+      "up_proj",
+      "down_proj"
+    ],
+    "learning_rate": 5e-07,
+    "bf16": true,
+    "max_seq_length": 1536,
+    "max_steps": 128,
+    "checkpoint_steps": 64,
+    "save_total_limit": null,
+    "per_device_train_batch_size": 1,
+    "gradient_accumulation_steps": 8,
+    "expected_world_size": 4,
+    "observed_world_size": 1,
+    "effective_global_batch_size": 32,
+    "warmup_ratio": 0.03,
+    "max_grad_norm": 1.0,
+    "gradient_checkpointing": true,
+    "gradient_checkpointing_use_reentrant": false,
+    "resume_from_checkpoint": "",
+    "init_adapter": "",
+    "init_adapter_file_hashes": {}
+  },
+  "preservation": {
+    "method": "all_task_adapter_disabled_base_kl",
+    "direction": "KL(base||student)",
+    "temperature": 2.0,
+    "mask": "assistant_answer_tokens_only",
+    "reference_forward": "unconditional_on_every_rank_and_batch",
+    "supervised_weight": "1-kl_weight_per_row"
+  },
+  "dependencies": {
+    "torch": "2.6.0+cu124",
+    "transformers": "4.51.3",
+    "accelerate": "1.14.0",
+    "peft": "0.17.1"
+  },
+  "token_budget_scan": {
+    "status": "passed",
+    "scanned_rows": 2310,
+    "max_seq_length": 1536,
+    "maximum_observed_tokens": 742,
+    "maximum_sample_id": "p0a48/685fc31938a95b2cccc634f2",
+    "answer_token_weight_rows": 0
+  },
+  "report_hash": "4d48c2d0780bec1cfa2b849d2f1426489d235f0fb315d3f442fc8b67aff44bcf"
+}

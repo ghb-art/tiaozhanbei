@@ -1,0 +1,40 @@
+{
+  "gate": "P0-A5-TEACHER-SELECTION",
+  "check_version": "1.0",
+  "created_by": "scripts/select_p0a5_teacher.py",
+  "created_ts": "2026-07-30T14:11:38.183024+00:00",
+  "status": "passed",
+  "role": "teacher",
+  "selection_policy": "lowest_internal_validation_eval_loss",
+  "config": "configs/p0a5_capability.json",
+  "config_hash": "a5e5a2d82889d8f84b046d53217138d38706b13dca6f6d084ca4dc72b627e1d1",
+  "evaluations": [
+    {
+      "checkpoint": "models/checkpoints/p0a5/teacher/checkpoint-600",
+      "checkpoint_step": 600,
+      "eval_loss": 1.0278551578521729,
+      "report_hash": "d8fc46a8edb725e5eee8d8ba3576c5f06a256fb357eeefafdacd22b546984741"
+    },
+    {
+      "checkpoint": "models/checkpoints/p0a5/teacher/checkpoint-800",
+      "checkpoint_step": 800,
+      "eval_loss": 1.0257455110549927,
+      "report_hash": "7494b4a07cb473cf6bc5e50a5320d6261ef328b97d5128b7fc9301522a90ec90"
+    }
+  ],
+  "best_checkpoint": "models/checkpoints/p0a5/teacher/checkpoint-800",
+  "global_step": 800,
+  "best_metric": 1.0257455110549927,
+  "validation_data": "data/capability_v2/internal_validation.jsonl",
+  "validation_data_hash": "74c38627e350386f70e5191c0c4bcfe54da485efc704e607df3d3e1304152a42",
+  "evaluated_rows": 2200,
+  "formal_test_reference_count": 0,
+  "published_files": [
+    "adapter_config.json",
+    "adapter_model.safetensors",
+    "README.md"
+  ],
+  "published_adapter_hash": "1df5271c3650cd90ec63f47cff1f427866829e75b4698a2b7e5e3dd412b763e1",
+  "errors": [],
+  "report_hash": "59cecc8ab98d6c0b2246646a37a70b38168a9b7e1e769b9d2bbf45ecc56d9d0e"
+}

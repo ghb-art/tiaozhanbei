@@ -1,0 +1,256 @@
+{
+  "gate": "P0-A6-STUDENT-TRAIN",
+  "check_version": "1.0",
+  "created_by": "model_compression/train_p0a6_student.py",
+  "created_ts": "2026-07-31T15:44:06.728951+00:00",
+  "status": "passed",
+  "errors": [],
+  "model_dir": "models/checkpoints/p0a4/student-shared-merged",
+  "train_data": "data/p0a7/nlp_mmlu_aux_train.jsonl",
+  "train_data_hash": "d9830f1205c8bb0520dde8518fdfae228c65199f08f58086820f7fccb4de75da",
+  "train_rows": 3000,
+  "focus": {
+    "focus_domain": "nlp_mmlu_aux",
+    "source_rows": 3000,
+    "selected_rows": 3000,
+    "source_domain_counts": {
+      "nlp": 3000
+    },
+    "selected_domain_counts": {
+      "nlp": 3000
+    },
+    "selected_dataset_counts": {
+      "mmlu_aux_chinese": 3000
+    },
+    "training_weight_mean_before": 1.0,
+    "training_weight_normalization_divisor": 1.0,
+    "training_weight_mean_after": 1.0,
+    "mcq_answer_token_weight_multiplier": 1.0,
+    "mcq_answer_token_weight_multiplied_rows": 0
+  },
+  "domain_counts": {
+    "nlp": 3000
+  },
+  "kl_weight_by_domain": {
+    "nlp": {
+      "minimum": 0.05,
+      "maximum": 0.05,
+      "mean": 0.049999999999999954
+    }
+  },
+  "answer_token_weight_rows": {},
+  "formal_test_reference_count": 0,
+  "optimization": {
+    "lora_rank": 16,
+    "lora_alpha": 32,
+    "lora_dropout": 0.05,
+    "target_modules": [
+      "q_proj",
+      "k_proj",
+      "v_proj",
+      "o_proj",
+      "gate_proj",
+      "up_proj",
+      "down_proj"
+    ],
+    "learning_rate": 3e-05,
+    "bf16": true,
+    "max_seq_length": 1536,
+    "max_steps": 188,
+    "checkpoint_steps": 94,
+    "save_total_limit": null,
+    "per_device_train_batch_size": 1,
+    "gradient_accumulation_steps": 8,
+    "expected_world_size": 4,
+    "observed_world_size": 4,
+    "effective_global_batch_size": 32,
+    "warmup_ratio": 0.03,
+    "max_grad_norm": 1.0,
+    "gradient_checkpointing": true,
+    "gradient_checkpointing_use_reentrant": false,
+    "resume_from_checkpoint": ""
+  },
+  "preservation": {
+    "method": "all_task_adapter_disabled_base_kl",
+    "direction": "KL(base||student)",
+    "temperature": 2.0,
+    "mask": "assistant_answer_tokens_only",
+    "reference_forward": "unconditional_on_every_rank_and_batch",
+    "supervised_weight": "1-kl_weight_per_row"
+  },
+  "dependencies": {
+    "torch": "2.6.0+cu124",
+    "transformers": "4.51.3",
+    "accelerate": "1.14.0",
+    "peft": "0.17.1"
+  },
+  "token_budget_scan": {},
+  "report_hash": "69eb36086195c403b45c9d504af2b75df8bd132c811c4cf01f6dba339025ee63",
+  "global_step": 188,
+  "final_checkpoint": "models/checkpoints/p0a7/nlp-mmlu-aux-specialist/checkpoint-188",
+  "published_files": [
+    "adapter_config.json",
+    "adapter_model.safetensors",
+    "README.md"
+  ],
+  "train_metrics": {
+    "train_runtime": 855.9646,
+    "train_samples_per_second": 7.028,
+    "train_steps_per_second": 0.22,
+    "total_flos": 1.094226200756224e+16,
+    "train_loss": 5.595307999468864,
+    "epoch": 2.0
+  },
+  "domain_loss_summary": {
+    "math": {
+      "examples_seen": 0,
+      "mean_sft_loss": null,
+      "mean_kl_base_to_student": null,
+      "mean_combined_loss": null
+    },
+    "code": {
+      "examples_seen": 0,
+      "mean_sft_loss": null,
+      "mean_kl_base_to_student": null,
+      "mean_combined_loss": null
+    },
+    "nlp": {
+      "examples_seen": 6000,
+      "mean_sft_loss": 0.7166031389410297,
+      "mean_kl_base_to_student": 0.4241855540284017,
+      "mean_combined_loss": 0.7019822507376472
+    }
+  },
+  "domain_loss_log": [
+    {
+      "step": 10,
+      "nlp_sft_loss": 1.3978222286328674,
+      "nlp_kl_base_to_student": 0.004597161749375593,
+      "nlp_combined_loss": 1.3281609574332833,
+      "nlp_examples": 320
+    },
+    {
+      "step": 20,
+      "nlp_sft_loss": 1.0834893910214305,
+      "nlp_kl_base_to_student": 0.14510828496422618,
+      "nlp_combined_loss": 1.0365703210234642,
+      "nlp_examples": 320
+    },
+    {
+      "step": 30,
+      "nlp_sft_loss": 0.764527024445124,
+      "nlp_kl_base_to_student": 0.43626940455287694,
+      "nlp_combined_loss": 0.7481141363736242,
+      "nlp_examples": 320
+    },
+    {
+      "step": 40,
+      "nlp_sft_loss": 0.7245341570582241,
+      "nlp_kl_base_to_student": 0.5224470695480704,
+      "nlp_combined_loss": 0.7144297959282995,
+      "nlp_examples": 320
+    },
+    {
+      "step": 50,
+      "nlp_sft_loss": 0.7013769784010947,
+      "nlp_kl_base_to_student": 0.5151566980872303,
+      "nlp_combined_loss": 0.6920659543015063,
+      "nlp_examples": 320
+    },
+    {
+      "step": 60,
+      "nlp_sft_loss": 0.6977407054975628,
+      "nlp_kl_base_to_student": 0.494617766328156,
+      "nlp_combined_loss": 0.68758454923518,
+      "nlp_examples": 320
+    },
+    {
+      "step": 70,
+      "nlp_sft_loss": 0.6827342377742752,
+      "nlp_kl_base_to_student": 0.4398460207041353,
+      "nlp_combined_loss": 0.6705898199230432,
+      "nlp_examples": 320
+    },
+    {
+      "step": 80,
+      "nlp_sft_loss": 0.6674641547258944,
+      "nlp_kl_base_to_student": 0.4637657213956118,
+      "nlp_combined_loss": 0.6572792222024872,
+      "nlp_examples": 320
+    },
+    {
+      "step": 90,
+      "nlp_sft_loss": 0.644414072809741,
+      "nlp_kl_base_to_student": 0.459282585978508,
+      "nlp_combined_loss": 0.6351574917789549,
+      "nlp_examples": 320
+    },
+    {
+      "step": 100,
+      "nlp_sft_loss": 0.6467450980741817,
+      "nlp_kl_base_to_student": 0.4449199326813985,
+      "nlp_combined_loss": 0.6366538340822817,
+      "nlp_examples": 312
+    },
+    {
+      "step": 110,
+      "nlp_sft_loss": 0.6381928142393007,
+      "nlp_kl_base_to_student": 0.43433078699745237,
+      "nlp_combined_loss": 0.6279997063335031,
+      "nlp_examples": 320
+    },
+    {
+      "step": 120,
+      "nlp_sft_loss": 0.6553123234654776,
+      "nlp_kl_base_to_student": 0.45418505240231755,
+      "nlp_combined_loss": 0.645255951746367,
+      "nlp_examples": 320
+    },
+    {
+      "step": 130,
+      "nlp_sft_loss": 0.61797027887078,
+      "nlp_kl_base_to_student": 0.4596862128470093,
+      "nlp_combined_loss": 0.6100560676306486,
+      "nlp_examples": 320
+    },
+    {
+      "step": 140,
+      "nlp_sft_loss": 0.6168024024926126,
+      "nlp_kl_base_to_student": 0.46126670110970736,
+      "nlp_combined_loss": 0.6090256095980294,
+      "nlp_examples": 320
+    },
+    {
+      "step": 150,
+      "nlp_sft_loss": 0.5922015277319588,
+      "nlp_kl_base_to_student": 0.46635055346414445,
+      "nlp_combined_loss": 0.5859089710982517,
+      "nlp_examples": 320
+    },
+    {
+      "step": 160,
+      "nlp_sft_loss": 0.6414809267269448,
+      "nlp_kl_base_to_student": 0.46267848992720245,
+      "nlp_combined_loss": 0.6325407962547616,
+      "nlp_examples": 320
+    },
+    {
+      "step": 170,
+      "nlp_sft_loss": 0.6007697126711719,
+      "nlp_kl_base_to_student": 0.4676777803339064,
+      "nlp_combined_loss": 0.5941151052946225,
+      "nlp_examples": 320
+    },
+    {
+      "step": 180,
+      "nlp_sft_loss": 0.60967458068626,
+      "nlp_kl_base_to_student": 0.4669150979723781,
+      "nlp_combined_loss": 0.6025365984067321,
+      "nlp_examples": 320
+    }
+  ],
+  "retained_checkpoints": [
+    "models/checkpoints/p0a7/nlp-mmlu-aux-specialist/checkpoint-94",
+    "models/checkpoints/p0a7/nlp-mmlu-aux-specialist/checkpoint-188"
+  ]
+}

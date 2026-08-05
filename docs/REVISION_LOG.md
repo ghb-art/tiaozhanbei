@@ -105,6 +105,8 @@
 
 | 2026-07-23 | P0-A4R APPS Code source rebuild | 新增APPS official train-only下载与SHA校验、安全解压、危险AST过滤、资源限制canonical全测试执行、HumanEval prompt-only去污染、内部开发题冲突排除、AST去重和Qwen3 token预算；冻结1500个APPS组，与292个MBPP组统一复验 | 已删除的v30数据被Git忽略且无备份，不能可靠恢复；以新版本和新哈希重建，避免重复233条样本和伪造旧证据 | APPS verified `2645`、frozen `1500`；Code train/internal=`1792/42`，overlap/formal=`0/0`，`promotion_eligible=true`；42项回归测试通过 | `model_compression/rebuild_p0a4r_apps_data.py`, `scripts/run_p0a4r.sh`, `tests/test_p0a4r_apps_rebuild.py`, `reports/audit/gate_p0a4r_apps_source.json`, `reports/audit/gate_p0a4r_code_data.json` |
 
+| 2026-08-05 | P0-B1 / gate protocol | 300题门禁Code评分升级为协议v3：执行前统一剥离llama.cpp空`<think></think>`传输包装，并按公共缩进dedent（先dedent后strip）；新增`--rescore-trace`确定性重评分模式。对既有Baseline与P0-B1 trace重评分生成v3 trace/审计，不改模型、提示、测试或参考答案 | P0-B1门禁Code 0/100被证实是评分假象：97/100响应实际是完整函数，仅被空think包装和缩进判为非法；协议修正后与正式全测评分器口径一致 | Yes，新增v3 trace/audit hash；v2审计保留不覆盖；Baseline重评分仍95/58/79不变，P0-B1学生71/36/55，Code保持率0%修正为62.07%，宏68.81%仍reject | `scripts/evaluate_p0a5_gate.py`, `tests/test_p0a5_protocol.py`, `data/eval/p0a5_baseline14b_gate300_v3.jsonl`, `data/eval/p0b1_converged_shared_gate300_v3.jsonl`, `reports/audit/gate_p0a5_baseline14b_gate300_eval_v3.json`, `reports/audit/gate_p0b1_gate300_eval_v3.json`, `reports/audit/gate_p0b1_gate300_retention_v3.json` |
+
 ## Fallback Event Template
 
 ```text

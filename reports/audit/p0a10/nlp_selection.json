@@ -1,0 +1,39 @@
+{
+  "gate": "P0-A10-DOMAIN-CHECKPOINT-SELECTION",
+  "check_version": "1.0",
+  "created_by": "scripts/select_p0a10_domain.py",
+  "created_ts": "2026-08-01T02:48:30.729031+00:00",
+  "status": "passed",
+  "domain": "nlp",
+  "allowed_steps": [
+    68,
+    136
+  ],
+  "minimum_gain": 0.03,
+  "base_audit": "reports/audit/p0a10/p0a10_base_nlp.json",
+  "base_accuracy": 0.66015625,
+  "candidates": [
+    {
+      "step": 68,
+      "audit": "reports/audit/p0a10/p0a10_nlp_68_nlp.json",
+      "audit_hash": "90f0085dd1fc9f62a6cbef3695e352e758033692a8b316b4a37531d6bad33971",
+      "accuracy": 0.8203125,
+      "canonical_format_rate": 0.99609375,
+      "gain": 0.16015625,
+      "eligible": true,
+      "failures": []
+    },
+    {
+      "step": 136,
+      "audit": "reports/audit/p0a10/p0a10_nlp_136_nlp.json",
+      "audit_hash": "32984c1a5f1f1c07ca32744d7c84d17addc2ba4e900ae3c2b34acc79a4c62e9d",
+      "accuracy": 0.828125,
+      "canonical_format_rate": 1.0,
+      "gain": 0.16796875,
+      "eligible": true,
+      "failures": []
+    }
+  ],
+  "selected_step": 136,
+  "report_hash": "a38acfd0fc778274248e910302b391ab035fea47f020e1df801dcbb67d63ac61"
+}

@@ -1,0 +1,27 @@
+{
+  "gate": "P0-A14-MATH-SELF-CONSISTENCY-SELECTION",
+  "check_version": "1.0",
+  "created_by": "scripts/select_p0a14_runtime.py",
+  "created_ts": "2026-08-01T12:33:12.536139+00:00",
+  "status": "failed",
+  "decision": "close_gate",
+  "base_audit": "reports/audit/p0a14/single.json",
+  "base_audit_hash": "7fd5658912f4ef14cff69cbb9c4bee89d8e986a29fe8f0921fee323cbeb896eb",
+  "candidate_audit": "reports/audit/p0a14/vote3.json",
+  "candidate_audit_hash": "b0661dd0d425656fbb3750fd2b5bf60a600211656a57b22ef20ae8430b63de53",
+  "base_accuracy": 0.8170563961485557,
+  "candidate_accuracy": 0.8101788170563962,
+  "gain": -0.00687757909215958,
+  "minimum_gain": 0.02,
+  "candidate_canonical_format_rate": 0.9834938101788171,
+  "minimum_canonical_format_rate": 0.95,
+  "mean_latency_ratio": 1.6617766297099208,
+  "generation_error_count": 0,
+  "selected_runtime": null,
+  "failures": [
+    "gain=-0.006878<required=0.020000"
+  ],
+  "gate300_opened": false,
+  "formal_full_opened": false,
+  "report_hash": "7ca27279398884f3363dae02b2bdf4bc18c94817639fa4b50d6bcc8ad2e9962d"
+}

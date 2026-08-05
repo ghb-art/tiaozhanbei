@@ -1,0 +1,33 @@
+{
+  "gate": "P0-A7-NLP-CHECKPOINT-SELECTION",
+  "check_version": "1.0",
+  "created_by": "scripts/select_p0a7_nlp.py",
+  "created_ts": "2026-07-31T16:06:52.928271+00:00",
+  "status": "passed",
+  "base_audit": "reports/audit/p0a7/p0a7_base.json",
+  "base_audit_hash": "9fb445b5eeb8dd45def01b9d078fbb5817370cea49dcc05485be22b7d498483b",
+  "base_accuracy": 0.58203125,
+  "minimum_gain": 0.03,
+  "candidates": [
+    {
+      "step": 94,
+      "audit": "reports/audit/p0a7/p0a7_nlp_94.json",
+      "audit_hash": "6615f43170ab297012a27d9fae6f0bdd4057780544b5d0ad968fd557a42f83fd",
+      "accuracy": 0.75,
+      "gain": 0.16796875,
+      "eligible": true,
+      "failures": []
+    },
+    {
+      "step": 188,
+      "audit": "reports/audit/p0a7/p0a7_nlp_188.json",
+      "audit_hash": "813befbbbd70bbd82287bcf42b94684b8a7eae914e160cc790628d43c573d849",
+      "accuracy": 0.765625,
+      "gain": 0.18359375,
+      "eligible": true,
+      "failures": []
+    }
+  ],
+  "selected_step": 188,
+  "report_hash": "453a0a29ee79a4791e402bbf01f9030e022e3a10788101e155c87d48ceeb9c53"
+}

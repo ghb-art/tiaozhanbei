@@ -1,0 +1,86 @@
+{
+  "gate": "P0-A6-CHECKPOINT-SELECTION",
+  "check_version": "1.0",
+  "created_by": "scripts/select_p0a6_checkpoint.py",
+  "created_ts": "2026-07-31T06:55:29.596889+00:00",
+  "status": "failed",
+  "selection_policy": {
+    "math_minimum_gain": -0.01,
+    "code_minimum_gain": 0.03,
+    "nlp_minimum_gain": 0.03,
+    "ranking": [
+      "macro_accuracy_desc",
+      "step_asc"
+    ]
+  },
+  "manifest": "data/p0a6/quick_validation.jsonl",
+  "manifest_hash": "99640b4641eaa76cb3096caec1126273488e4e34d4f755b02765af580e29346e",
+  "expected_counts": {
+    "math": 100,
+    "code": 100,
+    "nlp": 100
+  },
+  "base_audit": "reports/audit/p0a6/base_quick.json",
+  "base_audit_hash": "7e984bc295ee2af9f8da3fa3e7a36b52b6ca0e7af6f081eda01549335da4cfed",
+  "base_accuracy_by_domain": {
+    "math": 0.73,
+    "code": 0.49,
+    "nlp": 0.46
+  },
+  "base_macro_accuracy": 0.56,
+  "candidate_count": 2,
+  "eligible_candidate_count": 0,
+  "candidates": [
+    {
+      "step": 100,
+      "audit": "reports/audit/p0a6/step_100_quick.json",
+      "audit_hash": "1d30d4b1c707ff34641a425729dce9c70c48ae741e778065b374b5108236f9dc",
+      "candidate_name": "p0a6-student-step-100",
+      "served_model_id": "p0a6-step-100",
+      "accuracy_by_domain": {
+        "math": 0.72,
+        "code": 0.5,
+        "nlp": 0.46
+      },
+      "macro_accuracy": 0.56,
+      "gain_by_domain": {
+        "math": -0.010000000000000009,
+        "code": 0.010000000000000009,
+        "nlp": 0.0
+      },
+      "eligible": false,
+      "failures": [
+        "code_gain=0.01<required=0.03",
+        "nlp_gain=0<required=0.03"
+      ]
+    },
+    {
+      "step": 200,
+      "audit": "reports/audit/p0a6/step_200_quick.json",
+      "audit_hash": "c91fd021b668b2261cb64d67e23119015fc694367500ffddad09661e6c4c1590",
+      "candidate_name": "p0a6-student-step-200",
+      "served_model_id": "p0a6-step-200",
+      "accuracy_by_domain": {
+        "math": 0.72,
+        "code": 0.52,
+        "nlp": 0.48
+      },
+      "macro_accuracy": 0.5733333333333334,
+      "gain_by_domain": {
+        "math": -0.010000000000000009,
+        "code": 0.030000000000000027,
+        "nlp": 0.019999999999999962
+      },
+      "eligible": false,
+      "failures": [
+        "nlp_gain=0.02<required=0.03"
+      ]
+    }
+  ],
+  "selected_step": null,
+  "selected_path": "",
+  "selected_accuracy_by_domain": {},
+  "selected_macro_accuracy": null,
+  "selected_gain_by_domain": {},
+  "report_hash": "476cf2db550732f93abc54779664b34131b1ca1d11b14466a8d45f381a959675"
+}

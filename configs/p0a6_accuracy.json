@@ -1,0 +1,277 @@
+{
+  "config_version": "1.0",
+  "route": "P0-A6 accuracy-first all-task base-preserving student distillation",
+  "seed": 20260731,
+  "policy": {
+    "accuracy_only_stage": true,
+    "student_base": "models/checkpoints/p0a4/student-shared-merged",
+    "teacher_reference": "models/checkpoints/p0a5/teacher/checkpoint-800",
+    "p0a5_candidate_1_reused": false,
+    "formal_test_loaded": false,
+    "maximum_pilot_checkpoints": 2
+  },
+  "data": {
+    "train": "data/p0a6/train.jsonl",
+    "manifest": "data/p0a6/manifest.json",
+    "quick_validation": "data/p0a6/quick_validation.jsonl",
+    "full_validation": "data/p0a6/full_validation.jsonl",
+    "expected_train_rows": 22096,
+    "expected_train_counts": {
+      "math": 7173,
+      "code": 4088,
+      "nlp": 10835
+    },
+    "effective_task_mass": {
+      "math": 0.35,
+      "code": 0.30,
+      "nlp": 0.35
+    },
+    "nlp_effective_mass_within_domain": {
+      "coig_open_qa": 0.50,
+      "ceval_labelled_mcq": 0.50
+    },
+    "quick_expected_counts": {
+      "math": 100,
+      "code": 100,
+      "nlp": 100
+    },
+    "full_expected_counts": {
+      "math": 200,
+      "code": 186,
+      "nlp": 260
+    }
+  },
+  "training": {
+    "lora_rank": 16,
+    "lora_alpha": 32,
+    "lora_dropout": 0.05,
+    "learning_rate": 0.000002,
+    "bf16": true,
+    "max_seq_length": 1536,
+    "max_steps": 200,
+    "checkpoint_steps": 100,
+    "per_device_train_batch_size": 1,
+    "gradient_accumulation_steps": 8,
+    "world_size": 4,
+    "effective_global_batch_size": 32,
+    "warmup_ratio": 0.03,
+    "max_grad_norm": 1.0,
+    "resume_from_latest_complete_checkpoint": true
+  },
+  "base_preservation": {
+    "method": "all_task_adapter_disabled_base_kl",
+    "direction": "KL(base||student)",
+    "temperature": 2.0,
+    "assistant_tokens_only": true,
+    "kl_weight": {
+      "math": 0.60,
+      "code": 0.15,
+      "nlp": 0.20
+    },
+    "mcq_final_answer_token_weight": 2.0
+  },
+  "pilot_selection": {
+    "compare_steps": [
+      100,
+      200
+    ],
+    "maximum_math_accuracy_drift": 0.01,
+    "minimum_code_accuracy_gain": 0.03,
+    "minimum_nlp_accuracy_gain": 0.03,
+    "maximum_generation_errors": 0,
+    "selection_tiebreaker": "highest_macro_accuracy_then_earliest_step",
+    "selected_checkpoint_full_internal_validation": true
+  },
+  "pilot_extension": {
+    "authorized_by_aggregate_only": true,
+    "authorization_reason": "step-200 met Math and Code constraints but NLP gain was 0.02 versus the preregistered 0.03",
+    "resume_from_step": 200,
+    "max_steps": 300,
+    "additional_steps": 100,
+    "data_changed": false,
+    "model_structure_changed": false,
+    "loss_weights_changed": false,
+    "evaluate_only_new_step": 300,
+    "maximum_further_extensions": 0
+  },
+  "nlp_specialist": {
+    "enabled_after_shared_extension_failure": true,
+    "architecture": "merged_step_200_shared_base_plus_top1_nlp_lora",
+    "shared_base": "models/checkpoints/p0a6/student-step-200-merged",
+    "shared_domains": [
+      "math",
+      "code"
+    ],
+    "adapter_domain": "nlp",
+    "train_rows": 10835,
+    "learning_rate": 0.000005,
+    "max_steps": 200,
+    "checkpoint_steps": 100,
+    "mcq_answer_token_weight_multiplier": 2.0,
+    "effective_mcq_final_answer_token_weight": 4.0,
+    "kl_weight": 0.20,
+    "router": "explicit_request_domain_top1",
+    "unknown_domain_fallback": "shared_base",
+    "selection_steps": [
+      100,
+      200
+    ],
+    "result": {
+      "status": "rejected",
+      "base_nlp_accuracy": 0.46,
+      "step_100_nlp_accuracy": 0.45,
+      "step_200_nlp_accuracy": 0.41,
+      "reason": "COIG open-QA training shape reduced Chinese MCQ accuracy"
+    }
+  },
+  "nlp_mcq_specialist": {
+    "enabled_after_open_qa_specialist_failure": true,
+    "architecture": "original_v1_base_plus_independent_top1_domain_adapters",
+    "base_model": "models/checkpoints/p0a4/student-shared-merged",
+    "routing": {
+      "math": "original_v1_base",
+      "code": "p0a6_shared_step_200_adapter",
+      "nlp": "p0a6_nlp_mcq_adapter",
+      "unknown": "original_v1_base"
+    },
+    "training_partition": {
+      "dataset": "C-Eval labelled val",
+      "rows": 1335,
+      "role": "repurposed_auxiliary_training_partition",
+      "not_used_as_evaluation_target": true,
+      "formal_cmmlu_test_loaded": false,
+      "open_qa_rows": 0
+    },
+    "lora_rank": 16,
+    "lora_alpha": 32,
+    "learning_rate": 0.000002,
+    "max_steps": 100,
+    "checkpoint_steps": 50,
+    "selection_steps": [
+      50,
+      100
+    ],
+    "kl_weight": 0.20,
+    "effective_mcq_final_answer_token_weight": 8.0,
+    "quick_gate": {
+      "math_minimum_gain": -0.01,
+      "code_minimum_gain": 0.03,
+      "nlp_minimum_gain": 0.03,
+      "maximum_generation_errors": 0
+    },
+    "full_gate_required_after_quick": true,
+    "result": {
+      "status": "rejected",
+      "step_50_accuracy": {
+        "math": 0.72,
+        "code": 0.54,
+        "nlp": 0.47
+      },
+      "step_100_accuracy": {
+        "math": 0.72,
+        "code": 0.54,
+        "nlp": 0.44
+      },
+      "reason": "letter-only MCQ targets did not reach the preregistered NLP gain"
+    }
+  },
+  "nlp_rationale_specialist": {
+    "enabled_after_letter_only_mcq_failure": true,
+    "teacher_model": "p0a5-teacher",
+    "teacher_base": "models/pretrained/Qwen--Qwen2.5-14B-Instruct",
+    "teacher_adapter": "models/checkpoints/p0a5/teacher",
+    "teacher_tensor_parallel_size": 4,
+    "source_partition": "C-Eval labelled val repurposed as auxiliary training",
+    "expected_source_rows": 1335,
+    "teacher_role": "generate_short_rationale_only",
+    "human_label_is_immutable": true,
+    "rejected_if_teacher_letter_disagrees": true,
+    "student_base": "models/checkpoints/p0a4/student-shared-merged",
+    "student_lora_rank": 16,
+    "student_lora_alpha": 32,
+    "learning_rate": 0.000002,
+    "max_steps": 100,
+    "checkpoint_steps": 50,
+    "kl_weight": 0.20,
+    "effective_mcq_final_answer_token_weight": 8.0,
+    "formal_cmmlu_test_loaded": false,
+    "result": {
+      "status": "rejected",
+      "accepted_teacher_rationales": 1335,
+      "step_50_accuracy": {
+        "math": 0.73,
+        "code": 0.51,
+        "nlp": 0.45
+      },
+      "step_100_accuracy": {
+        "math": 0.72,
+        "code": 0.53,
+        "nlp": 0.44
+      },
+      "reason": "answer letter was teacher-forced after the rationale; the Adapter learned format and longer explanations rather than a better prompt-conditioned choice"
+    }
+  },
+  "nlp_answer_first_specialist": {
+    "enabled_after_rationale_specialist_failure": true,
+    "architecture": "original_v1_base_plus_independent_top1_nlp_answer_first_lora",
+    "student_base": "models/checkpoints/p0a4/student-shared-merged",
+    "training_partition": {
+      "ceval_labelled_val_with_verified_rationale": 1335,
+      "cmmlu_public_dev_demonstrations": 335,
+      "total_rows": 1670,
+      "cmmlu_dev_training_weight": 2.0,
+      "cmmlu_test_rows_loaded": 0
+    },
+    "target_format": "answer_letter_first_then_at_most_two_rationale_sentences_then_canonical_final_answer",
+    "weighted_answer_token_position": "first",
+    "system_prompt_matches_internal_evaluator": true,
+    "student_lora_rank": 16,
+    "student_lora_alpha": 32,
+    "learning_rate": 0.000002,
+    "max_steps": 50,
+    "checkpoint_steps": 25,
+    "selection_steps": [
+      25,
+      50
+    ],
+    "kl_weight": 0.20,
+    "effective_first_answer_token_weight": 8.0,
+    "quick_gate": {
+      "math_minimum_gain": -0.01,
+      "code_minimum_gain": 0.03,
+      "nlp_minimum_gain": 0.03,
+      "maximum_generation_errors": 0
+    },
+    "full_gate_required_after_quick": true,
+    "formal_cmmlu_test_loaded": false
+  },
+  "artifacts": {
+    "data_audit": "reports/audit/gate_p0a6_data.json",
+    "preflight_audit": "reports/audit/gate_p0a6_student_preflight.json",
+    "training_output": "models/checkpoints/p0a6/student-pilot",
+    "training_audit": "reports/audit/gate_p0a6_student_pilot.json",
+    "internal_eval_root": "reports/audit/p0a6",
+    "selection_audit": "reports/audit/p0a6/checkpoint_selection.json",
+    "extension_training_audit": "reports/audit/gate_p0a6_student_extension.json",
+    "extension_selection_audit": "reports/audit/p0a6/checkpoint_selection_extension.json",
+    "step_200_merged": "models/checkpoints/p0a6/student-step-200-merged",
+    "nlp_specialist_output": "models/checkpoints/p0a6/nlp-specialist",
+    "nlp_specialist_audit": "reports/audit/gate_p0a6_train_nlp_specialist.json",
+    "router_selection_audit": "reports/audit/p0a6/router_checkpoint_selection.json",
+    "nlp_mcq_output": "models/checkpoints/p0a6/nlp-mcq-specialist",
+    "nlp_mcq_preflight_audit": "reports/audit/gate_p0a6_nlp_mcq_preflight.json",
+    "nlp_mcq_training_audit": "reports/audit/gate_p0a6_train_nlp_mcq.json",
+    "nlp_mcq_quick_selection_audit": "reports/audit/p0a6/router_mcq_checkpoint_selection.json",
+    "nlp_mcq_full_selection_audit": "reports/audit/p0a6/router_mcq_full_selection.json",
+    "nlp_rationale_train": "data/p0a6/nlp_mcq_rationale_train.jsonl",
+    "nlp_rationale_trace": "data/p0a6/nlp_mcq_rationale_trace.jsonl",
+    "nlp_rationale_generation_audit": "reports/audit/gate_p0a6_mcq_rationales.json",
+    "nlp_rationale_output": "models/checkpoints/p0a6/nlp-rationale-specialist",
+    "nlp_answer_first_train": "data/p0a6/nlp_answer_first_train.jsonl",
+    "nlp_answer_first_data_audit": "reports/audit/gate_p0a6_answer_first_data.json",
+    "nlp_answer_first_preflight_audit": "reports/audit/gate_p0a6_nlp_answer_first_preflight.json",
+    "nlp_answer_first_output": "models/checkpoints/p0a6/nlp-answer-first-specialist",
+    "nlp_answer_first_training_audit": "reports/audit/gate_p0a6_train_nlp_answer_first.json",
+    "nlp_answer_first_selection_audit": "reports/audit/p0a6/router_answer_first_checkpoint_selection.json"
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "gate": "P0-A25-FAILURE-CURRICULUM",
+  "check_version": "1.0",
+  "created_by": "model_compression/build_p0a25_curriculum.py",
+  "created_ts": "2026-08-01T16:40:13.716088+00:00",
+  "status": "passed",
+  "source_rows": 6000,
+  "student_correct_count": 4001,
+  "student_failure_count": 1999,
+  "student_accuracy": 0.6668333333333333,
+  "failure_rows": 1999,
+  "correct_replay_rows": 1000,
+  "curriculum_rows": 2999,
+  "failure_training_weight": 2.0,
+  "correct_replay_training_weight": 1.0,
+  "kl_weight": 0.1,
+  "per_item_feedback_scope": "train_only_p0a25_mining_pool",
+  "p0a24_gate_trace_loaded": false,
+  "formal_full_loaded": false,
+  "inputs": {
+    "configs/p0a25_code_failure_mining.json": "14ba7c989a1778988f2ace2172e03fc5535f1af5a95f03441cf615a6a6d83148",
+    "reports/audit/gate_p0a25_data.json": "c31b6abbdc95fc23cd852b91e43e6f1f3fdb5557f2ddb3ca25236caf22fe4a26",
+    "reports/audit/p0a25/mining.json": "5506d4a1529d1458929b0474e452300df074e2d1e2215323089be678df57cae7",
+    "reports/audit/p0a25/mining_trace.jsonl": "434710fab47559d25a1a898dfb9f9a38a8fa60f01fec1f64357e3a04a1625a5c",
+    "data/p0a25/code_train_pool.jsonl": "f748c3f01660ba646ccb7416a21d1310cf08a251859adba9d5d21e43a9e07649"
+  },
+  "output": {
+    "path": "data/p0a25/code_curriculum.jsonl",
+    "rows": 2999,
+    "sha256": "8de3da75dc905d2c9fcbee42bea342511743fc4e38d9f9654141c550e7be10c3"
+  },
+  "errors": [],
+  "report_hash": "e63510e86e1626824e4bb6011e63e1ec1c23ca10731f1bfe366dbef3f7eb6273"
+}

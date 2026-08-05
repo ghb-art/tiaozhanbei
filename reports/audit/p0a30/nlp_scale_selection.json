@@ -1,0 +1,28 @@
+{
+  "gate": "P0-A30-NLP-SCALE-SELECTION",
+  "check_version": "1.0",
+  "created_by": "scripts/select_p0a30_nlp_scale.py",
+  "created_ts": "2026-08-01T17:49:36.059245+00:00",
+  "status": "passed",
+  "decision": "run_one_frozen_nlp_gate",
+  "reference_scale": 1.0,
+  "reference_correct_count": 145,
+  "candidate_correct_counts": {
+    "0.75": 149,
+    "1.25": 145
+  },
+  "best_candidate_scale": 0.75,
+  "best_candidate_correct_count": 149,
+  "gain_questions": 4,
+  "gain_accuracy": 0.01702127659574468,
+  "minimum_gain_questions": 3,
+  "selected_scale": 0.75,
+  "selected_adapter": "models/adapters/p0a30/nlp-step136-scale-0p75",
+  "formal_test_opened": false,
+  "inputs": {
+    "reports/audit/p0a30/scale_1p0.json": "2d30f9f5beb8a365b391b0324bef84fffdd31e4878cfac7e2c5df7008f00546d",
+    "reports/audit/p0a30/scale_0p75.json": "aaf8adc021d3fa48959d3f31610ccdcce30bd3553cca0863a05b0ad1c90e76db",
+    "reports/audit/p0a30/scale_1p25.json": "0cf8a0f70565f658316fbb1c47973f1062aa089f04a12d17345b0d5abbde46ce"
+  },
+  "report_hash": "e691987c4742e42ac8efe087f4f1491792468aa8357d29aa312ce2749e9bbbb9"
+}

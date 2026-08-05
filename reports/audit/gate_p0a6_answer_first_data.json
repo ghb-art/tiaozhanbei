@@ -1,0 +1,303 @@
+{
+  "answer_first_token_weighted": true,
+  "canonical_final_answer_repeated": true,
+  "ceval_source": "data/p0a6/nlp_mcq_rationale_train.jsonl",
+  "ceval_source_hash": "ee4afe1e8a46b48e1a8c27a28f0b562aaff23e626ea1b9295e0d4c3a9fb1ab77",
+  "check_version": "1.0",
+  "cmmlu_dev_files": [
+    {
+      "path": "data/datasets/cmmlu/data/dev/agronomy.csv",
+      "sha256": "144ee358c3857902ff3450af59888efc6bb1d221e59d1d8b6bdda1c6ebc131bb"
+    },
+    {
+      "path": "data/datasets/cmmlu/data/dev/anatomy.csv",
+      "sha256": "d85f89bbc96f0960139d0e43e0d59001caca2f70f0a771e54992a5f7200d41b5"
+    },
+    {
+      "path": "data/datasets/cmmlu/data/dev/ancient_chinese.csv",
+      "sha256": "acbd25fe27bef1b27b1c261cc78df65d1ed384d68c3f0f6e3f0078a97ef9e4db"
+    },
+    {
+      "path": "data/datasets/cmmlu/data/dev/arts.csv",
+      "sha256": "a1e735a70af7e39384e3aaf0c792d8da508fe7c17f4274db96f184bf63e69531"
+    },
+    {
+      "path": "data/datasets/cmmlu/data/dev/astronomy.csv",
+      "sha256": "b1b7709e7af92c10414fa34aa027449a4940ceac22b7e7f356a2ea635a120d9d"
+    },
+    {
+      "path": "data/datasets/cmmlu/data/dev/business_ethics.csv",
+      "sha256": "c4d8912ad21a0f11563d150b897d15a39fb83ddccdc5dee819ade92bb37f74ae"
+    },
+    {
+      "path": "data/datasets/cmmlu/data/dev/chinese_civil_service_exam.csv",
+      "sha256": "7c7550c180d0ffdf898185a72aac02a7fa9b0f96828fbdf9d9e38b095411ab9b"
+    },
+    {
+      "path": "data/datasets/cmmlu/data/dev/chinese_driving_rule.csv",
+      "sha256": "5890f3a546d2d50fde0265aa6b5b4feedf06af8a8e55f01228654808dd472ecb"
+    },
+    {
+      "path": "data/datasets/cmmlu/data/dev/chinese_food_culture.csv",
+      "sha256": "ec8e1e9e9a7547b36b90762445eaa01ebd12a58d35b03694b09204dd561b8f95"
+    },
+    {
+      "path": "data/datasets/cmmlu/data/dev/chinese_foreign_policy.csv",
+      "sha256": "107c8da6c6dd8651bd4bbb5fdda00472c033ec04d3b20038cbdbb746ba45eedb"
+    },
+    {
+      "path": "data/datasets/cmmlu/data/dev/chinese_history.csv",
+      "sha256": "f38c0e11c70e2f10348850b8acf11784f4884cc85ce43c712b079b9bf6461147"
+    },
+    {
+      "path": "data/datasets/cmmlu/data/dev/chinese_literature.csv",
+      "sha256": "c3fc6d9d79b89a151fcf9419b2e143e185b19a10bccbf9ec6ea1063d25240434"
+    },
+    {
+      "path": "data/datasets/cmmlu/data/dev/chinese_teacher_qualification.csv",
+      "sha256": "2b49da17705e7189f59d90eb40ee32e894b0e6bf4aa79a390b0d32b28e75e0f0"
+    },
+    {
+      "path": "data/datasets/cmmlu/data/dev/clinical_knowledge.csv",
+      "sha256": "860da33c9d6aaf12254365a8ffaba7b6f2fa12992190a55bb63fde9177758a33"
+    },
+    {
+      "path": "data/datasets/cmmlu/data/dev/college_actuarial_science.csv",
+      "sha256": "14b3ec63b068ac63bd17c89455012d64711051c73e3bd8b914a11699745cfbae"
+    },
+    {
+      "path": "data/datasets/cmmlu/data/dev/college_education.csv",
+      "sha256": "7316e8ac963b741c3fc9aad4de073933e8a6c7f5d01719ebfaad997a79dd3bc3"
+    },
+    {
+      "path": "data/datasets/cmmlu/data/dev/college_engineering_hydrology.csv",
+      "sha256": "49854a97e1e5f0d9795f3c82eb1a82c2b82413b11f5fd49f6e1b2923bed2e85b"
+    },
+    {
+      "path": "data/datasets/cmmlu/data/dev/college_law.csv",
+      "sha256": "9e6b466590f09371ec889a7a704c2f19a1196051e0ee632c4c41ea78430aba28"
+    },
+    {
+      "path": "data/datasets/cmmlu/data/dev/college_mathematics.csv",
+      "sha256": "9b9362cfe5aeb999068e4ed0734f6ff7ea540ad4bb15c779195f18e80afa4f9b"
+    },
+    {
+      "path": "data/datasets/cmmlu/data/dev/college_medical_statistics.csv",
+      "sha256": "2917184218573c82aff7a4e8add04638f2735877bebea733b30e54eaddc5ecac"
+    },
+    {
+      "path": "data/datasets/cmmlu/data/dev/college_medicine.csv",
+      "sha256": "c17ae745e755390fada4542c6e3b473dd07e5bf1e77b134bf1ffa76b73c17a11"
+    },
+    {
+      "path": "data/datasets/cmmlu/data/dev/computer_science.csv",
+      "sha256": "17eff498aec5f093399db53fc6f9691449f7ab75375ef4fe40fe050835d2acec"
+    },
+    {
+      "path": "data/datasets/cmmlu/data/dev/computer_security.csv",
+      "sha256": "5e4b6c66b6504abde43f58e56ca023cb970568770c80e6b3c3819fc4e7862abd"
+    },
+    {
+      "path": "data/datasets/cmmlu/data/dev/conceptual_physics.csv",
+      "sha256": "8b9a3d1281e53c8590675fd1743c6401f1b36358eaa0166e79ceaec5cb3d4053"
+    },
+    {
+      "path": "data/datasets/cmmlu/data/dev/construction_project_management.csv",
+      "sha256": "f1997c31ef984af64682f903b387ff11e8f6baae668be9baddd78d17a73adf3b"
+    },
+    {
+      "path": "data/datasets/cmmlu/data/dev/economics.csv",
+      "sha256": "387d7d31ac12d22c21225af345f942c874137be912fe93bed05b481dc2b07a4e"
+    },
+    {
+      "path": "data/datasets/cmmlu/data/dev/education.csv",
+      "sha256": "0d5e90c1e7384487a3ec9d8d67193e0de2c1e4a673024ada48be252bdfae6f6c"
+    },
+    {
+      "path": "data/datasets/cmmlu/data/dev/electrical_engineering.csv",
+      "sha256": "f68f08371ad15830460fd1c0fab1bf070311c1b5405ad2bd9e00d58a1250874e"
+    },
+    {
+      "path": "data/datasets/cmmlu/data/dev/elementary_chinese.csv",
+      "sha256": "ba0a262c54a3a46dcace7e7b7dfda4b4376eafd45614221b4ff817e3dff69d16"
+    },
+    {
+      "path": "data/datasets/cmmlu/data/dev/elementary_commonsense.csv",
+      "sha256": "a9424ca344c83a70b8d557c2d262e3c95af166ef4baac69bf0250799d1439676"
+    },
+    {
+      "path": "data/datasets/cmmlu/data/dev/elementary_information_and_technology.csv",
+      "sha256": "c4c42cc64b1d3fbaf4ddd92f0666b430411b60c20707f5cf02c96e16b236f63a"
+    },
+    {
+      "path": "data/datasets/cmmlu/data/dev/elementary_mathematics.csv",
+      "sha256": "666bc6984caf546a3f9cb42e5619603078852b9e3dad40c76a29778338837977"
+    },
+    {
+      "path": "data/datasets/cmmlu/data/dev/ethnology.csv",
+      "sha256": "f8fd820da72d6fac6e4ad46a129a085f0beea37a8c431ef8de1e9c769def1a97"
+    },
+    {
+      "path": "data/datasets/cmmlu/data/dev/food_science.csv",
+      "sha256": "0b44cfa99ec8ebc95d2687e0c07f5f826f8e069d998da17d50bf0d8fa4abe136"
+    },
+    {
+      "path": "data/datasets/cmmlu/data/dev/genetics.csv",
+      "sha256": "b8ed8ec5932bc9a8446a1fe445ed7382ec70999bbf855469ffb3c38afa8df512"
+    },
+    {
+      "path": "data/datasets/cmmlu/data/dev/global_facts.csv",
+      "sha256": "8f682a87392d7eeda80e65d3c8db0a9c64e13fce67587a94a76e11d1b3dcf919"
+    },
+    {
+      "path": "data/datasets/cmmlu/data/dev/high_school_biology.csv",
+      "sha256": "a59c9c6b380645e952fec6a8d1eb263ec94d20a7f8d47acf811ea6f5e8545c1a"
+    },
+    {
+      "path": "data/datasets/cmmlu/data/dev/high_school_chemistry.csv",
+      "sha256": "370c2525cf745277979406a7631b2be02156b44de7d83b0e4df081dc89bb7961"
+    },
+    {
+      "path": "data/datasets/cmmlu/data/dev/high_school_geography.csv",
+      "sha256": "dbf9efe32a10d682fca449d6e2dc304debefe9601ad15de3452197846077cf33"
+    },
+    {
+      "path": "data/datasets/cmmlu/data/dev/high_school_mathematics.csv",
+      "sha256": "1c0ccf47aa438e3a73da7e093cf27fa7434c1ff591c8eaa881a1452da57ab042"
+    },
+    {
+      "path": "data/datasets/cmmlu/data/dev/high_school_physics.csv",
+      "sha256": "9192641e21f1ddd7a97ba4950cffaf3836cd58099710d9982005256c1e44f3f4"
+    },
+    {
+      "path": "data/datasets/cmmlu/data/dev/high_school_politics.csv",
+      "sha256": "4e2049086b78e07bd7cf5220ea2e32578b3affda6a0f2a6722500b2fab79789d"
+    },
+    {
+      "path": "data/datasets/cmmlu/data/dev/human_sexuality.csv",
+      "sha256": "53ab3d5d827a91e87e06a7c57404e40f55a91aa44220656f6bf4b39a350a79d2"
+    },
+    {
+      "path": "data/datasets/cmmlu/data/dev/international_law.csv",
+      "sha256": "78dc9b0750ebae6878368fc817f2169cc0a16b7b4ab4a3124d6f3eca837ac2b5"
+    },
+    {
+      "path": "data/datasets/cmmlu/data/dev/journalism.csv",
+      "sha256": "77111426ea43ba5275b95bdcb4e86e926bbda6ef8b6d5ddc303b04343f237c3f"
+    },
+    {
+      "path": "data/datasets/cmmlu/data/dev/jurisprudence.csv",
+      "sha256": "06105bf6d59dc14c316e3ee28e0cdff4b97ec5f5159b9798e198a6aa9c5d4109"
+    },
+    {
+      "path": "data/datasets/cmmlu/data/dev/legal_and_moral_basis.csv",
+      "sha256": "9c9bcdfbdabc1d79fdfcd15a19e14a5a25a1e16ad6b0f780a0f64ce5aec1251a"
+    },
+    {
+      "path": "data/datasets/cmmlu/data/dev/logical.csv",
+      "sha256": "d73b79adfcda2a47c0dc53eec87f5ce9fab49a7b1ec007311e616db1a0b95919"
+    },
+    {
+      "path": "data/datasets/cmmlu/data/dev/machine_learning.csv",
+      "sha256": "976437cefba98c14be6c4f37a47ea125789233d7b326b32ee2cfbeeea59031b5"
+    },
+    {
+      "path": "data/datasets/cmmlu/data/dev/management.csv",
+      "sha256": "f4a537de6b91b65be66781258b2f04f2c4dca43f058860a2989acba7772ba366"
+    },
+    {
+      "path": "data/datasets/cmmlu/data/dev/marketing.csv",
+      "sha256": "952d3e726c80f100a0bc1b5a96642365a3c5f719e3c5c1b9b9d2ec6df486dd3c"
+    },
+    {
+      "path": "data/datasets/cmmlu/data/dev/marxist_theory.csv",
+      "sha256": "3ce1f32187f095118bf885a60e661ae75046c2d1de61707f35fe4e3e811d6c9b"
+    },
+    {
+      "path": "data/datasets/cmmlu/data/dev/modern_chinese.csv",
+      "sha256": "262d5ec0c9453b569bd646dad5404f07ec67e6acdc94200711dee5f0a3d03b38"
+    },
+    {
+      "path": "data/datasets/cmmlu/data/dev/nutrition.csv",
+      "sha256": "9abe1f19672cb2db29ca68a66647ef8c36bbc86f2e6f04887765d91cc9243d71"
+    },
+    {
+      "path": "data/datasets/cmmlu/data/dev/philosophy.csv",
+      "sha256": "0cca47b376f750c9295ef748136b9664cc9fd4924f160d3c2d44b86ea252f016"
+    },
+    {
+      "path": "data/datasets/cmmlu/data/dev/professional_accounting.csv",
+      "sha256": "12cee3c1044d2698d309136bac70aa66b832d82d2f65d2491bdecd7e6b4d1eb0"
+    },
+    {
+      "path": "data/datasets/cmmlu/data/dev/professional_law.csv",
+      "sha256": "a5555bc36c52761c4c24c57d9603401239e6bee58e73bfa5e06017a13da5c652"
+    },
+    {
+      "path": "data/datasets/cmmlu/data/dev/professional_medicine.csv",
+      "sha256": "f8819547449a26d30265735a934dfe979e48ffdbc732e08cad8331fbc78a8a9f"
+    },
+    {
+      "path": "data/datasets/cmmlu/data/dev/professional_psychology.csv",
+      "sha256": "12f86bfc0e15d020fc1ec3ec78421ebf517c110e62fd1e529b0cf9f925801557"
+    },
+    {
+      "path": "data/datasets/cmmlu/data/dev/public_relations.csv",
+      "sha256": "10c828610f78dc23a6e43f460510c4563ded6370ac9baa5c6eac3f77ddb3eaae"
+    },
+    {
+      "path": "data/datasets/cmmlu/data/dev/security_study.csv",
+      "sha256": "b5aa5396d4bbf7e1a83e51c285d4a69674138c133c8f7da819e6ee02083b2c0b"
+    },
+    {
+      "path": "data/datasets/cmmlu/data/dev/sociology.csv",
+      "sha256": "91e6de22cd46fdb2b4c66491b97db074c94ae6c709b1962d8eb8af0d8ea26ab2"
+    },
+    {
+      "path": "data/datasets/cmmlu/data/dev/sports_science.csv",
+      "sha256": "e6c19f38d135b96e988832a7604d2b7e90c2312c44af4eb28c0456fa964280b6"
+    },
+    {
+      "path": "data/datasets/cmmlu/data/dev/traditional_chinese_medicine.csv",
+      "sha256": "afebc14516a1ad84342a3ead31bf4814c53f1bf652c2876091d6599fe124a421"
+    },
+    {
+      "path": "data/datasets/cmmlu/data/dev/virology.csv",
+      "sha256": "0cdfbbcad449eb7c15c885c18c6a679d91055a01a985df3d9468d709bc12e1cb"
+    },
+    {
+      "path": "data/datasets/cmmlu/data/dev/world_history.csv",
+      "sha256": "5f714a46c10ad2a1f47abfba335ac4583b8e0f4f54037a3a03cb126c6a60dd85"
+    },
+    {
+      "path": "data/datasets/cmmlu/data/dev/world_religions.csv",
+      "sha256": "48299c18cddc2f31efa28f25d57cda7a39f41e105b719bf132da004d572a5337"
+    }
+  ],
+  "cmmlu_dev_training_weight": 2.0,
+  "cmmlu_source": "data/datasets/cmmlu/data/dev",
+  "cmmlu_test_files_opened": 0,
+  "created_by": "model_compression/build_p0a6_answer_first_data.py",
+  "created_ts": "2026-07-31T14:18:00.038716+00:00",
+  "dataset_counts": {
+    "ceval_answer_first_train": 1335,
+    "cmmlu_dev_answer_first_train": 335
+  },
+  "formal_test_loaded": false,
+  "gate": "P0-A6-NLP-ANSWER-FIRST-DATA",
+  "label_counts": {
+    "A": 403,
+    "B": 416,
+    "C": 411,
+    "D": 440
+  },
+  "output": "data/p0a6/nlp_answer_first_train.jsonl",
+  "output_hash": "9cd24a13dc43fbe0232d1174ee6e5f09c75a1aeb80e04ffae17ceab31619d12c",
+  "output_rows": 1670,
+  "report_hash": "874354bac7314ed7d3a5c24612ea11cb36e0c4ca3f9006ab8af35a4ce29866f0",
+  "status": "passed",
+  "system_prompt": "请简要分析这道中文选择题。最后一行必须严格使用“最终答案：A”的格式，并将A替换为实际的A、B、C或D选项。",
+  "system_prompt_hash": "9f891dcc7d15e62bea2f21821c842f031767d49d3cb3da856b9593049075f928",
+  "unique_questions": 1670,
+  "unique_sample_ids": 1670
+}

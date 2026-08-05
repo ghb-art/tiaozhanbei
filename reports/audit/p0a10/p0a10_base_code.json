@@ -1,0 +1,23 @@
+{
+  "gate": "P0-A10-TRAIN-ONLY-VALIDATION",
+  "check_version": "1.0",
+  "created_by": "scripts/evaluate_p0a10_domain.py",
+  "created_ts": "2026-08-01T02:28:10.035731+00:00",
+  "status": "passed",
+  "domain": "code",
+  "candidate_name": "p0a10-base",
+  "served_model_id": "p0a10-base",
+  "manifest": "data/p0a10/code_validation.jsonl",
+  "manifest_hash": "acc59672c3bfe4156b073e6443156d1694b29797db4e64fe24f0e0e748232ac1",
+  "sample_count": 256,
+  "correct_count": 119,
+  "accuracy": 0.46484375,
+  "canonical_format_rate": 0.5390625,
+  "generation_error_count": 0,
+  "mean_latency_ms": 619.1754870842487,
+  "trace": "reports/audit/p0a10/p0a10_base_code_trace.jsonl",
+  "trace_hash": "b936fbcc7f3c3bfaf107efea36d245bc3be63329aea5f7b2ea726c42ffed6fd4",
+  "gate300_loaded": false,
+  "formal_full_loaded": false,
+  "report_hash": "867806c982aa641ddd948430600a5170f0af6c12f0dff35f0b7d06f13dc77042"
+}

@@ -1,0 +1,49 @@
+{
+  "protocol": "P0-A12-METAMATH-REPAIR",
+  "authorized_date": "2026-08-01",
+  "shared_base": "models/checkpoints/p0a4/student-shared-merged",
+  "frozen_code_adapter": "models/checkpoints/p0a11/code-specialist/checkpoint-250",
+  "frozen_nlp_adapter": "models/checkpoints/p0a10/nlp-specialist/checkpoint-136",
+  "math": {
+    "metamath_repo": "meta-math/MetaMathQA",
+    "metamath_revision": "aa4f34d3d2d3231299b5b03d9b3e5a20da45aa18",
+    "metamath_file": "MetaMathQA-395K.json",
+    "accepted_types": ["GSM_Rephrased", "GSM_AnsAug", "GSM_SV"],
+    "metamath_train_rows": 16000,
+    "hard_error_rows": 1424,
+    "correct_replay_rows": 712,
+    "lora_rank": 16,
+    "lora_alpha": 32,
+    "learning_rate": 0.000002,
+    "kl_weight": 0.15,
+    "max_steps": 576,
+    "checkpoints": [288, 576]
+  },
+  "validation": {
+    "source": "arkilpatel/SVAMP",
+    "revision": "689d7ccac74b9983a2ac7cc3b264f441b99e7c53",
+    "rows": 1000,
+    "minimum_gain": 0.02,
+    "generation_errors": 0,
+    "maximum_candidate_evaluations": 2
+  },
+  "common": {
+    "effective_global_batch_size": 32,
+    "gpu_count": 4,
+    "max_sequence_length": 1536,
+    "system_ram_stop_threshold_percent": 60
+  },
+  "promotion": {
+    "gate300_runs_for_p0a12": 1,
+    "student_to_14b_minimum_per_domain": 0.78,
+    "recommended_full_minimum_per_domain": 0.82
+  },
+  "forbidden": [
+    "GSM8K test, HumanEval, or CMMLU test in training or checkpoint selection",
+    "SVAMP rows in P0-A12 training",
+    "P0-A9 or P0-A11 gate per-question feedback",
+    "P0-A11 Math validation reuse for P0-A12 selection",
+    "lowering thresholds after validation",
+    "overwriting P0-A10 or P0-A11 artifacts"
+  ]
+}

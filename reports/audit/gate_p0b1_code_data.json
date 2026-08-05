@@ -1,0 +1,54 @@
+{
+  "check_version": "1.0",
+  "contract": "humaneval_v15_body_only",
+  "created_by": "model_compression/build_p0b1_code_data.py",
+  "created_ts": "2026-08-04T11:58:27.480223+00:00",
+  "errors": [],
+  "execution_rejections": {
+    "source_execution_failed": 31,
+    "source_unsafe_or_invalid": 1374,
+    "token_budget": 2,
+    "transformed_execution_failed": 4641,
+    "untransformable": 2360
+  },
+  "formal_policy": {
+    "formal_item_feedback_used": false,
+    "humaneval_answers_tests_or_results_loaded": false,
+    "humaneval_prompts_used_only_for_contamination_exclusion": true
+  },
+  "fresh_train_rows": 8649,
+  "fresh_validation_rows": 1500,
+  "gate": "P0-B1-HUMANEVAL-SHAPED-CODE-DATA",
+  "inputs": {
+    "configs/p0b1_converged_shared.json": "51c3049d4e2b5ddbb7d88c49bd3f213f1b276a5ef3a4de248df83d842a275ad2",
+    "data/datasets/opencodeinstruct/data/train-00008-of-00050.parquet": "068b8d894e8a4c4ac98c50eb47677fa457a316481ca9e9fb35957c8a065cd0e3",
+    "data/datasets/opencodeinstruct/data/train-00025-of-00050.parquet": "e24337755630b41911f8303882c52aa46dfec3a499616110d38e5b34825d7a37",
+    "data/datasets/opencodeinstruct/data/train-00042-of-00050.parquet": "ddd46d5c10495eb1ef526e9a41cb8ac0aead98962ee49cde82a3d7d32fa8c91d",
+    "data/p0a44/code_train.jsonl": "6f25af58cf47daf118d447c38f5db971f321d26e6a112d5d85c7b89373d536a1",
+    "data/p0a44/code_validation.jsonl": "c5a31c9f6f0e9b5bb761fbbb6e6673623bd82bb1453d3c2c558245274d06243a"
+  },
+  "outputs": {
+    "data/p0b1/code_train.jsonl": {
+      "rows": 20000,
+      "sha256": "10a12c7148139b6261f7ab16f0e6dd5da43b3108483c395e528f3e42cb4a2f6c"
+    },
+    "data/p0b1/code_validation.jsonl": {
+      "rows": 1500,
+      "sha256": "8c95c03c4ecdd6003845a915efb29a44036b79247e618a67e1143361fff4cff0"
+    }
+  },
+  "prefilter_candidates": 98840,
+  "prefilter_rejections": {
+    "answer_too_long": 74,
+    "historical_or_new_duplicate": 1835,
+    "not_function_style": 14254,
+    "prompt_too_long": 1,
+    "reported_test_score": 183026,
+    "unsafe_text": 1970
+  },
+  "report_hash": "dc3eb1661c0e3d961f1d7de0a95206a2b1c7757f77d1a1fc4254326806247670",
+  "source_and_transformed_execution_required": true,
+  "status": "passed",
+  "tests_per_row": 10,
+  "train_rows": 20000
+}

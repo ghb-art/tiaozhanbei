@@ -1,0 +1,14 @@
+{
+  "gate": "P0-A27-PREFLIGHT",
+  "status": "passed",
+  "weight_type": "Q4_K_M",
+  "kv_cache_type": "q8_0",
+  "thinking": "off",
+  "gpu_layers": "all",
+  "base_model": "models/quantized/p0a4-qwen3-1.7b-q4_k_m.gguf",
+  "base_sha256": "2e50331cd28df7918fdbaf8068136c24a49a1e4af0863ff0954e861649b50a2f",
+  "code_adapter": "models/adapters/p0a25/code-failure-repair-checkpoint-192-f16.gguf",
+  "adapter_sha256": "aec4c537a99a8e132b4c3cfb5763c64e3915cb61c25217024e9a5a45f2d14d60",
+  "adapter_bytes": 34892672,
+  "formal_full_opened": false
+}

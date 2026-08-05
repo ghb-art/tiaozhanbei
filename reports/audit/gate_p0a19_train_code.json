@@ -1,0 +1,306 @@
+{
+  "gate": "P0-A6-STUDENT-TRAIN",
+  "check_version": "1.0",
+  "created_by": "model_compression/train_p0a6_student.py",
+  "created_ts": "2026-08-01T13:31:30.976387+00:00",
+  "status": "passed",
+  "errors": [],
+  "model_dir": "models/checkpoints/p0a4/student-shared-merged",
+  "train_data": "data/p0a19/code_train.jsonl",
+  "train_data_hash": "4767843cb9770e6d92a696b15358f9c88678f94b66f91669b2fa71dfa6fddf1d",
+  "train_rows": 8373,
+  "focus": {
+    "focus_domain": "code",
+    "source_rows": 8373,
+    "selected_rows": 8373,
+    "source_domain_counts": {
+      "code": 8373
+    },
+    "selected_domain_counts": {
+      "code": 8373
+    },
+    "selected_dataset_counts": {
+      "mbpp_train": 373,
+      "opencodeinstruct": 8000
+    },
+    "training_weight_mean_before": 1.311835662247701,
+    "training_weight_normalization_divisor": 1.311835662247701,
+    "training_weight_mean_after": 0.9999999999998797,
+    "mcq_answer_token_weight_multiplier": 1.0,
+    "mcq_answer_token_weight_multiplied_rows": 0
+  },
+  "domain_counts": {
+    "code": 8373
+  },
+  "kl_weight_by_domain": {
+    "code": {
+      "minimum": 0.05,
+      "maximum": 0.05,
+      "mean": 0.050000000000007275
+    }
+  },
+  "answer_token_weight_rows": {},
+  "formal_test_reference_count": 0,
+  "optimization": {
+    "lora_rank": 16,
+    "lora_alpha": 32,
+    "lora_dropout": 0.05,
+    "target_modules": [
+      "q_proj",
+      "k_proj",
+      "v_proj",
+      "o_proj",
+      "gate_proj",
+      "up_proj",
+      "down_proj"
+    ],
+    "learning_rate": 1e-06,
+    "bf16": true,
+    "max_seq_length": 1536,
+    "max_steps": 256,
+    "checkpoint_steps": 128,
+    "save_total_limit": null,
+    "per_device_train_batch_size": 1,
+    "gradient_accumulation_steps": 8,
+    "expected_world_size": 4,
+    "observed_world_size": 4,
+    "effective_global_batch_size": 32,
+    "warmup_ratio": 0.03,
+    "max_grad_norm": 1.0,
+    "gradient_checkpointing": true,
+    "gradient_checkpointing_use_reentrant": false,
+    "resume_from_checkpoint": ""
+  },
+  "preservation": {
+    "method": "all_task_adapter_disabled_base_kl",
+    "direction": "KL(base||student)",
+    "temperature": 2.0,
+    "mask": "assistant_answer_tokens_only",
+    "reference_forward": "unconditional_on_every_rank_and_batch",
+    "supervised_weight": "1-kl_weight_per_row"
+  },
+  "dependencies": {
+    "torch": "2.6.0+cu124",
+    "transformers": "4.51.3",
+    "accelerate": "1.14.0",
+    "peft": "0.17.1"
+  },
+  "token_budget_scan": {},
+  "report_hash": "eb2e17cec30b96eaacc1dbff5cc94f8189b951096a42d39a86ffa8d1b1ed107c",
+  "global_step": 256,
+  "final_checkpoint": "models/checkpoints/p0a19/code-mixed-specialist/checkpoint-256",
+  "published_files": [
+    "adapter_config.json",
+    "adapter_model.safetensors",
+    "README.md"
+  ],
+  "train_metrics": {
+    "train_runtime": 1213.7262,
+    "train_samples_per_second": 6.749,
+    "train_steps_per_second": 0.211,
+    "total_flos": 2.237320628325581e+16,
+    "train_loss": 4.5019189193844795,
+    "epoch": 0.9780324737344794
+  },
+  "domain_loss_summary": {
+    "math": {
+      "examples_seen": 0,
+      "mean_sft_loss": null,
+      "mean_kl_base_to_student": null,
+      "mean_combined_loss": null
+    },
+    "code": {
+      "examples_seen": 8192,
+      "mean_sft_loss": 0.35560371926044354,
+      "mean_kl_base_to_student": 0.006200811417086186,
+      "mean_combined_loss": 0.33813356958853547
+    },
+    "nlp": {
+      "examples_seen": 0,
+      "mean_sft_loss": null,
+      "mean_kl_base_to_student": null,
+      "mean_combined_loss": null
+    }
+  },
+  "domain_loss_log": [
+    {
+      "step": 10,
+      "code_sft_loss": 0.3892066145548597,
+      "code_kl_base_to_student": 0.0009266897975525558,
+      "code_combined_loss": 0.36979261417873205,
+      "code_examples": 320
+    },
+    {
+      "step": 20,
+      "code_sft_loss": 0.3919201503973454,
+      "code_kl_base_to_student": 0.0011657199713226874,
+      "code_combined_loss": 0.37238242250168696,
+      "code_examples": 320
+    },
+    {
+      "step": 30,
+      "code_sft_loss": 0.3803441232070327,
+      "code_kl_base_to_student": 0.001213263539284526,
+      "code_combined_loss": 0.361387575417757,
+      "code_examples": 320
+    },
+    {
+      "step": 40,
+      "code_sft_loss": 0.3513788025244139,
+      "code_kl_base_to_student": 0.0013267837675812189,
+      "code_combined_loss": 0.3338761970982887,
+      "code_examples": 320
+    },
+    {
+      "step": 50,
+      "code_sft_loss": 0.36510789326857773,
+      "code_kl_base_to_student": 0.0014977005768741947,
+      "code_combined_loss": 0.34692737937439233,
+      "code_examples": 320
+    },
+    {
+      "step": 60,
+      "code_sft_loss": 0.3708542982116342,
+      "code_kl_base_to_student": 0.0017866448186396155,
+      "code_combined_loss": 0.35240091134328394,
+      "code_examples": 320
+    },
+    {
+      "step": 70,
+      "code_sft_loss": 0.35033678971230986,
+      "code_kl_base_to_student": 0.002115431847050786,
+      "code_combined_loss": 0.3329257171135396,
+      "code_examples": 320
+    },
+    {
+      "step": 80,
+      "code_sft_loss": 0.3507835402386263,
+      "code_kl_base_to_student": 0.0025942456850316375,
+      "code_combined_loss": 0.3333740709349513,
+      "code_examples": 320
+    },
+    {
+      "step": 90,
+      "code_sft_loss": 0.34082743087783457,
+      "code_kl_base_to_student": 0.0032568002636253366,
+      "code_combined_loss": 0.32394889525603504,
+      "code_examples": 320
+    },
+    {
+      "step": 100,
+      "code_sft_loss": 0.37438415447832085,
+      "code_kl_base_to_student": 0.004086069534241688,
+      "code_combined_loss": 0.3558692478807643,
+      "code_examples": 320
+    },
+    {
+      "step": 110,
+      "code_sft_loss": 0.37168371258303523,
+      "code_kl_base_to_student": 0.004880040420175646,
+      "code_combined_loss": 0.35334352287463844,
+      "code_examples": 320
+    },
+    {
+      "step": 120,
+      "code_sft_loss": 0.3414732681820169,
+      "code_kl_base_to_student": 0.005559572247148026,
+      "code_combined_loss": 0.32467757919803264,
+      "code_examples": 320
+    },
+    {
+      "step": 130,
+      "code_sft_loss": 0.33779424319509416,
+      "code_kl_base_to_student": 0.006294537403300637,
+      "code_combined_loss": 0.3212192534934729,
+      "code_examples": 320
+    },
+    {
+      "step": 140,
+      "code_sft_loss": 0.33980407466879115,
+      "code_kl_base_to_student": 0.006902671901480062,
+      "code_combined_loss": 0.32315900178509765,
+      "code_examples": 320
+    },
+    {
+      "step": 150,
+      "code_sft_loss": 0.3479194620391354,
+      "code_kl_base_to_student": 0.0076515534812642725,
+      "code_combined_loss": 0.33090606282930823,
+      "code_examples": 320
+    },
+    {
+      "step": 160,
+      "code_sft_loss": 0.3516970344120637,
+      "code_kl_base_to_student": 0.008423720025166403,
+      "code_combined_loss": 0.33453336484963075,
+      "code_examples": 320
+    },
+    {
+      "step": 170,
+      "code_sft_loss": 0.3357692169956863,
+      "code_kl_base_to_student": 0.00898659305385081,
+      "code_combined_loss": 0.31943008184898647,
+      "code_examples": 320
+    },
+    {
+      "step": 180,
+      "code_sft_loss": 0.3432323893299326,
+      "code_kl_base_to_student": 0.00929125775655848,
+      "code_combined_loss": 0.3265353290596977,
+      "code_examples": 320
+    },
+    {
+      "step": 190,
+      "code_sft_loss": 0.38202266533626245,
+      "code_kl_base_to_student": 0.010117075732705417,
+      "code_combined_loss": 0.3634273804491386,
+      "code_examples": 320
+    },
+    {
+      "step": 200,
+      "code_sft_loss": 0.3660548797110096,
+      "code_kl_base_to_student": 0.010587339854100718,
+      "code_combined_loss": 0.3482814983697608,
+      "code_examples": 320
+    },
+    {
+      "step": 210,
+      "code_sft_loss": 0.36093016075901685,
+      "code_kl_base_to_student": 0.010709771643450949,
+      "code_combined_loss": 0.3434191366424784,
+      "code_examples": 320
+    },
+    {
+      "step": 220,
+      "code_sft_loss": 0.35579955372959376,
+      "code_kl_base_to_student": 0.010792855513864196,
+      "code_combined_loss": 0.3385492142057046,
+      "code_examples": 320
+    },
+    {
+      "step": 230,
+      "code_sft_loss": 0.3261240349849686,
+      "code_kl_base_to_student": 0.010662977621541359,
+      "code_combined_loss": 0.31035097790299915,
+      "code_examples": 320
+    },
+    {
+      "step": 240,
+      "code_sft_loss": 0.33272555730072784,
+      "code_kl_base_to_student": 0.010751776541292201,
+      "code_combined_loss": 0.31662686554482206,
+      "code_examples": 320
+    },
+    {
+      "step": 250,
+      "code_sft_loss": 0.3314435888780281,
+      "code_kl_base_to_student": 0.01064623665297404,
+      "code_combined_loss": 0.31540371706942094,
+      "code_examples": 320
+    }
+  ],
+  "retained_checkpoints": [
+    "models/checkpoints/p0a19/code-mixed-specialist/checkpoint-128",
+    "models/checkpoints/p0a19/code-mixed-specialist/checkpoint-256"
+  ]
+}

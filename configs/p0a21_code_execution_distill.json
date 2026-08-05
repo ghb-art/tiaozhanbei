@@ -1,0 +1,49 @@
+{
+  "protocol": "P0-A21-EXECUTION-VERIFIED-CODE-DISTILL",
+  "authorized_date": "2026-08-01",
+  "shared_base": "models/checkpoints/p0a4/student-shared-merged",
+  "source": {
+    "repo": "nvidia/OpenCodeInstruct",
+    "revision": "8f3ba5bafe4d6e8db46082cf7ae6741bc370604d",
+    "shards": [0, 17, 33],
+    "train_rows": 6000,
+    "validation_rows": 1000,
+    "public_tests_per_prompt": 3,
+    "hidden_tests_per_validation": 7,
+    "independent_execution_required": true
+  },
+  "training": {
+    "lora_rank": 16,
+    "lora_alpha": 32,
+    "learning_rate": 0.0000015,
+    "kl_weight": 0.08,
+    "max_steps": 384,
+    "checkpoints": [192, 384],
+    "effective_global_batch_size": 32,
+    "max_sequence_length": 1536,
+    "gpu_count": 4
+  },
+  "validation": {
+    "rows": 1000,
+    "minimum_absolute_gain": 0.03,
+    "candidate_canonical_not_below_base": true,
+    "generation_errors": 0,
+    "maximum_candidate_evaluations": 2,
+    "max_generation_tokens": 768,
+    "server_context": 2048
+  },
+  "safety": {
+    "system_ram_stop_threshold_percent": 60,
+    "code_execution_timeout_seconds": 5,
+    "human_eval_prompts_used_only_for_automatic_contamination_exclusion": true,
+    "human_eval_answers_or_results_loaded": false
+  },
+  "forbidden": [
+    "any previously used OpenCodeInstruct sample id",
+    "P0-A18 through P0-A20 per-item feedback",
+    "HumanEval answers, tests, or results",
+    "more than two candidate evaluations",
+    "lowering the threshold after validation",
+    "modifying frozen Math or NLP routes"
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "check_version": "1.0",
+  "created_by": "model_compression/build_p0a36_train.py",
+  "created_ts": "2026-08-02T06:51:52.112095+00:00",
+  "errors": [],
+  "gate": "P0-A36-BALANCED-MCQ-TRAIN-DATA",
+  "inputs": {
+    "data/p0a36/nlp_train.jsonl": "032ace7beb9a5df77d9c78622044744c7d156a9fa80bab019903514355c3b372",
+    "data/p0a36/nlp_validation.jsonl": "bd86cae5c432ce7be1e585a98a5c677ab8c4183228c5ca8fcf1fd0706b37ebbb",
+    "data/p0a6/nlp_mcq_rationale_train.jsonl": "ee4afe1e8a46b48e1a8c27a28f0b562aaff23e626ea1b9295e0d4c3a9fb1ab77",
+    "reports/audit/gate_p0a36_teacher_data.json": "50dcec176f9031eaec2781c1d96e6fd5e3db8f9ccf8406bcc02fc198d32fbb0f"
+  },
+  "output": "data/p0a36/train.jsonl",
+  "output_hash": "2db779f02f00a8c8020d8fa230efdadb06c4956159e8f9b8ddf64615d3988836",
+  "policy": {
+    "ceval_replay_weight": 1.0,
+    "formal_cmmlu_test_opened": false,
+    "initial_adapter": "P0-A10 NLP step136",
+    "new_mcq_weight": 2.0,
+    "p0a34_validation_reused": false
+  },
+  "status": "passed",
+  "train_dataset_counts": {
+    "ceval_rationale_train": 1335,
+    "coig_openqa_mcq_verified": 1024
+  },
+  "train_rows": 2359,
+  "train_validation_overlap": 0,
+  "validation_rows": 256
+}

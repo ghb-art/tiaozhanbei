@@ -1,0 +1,13 @@
+{
+  "protocol": "P0-A17-CODE-NLP-GATE",
+  "authorized_date": "2026-08-01",
+  "math_evidence": "reports/audit/gate_p0a4_official_full_retention.json",
+  "frozen_code_adapter": "models/checkpoints/p0a11/code-specialist/checkpoint-250",
+  "frozen_nlp_adapter": "models/checkpoints/p0a10/nlp-specialist/checkpoint-136",
+  "gate_manifest": "data/capability_v2/gate300.jsonl",
+  "counts": {"code": 100, "nlp": 100},
+  "minimum_retention": {"math_full": 0.80, "code_gate": 0.78, "nlp_gate": 0.78},
+  "recommended_full": 0.82,
+  "maximum_runs": 1,
+  "system_ram_stop_threshold_percent": 60
+}

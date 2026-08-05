@@ -1,0 +1,29 @@
+{
+  "gate": "P0-A7-MMLU-AUX-CHINESE-SPECIALIST-DATA",
+  "check_version": "1.0",
+  "created_by": "model_compression/build_p0a7_mmlu_specialist_data.py",
+  "created_ts": "2026-07-31T15:43:26.786427+00:00",
+  "status": "passed",
+  "source_split": "MMLU auxiliary_train only",
+  "formal_test_loaded": false,
+  "cmmlu_test_loaded": false,
+  "train_source": "data/distill/p0a7_nlp_verified_train.jsonl",
+  "train_source_hash": "af73cbfe0dcf119a5d57a3abcb9814e90f0386770d6acac71c1cee535efa5e8c",
+  "validation_source": "data/distill/p0a7_nlp_verified_validation.jsonl",
+  "validation_source_hash": "d79d2de504df7878e9007f04963a77188190ba6271b8cd0a022621c520519ff7",
+  "train_output": "data/p0a7/nlp_mmlu_aux_train.jsonl",
+  "train_output_hash": "d9830f1205c8bb0520dde8518fdfae228c65199f08f58086820f7fccb4de75da",
+  "validation_output": "data/p0a7/nlp_mmlu_aux_validation.jsonl",
+  "validation_output_hash": "8e403a0d10ae23945208983d3d4bcd211118abe987db778906f7b114332e36d6",
+  "train_rows": 3000,
+  "validation_rows": 256,
+  "train_validation_overlap": 0,
+  "label_counts": {
+    "A": 710,
+    "B": 759,
+    "C": 764,
+    "D": 767
+  },
+  "system_prompt_hash": "9f891dcc7d15e62bea2f21821c842f031767d49d3cb3da856b9593049075f928",
+  "report_hash": "5be580ff3c5392d202c5f5a9d65efeef90a745dd49a4939829d8beedf66c950d"
+}

@@ -1,0 +1,90 @@
+{
+  "gate": "P0-A5-LORA-TRAIN",
+  "check_version": "1.0",
+  "created_by": "model_compression/train_p0a5_lora.py",
+  "created_ts": "2026-07-30T12:10:37.910587+00:00",
+  "status": "passed",
+  "role": "teacher",
+  "mode": "checkpoint_evaluation",
+  "candidate_index": 1,
+  "config": "configs/p0a5_capability.json",
+  "config_hash": "a5e5a2d82889d8f84b046d53217138d38706b13dca6f6d084ca4dc72b627e1d1",
+  "model_dir": "models/pretrained/Qwen--Qwen2.5-14B-Instruct",
+  "train_data": "data/capability_v2/source_train.jsonl",
+  "train_data_hash": "9ed92268853259406f356582e29816c1fa243a5f1869a2bfe1f7892e67d2c94c",
+  "validation_data": "data/capability_v2/internal_validation.jsonl",
+  "validation_data_hash": "74c38627e350386f70e5191c0c4bcfe54da485efc704e607df3d3e1304152a42",
+  "train_counts": {
+    "cmmlu": 9500,
+    "gsm8k": 7173,
+    "opencodeinstruct": 20000
+  },
+  "validation_counts": {
+    "cmmlu": 1000,
+    "gsm8k": 200,
+    "opencodeinstruct": 1000
+  },
+  "weighted_task_mass": {},
+  "lora": {
+    "rank": 16,
+    "alpha": 32,
+    "dropout": 0.05,
+    "target_modules": [
+      "q_proj",
+      "k_proj",
+      "v_proj",
+      "o_proj",
+      "gate_proj",
+      "up_proj",
+      "down_proj"
+    ]
+  },
+  "optimization": {
+    "learning_rate": 1e-05,
+    "epochs": 1.0,
+    "max_seq_length": 1536,
+    "per_device_train_batch_size": 1,
+    "gradient_accumulation_steps": 8,
+    "deepspeed": "configs/deepspeed_zero3.json",
+    "deepspeed_stage": 3,
+    "cpu_offload": false,
+    "gradient_checkpointing": true,
+    "gradient_checkpointing_use_reentrant": true,
+    "checkpoint_steps": 50,
+    "save_total_limit": 2,
+    "resume_from_checkpoint": "models/checkpoints/p0a5/teacher/checkpoint-600",
+    "early_stopping": {
+      "enabled": true,
+      "metric": "eval_loss",
+      "eval_steps": 100,
+      "patience": 2,
+      "threshold": 0.001
+    }
+  },
+  "math_preservation": {
+    "enabled": false
+  },
+  "formal_test_reference_count": 0,
+  "dependencies": {
+    "torch": "2.6.0+cu124",
+    "transformers": "4.51.3",
+    "accelerate": "1.14.0",
+    "deepspeed": "0.17.6",
+    "peft": "0.17.1"
+  },
+  "token_budget_scan": {},
+  "errors": [],
+  "checkpoint": "models/checkpoints/p0a5/teacher/checkpoint-600",
+  "checkpoint_step": 600,
+  "checkpoint_state_hash": "da0b3d358dbf68a5fb8656c8e2fc073a5e658a7037fb150d07c16609b72e5f5b",
+  "adapter_hash": "d603b2f4467fc4365147a5f04f1d46a92d9952c0058bf030e77e0a54579a6b78",
+  "evaluation_metrics": {
+    "eval_loss": 1.0278551578521729,
+    "eval_model_preparation_time": 2.0607,
+    "eval_runtime": 3595.4942,
+    "eval_samples_per_second": 0.612,
+    "eval_steps_per_second": 0.153
+  },
+  "evaluated_rows": 2200,
+  "report_hash": "d8fc46a8edb725e5eee8d8ba3576c5f06a256fb357eeefafdacd22b546984741"
+}

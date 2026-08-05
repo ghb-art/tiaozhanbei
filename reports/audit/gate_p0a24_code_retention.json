@@ -1,0 +1,31 @@
+{
+  "gate": "P0-A24-CODE-RETENTION",
+  "check_version": "1.0",
+  "created_by": "scripts/p0a24_retention_gate.py",
+  "created_ts": "2026-08-01T16:09:04.042500+00:00",
+  "status": "failed",
+  "decision": "stop_code_candidate",
+  "selected_step": 96,
+  "math_full_retention": 0.8214876033057851,
+  "nlp_frozen_retention": 0.7848101265822784,
+  "baseline_code_accuracy": 0.58,
+  "candidate_code_accuracy": 0.45,
+  "baseline_code_correct": 58,
+  "candidate_code_correct": 45,
+  "code_retention": 0.7758620689655173,
+  "thresholds": {
+    "math_full": 0.8,
+    "code_gate": 0.78,
+    "nlp_frozen": 0.78
+  },
+  "prompt_mismatch_count": 0,
+  "generation_error_count": 0,
+  "failures": [
+    "code_gate_retention"
+  ],
+  "recommended_full": false,
+  "selection_audit_hash": "6b8716b1ac830ee0a85f8bd35bcefdd5685034056f92cccf19b49dd94ab966c8",
+  "candidate_trace_hash": "ab1d66ee60b99b8986e961c95129b376e00e64f7532837fe340bd5ebe5c63967",
+  "formal_full_opened": false,
+  "report_hash": "b7fd3fe6dd4303ca6e849e75e8e4ea1e686aa24c94459d13918e52a90806dd80"
+}

@@ -1,0 +1,19 @@
+{
+  "gate": "P0-A43-NLP-GGUF-PREPARE",
+  "check_version": "1.0",
+  "created_ts": "2026-08-03T02:29:10.796282+00:00",
+  "status": "passed",
+  "base_gguf": "models/quantized/p0a4-qwen3-1.7b-q4_k_m.gguf",
+  "base_gguf_hash": "2e50331cd28df7918fdbaf8068136c24a49a1e4af0863ff0954e861649b50a2f",
+  "weight_type": "Q4_K_M",
+  "nlp_hf_adapter": "models/checkpoints/p0a10/nlp-specialist/checkpoint-136",
+  "nlp_hf_adapter_hash": "c6e1804eb931e098f6b04bcc17c9366e755c3697988acccd01dc9fb981a8d0aa",
+  "nlp_gguf_adapter": "models/adapters/p0a10/nlp-specialist-checkpoint-136-f16.gguf",
+  "nlp_gguf_adapter_hash": "16ced87deccf2785c09c8459f4a2b28902d449a0ed7857571500f39290ed5fba",
+  "nlp_gguf_adapter_bytes": 34892672,
+  "outtype": "f16",
+  "code_gguf_adapter": "models/adapters/p0a25/code-failure-repair-checkpoint-192-f16.gguf",
+  "code_gguf_adapter_hash": "aec4c537a99a8e132b4c3cfb5763c64e3915cb61c25217024e9a5a45f2d14d60",
+  "kv_cache_type": "q8_0",
+  "report_hash": "54d6f20d9c648c94b7e5b506e6acb64ccdb2338d2aecb634f31cb880be6959b2"
+}

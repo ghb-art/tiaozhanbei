@@ -1,0 +1,38 @@
+{
+  "check_version": "1.0",
+  "created_by": "model_compression/build_p0a32_train.py",
+  "created_ts": "2026-08-01T21:00:11.110866+00:00",
+  "errors": [],
+  "gate": "P0-A32-NLP-CONTINUATION-DATA",
+  "inputs": {
+    "data/p0a32/nlp_train.jsonl": "8a42e92b042577afb43771b4172d13f98365577989d0bd3e481053cbef4d9fce",
+    "data/p0a32/nlp_validation.jsonl": "3d2229a09ebfa34e5c65a645b26263cac07661b9d5fdb17ad7a2fa8749f94005",
+    "data/p0a6/nlp_mcq_rationale_train.jsonl": "ee4afe1e8a46b48e1a8c27a28f0b562aaff23e626ea1b9295e0d4c3a9fb1ab77",
+    "data/p0a7/nlp_mmlu_aux_train.jsonl": "d9830f1205c8bb0520dde8518fdfae228c65199f08f58086820f7fccb4de75da",
+    "reports/audit/gate_p0a32_teacher_data.json": "c565ad839e490b213957cc160f05907705cdf85b86c59cb5ebe861250bcaf7e2"
+  },
+  "outputs": {
+    "data/p0a32/nlp_internal_validation.jsonl": "6506e4ad87ba5292b90eb4b459e018340e22e1d38d5e37881a3f039fcb1647c4",
+    "data/p0a32/train.jsonl": "0b3a4e257ffa31509c97cc4d0b6cc4c62e0075b9044e98ba58b8b4889bd963a3"
+  },
+  "policy": {
+    "answer_protocol": "Chinese rationale followed by 最终答案：X",
+    "formal_test_opened": false,
+    "frozen_nlp100_opened": false,
+    "selection_source": "new_train_only_validation"
+  },
+  "source_counts": {
+    "ceval_replay": 1335,
+    "mmlu_replay": 3000,
+    "new_train": 4000,
+    "new_validation": 500
+  },
+  "status": "passed",
+  "train_dataset_counts": {
+    "ceval_rationale_train": 1335,
+    "mmlu_aux_chinese": 7000
+  },
+  "train_rows": 8335,
+  "train_validation_overlap": 0,
+  "validation_rows": 500
+}

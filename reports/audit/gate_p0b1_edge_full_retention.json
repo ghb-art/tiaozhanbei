@@ -1,0 +1,50 @@
+{
+  "gate": "P0-B1-EDGE-FULL-RETENTION",
+  "check_version": "1.0",
+  "created_by": "scripts/full_retention_gate.py",
+  "created_ts": "2026-08-05T03:28:26.010314+00:00",
+  "status": "failed",
+  "decision": "does_not_meet_full_retention_requirement",
+  "feedback_policy": "aggregate_domain_metrics_only",
+  "baseline_trace_hash": "e8ebd0c86f4800d18b9237fa8f85ff724287b2cf603017cf5024a5a907a42ab2",
+  "candidate_trace_hash": "1d7c91176e4554152491fe66ee452878d8bb15c2d2dfabed46788138b21335d0",
+  "expected_counts": {
+    "gsm8k": 1319,
+    "humaneval": 164,
+    "cmmlu": 11582
+  },
+  "matched_sample_ids": true,
+  "missing_sample_count": 0,
+  "extra_sample_count": 0,
+  "prompt_mismatch_count": 0,
+  "baseline_correct_counts": {
+    "gsm8k": 1210,
+    "humaneval": 105,
+    "cmmlu": 8794
+  },
+  "candidate_correct_counts": {
+    "gsm8k": 940,
+    "humaneval": 73,
+    "cmmlu": 6812
+  },
+  "baseline_accuracy_by_dataset": {
+    "gsm8k": 0.9173616376042456,
+    "humaneval": 0.6402439024390244,
+    "cmmlu": 0.7592816439302366
+  },
+  "candidate_accuracy_by_dataset": {
+    "gsm8k": 0.7126611068991661,
+    "humaneval": 0.4451219512195122,
+    "cmmlu": 0.588154032118805
+  },
+  "retention_ratios": {
+    "gsm8k": 0.7768595041322315,
+    "humaneval": 0.6952380952380952,
+    "cmmlu": 0.7746190584489424
+  },
+  "capped_macro_ratio": 0.748905552606423,
+  "generation_error_count": 0,
+  "formal_full_completed": true,
+  "item_level_feedback_allowed_for_training": false,
+  "report_hash": "f33456a99fce0b00a7552cfeeefead33eaa885a98546657f04e817f31d81aa83"
+}

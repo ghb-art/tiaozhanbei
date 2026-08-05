@@ -1,0 +1,23 @@
+{
+  "gate": "P0-A31-NLP100-RETENTION",
+  "check_version": "1.0",
+  "created_by": "scripts/p0a31_retention_gate.py",
+  "created_ts": "2026-08-01T17:53:59.955222+00:00",
+  "status": "failed",
+  "decision": "continue_nlp_training",
+  "selected_scale": 0.75,
+  "baseline_correct_count": 79,
+  "candidate_correct_count": 53,
+  "nlp_retention": 0.6708860759493671,
+  "minimum_screen_retention": 0.78,
+  "recommended_full_retention": 0.82,
+  "screen_passed": false,
+  "recommended_full": false,
+  "generation_error_count": 0,
+  "prompt_mismatch_count": 0,
+  "selection_hash": "8f4f4c7c93d95302dcefadf627e45363e9144b0175116788d3203db92956d310",
+  "baseline_trace_hash": "3543e95daafb0548c59bcb5f7cc910d379c92803b9695ae8fbcf4e51e859f8c4",
+  "candidate_trace_hash": "40d87edb57b3aa734c31f20e577f5eb7502bf741512125da7488ece0da88ac63",
+  "formal_test_opened": false,
+  "report_hash": "28b1f8a9ee74a743feb581b67fc67bbbb6e5a07fd9a65fa0caab0a7c0c5da860"
+}

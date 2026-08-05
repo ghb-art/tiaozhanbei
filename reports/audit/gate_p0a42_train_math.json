@@ -1,0 +1,281 @@
+{
+  "gate": "P0-A6-STUDENT-TRAIN",
+  "check_version": "1.0",
+  "created_by": "model_compression/train_p0a6_student.py",
+  "created_ts": "2026-08-02T14:04:23.877336+00:00",
+  "status": "passed",
+  "errors": [],
+  "model_dir": "models/pretrained/Qwen--Qwen3-1.7B",
+  "train_data": "data/p0a42/math_train.jsonl",
+  "train_data_hash": "08d0fdbaeb62b6c86afb1c95a0b80507f3e162b7b814787671f16b6097bad2e1",
+  "train_rows": 6917,
+  "focus": {
+    "focus_domain": "math",
+    "source_rows": 6917,
+    "selected_rows": 6917,
+    "source_domain_counts": {
+      "math": 6917
+    },
+    "selected_domain_counts": {
+      "math": 6917
+    },
+    "selected_dataset_counts": {
+      "gsm8k": 6917
+    },
+    "training_weight_mean_before": 1.0,
+    "training_weight_normalization_divisor": 1.0,
+    "training_weight_mean_after": 1.0,
+    "mcq_answer_token_weight_multiplier": 1.0,
+    "mcq_answer_token_weight_multiplied_rows": 0
+  },
+  "domain_counts": {
+    "math": 6917
+  },
+  "kl_weight_by_domain": {
+    "math": {
+      "minimum": 0.18,
+      "maximum": 0.18,
+      "mean": 0.1799999999999932
+    }
+  },
+  "answer_token_weight_rows": {
+    "math": 6917
+  },
+  "formal_test_reference_count": 0,
+  "optimization": {
+    "lora_rank": 8,
+    "lora_alpha": 16,
+    "lora_dropout": 0.05,
+    "target_modules": [
+      "q_proj",
+      "k_proj",
+      "v_proj",
+      "o_proj",
+      "gate_proj",
+      "up_proj",
+      "down_proj"
+    ],
+    "learning_rate": 2e-06,
+    "bf16": true,
+    "max_seq_length": 1536,
+    "max_steps": 216,
+    "checkpoint_steps": 108,
+    "save_total_limit": null,
+    "per_device_train_batch_size": 1,
+    "gradient_accumulation_steps": 8,
+    "expected_world_size": 4,
+    "observed_world_size": 4,
+    "effective_global_batch_size": 32,
+    "warmup_ratio": 0.03,
+    "max_grad_norm": 1.0,
+    "gradient_checkpointing": true,
+    "gradient_checkpointing_use_reentrant": false,
+    "resume_from_checkpoint": "",
+    "init_adapter": "",
+    "init_adapter_file_hashes": {}
+  },
+  "preservation": {
+    "method": "all_task_adapter_disabled_base_kl",
+    "direction": "KL(base||student)",
+    "temperature": 2.0,
+    "mask": "assistant_answer_tokens_only",
+    "reference_forward": "unconditional_on_every_rank_and_batch",
+    "supervised_weight": "1-kl_weight_per_row"
+  },
+  "dependencies": {
+    "torch": "2.6.0+cu124",
+    "transformers": "4.51.3",
+    "accelerate": "1.14.0",
+    "peft": "0.17.1"
+  },
+  "token_budget_scan": {},
+  "report_hash": "c1ea4c37165193bf1d7649a59865ecaa31e1632e01a885fd07b193a02ef35873",
+  "global_step": 216,
+  "final_checkpoint": "models/checkpoints/p0a42/math/checkpoint-216",
+  "published_files": [
+    "adapter_config.json",
+    "adapter_model.safetensors",
+    "README.md"
+  ],
+  "train_metrics": {
+    "train_runtime": 997.8106,
+    "train_samples_per_second": 6.927,
+    "train_steps_per_second": 0.216,
+    "total_flos": 1.3412653225476096e+16,
+    "train_loss": 12.509777740195945,
+    "epoch": 0.9988439306358381
+  },
+  "domain_loss_summary": {
+    "math": {
+      "examples_seen": 6912,
+      "mean_sft_loss": 1.8919721165956516,
+      "mean_kl_base_to_student": 0.05605368102771969,
+      "mean_combined_loss": 1.561506786297455
+    },
+    "code": {
+      "examples_seen": 0,
+      "mean_sft_loss": null,
+      "mean_kl_base_to_student": null,
+      "mean_combined_loss": null
+    },
+    "nlp": {
+      "examples_seen": 0,
+      "mean_sft_loss": null,
+      "mean_kl_base_to_student": null,
+      "mean_combined_loss": null
+    }
+  },
+  "domain_loss_log": [
+    {
+      "step": 10,
+      "math_sft_loss": 2.21450817566365,
+      "math_kl_base_to_student": 0.0021231889007093338,
+      "math_combined_loss": 1.8162788661196827,
+      "math_examples": 320
+    },
+    {
+      "step": 20,
+      "math_sft_loss": 2.2031192891299725,
+      "math_kl_base_to_student": 0.00251733783952659,
+      "math_combined_loss": 1.807010925002396,
+      "math_examples": 320
+    },
+    {
+      "step": 30,
+      "math_sft_loss": 2.2029080083593726,
+      "math_kl_base_to_student": 0.0031558531678456347,
+      "math_combined_loss": 1.8069526053965093,
+      "math_examples": 320
+    },
+    {
+      "step": 40,
+      "math_sft_loss": 2.184187522530556,
+      "math_kl_base_to_student": 0.004026438661458087,
+      "math_combined_loss": 1.7917585173621773,
+      "math_examples": 320
+    },
+    {
+      "step": 50,
+      "math_sft_loss": 2.124866272136569,
+      "math_kl_base_to_student": 0.005756225925506442,
+      "math_combined_loss": 1.7434264471754433,
+      "math_examples": 320
+    },
+    {
+      "step": 60,
+      "math_sft_loss": 2.078313664533198,
+      "math_kl_base_to_student": 0.008809756306072813,
+      "math_combined_loss": 1.7058029409497977,
+      "math_examples": 320
+    },
+    {
+      "step": 70,
+      "math_sft_loss": 2.0345831103622913,
+      "math_kl_base_to_student": 0.0137316204047238,
+      "math_combined_loss": 1.6708298260346055,
+      "math_examples": 320
+    },
+    {
+      "step": 80,
+      "math_sft_loss": 2.034098857268691,
+      "math_kl_base_to_student": 0.02127424285572488,
+      "math_combined_loss": 1.671790406294167,
+      "math_examples": 320
+    },
+    {
+      "step": 90,
+      "math_sft_loss": 1.9703002171590924,
+      "math_kl_base_to_student": 0.02967357516026823,
+      "math_combined_loss": 1.6209874122403563,
+      "math_examples": 320
+    },
+    {
+      "step": 100,
+      "math_sft_loss": 1.8875252414494752,
+      "math_kl_base_to_student": 0.03881519673159346,
+      "math_combined_loss": 1.5547574273310603,
+      "math_examples": 320
+    },
+    {
+      "step": 110,
+      "math_sft_loss": 1.8681861061602831,
+      "math_kl_base_to_student": 0.055281333794118835,
+      "math_combined_loss": 1.5418632343411445,
+      "math_examples": 320
+    },
+    {
+      "step": 120,
+      "math_sft_loss": 1.8321791661903262,
+      "math_kl_base_to_student": 0.06504986581858248,
+      "math_combined_loss": 1.5140958821401,
+      "math_examples": 320
+    },
+    {
+      "step": 130,
+      "math_sft_loss": 1.8053319299593569,
+      "math_kl_base_to_student": 0.06961407869239337,
+      "math_combined_loss": 1.49290270851925,
+      "math_examples": 320
+    },
+    {
+      "step": 140,
+      "math_sft_loss": 1.7619537295773626,
+      "math_kl_base_to_student": 0.07908976287289989,
+      "math_combined_loss": 1.459038205537945,
+      "math_examples": 320
+    },
+    {
+      "step": 150,
+      "math_sft_loss": 1.6940342739224434,
+      "math_kl_base_to_student": 0.09077404551790096,
+      "math_combined_loss": 1.4054474220611155,
+      "math_examples": 320
+    },
+    {
+      "step": 160,
+      "math_sft_loss": 1.6637493984773755,
+      "math_kl_base_to_student": 0.10317253991379402,
+      "math_combined_loss": 1.3828455513343214,
+      "math_examples": 320
+    },
+    {
+      "step": 170,
+      "math_sft_loss": 1.7138688426464797,
+      "math_kl_base_to_student": 0.1052470737369731,
+      "math_combined_loss": 1.4243169116787613,
+      "math_examples": 320
+    },
+    {
+      "step": 180,
+      "math_sft_loss": 1.6216230051591993,
+      "math_kl_base_to_student": 0.10461209914064966,
+      "math_combined_loss": 1.3485610341653227,
+      "math_examples": 320
+    },
+    {
+      "step": 190,
+      "math_sft_loss": 1.6908469408750535,
+      "math_kl_base_to_student": 0.11276150519261137,
+      "math_combined_loss": 1.4067915526218713,
+      "math_examples": 320
+    },
+    {
+      "step": 200,
+      "math_sft_loss": 1.6372199663892388,
+      "math_kl_base_to_student": 0.11402042988920584,
+      "math_combined_loss": 1.363044041581452,
+      "math_examples": 320
+    },
+    {
+      "step": 210,
+      "math_sft_loss": 1.6269596927799284,
+      "math_kl_base_to_student": 0.10933155218372122,
+      "math_combined_loss": 1.3537866172380746,
+      "math_examples": 320
+    }
+  ],
+  "retained_checkpoints": [
+    "models/checkpoints/p0a42/math/checkpoint-108",
+    "models/checkpoints/p0a42/math/checkpoint-216"
+  ]
+}

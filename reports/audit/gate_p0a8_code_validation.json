@@ -1,0 +1,23 @@
+{
+  "gate": "P0-A8-CODE-TRAIN-ONLY-VALIDATION-DATA",
+  "check_version": "1.0",
+  "created_by": "model_compression/build_p0a8_code_validation.py",
+  "created_ts": "2026-07-31T16:18:28.090687+00:00",
+  "status": "passed",
+  "train": "data/p0a6/train.jsonl",
+  "train_hash": "dc743974f40c9e7040c4ef24f4ad2fd358be50fc9765ddf0a4e752bbc4ad590b",
+  "quick": "data/p0a6/quick_validation.jsonl",
+  "quick_hash": "99640b4641eaa76cb3096caec1126273488e4e34d4f755b02765af580e29346e",
+  "full": "data/p0a6/full_validation.jsonl",
+  "full_hash": "452a728d7e1ebb3bc40233b8deef8996b45febbbfbb4e2e9166a23644956077c",
+  "output": "data/p0a8/code_internal_validation.jsonl",
+  "output_hash": "61be93814b097b92f779699f3dd7f09aff564e79ebf3a3a8e7ed7062d0fce4ca",
+  "full_code_rows": 186,
+  "quick_code_rows_excluded": 100,
+  "internal_validation_rows": 86,
+  "train_validation_overlap": 0,
+  "quick_validation_overlap": 0,
+  "formal_test_loaded": false,
+  "humaneval_loaded": false,
+  "report_hash": "e9006ec223b6eb5f7a1b248ff5deaba8d5a750886af5ab2a64988f918d5e84a7"
+}

@@ -1,0 +1,214 @@
+{
+  "gate": "P0-A6-STUDENT-TRAIN",
+  "check_version": "1.0",
+  "created_by": "model_compression/train_p0a6_student.py",
+  "created_ts": "2026-08-01T09:29:43.320531+00:00",
+  "status": "passed",
+  "errors": [],
+  "model_dir": "models/checkpoints/p0a4/student-shared-merged",
+  "train_data": "data/p0a11/math_train.jsonl",
+  "train_data_hash": "9426f0739378826c0ccc8b60cc5bb8aed7111afc4094daa760fe15144e9ec265",
+  "train_rows": 2136,
+  "focus": {
+    "focus_domain": "math",
+    "source_rows": 2136,
+    "selected_rows": 2136,
+    "source_domain_counts": {
+      "math": 2136
+    },
+    "selected_domain_counts": {
+      "math": 2136
+    },
+    "selected_dataset_counts": {
+      "gsm8k": 2136
+    },
+    "training_weight_mean_before": 0.8333333333333334,
+    "training_weight_normalization_divisor": 0.8333333333333334,
+    "training_weight_mean_after": 1.0000000000000018,
+    "mcq_answer_token_weight_multiplier": 1.0,
+    "mcq_answer_token_weight_multiplied_rows": 0
+  },
+  "domain_counts": {
+    "math": 2136
+  },
+  "kl_weight_by_domain": {
+    "math": {
+      "minimum": 0.2,
+      "maximum": 0.2,
+      "mean": 0.19999999999999266
+    }
+  },
+  "answer_token_weight_rows": {},
+  "formal_test_reference_count": 0,
+  "optimization": {
+    "lora_rank": 8,
+    "lora_alpha": 16,
+    "lora_dropout": 0.05,
+    "target_modules": [
+      "q_proj",
+      "k_proj",
+      "v_proj",
+      "o_proj",
+      "gate_proj",
+      "up_proj",
+      "down_proj"
+    ],
+    "learning_rate": 1e-06,
+    "bf16": true,
+    "max_seq_length": 1536,
+    "max_steps": 128,
+    "checkpoint_steps": 64,
+    "save_total_limit": null,
+    "per_device_train_batch_size": 1,
+    "gradient_accumulation_steps": 8,
+    "expected_world_size": 4,
+    "observed_world_size": 4,
+    "effective_global_batch_size": 32,
+    "warmup_ratio": 0.03,
+    "max_grad_norm": 1.0,
+    "gradient_checkpointing": true,
+    "gradient_checkpointing_use_reentrant": false,
+    "resume_from_checkpoint": ""
+  },
+  "preservation": {
+    "method": "all_task_adapter_disabled_base_kl",
+    "direction": "KL(base||student)",
+    "temperature": 2.0,
+    "mask": "assistant_answer_tokens_only",
+    "reference_forward": "unconditional_on_every_rank_and_batch",
+    "supervised_weight": "1-kl_weight_per_row"
+  },
+  "dependencies": {
+    "torch": "2.6.0+cu124",
+    "transformers": "4.51.3",
+    "accelerate": "1.14.0",
+    "peft": "0.17.1"
+  },
+  "token_budget_scan": {},
+  "report_hash": "19b6a287078d8fb0b0cc72c17e0db7b862da952a58d218180753c4addf5e40fa",
+  "global_step": 128,
+  "final_checkpoint": "models/checkpoints/p0a11/math-specialist/checkpoint-128",
+  "published_files": [
+    "adapter_config.json",
+    "adapter_model.safetensors",
+    "README.md"
+  ],
+  "train_metrics": {
+    "train_runtime": 586.3707,
+    "train_samples_per_second": 6.985,
+    "train_steps_per_second": 0.218,
+    "total_flos": 8550774221045760.0,
+    "train_loss": 5.346456468105316,
+    "epoch": 1.9138576779026217
+  },
+  "domain_loss_summary": {
+    "math": {
+      "examples_seen": 4088,
+      "mean_sft_loss": 0.831499319899018,
+      "mean_kl_base_to_student": 0.001339970165519886,
+      "mean_combined_loss": 0.6654674615674523
+    },
+    "code": {
+      "examples_seen": 0,
+      "mean_sft_loss": null,
+      "mean_kl_base_to_student": null,
+      "mean_combined_loss": null
+    },
+    "nlp": {
+      "examples_seen": 0,
+      "mean_sft_loss": null,
+      "mean_kl_base_to_student": null,
+      "mean_combined_loss": null
+    }
+  },
+  "domain_loss_log": [
+    {
+      "step": 10,
+      "math_sft_loss": 0.8823192497715354,
+      "math_kl_base_to_student": 0.0009878822700444625,
+      "math_combined_loss": 0.7060529910959303,
+      "math_examples": 320
+    },
+    {
+      "step": 20,
+      "math_sft_loss": 0.8184391074813903,
+      "math_kl_base_to_student": 0.001257293172966456,
+      "math_combined_loss": 0.6550027572549879,
+      "math_examples": 320
+    },
+    {
+      "step": 30,
+      "math_sft_loss": 0.8324411397799849,
+      "math_kl_base_to_student": 0.0012498091829911573,
+      "math_combined_loss": 0.6662028847262264,
+      "math_examples": 320
+    },
+    {
+      "step": 40,
+      "math_sft_loss": 0.8452156794257462,
+      "math_kl_base_to_student": 0.0013081963483273285,
+      "math_combined_loss": 0.6764341949485242,
+      "math_examples": 320
+    },
+    {
+      "step": 50,
+      "math_sft_loss": 0.7935527300462126,
+      "math_kl_base_to_student": 0.0012837156005844007,
+      "math_combined_loss": 0.6350989369209856,
+      "math_examples": 320
+    },
+    {
+      "step": 60,
+      "math_sft_loss": 0.8589555210899562,
+      "math_kl_base_to_student": 0.0013450079981339514,
+      "math_combined_loss": 0.6874334308318794,
+      "math_examples": 320
+    },
+    {
+      "step": 70,
+      "math_sft_loss": 0.815271969884634,
+      "math_kl_base_to_student": 0.0013490994240736398,
+      "math_combined_loss": 0.6524874049788102,
+      "math_examples": 312
+    },
+    {
+      "step": 80,
+      "math_sft_loss": 0.8377621860709041,
+      "math_kl_base_to_student": 0.001364657220983645,
+      "math_combined_loss": 0.6704826926346868,
+      "math_examples": 320
+    },
+    {
+      "step": 90,
+      "math_sft_loss": 0.8498204458970576,
+      "math_kl_base_to_student": 0.001446635251340922,
+      "math_combined_loss": 0.6801456968300045,
+      "math_examples": 320
+    },
+    {
+      "step": 100,
+      "math_sft_loss": 0.8133491204120219,
+      "math_kl_base_to_student": 0.001473334347610944,
+      "math_combined_loss": 0.6509739750064909,
+      "math_examples": 320
+    },
+    {
+      "step": 110,
+      "math_sft_loss": 0.8034743919968605,
+      "math_kl_base_to_student": 0.0014594157279134378,
+      "math_combined_loss": 0.6430714081972837,
+      "math_examples": 320
+    },
+    {
+      "step": 120,
+      "math_sft_loss": 0.8172730819322169,
+      "math_kl_base_to_student": 0.001469894112960901,
+      "math_combined_loss": 0.6541124547366053,
+      "math_examples": 320
+    }
+  ],
+  "retained_checkpoints": [
+    "models/checkpoints/p0a11/math-specialist/checkpoint-64",
+    "models/checkpoints/p0a11/math-specialist/checkpoint-128"
+  ]
+}

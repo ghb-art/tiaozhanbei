@@ -1,0 +1,96 @@
+{
+  "gate": "P0-A6-STUDENT-TRAIN",
+  "check_version": "1.0",
+  "created_by": "model_compression/train_p0a6_student.py",
+  "created_ts": "2026-08-01T09:29:31.025003+00:00",
+  "status": "dry_run_passed",
+  "errors": [],
+  "model_dir": "models/checkpoints/p0a4/student-shared-merged",
+  "train_data": "data/p0a11/math_train.jsonl",
+  "train_data_hash": "9426f0739378826c0ccc8b60cc5bb8aed7111afc4094daa760fe15144e9ec265",
+  "train_rows": 2136,
+  "focus": {
+    "focus_domain": "math",
+    "source_rows": 2136,
+    "selected_rows": 2136,
+    "source_domain_counts": {
+      "math": 2136
+    },
+    "selected_domain_counts": {
+      "math": 2136
+    },
+    "selected_dataset_counts": {
+      "gsm8k": 2136
+    },
+    "training_weight_mean_before": 0.8333333333333334,
+    "training_weight_normalization_divisor": 0.8333333333333334,
+    "training_weight_mean_after": 1.0000000000000018,
+    "mcq_answer_token_weight_multiplier": 1.0,
+    "mcq_answer_token_weight_multiplied_rows": 0
+  },
+  "domain_counts": {
+    "math": 2136
+  },
+  "kl_weight_by_domain": {
+    "math": {
+      "minimum": 0.2,
+      "maximum": 0.2,
+      "mean": 0.19999999999999266
+    }
+  },
+  "answer_token_weight_rows": {},
+  "formal_test_reference_count": 0,
+  "optimization": {
+    "lora_rank": 8,
+    "lora_alpha": 16,
+    "lora_dropout": 0.05,
+    "target_modules": [
+      "q_proj",
+      "k_proj",
+      "v_proj",
+      "o_proj",
+      "gate_proj",
+      "up_proj",
+      "down_proj"
+    ],
+    "learning_rate": 1e-06,
+    "bf16": true,
+    "max_seq_length": 1536,
+    "max_steps": 128,
+    "checkpoint_steps": 64,
+    "save_total_limit": null,
+    "per_device_train_batch_size": 1,
+    "gradient_accumulation_steps": 8,
+    "expected_world_size": 4,
+    "observed_world_size": 1,
+    "effective_global_batch_size": 32,
+    "warmup_ratio": 0.03,
+    "max_grad_norm": 1.0,
+    "gradient_checkpointing": true,
+    "gradient_checkpointing_use_reentrant": false,
+    "resume_from_checkpoint": ""
+  },
+  "preservation": {
+    "method": "all_task_adapter_disabled_base_kl",
+    "direction": "KL(base||student)",
+    "temperature": 2.0,
+    "mask": "assistant_answer_tokens_only",
+    "reference_forward": "unconditional_on_every_rank_and_batch",
+    "supervised_weight": "1-kl_weight_per_row"
+  },
+  "dependencies": {
+    "torch": "2.6.0+cu124",
+    "transformers": "4.51.3",
+    "accelerate": "1.14.0",
+    "peft": "0.17.1"
+  },
+  "token_budget_scan": {
+    "status": "passed",
+    "scanned_rows": 2136,
+    "max_seq_length": 1536,
+    "maximum_observed_tokens": 595,
+    "maximum_sample_id": "gsm8k/train/00237",
+    "answer_token_weight_rows": 0
+  },
+  "report_hash": "951b162426c31ef7057ab8f0acd53a4256223d0b8b409cd0f75e9a2c18ed1790"
+}

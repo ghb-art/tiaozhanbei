@@ -1,0 +1,32 @@
+{
+  "gate": "P0-A47-HF-CODE-SELECTION",
+  "check_version": "1.0",
+  "created_by": "scripts/select_p0a47_code.py",
+  "created_ts": "2026-08-03T15:57:18.354709+00:00",
+  "status": "passed",
+  "initial_correct_count": 618,
+  "candidates": [
+    {
+      "step": 128,
+      "correct_count": 616,
+      "accuracy": 0.616
+    },
+    {
+      "step": 256,
+      "correct_count": 613,
+      "accuracy": 0.613
+    }
+  ],
+  "selected": {
+    "step": 128,
+    "correct_count": 616,
+    "accuracy": 0.616
+  },
+  "selected_adapter": "models/checkpoints/p0a47/code/checkpoint-128",
+  "gain_over_initial_items": -2,
+  "preferred_gain_items": 20,
+  "preferred_gain_met": false,
+  "mandatory_full_authorized": true,
+  "formal_test_items_loaded": 0,
+  "report_hash": "f61a53bfa9d406a1c1c73b7b2278b8a02f6f53c2fbb33c4a90004619610e304b"
+}

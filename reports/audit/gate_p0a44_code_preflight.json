@@ -1,0 +1,98 @@
+{
+  "gate": "P0-A6-STUDENT-TRAIN",
+  "check_version": "1.0",
+  "created_by": "model_compression/train_p0a6_student.py",
+  "created_ts": "2026-08-03T03:44:16.279471+00:00",
+  "status": "dry_run_passed",
+  "errors": [],
+  "model_dir": "models/checkpoints/p0a4/student-shared-merged",
+  "train_data": "data/p0a44/code_train.jsonl",
+  "train_data_hash": "6f25af58cf47daf118d447c38f5db971f321d26e6a112d5d85c7b89373d536a1",
+  "train_rows": 11351,
+  "focus": {
+    "focus_domain": "code",
+    "source_rows": 11351,
+    "selected_rows": 11351,
+    "source_domain_counts": {
+      "code": 11351
+    },
+    "selected_domain_counts": {
+      "code": 11351
+    },
+    "selected_dataset_counts": {
+      "code": 11351
+    },
+    "training_weight_mean_before": 1.0,
+    "training_weight_normalization_divisor": 1.0,
+    "training_weight_mean_after": 1.0,
+    "mcq_answer_token_weight_multiplier": 1.0,
+    "mcq_answer_token_weight_multiplied_rows": 0
+  },
+  "domain_counts": {
+    "code": 11351
+  },
+  "kl_weight_by_domain": {
+    "code": {
+      "minimum": 0.12,
+      "maximum": 0.12,
+      "mean": 0.11999999999997606
+    }
+  },
+  "answer_token_weight_rows": {},
+  "formal_test_reference_count": 0,
+  "optimization": {
+    "lora_rank": 16,
+    "lora_alpha": 32,
+    "lora_dropout": 0.05,
+    "target_modules": [
+      "q_proj",
+      "k_proj",
+      "v_proj",
+      "o_proj",
+      "gate_proj",
+      "up_proj",
+      "down_proj"
+    ],
+    "learning_rate": 1e-06,
+    "bf16": true,
+    "max_seq_length": 1536,
+    "max_steps": 352,
+    "checkpoint_steps": 176,
+    "save_total_limit": null,
+    "per_device_train_batch_size": 1,
+    "gradient_accumulation_steps": 8,
+    "expected_world_size": 4,
+    "observed_world_size": 1,
+    "effective_global_batch_size": 32,
+    "warmup_ratio": 0.03,
+    "max_grad_norm": 1.0,
+    "gradient_checkpointing": true,
+    "gradient_checkpointing_use_reentrant": false,
+    "resume_from_checkpoint": "",
+    "init_adapter": "",
+    "init_adapter_file_hashes": {}
+  },
+  "preservation": {
+    "method": "all_task_adapter_disabled_base_kl",
+    "direction": "KL(base||student)",
+    "temperature": 2.0,
+    "mask": "assistant_answer_tokens_only",
+    "reference_forward": "unconditional_on_every_rank_and_batch",
+    "supervised_weight": "1-kl_weight_per_row"
+  },
+  "dependencies": {
+    "torch": "2.6.0+cu124",
+    "transformers": "4.51.3",
+    "accelerate": "1.14.0",
+    "peft": "0.17.1"
+  },
+  "token_budget_scan": {
+    "status": "passed",
+    "scanned_rows": 11351,
+    "max_seq_length": 1536,
+    "maximum_observed_tokens": 1263,
+    "maximum_sample_id": "p0a44/code/a1101a029657a5d002781bbc",
+    "answer_token_weight_rows": 0
+  },
+  "report_hash": "411ef137710695186bf6db3a61f581c4c383995d40d00b958d30c58a65e86c62"
+}

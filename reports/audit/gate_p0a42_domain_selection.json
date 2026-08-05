@@ -1,0 +1,163 @@
+{
+  "gate": "P0-A42-DOMAIN-SELECTION",
+  "check_version": "1.0",
+  "created_by": "scripts/select_p0a42_domains.py",
+  "created_ts": "2026-08-03T02:06:45.660575+00:00",
+  "status": "passed",
+  "selection_metric": "aggregate_correct_count_only",
+  "tie_break": "stable route, half checkpoint, full checkpoint, bare base",
+  "candidates": {
+    "math": [
+      {
+        "name": "original-base",
+        "audit": "reports/audit/p0a42/base_math.json",
+        "adapter": "",
+        "audit_hash": "5df6ec913f188227a12dbf02813b79d9c6016beedcc7432b433463199f2d68c8",
+        "correct_count": 199,
+        "sample_count": 256,
+        "accuracy": 0.77734375,
+        "canonical_format_rate": 0.93359375
+      },
+      {
+        "name": "math-108",
+        "audit": "reports/audit/p0a42/math_108.json",
+        "adapter": "models/checkpoints/p0a42/math/checkpoint-108",
+        "audit_hash": "4f1dd16ae00ba67b54cd8eecf2a2591ca74ae6d95b50ca9d720aa6ea3713835f",
+        "correct_count": 196,
+        "sample_count": 256,
+        "accuracy": 0.765625,
+        "canonical_format_rate": 0.9140625
+      },
+      {
+        "name": "math-216",
+        "audit": "reports/audit/p0a42/math_216.json",
+        "adapter": "models/checkpoints/p0a42/math/checkpoint-216",
+        "audit_hash": "76d7165c17c999e0d63dc9efd0454e9cbc9f125a37c12a6495eb95ff0aa18e68",
+        "correct_count": 198,
+        "sample_count": 256,
+        "accuracy": 0.7734375,
+        "canonical_format_rate": 0.9296875
+      }
+    ],
+    "code": [
+      {
+        "name": "p0a25-code-192",
+        "audit": "reports/audit/p0a42/current_code.json",
+        "adapter": "models/checkpoints/p0a25/code-failure-repair/checkpoint-192",
+        "audit_hash": "716155fcce957dce913c37dcdd68e415fca2e59ab00bc84f8b6f382e46bcd274",
+        "correct_count": 655,
+        "sample_count": 1000,
+        "accuracy": 0.655,
+        "canonical_format_rate": 0.995
+      },
+      {
+        "name": "code-96",
+        "audit": "reports/audit/p0a42/code_96.json",
+        "adapter": "models/checkpoints/p0a42/code/checkpoint-96",
+        "audit_hash": "1870277499c47f6ed26c2505f90368c7d19a43263b2cb18931e20d98472ca345",
+        "correct_count": 649,
+        "sample_count": 1000,
+        "accuracy": 0.649,
+        "canonical_format_rate": 0.992
+      },
+      {
+        "name": "code-192",
+        "audit": "reports/audit/p0a42/code_192.json",
+        "adapter": "models/checkpoints/p0a42/code/checkpoint-192",
+        "audit_hash": "e4ae903c54f73f3f4270495c0de0c5f53f002157929c5323e820a53c9738158a",
+        "correct_count": 652,
+        "sample_count": 1000,
+        "accuracy": 0.652,
+        "canonical_format_rate": 0.993
+      },
+      {
+        "name": "original-base",
+        "audit": "reports/audit/p0a42/base_code.json",
+        "adapter": "",
+        "audit_hash": "b7b6fd40fd978f9922b2b74c3b5186ff44815b14c1c01f16eabd8d1175b18685",
+        "correct_count": 647,
+        "sample_count": 1000,
+        "accuracy": 0.647,
+        "canonical_format_rate": 0.999
+      }
+    ],
+    "nlp": [
+      {
+        "name": "p0a10-nlp-136",
+        "audit": "reports/audit/p0a42/current_nlp.json",
+        "adapter": "models/checkpoints/p0a10/nlp-specialist/checkpoint-136",
+        "audit_hash": "825ac74410d7767c1d4b1ac406b907ff94ee24e7a7e77b410150eec820c65d47",
+        "correct_count": 144,
+        "sample_count": 260,
+        "accuracy": 0.5538461538461539,
+        "canonical_format_rate": 0.8961538461538462
+      },
+      {
+        "name": "nlp-50",
+        "audit": "reports/audit/p0a42/nlp_50.json",
+        "adapter": "models/checkpoints/p0a42/nlp/checkpoint-50",
+        "audit_hash": "8ff6dbd8733d57465ed83b7ff3c4dc40a7f1fcdc4c168b2dd771928084a51eab",
+        "correct_count": 144,
+        "sample_count": 260,
+        "accuracy": 0.5538461538461539,
+        "canonical_format_rate": 0.9230769230769231
+      },
+      {
+        "name": "nlp-100",
+        "audit": "reports/audit/p0a42/nlp_100.json",
+        "adapter": "models/checkpoints/p0a42/nlp/checkpoint-100",
+        "audit_hash": "2dca43db51e8ddd1169077a519d0446f214f5ec482c9731795bb23ae8b567462",
+        "correct_count": 141,
+        "sample_count": 260,
+        "accuracy": 0.5423076923076923,
+        "canonical_format_rate": 0.926923076923077
+      },
+      {
+        "name": "original-base",
+        "audit": "reports/audit/p0a42/base_nlp.json",
+        "adapter": "",
+        "audit_hash": "975601c4bb226507532977d64b5697fe23b90acd2611da385101847cc7079c5f",
+        "correct_count": 140,
+        "sample_count": 260,
+        "accuracy": 0.5384615384615384,
+        "canonical_format_rate": 0.8615384615384616
+      }
+    ]
+  },
+  "selected": {
+    "math": {
+      "name": "original-base",
+      "audit": "reports/audit/p0a42/base_math.json",
+      "adapter": "",
+      "audit_hash": "5df6ec913f188227a12dbf02813b79d9c6016beedcc7432b433463199f2d68c8",
+      "correct_count": 199,
+      "sample_count": 256,
+      "accuracy": 0.77734375,
+      "canonical_format_rate": 0.93359375
+    },
+    "code": {
+      "name": "p0a25-code-192",
+      "audit": "reports/audit/p0a42/current_code.json",
+      "adapter": "models/checkpoints/p0a25/code-failure-repair/checkpoint-192",
+      "audit_hash": "716155fcce957dce913c37dcdd68e415fca2e59ab00bc84f8b6f382e46bcd274",
+      "correct_count": 655,
+      "sample_count": 1000,
+      "accuracy": 0.655,
+      "canonical_format_rate": 0.995
+    },
+    "nlp": {
+      "name": "p0a10-nlp-136",
+      "audit": "reports/audit/p0a42/current_nlp.json",
+      "adapter": "models/checkpoints/p0a10/nlp-specialist/checkpoint-136",
+      "audit_hash": "825ac74410d7767c1d4b1ac406b907ff94ee24e7a7e77b410150eec820c65d47",
+      "correct_count": 144,
+      "sample_count": 260,
+      "accuracy": 0.5538461538461539,
+      "canonical_format_rate": 0.8961538461538462
+    }
+  },
+  "gate300_loaded": false,
+  "formal_full_loaded": false,
+  "per_item_feedback_read": false,
+  "report_hash": "951d476b40f2b2ff781ead695b8b61f20e0e3c09f96956dd6013fad6cbc2fc28"
+}

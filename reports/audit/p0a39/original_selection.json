@@ -1,0 +1,35 @@
+{
+  "gate": "P0-A39-ORIGINAL-QWEN3-SELECTION",
+  "check_version": "1.0",
+  "created_by": "scripts/select_p0a39_original.py",
+  "created_ts": "2026-08-02T07:33:05.831092+00:00",
+  "status": "failed",
+  "metrics": {
+    "synth": {
+      "reference_correct_count": 168,
+      "candidate_correct_count": 180,
+      "gain_questions": 12,
+      "candidate_accuracy": 0.703125
+    },
+    "ceval": {
+      "reference_correct_count": 139,
+      "candidate_correct_count": 138,
+      "gain_questions": -1,
+      "candidate_accuracy": 0.5307692307692308
+    }
+  },
+  "minimum_ceval_gain_questions": 3,
+  "minimum_synth_gain_questions": -3,
+  "selected_model": null,
+  "decision": "retain_p0a10",
+  "frozen_nlp100_opened": false,
+  "formal_full_opened": false,
+  "per_item_feedback_read": false,
+  "inputs": {
+    "reports/audit/p0a36/initial_nlp.json": "a652455b5ac9495358daaa34f8fa22941004f1e20abc2ac914b866566ed35f6f",
+    "reports/audit/p0a37/initial_nlp.json": "f2bb75889ff88be011b35d6dc65420d021dbfb672c17af18df6c917d19610418",
+    "reports/audit/p0a39/original_synth.json": "1b8da16e42308954ecaaa005da9412924dcd637a3882e0bc8c209897e82e5647",
+    "reports/audit/p0a39/original_ceval.json": "35c3f24802a41aafaeab7cd5f43314b0b393b25b5fac34e49dc49b0d6dc7469e"
+  },
+  "report_hash": "79719c00501631dac0ae54d86939d2ab6ba0a6f48f1b6981018d51d44bb51621"
+}

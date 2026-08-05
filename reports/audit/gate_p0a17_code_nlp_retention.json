@@ -1,0 +1,37 @@
+{
+  "gate": "P0-A17-CODE-NLP-RETENTION",
+  "check_version": "1.0",
+  "created_by": "scripts/p0a17_retention_gate.py",
+  "created_ts": "2026-08-01T13:08:32.439218+00:00",
+  "status": "failed",
+  "decision": "retrain_failed_domains",
+  "math_full_retention": 0.8214876033057851,
+  "math_evidence": "reports/audit/gate_p0a4_official_full_retention.json",
+  "math_evidence_hash": "d2010a689f7cfc9216e9ad2803b9d7ae56f0ce36ded8bc0350c7d4eca838c063",
+  "baseline_accuracy": {
+    "code": 0.58,
+    "nlp": 0.79
+  },
+  "candidate_accuracy": {
+    "code": 0.42,
+    "nlp": 0.62
+  },
+  "retention_ratios": {
+    "code": 0.7241379310344828,
+    "nlp": 0.7848101265822784
+  },
+  "thresholds": {
+    "math_full": 0.8,
+    "code_gate": 0.78,
+    "nlp_gate": 0.78
+  },
+  "prompt_mismatch_count": 0,
+  "generation_error_count": 0,
+  "failures": [
+    "code_gate_retention"
+  ],
+  "recommended_full": false,
+  "candidate_trace_hash": "2c8a206c7a91ddd6f55cd0f52990b5d7cd1bf64f893aa213f17df58f39465cb0",
+  "formal_full_opened": false,
+  "report_hash": "7e001a14ea98c7555d2f968c1c9cf82c87d002248c6b2d5ced7c5f1e37f1ffd3"
+}

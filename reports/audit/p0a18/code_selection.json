@@ -1,0 +1,48 @@
+{
+  "gate": "P0-A18-CODE-TRANSFER-SELECTION",
+  "check_version": "1.0",
+  "created_by": "scripts/select_p0a18_code.py",
+  "created_ts": "2026-08-01T13:20:32.585296+00:00",
+  "status": "failed",
+  "base_audit": "reports/audit/p0a18/base_code.json",
+  "base_audit_hash": "7f3e3652c4ad7e5f6bf7b4ad86f447dfea497da89cd43313a0a3005fdcab115b",
+  "base_accuracy": 0.5333333333333333,
+  "base_correct_count": 48,
+  "base_canonical_format_rate": 0.03333333333333333,
+  "minimum_absolute_gain": 0.03,
+  "candidate_canonical_not_below_base": true,
+  "candidates": [
+    {
+      "step": 250,
+      "audit": "reports/audit/p0a18/code_250.json",
+      "audit_hash": "086227cb456c31c62afefea5b372968dfa4fd6b00a01036ec9a445011fbd53c0",
+      "accuracy": 0.4222222222222222,
+      "correct_count": 38,
+      "canonical_format_rate": 0.9888888888888889,
+      "gain": -0.1111111111111111,
+      "eligible": false,
+      "failures": [
+        "gain=-0.111111<required=0.030000"
+      ]
+    },
+    {
+      "step": 500,
+      "audit": "reports/audit/p0a18/code_500.json",
+      "audit_hash": "c64825d61e15f2c61a7c647f0b72205184058eb325ead456729b18d7985c7200",
+      "accuracy": 0.4444444444444444,
+      "correct_count": 40,
+      "canonical_format_rate": 0.9888888888888889,
+      "gain": -0.0888888888888889,
+      "eligible": false,
+      "failures": [
+        "gain=-0.088889<required=0.030000"
+      ]
+    }
+  ],
+  "selected_step": null,
+  "selected_model_id": null,
+  "mbpp_per_item_feedback_read": false,
+  "gate300_opened": false,
+  "formal_full_opened": false,
+  "report_hash": "35b75a329b1e6571d7e2b8243d755bb88239a8ac5ac490c0c35012a9db1c0f3c"
+}

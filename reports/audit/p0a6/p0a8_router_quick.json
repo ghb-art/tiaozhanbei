@@ -1,0 +1,74 @@
+{
+  "gate": "P0-A6-INTERNAL-EVAL",
+  "check_version": "1.0",
+  "created_by": "scripts/evaluate_p0a6_internal.py",
+  "created_ts": "2026-07-31T16:37:58.737668+00:00",
+  "status": "passed",
+  "candidate_name": "p0a8-router-step-128-quick",
+  "endpoint": "http://127.0.0.1:18462",
+  "served_model_id": "domain_routed",
+  "served_model_id_by_domain": {
+    "math": "p0a8-base",
+    "code": "p0a8-code-128",
+    "nlp": "p0a7-nlp-188"
+  },
+  "manifest": "data/p0a6/quick_validation.jsonl",
+  "manifest_hash": "99640b4641eaa76cb3096caec1126273488e4e34d4f755b02765af580e29346e",
+  "sidecar_manifest": "data/p0a6/manifest.json",
+  "sidecar_manifest_hash": "799201e840c3ccfc030d62ada993fb5c8a59245d31444dad797295e5874d979a",
+  "declared_manifest_hash": "99640b4641eaa76cb3096caec1126273488e4e34d4f755b02765af580e29346e",
+  "expected_counts_source": "data/p0a6/manifest.json:validation.quick",
+  "expected_counts": {
+    "math": 100,
+    "code": 100,
+    "nlp": 100
+  },
+  "actual_counts": {
+    "math": 100,
+    "code": 100,
+    "nlp": 100
+  },
+  "correct_counts": {
+    "math": 73,
+    "code": 53,
+    "nlp": 51
+  },
+  "accuracy_by_domain": {
+    "math": 0.73,
+    "code": 0.53,
+    "nlp": 0.51
+  },
+  "macro_accuracy": 0.59,
+  "canonical_format_counts": {
+    "math": 99,
+    "code": 98,
+    "nlp": 99
+  },
+  "canonical_format_rate_by_domain": {
+    "math": 0.99,
+    "code": 0.98,
+    "nlp": 0.99
+  },
+  "macro_canonical_format_rate": 0.9866666666666667,
+  "generation_error_count": 0,
+  "generation_error_count_by_domain": {
+    "math": 0,
+    "code": 0,
+    "nlp": 0
+  },
+  "mean_latency_ms_by_domain": {
+    "math": 1134.770006998442,
+    "code": 1327.810641808901,
+    "nlp": 373.33667041908484
+  },
+  "max_tokens": {
+    "math": 512,
+    "code": 768,
+    "nlp": 256
+  },
+  "request_timeout_sec": 120,
+  "code_timeout_sec": 5,
+  "output_trace": "reports/audit/p0a6/p0a8_router_quick_trace.jsonl",
+  "output_trace_hash": "e6692c879cbd99f2f433b4db62b729ccf91183492a002c43c65048e4ba58f7d7",
+  "report_hash": "805d931eceaaf17f11bdccfde0cb440b1a28ed50ad07af7cd8b435abdbd93e0d"
+}

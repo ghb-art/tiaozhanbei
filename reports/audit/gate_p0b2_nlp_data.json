@@ -1,0 +1,31 @@
+{
+  "gate": "P0-B2-NLP-STAGED-DATA",
+  "check_version": "1.0",
+  "created_by": "model_compression/build_p0b2_nlp_data.py",
+  "created_ts": "2026-08-05T07:44:46.556364+00:00",
+  "status": "passed",
+  "source": "/workspace/project_tiaozhanbei/tiaozhanbei/data/p0b1/train.jsonl",
+  "source_rows": 57173,
+  "source_domains": {
+    "math": 7173,
+    "code": 20000,
+    "nlp": 30000
+  },
+  "stage1_nlp_rows": 30000,
+  "stage1_nlp_unique": 30000,
+  "stage2_math_rows": 7173,
+  "stage2_math_unique": 7173,
+  "stage_overlap": 0,
+  "formal_set_references": 0,
+  "outputs": {
+    "stage1_nlp": {
+      "path": "/workspace/project_tiaozhanbei/tiaozhanbei/data/p0b2/nlp_stage1.jsonl",
+      "sha256": "71ba0891511d0206a7f3a97d83cc4df39b133e549125455b0edcddda34583a3b"
+    },
+    "stage2_math": {
+      "path": "/workspace/project_tiaozhanbei/tiaozhanbei/data/p0b2/math_stage2.jsonl",
+      "sha256": "e813ac52a61f11c84b07b1b4b889c0ea853f67effe73cf16649b0b9d2d292e73"
+    }
+  },
+  "report_hash": "c9730cea82019393d9b3af1769b2cd270d9b67f8fa2a5900fef7ba13c528a7f5"
+}

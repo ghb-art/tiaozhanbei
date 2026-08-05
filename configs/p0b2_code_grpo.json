@@ -1,0 +1,79 @@
+{
+  "config_version": "1.0",
+  "protocol": "P0-B2-CODE-GRPO-EXECUTION-REWARD",
+  "seed": 20260805,
+  "policy": {
+    "student_base": "models/checkpoints/p0a4/student-shared-merged",
+    "single_shared_lora": true,
+    "runtime_adapters": false,
+    "formal_feedback_for_training": "none",
+    "formal_item_outputs_used": false,
+    "humaneval_used": false,
+    "pre_registered_candidate_count": 1
+  },
+  "artifacts": {
+    "train_data": "data/p0b2/code_grpo_train.jsonl",
+    "validation_data": "data/p0b2/code_grpo_validation.jsonl",
+    "holdout_data": "data/p0b2/code_grpo_holdout.jsonl",
+    "data_audit": "reports/audit/gate_p0b2_code_data.json",
+    "output_dir": "models/checkpoints/p0b2/code-grpo",
+    "best_adapter": "models/checkpoints/p0b2/code-grpo/best",
+    "train_audit": "reports/audit/gate_p0b2_code_train.json"
+  },
+  "data": {
+    "source": "data/p0b1/code_train.jsonl",
+    "train_rows": 16000,
+    "validation_rows": 1000,
+    "holdout_rows": 3000,
+    "output_contract": "humaneval_v15_body_only",
+    "unit_test_timeout_sec": 5,
+    "forbidden_formal": ["humaneval"]
+  },
+  "lora": {
+    "rank": 16,
+    "alpha": 32,
+    "dropout": 0.05,
+    "target_modules": ["q_proj", "k_proj", "v_proj", "o_proj", "gate_proj", "up_proj", "down_proj"]
+  },
+  "grpo": {
+    "rollout_samples": 4,
+    "temperature": 0.8,
+    "top_p": 0.95,
+    "max_new_tokens": 256,
+    "kl_beta": 0.05,
+    "kl_reference": "base_adapter_disabled",
+    "advantage": "group_normalized",
+    "reward": "unit_test_all_pass"
+  },
+  "optimizer": {
+    "learning_rate": 3e-6,
+    "weight_decay": 0.05,
+    "warmup_ratio": 0.05,
+    "scheduler": "cosine",
+    "max_grad_norm": 1.0,
+    "per_device_train_batch_prompts": 16,
+    "gradient_accumulation_steps": 1,
+    "epochs": 2,
+    "checkpoint_steps": 20,
+    "eval_steps": 20
+  },
+  "selection": {
+    "validation_metric": "greedy_execution_pass_rate",
+    "minimum_gain_over_base": 0.02,
+    "maximum_generation_errors": 0
+  },
+  "gates": {
+    "gate300": {
+      "protocol": "p0a5-gate300-v3",
+      "initial_ratio": 0.78,
+      "recommended_full_ratio": 0.82,
+      "code_baseline": "data/eval/p0a5_baseline14b_gate300_v3.jsonl"
+    },
+    "formal_full": {
+      "datasets": {"gsm8k": 1319, "humaneval": 164, "cmmlu": 11582},
+      "minimum_ratio_each": 0.8,
+      "minimum_capped_macro": 0.8,
+      "feedback_after_run": "aggregate_domain_metrics_only"
+    }
+  }
+}

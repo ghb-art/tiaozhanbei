@@ -20,6 +20,7 @@ data/capability_v2/
 data/p0a*/
 data/p0a6/
 data/p0b1/
+data/p0b2/
 !data/datasets/
 !data/datasets/**/
 !data/datasets/**/.gitkeep

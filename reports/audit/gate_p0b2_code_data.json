@@ -1,0 +1,38 @@
+{
+  "gate": "P0-B2-CODE-GRPO-DATA",
+  "check_version": "1.0",
+  "created_by": "model_compression/build_p0b2_code_data.py",
+  "created_ts": "2026-08-05T07:40:16.386018+00:00",
+  "status": "passed",
+  "config": "configs/p0b2_code_grpo.json",
+  "config_hash": "365d9370c8c2075d2b8ffa2c07da86d98b665ca316b876fd869789a0d64f00a7",
+  "source": "data/p0b1/code_train.jsonl",
+  "source_rows": 20000,
+  "train_rows": 16000,
+  "validation_rows": 1000,
+  "holdout_rows": 3000,
+  "train_unique": 16000,
+  "validation_unique": 1000,
+  "holdout_unique": 3000,
+  "train_validation_overlap": 0,
+  "train_holdout_overlap": 0,
+  "validation_holdout_overlap": 0,
+  "gate_internal_overlap": 0,
+  "formal_set_references": 0,
+  "output_contract": "humaneval_v15_body_only",
+  "outputs": {
+    "train": {
+      "path": "data/p0b2/code_grpo_train.jsonl",
+      "sha256": "c098812bfc931169930742ea9510b2a24d2ea1d93e7446057d467515115195b7"
+    },
+    "validation": {
+      "path": "data/p0b2/code_grpo_validation.jsonl",
+      "sha256": "6287e162a366eab8becb16045efec123141ffb368e3578882a273c10531801d3"
+    },
+    "holdout": {
+      "path": "data/p0b2/code_grpo_holdout.jsonl",
+      "sha256": "9e87a0345dc59c0eceddabbda5bbd421bb1ecaa2fe1c431589c81b2281d3d9b0"
+    }
+  },
+  "report_hash": "3e0b87bc7a62c0ea9b58b673c2de0a0abe6bd76d3ce06efe950d080e88757770"
+}

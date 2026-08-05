@@ -1,0 +1,64 @@
+{
+  "config_version": "1.0",
+  "protocol": "P0-B2-NLP-STAGE2-MATH-REPLAY",
+  "seed": 20260805,
+  "policy": {
+    "student_base": "models/checkpoints/p0a4/student-shared-merged",
+    "init_adapter": "models/checkpoints/p0b2/nlp-stage1",
+    "single_shared_lora": true,
+    "runtime_adapters": false,
+    "formal_feedback_for_training": "none",
+    "formal_item_outputs_used": false,
+    "humaneval_used": false,
+    "pre_registered_candidate_count": 1
+  },
+  "artifacts": {
+    "train_data": "data/p0b2/math_stage2.jsonl",
+    "validation_data": "data/p0b1/internal_validation.jsonl",
+    "output_dir": "models/checkpoints/p0b2/nlp-stage2",
+    "merged_dir": "models/checkpoints/p0b2/nlp-staged-merged",
+    "train_audit": "reports/audit/gate_p0b2_nlp_stage2_train.json",
+    "merge_audit": "reports/audit/gate_p0b2_nlp_merge.json"
+  },
+  "student_training": {
+    "lora_rank": 64,
+    "lora_alpha": 128,
+    "lora_dropout": 0.10,
+    "learning_rate": 0.0000005,
+    "epochs": 1,
+    "max_seq_length": 1536,
+    "checkpoint_steps": 50,
+    "eval_steps": 50,
+    "early_stopping_enabled": true,
+    "early_stopping_patience": 4,
+    "early_stopping_threshold": 0.002,
+    "weight_decay": 0.05,
+    "warmup_ratio": 0.05,
+    "max_grad_norm": 1.0,
+    "label_smoothing": 0.02,
+    "base_preservation": {
+      "enabled": true,
+      "method": "unconditional_adapter_disabled_base_kl",
+      "temperature": 2.0,
+      "kl_weight_by_dataset": {"gsm8k": 0.25}
+    },
+    "math_preservation": {
+      "enabled": false,
+      "method": "superseded_by_all_task_base_kl",
+      "kl_weight": 0.0,
+      "supervised_weight": 1.0,
+      "temperature": 2.0
+    },
+    "candidate_overrides": {}
+  },
+  "data": {
+    "train_counts": {"gsm8k": 7173},
+    "validation_counts": {"math": 200, "code": 300, "nlp": 300},
+    "math_contract": "gsm8k_numeric_final",
+    "formal_test_rows_loaded_for_training": 0
+  },
+  "selection": {
+    "validation_metric": "all_domain_eval_loss",
+    "formal_gate": "after_merge_and_quantization"
+  }
+}

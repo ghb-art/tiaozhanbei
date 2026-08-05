@@ -65,8 +65,10 @@
   "gates": {
     "gate300": {
       "protocol": "p0a5-gate300-v3",
+      "expected_counts": {"math": 100, "code": 100, "nlp": 100},
       "initial_ratio": 0.78,
       "recommended_full_ratio": 0.82,
+      "recommended_full_capped_macro": 0.82,
       "code_baseline": "data/eval/p0a5_baseline14b_gate300_v3.jsonl"
     },
     "formal_full": {
@@ -75,5 +77,12 @@
       "minimum_capped_macro": 0.8,
       "feedback_after_run": "aggregate_domain_metrics_only"
     }
+  },
+  "quantization": {
+    "weight_type": "Q4_K_M",
+    "kv_cache_type": "q8_0",
+    "imatrix_source": "training_only",
+    "memory_dev_mb_decimal": 1400,
+    "memory_formal_mb_decimal": 1500
   }
 }

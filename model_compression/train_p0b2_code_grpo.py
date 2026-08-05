@@ -336,6 +336,7 @@ def main() -> int:
     parser.add_argument("--resume-from-checkpoint")
     parser.add_argument("--smoke", action="store_true")
     parser.add_argument("--max-steps", type=int, default=0)
+    parser.add_argument("--eval-rows", type=int, default=200)
     parser.add_argument("--seed", type=int, default=20260805)
     args = parser.parse_args()
 
@@ -380,6 +381,8 @@ def main() -> int:
         if args.smoke:
             train_rows = train_rows[:32]
             validation_rows = validation_rows[:8]
+        elif len(validation_rows) > args.eval_rows:
+            validation_rows = validation_rows[: args.eval_rows]
 
         trainable = [param for param in model.parameters() if param.requires_grad]
         optimizer = AdamW(trainable, lr=lr, weight_decay=weight_decay)
